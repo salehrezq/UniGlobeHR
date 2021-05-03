@@ -5,10 +5,19 @@
  */
 package gui;
 
+import java.awt.Dimension;
+import javax.swing.JPanel;
+
 /**
  *
  * @author Saleh
  */
-public class Controls {
+public class Controls extends JPanel {
+
+    public Controls() {
+        super();
+        Dimension minimumSize = new Dimension(100, 50);
+        this.setMinimumSize(minimumSize);
+    }
 
 }
