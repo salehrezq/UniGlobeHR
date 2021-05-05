@@ -6,8 +6,11 @@
 package gui;
 
 import java.awt.Dimension;
+import java.awt.GridLayout;
+import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.JTree;
 
 /**
  *
@@ -15,8 +18,8 @@ import javax.swing.JSplitPane;
  */
 public class Stage extends JPanel {
 
-    public TreeEmployees treeEmployees;
-    public Controls controls;
+    private TreeEmployees treeEmployees;
+    private Controls controls;
 
     public Stage() {
         super();
@@ -24,11 +27,12 @@ public class Stage extends JPanel {
 
     public void createStage() {
 
+        this.setLayout(new GridLayout(1, 0));
         treeEmployees = new TreeEmployees();
         controls = new Controls();
         //Add the scroll panes to a split pane.
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        splitPane.setTopComponent(treeEmployees);
+        splitPane.setTopComponent(treeEmployees.getTree());
         splitPane.setBottomComponent(controls);
         splitPane.setDividerLocation(100);
         splitPane.setPreferredSize(new Dimension(500, 300));

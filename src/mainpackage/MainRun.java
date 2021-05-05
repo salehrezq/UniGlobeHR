@@ -14,7 +14,7 @@ import javax.swing.JFrame;
  */
 public class MainRun {
 
-    public static Stage stage;
+    private static Stage stage;
 
     public MainRun() {
 
@@ -29,7 +29,7 @@ public class MainRun {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Add content to the window.
-        frame.add(stage);
+        frame.getContentPane().add(stage);
 
         //Display the window.
         frame.pack();

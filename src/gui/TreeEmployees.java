@@ -5,6 +5,7 @@
  */
 package gui;
 
+import java.awt.Dimension;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
@@ -14,15 +15,13 @@ import javax.swing.tree.TreeSelectionModel;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
 
-
 /**
  *
  * @author Saleh
  */
-public class TreeEmployees extends JPanel implements TreeSelectionListener {
+public class TreeEmployees implements TreeSelectionListener {
 
     private JTree tree;
-    private JScrollPane treeView;
 
     public TreeEmployees() {
         super();
@@ -31,10 +30,11 @@ public class TreeEmployees extends JPanel implements TreeSelectionListener {
         tree = new JTree(top);
         tree.putClientProperty("JTree.lineStyle", "Horizontal");
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
-        //Listen for when the selection changes.
         tree.addTreeSelectionListener(this);
-        treeView = new JScrollPane();
-        treeView.add(tree);
+    }
+
+    public JTree getTree() {
+        return this.tree;
     }
 
     @Override
