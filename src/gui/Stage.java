@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTree;
 
@@ -32,7 +33,9 @@ public class Stage extends JPanel {
         controls = new Controls();
         //Add the scroll panes to a split pane.
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
-        splitPane.setTopComponent(treeEmployees.getTree());
+        splitPane.setDividerSize(5);
+        JScrollPane scrollPane = new JScrollPane(treeEmployees.getTree());
+        splitPane.setTopComponent(scrollPane);
         splitPane.setBottomComponent(controls);
         splitPane.setDividerLocation(100);
         splitPane.setPreferredSize(new Dimension(500, 300));
