@@ -9,6 +9,6 @@ package datalink;
  *
  * @author Saleh
  */
-public class DatabaseControl {
+public class Connect {
 
 }
