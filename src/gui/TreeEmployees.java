@@ -25,8 +25,10 @@ public class TreeEmployees implements TreeSelectionListener {
 
     public TreeEmployees() {
         super();
-        DefaultMutableTreeNode top
-                = new DefaultMutableTreeNode("The Java Series");
+        DefaultMutableTreeNode top = new DefaultMutableTreeNode("All");
+        DefaultMutableTreeNode labours = new DefaultMutableTreeNode("Labours");
+        top.add(labours);
+        createNodes(labours);
         tree = new JTree(top);
         tree.putClientProperty("JTree.lineStyle", "Horizontal");
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -37,9 +39,32 @@ public class TreeEmployees implements TreeSelectionListener {
         return this.tree;
     }
 
-    @Override
-    public void valueChanged(TreeSelectionEvent arg0) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private void createNodes(DefaultMutableTreeNode top) {
+
+        DefaultMutableTreeNode item = null;
+
+        int count = 50;
+        for (int i = 0; i < count; i++) {
+            item = new DefaultMutableTreeNode("labour " + i);
+            top.add(item);
+        }
+
     }
 
+    @Override
+    public void valueChanged(TreeSelectionEvent e) {
+
+        DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
+        
+        if (node == null) {
+            return;
+        }
+      
+        Object nodeInfo = node.getUserObject();
+        if (node.isLeaf()) {
+            System.out.println("Leaf");
+        } else {
+            System.out.println("Not leaf");
+        }
+    }
 }
