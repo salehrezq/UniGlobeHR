@@ -10,6 +10,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.PreparedStatement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -25,42 +27,16 @@ public class Connect {
     static final String USER = "root";
     static final String PASS = "36976250";
 
-    public void getConnection() {
+    public Connection getConnection() {
 
         Connection conn = null;
-        Statement stmt = null;
+
         try {
-            //STEP 2: Register JDBC driver
             Class.forName(JDBC_DRIVER);
             conn = DriverManager.getConnection(DB_URL, USER, PASS);
-
-            stmt = conn.createStatement();
-
-            // Update as required:
-//             String sql = "INSERT INTO employees (`name`,`enrolled_date`, `active`) VALUES ('Mishab ad', '2021-5-1', 0)";
-//            stmt.executeUpdate(sql);
-        } catch (SQLException se) {
-            //Handle errors for JDBC
-            se.printStackTrace();
-        } catch (Exception e) {
-            //Handle errors for Class.forName
-            e.printStackTrace();
-        } finally {
-            //finally block used to close resources
-            try {
-                if (stmt != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-            }// do nothing
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }//end finally try
-        }//end try
+        } catch (SQLException | ClassNotFoundException ex) {
+            Logger.getLogger(Connect.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return conn;
     }
-
 }
