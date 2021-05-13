@@ -6,7 +6,9 @@
 package gui;
 
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import javax.swing.JPanel;
+import javax.swing.JTabbedPane;
 
 /**
  *
@@ -14,10 +16,18 @@ import javax.swing.JPanel;
  */
 public class Controls extends JPanel {
 
+    private JTabbedPane tabs;
+    private ManageEmployees manageEmployees;
+    
     public Controls() {
         super();
-        Dimension minimumSize = new Dimension(100, 50);
-        this.setMinimumSize(minimumSize);
+        this.setLayout(new GridLayout(1, 0));
+        
+        manageEmployees = new ManageEmployees();
+        tabs = new JTabbedPane();
+        tabs.add(manageEmployees, "Employees CRUD");
+        this.add(tabs);
+
     }
 
 }
