@@ -5,6 +5,7 @@
  */
 package mainpackage;
 
+import gui.Menu;
 import gui.Stage;
 import javax.swing.JFrame;
 
@@ -15,6 +16,7 @@ import javax.swing.JFrame;
 public class MainRun {
 
     private static Stage stage;
+    private static Menu menu;
 
     public MainRun() {
 
@@ -24,12 +26,16 @@ public class MainRun {
 
         stage = new Stage();
         stage.createStage();
+
+        menu = new Menu();
+        menu.createMenuBar();
         //Create and set up the window.
         JFrame frame = new JFrame("TreeDemo");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Add content to the window.
         frame.getContentPane().add(stage);
+        frame.setJMenuBar(menu.getMenuBar());
 
         //Display the window.
         frame.pack();
