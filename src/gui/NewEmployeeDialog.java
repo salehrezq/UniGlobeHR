@@ -29,7 +29,6 @@ import java.time.ZoneId;
  */
 public class NewEmployeeDialog extends JDialog {
 
-    private JFrame parentFrame;
     private JPanel panel;
     private int width;
     private int height;
@@ -39,9 +38,10 @@ public class NewEmployeeDialog extends JDialog {
     private JTextField tfName;
 
     public NewEmployeeDialog(JFrame parentFrame, String title, boolean modal) {
+        super(parentFrame, title, modal);
         this.width = 400;
         this.height = 500;
-        this.parentFrame = parentFrame;
+
         panel = new JPanel(new GridBagLayout());
         gbc = new GridBagConstraints();
 
