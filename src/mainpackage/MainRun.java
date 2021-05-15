@@ -17,9 +17,14 @@ public class MainRun {
 
     private static Stage stage;
     private static Menu menu;
+    private static JFrame frame;
 
     public MainRun() {
 
+    }
+
+    public static JFrame getFrame() {
+        return MainRun.frame;
     }
 
     private static void createAndShowGUI() {
@@ -30,7 +35,7 @@ public class MainRun {
         menu = new Menu();
         menu.createMenuBar();
         //Create and set up the window.
-        JFrame frame = new JFrame("TreeDemo");
+        frame = new JFrame("UniGlobe HR");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
         //Add content to the window.

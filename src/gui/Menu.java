@@ -5,10 +5,12 @@
  */
 package gui;
 
-import javax.swing.JCheckBoxMenuItem;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import mainpackage.MainRun;
 
 /**
  *
@@ -31,6 +33,12 @@ public class Menu {
         menu = new JMenu("File");
         menuInsertEmployee = new JMenuItem("New Employee");
         menu.add(menuInsertEmployee);
+        menuInsertEmployee.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent arg0) {
+                new NewEmployeeDialog(MainRun.getFrame(), "Create New Employee", true);
+            }
+        });
         menubar.add(menu);
     }
 
