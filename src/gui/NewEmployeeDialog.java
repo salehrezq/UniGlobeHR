@@ -22,6 +22,8 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import javax.swing.JCheckBox;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -34,8 +36,10 @@ public class NewEmployeeDialog extends JDialog {
     private int height;
     private GridBagConstraints gbc;
     private JLabel lbName;
+    private JTextField fName;
     private JLabel lbDate;
-    private JTextField tfName;
+    private JDatePickerImpl fDatePicker;
+    private JCheckBox fActive;
 
     public NewEmployeeDialog(JFrame parentFrame, String title, boolean modal) {
         super(parentFrame, title, modal);
@@ -47,13 +51,8 @@ public class NewEmployeeDialog extends JDialog {
 
         fieldName();
         fieldDate();
-
+        fieldActive();
         this.setSize(new Dimension(width, height));
-        addComponentListener(new java.awt.event.ComponentAdapter() {
-            public void componentResized(ComponentEvent event) {
-                setSize(width, height);
-            }
-        });
 
         this.getContentPane().add(panel);
         this.setVisible(true);
@@ -61,18 +60,29 @@ public class NewEmployeeDialog extends JDialog {
     }
 
     private void fieldName() {
-        lbName = new JLabel("Name");
-        tfName = new JTextField(20);
-        gbc.gridx = 0;
-        gbc.gridy = 0;
-        gbc.insets = new Insets(0, 10, 0, 10);
+        lbName = new JLabel("Name:");
+        fName = new JTextField(20);
+        grid(0, 0);
+        insets(0, 0, 10, 0);
+        gbc.anchor = GridBagConstraints.LINE_START;
         panel.add(lbName, gbc);
-        gbc.gridx++;
-        gbc.insets = new Insets(0, 0, 0, 0);
-        panel.add(tfName, gbc);
+        grid(1, 0);
+        gbc.anchor = GridBagConstraints.LINE_END;
+        panel.add(fName, gbc);
     }
 
     private void fieldDate() {
+        lbDate = new JLabel("Date of enrollment:");
+        insets(0, 0, 10, 0);
+        grid(0, 1);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        panel.add(lbDate, gbc);
+        grid(1, 1);
+        gbc.anchor = GridBagConstraints.LINE_END;
+        panel.add(datePicker(), gbc);
+    }
+
+    private JDatePickerImpl datePicker() {
         UtilDateModel model = new UtilDateModel();
         Properties p = new Properties();
         p.put("text.today", "Today");
@@ -80,20 +90,33 @@ public class NewEmployeeDialog extends JDialog {
         p.put("text.year", "Year");
         JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
         // Don't know about the formatter, but there it is...
-        JDatePickerImpl datePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-        datePicker.addActionListener((arg0) -> {
-            Date selectedDate = (Date) datePicker.getModel().getValue();
-            LocalDate date = LocalDate.ofInstant(selectedDate.toInstant(), ZoneId.systemDefault());
-            System.out.println(date);
+        fDatePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+        fDatePicker.addActionListener((arg0) -> {
+            Date selectedDate = (Date) fDatePicker.getModel().getValue();
+            if (selectedDate != null) {
+                LocalDate date = LocalDate.ofInstant(selectedDate.toInstant(), ZoneId.systemDefault());
+                System.out.println(date);
+            }
         });
-        lbDate = new JLabel("Date of enrollment");
-        gbc.gridx = 0;
-        gbc.gridy++;
-        gbc.insets = new Insets(0, 10, 0, 10);
-        panel.add(lbDate, gbc);
-        gbc.gridx++;
-        gbc.insets = new Insets(0, 0, 0, 0);
-        panel.add(datePicker, gbc);
+        return fDatePicker;
+    }
+
+    private void fieldActive() {
+        fActive = new JCheckBox("Is employee active?");
+        fActive.setSelected(true);
+        fActive.setHorizontalTextPosition(SwingConstants.LEFT);
+        grid(0, 2);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        panel.add(fActive, gbc);
+    }
+
+    private void grid(int x, int y) {
+        gbc.gridx = x;
+        gbc.gridy = y;
+    }
+
+    private void insets(int top, int left, int bottom, int right) {
+        gbc.insets = new Insets(top, left, bottom, right);
     }
 
 }
