@@ -16,12 +16,12 @@ import java.util.logging.Logger;
  *
  * @author Saleh
  */
-public class InsertEmployee {
+public class CRUDEmployee {
 
     Connect connect;
     Connection conn;
 
-    public InsertEmployee() {
+    public CRUDEmployee() {
         super();
 
         connect = new Connect();
@@ -40,7 +40,7 @@ public class InsertEmployee {
             p.executeUpdate();
 
         } catch (SQLException ex) {
-            Logger.getLogger(InsertEmployee.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CRUDEmployee.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
                 if (conn != null) {
