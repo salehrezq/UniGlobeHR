@@ -18,11 +18,11 @@ public class Controls extends JPanel {
 
     private JTabbedPane tabs;
     private ManageEmployees manageEmployees;
-    
+
     public Controls() {
         super();
         this.setLayout(new GridLayout(1, 0));
-        
+
         manageEmployees = new ManageEmployees();
         tabs = new JTabbedPane();
         tabs.add(manageEmployees, "Employees CRUD");

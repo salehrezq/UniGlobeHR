@@ -55,11 +55,11 @@ public class TreeEmployees implements TreeSelectionListener {
     public void valueChanged(TreeSelectionEvent e) {
 
         DefaultMutableTreeNode node = (DefaultMutableTreeNode) tree.getLastSelectedPathComponent();
-        
+
         if (node == null) {
             return;
         }
-      
+
         Object nodeInfo = node.getUserObject();
         if (node.isLeaf()) {
             System.out.println("Leaf");

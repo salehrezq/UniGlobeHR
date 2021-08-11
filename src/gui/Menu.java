@@ -21,6 +21,7 @@ public class Menu {
     private JMenuBar menubar;
     private JMenu menu;
     private JMenuItem menuInsertEmployee;
+    private NewEmployeeDialog newEmployeeDialog;
 
     public Menu() {
 
@@ -36,9 +37,10 @@ public class Menu {
         menuInsertEmployee.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent arg0) {
-                new NewEmployeeDialog(MainRun.getFrame(), "Create New Employee", true);
+                newEmployeeDialog = new NewEmployeeDialog(MainRun.getFrame(), "Create New Employee", true);
             }
         });
+        //menuInsertEmployee.doClick();
         menubar.add(menu);
     }
 

@@ -22,8 +22,10 @@ import org.jdatepicker.impl.JDatePickerImpl;
 import org.jdatepicker.impl.UtilDateModel;
 import java.time.LocalDate;
 import java.time.ZoneId;
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
+import logic.InsertEmployeeAction;
 
 /**
  *
@@ -39,10 +41,13 @@ public class NewEmployeeDialog extends JDialog {
     private JTextField fName;
     private JLabel lbDate;
     private JDatePickerImpl fDatePicker;
+    private LocalDate enrollmentDate;
     private JCheckBox fActive;
+    private JButton btnInsertEmployee;
 
     public NewEmployeeDialog(JFrame parentFrame, String title, boolean modal) {
         super(parentFrame, title, modal);
+
         this.width = 400;
         this.height = 500;
 
@@ -52,8 +57,9 @@ public class NewEmployeeDialog extends JDialog {
         fieldName();
         fieldDate();
         fieldActive();
-        this.setSize(new Dimension(width, height));
+        btnInsertEmployee();
 
+        this.setSize(new Dimension(width, height));
         this.getContentPane().add(panel);
         this.setVisible(true);
 
@@ -94,8 +100,8 @@ public class NewEmployeeDialog extends JDialog {
         fDatePicker.addActionListener((arg0) -> {
             Date selectedDate = (Date) fDatePicker.getModel().getValue();
             if (selectedDate != null) {
-                LocalDate date = LocalDate.ofInstant(selectedDate.toInstant(), ZoneId.systemDefault());
-                System.out.println(date);
+                enrollmentDate = LocalDate.ofInstant(selectedDate.toInstant(), ZoneId.systemDefault());
+                System.out.println(enrollmentDate);
             }
         });
         return fDatePicker;
@@ -105,9 +111,18 @@ public class NewEmployeeDialog extends JDialog {
         fActive = new JCheckBox("Is employee active?");
         fActive.setSelected(true);
         fActive.setHorizontalTextPosition(SwingConstants.LEFT);
+        insets(0, 0, 10, 0);
         grid(0, 2);
         gbc.anchor = GridBagConstraints.LINE_START;
         panel.add(fActive, gbc);
+    }
+
+    private void btnInsertEmployee() {
+        btnInsertEmployee = new JButton("Insert");
+        btnInsertEmployee.addActionListener(new InsertEmployeeAction(this));
+        grid(1, 3);
+        gbc.anchor = GridBagConstraints.CENTER;
+        panel.add(btnInsertEmployee, gbc);
     }
 
     private void grid(int x, int y) {
@@ -117,6 +132,18 @@ public class NewEmployeeDialog extends JDialog {
 
     private void insets(int top, int left, int bottom, int right) {
         gbc.insets = new Insets(top, left, bottom, right);
+    }
+
+    public String getEmployeeName() {
+        return this.fName.getText();
+    }
+
+    public LocalDate getEnrollmentDate() {
+        return this.enrollmentDate;
+    }
+
+    public boolean getEmployeeIsActive() {
+        return this.fActive.isSelected();
     }
 
 }

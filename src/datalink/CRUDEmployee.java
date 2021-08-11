@@ -11,6 +11,7 @@ import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import model.Employee;
 
 /**
  *
@@ -18,25 +19,18 @@ import java.util.logging.Logger;
  */
 public class CRUDEmployee {
 
-    Connect connect;
-    Connection conn;
+    private static Connection conn;
 
-    public CRUDEmployee() {
-        super();
-
-        connect = new Connect();
-    }
-
-    public void insertEmp(String name, LocalDate localDate, boolean active) {
+    public static void create(Employee employee) {
         try {
 
-            String sql = "INSERT INTO employees (`name`,enrolled_date) VALUES (?, ?, ?)";
-            conn = connect.getConnection();
+            String sql = "INSERT INTO employees (`name`, `enrolled_date`, `active`) VALUES (?, ?, ?)";
+            conn = Connect.getConnection();
             PreparedStatement p = conn.prepareStatement(sql);
 
-            p.setString(1, name);
-            p.setObject(2, localDate);
-            p.setBoolean(3, active);
+            p.setString(1, employee.getName());
+            p.setObject(2, employee.getEnrolledDate());
+            p.setBoolean(3, employee.isActive());
             p.executeUpdate();
 
         } catch (SQLException ex) {
