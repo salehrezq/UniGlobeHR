@@ -32,7 +32,7 @@ public class CRUDEmployee {
             p.setObject(2, employee.getEnrolledDate());
             p.setBoolean(3, employee.isActive());
             p.executeUpdate();
-
+            conn.commit();
         } catch (SQLException ex) {
             Logger.getLogger(CRUDEmployee.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
