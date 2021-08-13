@@ -5,9 +5,40 @@
  */
 package model;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author Saleh
  */
 public class Attendance {
+
+    private int id;
+    private int employeeId;
+    private LocalDate date;
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public int getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(int employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
+
 }
