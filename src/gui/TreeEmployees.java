@@ -5,15 +5,15 @@
  */
 package gui;
 
-import java.awt.Dimension;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
+import datalink.CRUDEmployee;
+import java.util.TreeSet;
 
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import model.Employee;
 
 /**
  *
@@ -26,9 +26,9 @@ public class TreeEmployees implements TreeSelectionListener {
     public TreeEmployees() {
         super();
         DefaultMutableTreeNode top = new DefaultMutableTreeNode("All");
-        DefaultMutableTreeNode labours = new DefaultMutableTreeNode("Labours");
-        top.add(labours);
-        createNodes(labours);
+        DefaultMutableTreeNode laborers = new DefaultMutableTreeNode("Laborers");
+        top.add(laborers);
+        createLaborersNodes(laborers);
         tree = new JTree(top);
         tree.putClientProperty("JTree.lineStyle", "Horizontal");
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -39,16 +39,16 @@ public class TreeEmployees implements TreeSelectionListener {
         return this.tree;
     }
 
-    private void createNodes(DefaultMutableTreeNode top) {
+    private void createLaborersNodes(DefaultMutableTreeNode top) {
 
         DefaultMutableTreeNode item = null;
 
-        int count = 50;
-        for (int i = 0; i < count; i++) {
-            item = new DefaultMutableTreeNode("labour " + i);
+        TreeSet<Employee> employees = (TreeSet<Employee>) CRUDEmployee.getAll();
+
+        for (Employee c : employees) {
+            item = new DefaultMutableTreeNode(c.getName());
             top.add(item);
         }
-
     }
 
     @Override

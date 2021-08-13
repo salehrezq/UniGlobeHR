@@ -8,7 +8,9 @@ package datalink;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Connection;
-import java.time.LocalDate;
+import java.sql.ResultSet;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Employee;
@@ -44,5 +46,45 @@ public class CRUDEmployee {
                 se.printStackTrace();
             }
         }
+    }
+
+    public static SortedSet getAll() {
+
+        SortedSet<Employee> sortedEmployees = new TreeSet<>((emplyee1, employee2) -> {
+            if (emplyee1 instanceof Employee && employee2 instanceof Employee) {
+                String name1 = emplyee1.getName();
+                String name2 = employee2.getName();
+                return name1.compareTo(name2);
+            }
+            return 0; //To change body of generated lambdas, choose Tools | Templates.
+        });
+
+        try {
+
+            String sql = "SELECT * FROM `employees` WHERE `active` = 1";
+            conn = Connect.getConnection();
+            PreparedStatement p = conn.prepareStatement(sql);
+            ResultSet result = p.executeQuery();
+
+            while (result.next()) {
+                Employee employee = new Employee();
+                employee.setId(result.getInt("id"));
+                employee.setName(result.getString("name"));
+                employee.setEnrolledDate(result.getDate("enrolled_date").toLocalDate());
+                employee.setActive(result.getBoolean("active"));
+                sortedEmployees.add(employee);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDEmployee.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+        return sortedEmployees;
     }
 }
