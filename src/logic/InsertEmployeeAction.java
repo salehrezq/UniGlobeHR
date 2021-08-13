@@ -7,9 +7,9 @@ package logic;
 
 import datalink.CRUDEmployee;
 import gui.NewEmployeeDialog;
+import gui.TreeEmployees;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
 import model.Employee;
 
 /**
@@ -33,8 +33,8 @@ public class InsertEmployeeAction implements ActionListener {
         employee.setActive(dialog.getEmployeeIsActive());
 
         if (CRUDEmployee.create(employee)) {
-
             this.dialog.setVisible(false);
+            TreeEmployees.addEmployeeNode(employee);
         }
     }
 

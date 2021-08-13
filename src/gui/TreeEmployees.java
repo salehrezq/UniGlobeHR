@@ -13,6 +13,7 @@ import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.tree.DefaultTreeModel;
 import model.Employee;
 
 /**
@@ -21,14 +22,15 @@ import model.Employee;
  */
 public class TreeEmployees implements TreeSelectionListener {
 
-    private JTree tree;
+    private static JTree tree;
+    private static DefaultMutableTreeNode laborers;
 
     public TreeEmployees() {
         super();
         DefaultMutableTreeNode top = new DefaultMutableTreeNode("All");
-        DefaultMutableTreeNode laborers = new DefaultMutableTreeNode("Laborers");
+        laborers = new DefaultMutableTreeNode("Laborers");
         top.add(laborers);
-        createLaborersNodes(laborers);
+        createEmployeesNodes(laborers);
         tree = new JTree(top);
         tree.putClientProperty("JTree.lineStyle", "Horizontal");
         tree.getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
@@ -39,16 +41,25 @@ public class TreeEmployees implements TreeSelectionListener {
         return this.tree;
     }
 
-    private void createLaborersNodes(DefaultMutableTreeNode top) {
+    private void createEmployeesNodes(DefaultMutableTreeNode top) {
 
-        DefaultMutableTreeNode item = null;
+        DefaultMutableTreeNode employeeNode = null;
 
         TreeSet<Employee> employees = (TreeSet<Employee>) CRUDEmployee.getAll();
 
         for (Employee c : employees) {
-            item = new DefaultMutableTreeNode(c.getName());
-            top.add(item);
+            employeeNode = new DefaultMutableTreeNode(c.getName());
+            top.add(employeeNode);
         }
+    }
+
+    public static void addEmployeeNode(Employee employee) {
+        DefaultMutableTreeNode employeeNode = new DefaultMutableTreeNode(employee.getName());
+        TreeEmployees.laborers.add(employeeNode);
+
+        DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
+        model.reload(TreeEmployees.laborers); // notify changes to model
+        tree.expandPath(tree.getSelectionPath());
     }
 
     @Override
