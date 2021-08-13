@@ -32,7 +32,10 @@ public class InsertEmployeeAction implements ActionListener {
         employee.setEnrolledDate(dialog.getEnrollmentDate());
         employee.setActive(dialog.getEmployeeIsActive());
 
-        CRUDEmployee.create(employee);
+        if (CRUDEmployee.create(employee)) {
+
+            this.dialog.setVisible(false);
+        }
     }
 
 }

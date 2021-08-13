@@ -23,7 +23,10 @@ public class CRUDEmployee {
 
     private static Connection conn;
 
-    public static void create(Employee employee) {
+    public static boolean create(Employee employee) {
+
+        int insert = -1;
+
         try {
 
             String sql = "INSERT INTO employees (`name`, `enrolled_date`, `active`) VALUES (?, ?, ?)";
@@ -33,7 +36,7 @@ public class CRUDEmployee {
             p.setString(1, employee.getName());
             p.setObject(2, employee.getEnrolledDate());
             p.setBoolean(3, employee.isActive());
-            p.executeUpdate();
+            insert = p.executeUpdate();
             conn.commit();
         } catch (SQLException ex) {
             Logger.getLogger(CRUDEmployee.class.getName()).log(Level.SEVERE, null, ex);
@@ -46,6 +49,7 @@ public class CRUDEmployee {
                 se.printStackTrace();
             }
         }
+        return insert > 0;
     }
 
     public static SortedSet getAll() {
