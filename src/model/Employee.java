@@ -50,4 +50,9 @@ public class Employee {
         this.active = active;
     }
 
+    @Override
+    public String toString() {
+        return this.getName();
+    }
+
 }

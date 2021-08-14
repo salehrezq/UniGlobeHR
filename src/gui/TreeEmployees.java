@@ -47,8 +47,8 @@ public class TreeEmployees implements TreeSelectionListener {
 
         TreeSet<Employee> employees = (TreeSet<Employee>) CRUDEmployee.getAll();
 
-        for (Employee c : employees) {
-            employeeNode = new DefaultMutableTreeNode(c.getName());
+        for (Employee e : employees) {
+            employeeNode = new DefaultMutableTreeNode(e);
             top.add(employeeNode);
         }
     }
@@ -71,11 +71,16 @@ public class TreeEmployees implements TreeSelectionListener {
             return;
         }
 
-        Object nodeInfo = node.getUserObject();
+        Employee nodeInfo = (Employee) node.getUserObject();
+
+        if (nodeInfo instanceof Employee) {
+            System.out.println("My name is " + nodeInfo.getName() + " and my ID is " + nodeInfo.getId());
+        }
+
         if (node.isLeaf()) {
-            System.out.println("Leaf");
+            // System.out.println("Leaf");
         } else {
-            System.out.println("Not leaf");
+            //  System.out.println("Not leaf");
         }
     }
 }
