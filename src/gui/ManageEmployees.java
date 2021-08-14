@@ -10,7 +10,9 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import model.Employee;
 
 /**
  *
@@ -20,6 +22,7 @@ public class ManageEmployees extends JPanel {
 
     private GridBagLayout gridbag;
     private JButton btnInsertEmployee;
+    private static JLabel lbEmpName;
 
     public ManageEmployees() {
 
@@ -30,12 +33,23 @@ public class ManageEmployees extends JPanel {
         GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.HORIZONTAL;
 
-        btnInsertEmployee = new JButton("Button 1");
+        lbEmpName = new JLabel();
         c.weightx = 0.5;
         c.gridx = 0;
         c.gridy = 0;
+        gridbag.setConstraints(lbEmpName, c);
+        this.add(lbEmpName);
+
+        btnInsertEmployee = new JButton("Button 1");
+        c.weightx = 0.5;
+        c.gridx = 0;
+        c.gridy = 1;
         gridbag.setConstraints(btnInsertEmployee, c);
         this.add(btnInsertEmployee);
+    }
+
+    public static void setLabelEmpName(String empName) {
+        lbEmpName.setText(empName);
     }
 
 }

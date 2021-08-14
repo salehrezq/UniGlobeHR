@@ -5,6 +5,7 @@
  */
 package gui;
 
+import controller.EmployeeController;
 import datalink.CRUDEmployee;
 import java.util.TreeSet;
 
@@ -24,6 +25,7 @@ public class TreeEmployees implements TreeSelectionListener {
 
     private static JTree tree;
     private static DefaultMutableTreeNode laborers;
+    private Employee employee;
 
     public TreeEmployees() {
         super();
@@ -71,10 +73,12 @@ public class TreeEmployees implements TreeSelectionListener {
             return;
         }
 
-        Employee nodeInfo = (Employee) node.getUserObject();
+        Object selectedNode = node.getUserObject();
 
-        if (nodeInfo instanceof Employee) {
-            System.out.println("My name is " + nodeInfo.getName() + " and my ID is " + nodeInfo.getId());
+        if (selectedNode instanceof Employee) {
+            employee = (Employee) selectedNode;
+            EmployeeController.updateViewEmployeeWithModelChange(employee);
+            System.out.println("My name is " + employee.getName() + " and my ID is " + employee.getId());
         }
 
         if (node.isLeaf()) {
