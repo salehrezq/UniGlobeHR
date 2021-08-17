@@ -49,7 +49,7 @@ public class NewEmployeeDialog extends JDialog {
         super(parentFrame, title, modal);
 
         this.width = 400;
-        this.height = 500;
+        this.height = 200;
 
         panel = new JPanel(new GridBagLayout());
         gbc = new GridBagConstraints();
@@ -69,7 +69,7 @@ public class NewEmployeeDialog extends JDialog {
         lbName = new JLabel("Name:");
         fName = new JTextField(20);
         grid(0, 0);
-        insets(0, 0, 10, 0);
+        insets(0, 10, 10, 0);
         gbc.anchor = GridBagConstraints.LINE_START;
         panel.add(lbName, gbc);
         grid(1, 0);
@@ -79,7 +79,7 @@ public class NewEmployeeDialog extends JDialog {
 
     private void fieldDate() {
         lbDate = new JLabel("Date of enrollment:");
-        insets(0, 0, 10, 0);
+        insets(0, 10, 10, 0);
         grid(0, 1);
         gbc.anchor = GridBagConstraints.LINE_START;
         panel.add(lbDate, gbc);
@@ -111,7 +111,7 @@ public class NewEmployeeDialog extends JDialog {
         fActive = new JCheckBox("Is employee active?");
         fActive.setSelected(true);
         fActive.setHorizontalTextPosition(SwingConstants.LEFT);
-        insets(0, 0, 10, 0);
+        insets(0, 6, 10, 0);
         grid(0, 2);
         gbc.anchor = GridBagConstraints.LINE_START;
         panel.add(fActive, gbc);
