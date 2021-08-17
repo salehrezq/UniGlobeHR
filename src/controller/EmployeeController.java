@@ -6,7 +6,7 @@
 package controller;
 
 import gui.ManageEmployees;
-import gui.TreeEmployees;
+import java.time.format.DateTimeFormatter;
 import model.Employee;
 
 /**
@@ -26,6 +26,9 @@ public class EmployeeController {
     public static void updateViewEmployeeWithModelChange(Employee employee) {
         EmployeeController.employee = employee;
         ManageEmployees.setLabelEmpName(employee.getName());
+        String enrollmentDate = employee.getEnrolledDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+        System.out.println(enrollmentDate);
+        ManageEmployees.setLbDateEnrollment(enrollmentDate);
     }
 
 }
