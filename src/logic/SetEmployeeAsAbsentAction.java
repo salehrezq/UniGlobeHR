@@ -9,6 +9,6 @@ package logic;
  *
  * @author Saleh
  */
-public class SetEmployeeAsAbsent {
+public class SetEmployeeAsAbsentAction {
     
 }
