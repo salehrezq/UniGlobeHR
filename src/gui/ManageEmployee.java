@@ -23,14 +23,14 @@ import model.Employee;
  *
  * @author Saleh
  */
-public class ManageEmployees extends JPanel {
+public class ManageEmployee extends JPanel {
 
     private GridBagLayout gridbag;
     private JButton btnInsertEmployee;
     private static JLabel lbEmpName;
     private static JLabel lbDateEnrollment;
 
-    public ManageEmployees() {
+    public ManageEmployee() {
 
         super();
         this.setBorder(BorderFactory.createLineBorder(Color.red));

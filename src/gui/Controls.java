@@ -17,13 +17,13 @@ import javax.swing.JTabbedPane;
 public class Controls extends JPanel {
 
     private JTabbedPane tabs;
-    private ManageEmployees manageEmployees;
+    private ManageEmployee manageEmployees;
 
     public Controls() {
         super();
         this.setLayout(new GridLayout(1, 0));
 
-        manageEmployees = new ManageEmployees();
+        manageEmployees = new ManageEmployee();
         tabs = new JTabbedPane();
         tabs.add(manageEmployees, "Employees CRUD");
         this.add(tabs);
