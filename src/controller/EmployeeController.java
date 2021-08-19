@@ -7,6 +7,7 @@ package controller;
 
 import gui.ManageEmployee;
 import java.time.format.DateTimeFormatter;
+import logic.SetEmployeeAsAbsentAction;
 import model.Employee;
 
 /**
@@ -15,20 +16,26 @@ import model.Employee;
  */
 public class EmployeeController {
 
-    private static Employee employee;
-
     /**
      * You need to update the GUI view every time this method is called from the
      * controller
      *
      * @param employee
      */
-    public static void updateViewEmployeeWithModelChange(Employee employee) {
-        EmployeeController.employee = employee;
+    public static void updateEmployeeWithModelContextChange(Employee employee) {
         ManageEmployee.setLabelEmpName(employee.getName());
         String enrollmentDate = employee.getEnrolledDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        System.out.println(enrollmentDate);
         ManageEmployee.setLbDateEnrollment(enrollmentDate);
+        ManageEmployee.setEmployeeContext(employee);
+        SetEmployeeAsAbsentAction.setEmployeeContext(employee);
+    }
+
+    public static void isEmployeeSelected(boolean selected) {
+        ManageEmployee.abilityBtnSetAbsent(selected);
+        if (!selected) {
+            ManageEmployee.setLabelEmpName("UN-SELECTED");
+            ManageEmployee.setLbDateEnrollment("UN-SELECTED");
+        }
     }
 
 }

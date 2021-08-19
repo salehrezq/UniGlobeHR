@@ -7,6 +7,8 @@ package gui;
 
 import controller.EmployeeController;
 import datalink.CRUDEmployee;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.TreeSet;
 
 import javax.swing.JTree;
@@ -76,9 +78,13 @@ public class TreeEmployees implements TreeSelectionListener {
         Object selectedNode = node.getUserObject();
 
         if (selectedNode instanceof Employee) {
+            // Employee node is selected
             employee = (Employee) selectedNode;
-            EmployeeController.updateViewEmployeeWithModelChange(employee);
-            System.out.println("My name is " + employee.getName() + " and my ID is " + employee.getId());
+            EmployeeController.updateEmployeeWithModelContextChange(employee);
+            EmployeeController.isEmployeeSelected(true);
+        } else {
+            // Non Employee node is selected
+            EmployeeController.isEmployeeSelected(false);
         }
 
         if (node.isLeaf()) {

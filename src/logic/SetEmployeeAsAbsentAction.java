@@ -5,10 +5,25 @@
  */
 package logic;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import model.Employee;
+
 /**
  *
  * @author Saleh
  */
-public class SetEmployeeAsAbsentAction {
-    
+public class SetEmployeeAsAbsentAction implements ActionListener {
+
+    private static Employee employee;
+
+    @Override
+    public void actionPerformed(ActionEvent arg0) {
+        System.out.println(employee.getName());
+    }
+
+    public static void setEmployeeContext(Employee employee) {
+        SetEmployeeAsAbsentAction.employee = employee;
+    }
+
 }
