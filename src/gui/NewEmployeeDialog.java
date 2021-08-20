@@ -40,8 +40,7 @@ public class NewEmployeeDialog extends JDialog {
     private JLabel lbName;
     private JTextField fName;
     private JLabel lbDate;
-    private JDatePickerImpl fDatePicker;
-    private LocalDate enrollmentDate;
+    private DatePicker datePicker;
     private JCheckBox fActive;
     private JButton btnInsertEmployee;
 
@@ -85,26 +84,10 @@ public class NewEmployeeDialog extends JDialog {
         panel.add(lbDate, gbc);
         grid(1, 1);
         gbc.anchor = GridBagConstraints.LINE_END;
-        panel.add(datePicker(), gbc);
-    }
 
-    private JDatePickerImpl datePicker() {
-        UtilDateModel model = new UtilDateModel();
-        Properties p = new Properties();
-        p.put("text.today", "Today");
-        p.put("text.month", "Month");
-        p.put("text.year", "Year");
-        JDatePanelImpl datePanel = new JDatePanelImpl(model, p);
-        // Don't know about the formatter, but there it is...
-        fDatePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-        fDatePicker.addActionListener((arg0) -> {
-            Date selectedDate = (Date) fDatePicker.getModel().getValue();
-            if (selectedDate != null) {
-                enrollmentDate = LocalDate.ofInstant(selectedDate.toInstant(), ZoneId.systemDefault());
-                System.out.println(enrollmentDate);
-            }
-        });
-        return fDatePicker;
+        datePicker = new DatePicker();
+        datePicker.setTodayAsDefault();
+        panel.add(datePicker.getDatePicker(), gbc);
     }
 
     private void fieldActive() {
@@ -139,7 +122,7 @@ public class NewEmployeeDialog extends JDialog {
     }
 
     public LocalDate getEnrollmentDate() {
-        return this.enrollmentDate;
+        return this.datePicker.getDate();
     }
 
     public boolean getEmployeeIsActive() {
