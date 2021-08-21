@@ -6,6 +6,7 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -26,6 +27,7 @@ public class ManageEmployee extends JPanel {
     private static JLabel lbEmpName;
     private static JLabel lbDateEnrollment;
     private static JButton btnSetAbsent;
+    private static DatePicker datePicker;
     public static final String UNSELECTED = "UN-SELECTED";
 
     public ManageEmployee() {
@@ -53,15 +55,23 @@ public class ManageEmployee extends JPanel {
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         this.add(lbDateEnrollment, c);
 
+        JPanel panelAbsentSet = new JPanel(new FlowLayout());
+
         btnSetAbsent = new JButton("Set Absent");
         btnSetAbsent.setEnabled(false);
+        btnSetAbsent.addActionListener(new SetEmployeeAsAbsentAction());
+        panelAbsentSet.add(btnSetAbsent);
+
+        datePicker = new DatePicker();
+        datePicker.setTodayAsDefault();
+        panelAbsentSet.add(datePicker.getDatePicker());
+
         c = new GridBagConstraints();
-        c.insets = new Insets(5, 5, 0, 0);
         c.gridy = 2;
         c.weighty = 1.0;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
-        btnSetAbsent.addActionListener(new SetEmployeeAsAbsentAction());
-        this.add(btnSetAbsent, c);
+        this.add(panelAbsentSet, c);
+
     }
 
     public static void setLabelEmpName(String empName) {
