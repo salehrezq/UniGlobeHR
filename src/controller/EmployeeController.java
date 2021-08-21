@@ -23,7 +23,7 @@ public class EmployeeController {
      *
      * @param employee
      */
-    public static void updateEmployeeWithModelContextChange(Employee employee) {
+    public static void employeeNodeChangeSetUp(Employee employee) {
         ManageEmployee.setLabelEmpName(employee.getName());
         String enrollmentDate = employee.getEnrolledDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         ManageEmployee.setLbDateEnrollment(enrollmentDate);
