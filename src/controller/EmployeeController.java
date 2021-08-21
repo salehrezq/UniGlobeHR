@@ -6,6 +6,7 @@
 package controller;
 
 import gui.ManageEmployee;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import logic.SetEmployeeAsAbsentAction;
 import model.Employee;
@@ -26,8 +27,8 @@ public class EmployeeController {
         ManageEmployee.setLabelEmpName(employee.getName());
         String enrollmentDate = employee.getEnrolledDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
         ManageEmployee.setLbDateEnrollment(enrollmentDate);
-        ManageEmployee.setEmployeeContext(employee);
         SetEmployeeAsAbsentAction.setEmployeeContext(employee);
+        SetEmployeeAsAbsentAction.receiveSelectedDate(ManageEmployee.getSelectedDate());
     }
 
     public static void isEmployeeSelected(boolean selected) {

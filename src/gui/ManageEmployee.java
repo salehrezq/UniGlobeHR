@@ -10,6 +10,7 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.time.LocalDate;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -82,12 +83,16 @@ public class ManageEmployee extends JPanel {
         lbDateEnrollment.setText("Enrollment Date: " + aLbDateEnrollment);
     }
 
-    public static void setEmployeeContext(Employee employee) {
-        SetEmployeeAsAbsentAction.setEmployeeContext(employee);
-    }
-
     public static void abilityBtnSetAbsent(boolean bool) {
         btnSetAbsent.setEnabled(bool);
+    }
+
+    public static LocalDate getSelectedDate() {
+        return ManageEmployee.datePicker.getDate();
+    }
+
+    public static JButton getAbsentButton() {
+        return btnSetAbsent;
     }
 
 }

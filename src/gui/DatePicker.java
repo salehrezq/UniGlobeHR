@@ -52,8 +52,9 @@ public class DatePicker {
 
     public void setTodayAsDefault() {
         LocalDate today = LocalDate.now();
-        dateModel.setDate(today.getYear(), today.getDayOfMonth() - 1, today.getDayOfMonth());
+        dateModel.setDate(today.getYear(), today.getMonthValue() - 1, today.getDayOfMonth());
         dateModel.setSelected(true);
+        this.date = today;
     }
 
     public LocalDate getDate() {

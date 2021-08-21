@@ -5,8 +5,12 @@
  */
 package logic;
 
+import datalink.CRUDAttendance;
+import gui.ManageEmployee;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import model.Attendance;
 import model.Employee;
 
 /**
@@ -16,14 +20,24 @@ import model.Employee;
 public class SetEmployeeAsAbsentAction implements ActionListener {
 
     private static Employee employee;
+    private static LocalDate selectedDate;
 
     @Override
     public void actionPerformed(ActionEvent arg0) {
-        System.out.println(employee.getName());
+        Attendance attendance = new Attendance();
+        attendance.setEmployeeId(employee.getId());
+        attendance.setDate(selectedDate);
+        if (CRUDAttendance.create(attendance)) {
+            ManageEmployee.getAbsentButton().setEnabled(false);
+        }
     }
 
     public static void setEmployeeContext(Employee employee) {
         SetEmployeeAsAbsentAction.employee = employee;
+    }
+
+    public static void receiveSelectedDate(LocalDate selectedDate) {
+        SetEmployeeAsAbsentAction.selectedDate = selectedDate;
     }
 
 }
