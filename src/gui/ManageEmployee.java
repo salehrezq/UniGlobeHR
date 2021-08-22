@@ -22,13 +22,15 @@ import model.Employee;
  *
  * @author Saleh
  */
-public class ManageEmployee extends JPanel {
+public class ManageEmployee extends JPanel implements DateListener {
 
     private final GridBagLayout gridbag;
     private static JLabel lbEmpName;
     private static JLabel lbDateEnrollment;
     private static JButton btnSetAbsent;
     private static DatePicker datePicker;
+    private static SetEmployeeAsAbsentAction setAbsent;
+    private static LocalDate dateAbsentSelected;
     public static final String UNSELECTED = "UN-SELECTED";
 
     public ManageEmployee() {
@@ -58,13 +60,18 @@ public class ManageEmployee extends JPanel {
 
         JPanel panelAbsentSet = new JPanel(new FlowLayout());
 
+        datePicker = new DatePicker();
+        setAbsent = new SetEmployeeAsAbsentAction();
         btnSetAbsent = new JButton("Set Absent");
         btnSetAbsent.setEnabled(false);
-        btnSetAbsent.addActionListener(new SetEmployeeAsAbsentAction());
+        btnSetAbsent.addActionListener(setAbsent);
         panelAbsentSet.add(btnSetAbsent);
 
-        datePicker = new DatePicker();
         datePicker.setTodayAsDefault();
+        // initial date value
+        dateAbsentSelected = datePicker.getDate();
+        setAbsent.setAbsentDate(dateAbsentSelected);
+        datePicker.addDateListener(this);
         panelAbsentSet.add(datePicker.getDatePicker());
 
         c = new GridBagConstraints();
@@ -87,7 +94,13 @@ public class ManageEmployee extends JPanel {
         btnSetAbsent.setEnabled(bool);
     }
 
-    public static LocalDate getSelectedDate() {
-        return ManageEmployee.datePicker.getDate();
+    public static LocalDate getAbsentSelectedDate() {
+        return datePicker.getDate();
+    }
+
+    @Override
+    public void dateChanged(LocalDate date) {
+        ManageEmployee.dateAbsentSelected = date;
+        setAbsent.setAbsentDate(date);
     }
 }

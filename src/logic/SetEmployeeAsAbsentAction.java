@@ -6,6 +6,7 @@
 package logic;
 
 import datalink.CRUDAttendance;
+import gui.DateListener;
 import gui.ManageEmployee;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,8 +40,8 @@ public class SetEmployeeAsAbsentAction implements ActionListener {
         SetEmployeeAsAbsentAction.employee = employee;
     }
 
-    public static void receiveSelectedDate(LocalDate selectedDate) {
-        SetEmployeeAsAbsentAction.selectedDate = selectedDate;
+    public void setAbsentDate(LocalDate date) {
+        SetEmployeeAsAbsentAction.selectedDate = date;
     }
 
 }

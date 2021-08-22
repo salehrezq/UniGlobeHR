@@ -31,7 +31,7 @@ import logic.InsertEmployeeAction;
  *
  * @author Saleh
  */
-public class NewEmployeeDialog extends JDialog {
+public class NewEmployeeDialog extends JDialog implements DateListener {
 
     private JPanel panel;
     private int width;
@@ -40,6 +40,7 @@ public class NewEmployeeDialog extends JDialog {
     private JLabel lbName;
     private JTextField fName;
     private JLabel lbDate;
+    private LocalDate enrollmetDate;
     private DatePicker datePicker;
     private JCheckBox fActive;
     private JButton btnInsertEmployee;
@@ -87,6 +88,9 @@ public class NewEmployeeDialog extends JDialog {
 
         datePicker = new DatePicker();
         datePicker.setTodayAsDefault();
+        datePicker.addDateListener(this);
+        // initial setting
+        enrollmetDate = datePicker.getDate();
         panel.add(datePicker.getDatePicker(), gbc);
     }
 
@@ -122,11 +126,16 @@ public class NewEmployeeDialog extends JDialog {
     }
 
     public LocalDate getEnrollmentDate() {
-        return this.datePicker.getDate();
+        return this.enrollmetDate;
     }
 
     public boolean getEmployeeIsActive() {
         return this.fActive.isSelected();
+    }
+
+    @Override
+    public void dateChanged(LocalDate date) {
+        this.enrollmetDate = date;
     }
 
 }

@@ -34,8 +34,8 @@ public class EmployeeController {
             String enrollmentDate = employee.getEnrolledDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             ManageEmployee.setLbDateEnrollment(enrollmentDate);
             SetEmployeeAsAbsentAction.setEmployeeContext(employee);
-            SetEmployeeAsAbsentAction.receiveSelectedDate(ManageEmployee.getSelectedDate());
-            checkIfEmplyeeIsAreadyAbsent(employee.getId(), ManageEmployee.getSelectedDate());
+            LocalDate date = ManageEmployee.getAbsentSelectedDate();
+            checkIfEmplyeeIsAreadyAbsent(employee.getId(), date);
         } else {
             // Employee node was not selected
             ManageEmployee.abilityBtnSetAbsent(false);

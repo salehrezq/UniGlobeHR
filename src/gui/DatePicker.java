@@ -8,7 +8,9 @@ package gui;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Properties;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
@@ -24,10 +26,13 @@ public class DatePicker {
     private UtilDateModel dateModel;
     private JDatePanelImpl datePanel;
     private LocalDate date;
+    private ArrayList<DateListener> dateListeners;
 
     public DatePicker() {
 
         super();
+
+        dateListeners = new ArrayList<>();
 
         dateModel = new UtilDateModel();
         Properties p = new Properties();
@@ -45,6 +50,8 @@ public class DatePicker {
             Date selectedDate = (Date) fDatePicker.getModel().getValue();
             if (selectedDate != null) {
                 date = LocalDate.ofInstant(selectedDate.toInstant(), ZoneId.systemDefault());
+                this.propagateDateChange(date);
+                //System.out.println("propagate date " + date);
             }
         });
         return fDatePicker;
@@ -55,6 +62,16 @@ public class DatePicker {
         dateModel.setDate(today.getYear(), today.getMonthValue() - 1, today.getDayOfMonth());
         dateModel.setSelected(true);
         this.date = today;
+    }
+
+    public void addDateListener(DateListener dateListner) {
+        dateListeners.add(dateListner);
+    }
+
+    private void propagateDateChange(LocalDate date) {
+        dateListeners.forEach((dateListener) -> {
+            dateListener.dateChanged(date);
+        });
     }
 
     public LocalDate getDate() {
