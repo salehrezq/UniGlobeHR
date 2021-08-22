@@ -5,6 +5,7 @@
  */
 package controller;
 
+import datalink.CRUDAttendance;
 import gui.ManageEmployee;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -17,6 +18,9 @@ import model.Employee;
  */
 public class EmployeeController {
 
+    private LocalDate selectedDate;
+    private Employee employee;
+
     /**
      * You need to update the GUI view every time this method is called from the
      * controller
@@ -24,19 +28,27 @@ public class EmployeeController {
      * @param employee
      */
     public static void employeeNodeChangeSetUp(Employee employee) {
-        ManageEmployee.setLabelEmpName(employee.getName());
-        String enrollmentDate = employee.getEnrolledDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-        ManageEmployee.setLbDateEnrollment(enrollmentDate);
-        SetEmployeeAsAbsentAction.setEmployeeContext(employee);
-        SetEmployeeAsAbsentAction.receiveSelectedDate(ManageEmployee.getSelectedDate());
-    }
-
-    public static void isEmployeeSelected(boolean selected) {
-        ManageEmployee.abilityBtnSetAbsent(selected);
-        if (!selected) {
+        if (employee != null) {
+            // Employee node was selected
+            ManageEmployee.setLabelEmpName(employee.getName());
+            String enrollmentDate = employee.getEnrolledDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+            ManageEmployee.setLbDateEnrollment(enrollmentDate);
+            SetEmployeeAsAbsentAction.setEmployeeContext(employee);
+            SetEmployeeAsAbsentAction.receiveSelectedDate(ManageEmployee.getSelectedDate());
+            checkIfEmplyeeIsAreadyAbsent(employee.getId(), ManageEmployee.getSelectedDate());
+        } else {
+            // Employee node was not selected
+            ManageEmployee.abilityBtnSetAbsent(false);
             ManageEmployee.setLabelEmpName("UN-SELECTED");
             ManageEmployee.setLbDateEnrollment("UN-SELECTED");
         }
     }
 
+    private static void checkIfEmplyeeIsAreadyAbsent(int employeeId, LocalDate date) {
+        if (CRUDAttendance.isEmployeeAbsentAtSpecificDate(employeeId, date)) {
+            ManageEmployee.abilityBtnSetAbsent(false);
+        } else {
+            ManageEmployee.abilityBtnSetAbsent(true);
+        }
+    }
 }

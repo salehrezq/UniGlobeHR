@@ -81,10 +81,9 @@ public class TreeEmployees implements TreeSelectionListener {
             // Employee node is selected
             employee = (Employee) selectedNode;
             EmployeeController.employeeNodeChangeSetUp(employee);
-            EmployeeController.isEmployeeSelected(true);
         } else {
             // Non Employee node is selected
-            EmployeeController.isEmployeeSelected(false);
+            EmployeeController.employeeNodeChangeSetUp(null);
         }
 
         if (node.isLeaf()) {

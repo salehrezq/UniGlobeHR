@@ -27,8 +27,11 @@ public class SetEmployeeAsAbsentAction implements ActionListener {
         Attendance attendance = new Attendance();
         attendance.setEmployeeId(employee.getId());
         attendance.setDate(selectedDate);
-        if (CRUDAttendance.create(attendance)) {
-            ManageEmployee.getAbsentButton().setEnabled(false);
+        int result = CRUDAttendance.create(attendance);
+        if (result == 1) {
+            ManageEmployee.abilityBtnSetAbsent(false);
+        } else if (result == -1) {
+            System.out.println("Already inserted");
         }
     }
 

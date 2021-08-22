@@ -90,9 +90,4 @@ public class ManageEmployee extends JPanel {
     public static LocalDate getSelectedDate() {
         return ManageEmployee.datePicker.getDate();
     }
-
-    public static JButton getAbsentButton() {
-        return btnSetAbsent;
-    }
-
 }
