@@ -16,6 +16,7 @@ public class Attendance {
     private int id;
     private int employeeId;
     private LocalDate date;
+    private boolean state;
 
     public int getId() {
         return id;
@@ -35,6 +36,14 @@ public class Attendance {
 
     public void setDate(LocalDate date) {
         this.date = date;
+    }
+
+    public boolean getStateOfAttendance() {
+        return state;
+    }
+
+    public void setStateOfAttendance(boolean state) {
+        this.state = state;
     }
 
 }

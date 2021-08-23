@@ -36,12 +36,13 @@ public class CRUDAttendance {
                 return ALREADY_INSERTED;
             }
 
-            String sql = "INSERT INTO attendance (`employeeID`, `date`) VALUES (?, ?)";
+            String sql = "INSERT INTO attendance (`employeeID`, `date`, `state`) VALUES (?, ?, ?)";
             conn = Connect.getConnection();
             PreparedStatement p = conn.prepareStatement(sql);
 
             p.setInt(1, attendance.getEmployeeId());
             p.setObject(2, attendance.getDate());
+            p.setBoolean(3, false);
             insert = p.executeUpdate();
             conn.commit();
         } catch (SQLException ex) {
@@ -67,11 +68,12 @@ public class CRUDAttendance {
         boolean employeeAbsentAtSpecificDate = false;
 
         try {
-            String sql = "SELECT * FROM `attendance` WHERE `employeeID` = ? AND `date` = ?";
+            String sql = "SELECT * FROM `attendance` WHERE `employeeID` = ? AND `date` = ? AND `state` = ?";
             conn = Connect.getConnection();
             PreparedStatement p = conn.prepareStatement(sql);
             p.setInt(1, employeeID);
             p.setObject(2, date);
+            p.setBoolean(3, false);
             ResultSet result = p.executeQuery();
 
             // Check if there is a result
