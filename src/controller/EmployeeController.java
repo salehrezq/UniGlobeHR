@@ -6,6 +6,7 @@
 package controller;
 
 import datalink.CRUDAttendance;
+import gui.EmployeeSelectedListener;
 import gui.ManageEmployee;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -16,7 +17,7 @@ import model.Employee;
  *
  * @author Saleh
  */
-public class EmployeeController {
+public class EmployeeController implements EmployeeSelectedListener {
 
     private LocalDate selectedDate;
     private Employee employee;
@@ -27,7 +28,9 @@ public class EmployeeController {
      *
      * @param employee
      */
-    public static void employeeNodeChangeSetUp(Employee employee) {
+    @Override
+    public void employeeSelected(Employee employee) {
+
         if (employee != null) {
             // Employee node was selected
             ManageEmployee.setLabelEmpName(employee.getName());
@@ -36,12 +39,14 @@ public class EmployeeController {
             SetEmployeeAsAbsentAction.setEmployeeContext(employee);
             LocalDate date = ManageEmployee.getAbsentSelectedDate();
             checkIfEmplyeeIsAreadyAbsent(employee.getId(), date);
-        } else {
-            // Employee node was not selected
-            ManageEmployee.abilityBtnSetAbsent(false);
-            ManageEmployee.setLabelEmpName("UN-SELECTED");
-            ManageEmployee.setLbDateEnrollment("UN-SELECTED");
         }
+    }
+
+    @Override
+    public void employeeDeselected() {
+        ManageEmployee.abilityBtnSetAbsent(false);
+        ManageEmployee.setLabelEmpName("UN-SELECTED");
+        ManageEmployee.setLbDateEnrollment("UN-SELECTED");
     }
 
     private static void checkIfEmplyeeIsAreadyAbsent(int employeeId, LocalDate date) {

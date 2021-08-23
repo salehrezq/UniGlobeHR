@@ -5,10 +5,16 @@
  */
 package gui;
 
+import java.time.LocalDate;
+import model.Employee;
+
 /**
  *
  * @author Saleh
  */
 public interface EmployeeSelectedListener {
 
+    public void employeeSelected(Employee employee);
+
+    public void employeeDeselected();
 }

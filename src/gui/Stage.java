@@ -5,6 +5,7 @@
  */
 package gui;
 
+import controller.EmployeeController;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.JButton;
@@ -21,6 +22,7 @@ public class Stage extends JPanel {
 
     private TreeEmployees treeEmployees;
     private Controls controls;
+    private EmployeeController employeeController;
 
     public Stage() {
         super();
@@ -30,6 +32,8 @@ public class Stage extends JPanel {
 
         this.setLayout(new GridLayout(1, 0));
         treeEmployees = new TreeEmployees();
+        employeeController = new EmployeeController();
+        treeEmployees.addEmployeeSelectedListener(employeeController);
         controls = new Controls();
         //Add the scroll panes to a split pane.
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);

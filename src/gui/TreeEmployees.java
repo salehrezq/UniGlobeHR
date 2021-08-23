@@ -9,6 +9,7 @@ import controller.EmployeeController;
 import datalink.CRUDEmployee;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.TreeSet;
 
 import javax.swing.JTree;
@@ -28,9 +29,11 @@ public class TreeEmployees implements TreeSelectionListener {
     private static JTree tree;
     private static DefaultMutableTreeNode laborers;
     private Employee employee;
+    private final ArrayList<EmployeeSelectedListener> employeeSelectedListeners;
 
     public TreeEmployees() {
         super();
+        employeeSelectedListeners = new ArrayList<>();
         DefaultMutableTreeNode top = new DefaultMutableTreeNode("All");
         laborers = new DefaultMutableTreeNode("Laborers");
         top.add(laborers);
@@ -80,10 +83,10 @@ public class TreeEmployees implements TreeSelectionListener {
         if (selectedNode instanceof Employee) {
             // Employee node is selected
             employee = (Employee) selectedNode;
-            EmployeeController.employeeNodeChangeSetUp(employee);
+            this.notifyEmployeeSelected(employee);
         } else {
             // Non Employee node is selected
-            EmployeeController.employeeNodeChangeSetUp(null);
+            this.notifyEmployeeDeselected();
         }
 
         if (node.isLeaf()) {
@@ -91,5 +94,21 @@ public class TreeEmployees implements TreeSelectionListener {
         } else {
             //  System.out.println("Not leaf");
         }
+    }
+
+    public void addEmployeeSelectedListener(EmployeeSelectedListener esl) {
+        this.employeeSelectedListeners.add(esl);
+    }
+
+    private void notifyEmployeeSelected(Employee employee) {
+        this.employeeSelectedListeners.forEach((esl) -> {
+            esl.employeeSelected(employee);
+        });
+    }
+
+    private void notifyEmployeeDeselected() {
+        this.employeeSelectedListeners.forEach((esl) -> {
+            esl.employeeDeselected();
+        });
     }
 }
