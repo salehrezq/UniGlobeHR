@@ -50,7 +50,7 @@ public class DatePicker {
             Date selectedDate = (Date) fDatePicker.getModel().getValue();
             if (selectedDate != null) {
                 date = LocalDate.ofInstant(selectedDate.toInstant(), ZoneId.systemDefault());
-                this.propagateDateChange(date);
+                this.notifyDateChange(date);
                 //System.out.println("propagate date " + date);
             }
         });
@@ -68,7 +68,7 @@ public class DatePicker {
         dateListeners.add(dateListner);
     }
 
-    private void propagateDateChange(LocalDate date) {
+    private void notifyDateChange(LocalDate date) {
         dateListeners.forEach((dateListener) -> {
             dateListener.dateChanged(date);
         });
