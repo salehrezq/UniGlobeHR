@@ -30,4 +30,8 @@ public class Controls extends JPanel {
 
     }
 
+    public ManageEmployee getManageEmployee() {
+        return this.manageEmployees;
+    }
+
 }

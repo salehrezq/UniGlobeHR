@@ -49,7 +49,7 @@ public class EmployeeController implements EmployeeSelectedListener {
         ManageEmployee.setLbDateEnrollment("UN-SELECTED");
     }
 
-    private static void checkIfEmplyeeIsAreadyAbsent(int employeeId, LocalDate date) {
+    public void checkIfEmplyeeIsAreadyAbsent(int employeeId, LocalDate date) {
         if (CRUDAttendance.isEmployeeAbsentAtSpecificDate(employeeId, date)) {
             ManageEmployee.abilityBtnSetAbsent(false);
         } else {

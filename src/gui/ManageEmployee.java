@@ -5,6 +5,7 @@
  */
 package gui;
 
+import controller.EmployeeController;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
@@ -22,7 +23,7 @@ import model.Employee;
  *
  * @author Saleh
  */
-public class ManageEmployee extends JPanel implements DateListener {
+public class ManageEmployee extends JPanel implements DateListener, EmployeeSelectedListener {
 
     private final GridBagLayout gridbag;
     private static JLabel lbEmpName;
@@ -32,6 +33,8 @@ public class ManageEmployee extends JPanel implements DateListener {
     private static SetEmployeeAsAbsentHandler setAbsentHandler;
     private static LocalDate dateAbsentSelected;
     public static final String UNSELECTED = "UN-SELECTED";
+    private Employee currentSelectedEmployee;
+    private EmployeeController employeeController;
 
     public ManageEmployee() {
 
@@ -67,8 +70,8 @@ public class ManageEmployee extends JPanel implements DateListener {
         btnSetAbsent.addActionListener(setAbsentHandler);
         panelAbsentSet.add(btnSetAbsent);
 
+        // initial date value settings
         datePicker.setTodayAsDefault();
-        // initial date value
         dateAbsentSelected = datePicker.getDate();
         setAbsentHandler.setAbsentDate(dateAbsentSelected);
         datePicker.addDateListener(this);
@@ -98,9 +101,26 @@ public class ManageEmployee extends JPanel implements DateListener {
         return datePicker.getDate();
     }
 
+    public void setEmployeeController(EmployeeController employeeController) {
+        this.employeeController = employeeController;
+    }
+
     @Override
     public void dateChanged(LocalDate date) {
         ManageEmployee.dateAbsentSelected = date;
         setAbsentHandler.setAbsentDate(date);
+        if (this.currentSelectedEmployee != null) {
+            this.employeeController.checkIfEmplyeeIsAreadyAbsent(currentSelectedEmployee.getId(), date);
+        }
+    }
+
+    @Override
+    public void employeeSelected(Employee employee) {
+        this.currentSelectedEmployee = employee;
+    }
+
+    @Override
+    public void employeeDeselected() {
+        this.currentSelectedEmployee = null;
     }
 }
