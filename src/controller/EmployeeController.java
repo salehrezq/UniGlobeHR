@@ -10,7 +10,7 @@ import gui.EmployeeSelectedListener;
 import gui.ManageEmployee;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
-import logic.SetEmployeeAsAbsentAction;
+import logic.SetEmployeeAsAbsentHandler;
 import model.Employee;
 
 /**
@@ -36,7 +36,7 @@ public class EmployeeController implements EmployeeSelectedListener {
             ManageEmployee.setLabelEmpName(employee.getName());
             String enrollmentDate = employee.getEnrolledDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             ManageEmployee.setLbDateEnrollment(enrollmentDate);
-            SetEmployeeAsAbsentAction.setEmployeeContext(employee);
+            SetEmployeeAsAbsentHandler.setEmployeeContext(employee);
             LocalDate date = ManageEmployee.getAbsentSelectedDate();
             checkIfEmplyeeIsAreadyAbsent(employee.getId(), date);
         }

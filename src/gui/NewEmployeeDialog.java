@@ -25,7 +25,7 @@ import java.time.ZoneId;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
-import logic.InsertEmployeeAction;
+import logic.InsertEmployeeHandler;
 
 /**
  *
@@ -106,7 +106,7 @@ public class NewEmployeeDialog extends JDialog implements DateListener {
 
     private void btnInsertEmployee() {
         btnInsertEmployee = new JButton("Insert");
-        btnInsertEmployee.addActionListener(new InsertEmployeeAction(this));
+        btnInsertEmployee.addActionListener(new InsertEmployeeHandler(this));
         grid(1, 3);
         gbc.anchor = GridBagConstraints.CENTER;
         panel.add(btnInsertEmployee, gbc);

@@ -18,7 +18,7 @@ import model.Employee;
  *
  * @author Saleh
  */
-public class SetEmployeeAsAbsentAction implements ActionListener {
+public class SetEmployeeAsAbsentHandler implements ActionListener {
 
     private static Employee employee;
     private static LocalDate selectedDate;
@@ -37,11 +37,11 @@ public class SetEmployeeAsAbsentAction implements ActionListener {
     }
 
     public static void setEmployeeContext(Employee employee) {
-        SetEmployeeAsAbsentAction.employee = employee;
+        SetEmployeeAsAbsentHandler.employee = employee;
     }
 
     public void setAbsentDate(LocalDate date) {
-        SetEmployeeAsAbsentAction.selectedDate = date;
+        SetEmployeeAsAbsentHandler.selectedDate = date;
     }
 
 }

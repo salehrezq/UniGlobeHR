@@ -15,7 +15,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import logic.SetEmployeeAsAbsentAction;
+import logic.SetEmployeeAsAbsentHandler;
 import model.Employee;
 
 /**
@@ -29,7 +29,7 @@ public class ManageEmployee extends JPanel implements DateListener {
     private static JLabel lbDateEnrollment;
     private static JButton btnSetAbsent;
     private static DatePicker datePicker;
-    private static SetEmployeeAsAbsentAction setAbsent;
+    private static SetEmployeeAsAbsentHandler setAbsentHandler;
     private static LocalDate dateAbsentSelected;
     public static final String UNSELECTED = "UN-SELECTED";
 
@@ -61,16 +61,16 @@ public class ManageEmployee extends JPanel implements DateListener {
         JPanel panelAbsentSet = new JPanel(new FlowLayout());
 
         datePicker = new DatePicker();
-        setAbsent = new SetEmployeeAsAbsentAction();
+        setAbsentHandler = new SetEmployeeAsAbsentHandler();
         btnSetAbsent = new JButton("Set Absent");
         btnSetAbsent.setEnabled(false);
-        btnSetAbsent.addActionListener(setAbsent);
+        btnSetAbsent.addActionListener(setAbsentHandler);
         panelAbsentSet.add(btnSetAbsent);
 
         datePicker.setTodayAsDefault();
         // initial date value
         dateAbsentSelected = datePicker.getDate();
-        setAbsent.setAbsentDate(dateAbsentSelected);
+        setAbsentHandler.setAbsentDate(dateAbsentSelected);
         datePicker.addDateListener(this);
         panelAbsentSet.add(datePicker.getDatePicker());
 
@@ -101,6 +101,6 @@ public class ManageEmployee extends JPanel implements DateListener {
     @Override
     public void dateChanged(LocalDate date) {
         ManageEmployee.dateAbsentSelected = date;
-        setAbsent.setAbsentDate(date);
+        setAbsentHandler.setAbsentDate(date);
     }
 }

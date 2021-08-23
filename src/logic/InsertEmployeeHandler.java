@@ -16,12 +16,12 @@ import model.Employee;
  *
  * @author Saleh
  */
-public class InsertEmployeeAction implements ActionListener {
+public class InsertEmployeeHandler implements ActionListener {
 
     private NewEmployeeDialog dialog;
     private Employee employee;
 
-    public InsertEmployeeAction(NewEmployeeDialog dialog) {
+    public InsertEmployeeHandler(NewEmployeeDialog dialog) {
         this.dialog = dialog;
     }
 
