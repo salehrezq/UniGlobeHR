@@ -35,6 +35,7 @@ public class ManageEmployee extends JPanel implements DateListener, EmployeeSele
     public static final String UNSELECTED = "UN-SELECTED";
     private Employee currentSelectedEmployee;
     private EmployeeController employeeController;
+    private MonthelyAbsence monthelyAbsence;
 
     public ManageEmployee() {
 
@@ -79,10 +80,17 @@ public class ManageEmployee extends JPanel implements DateListener, EmployeeSele
 
         c = new GridBagConstraints();
         c.gridy = 2;
-        c.weighty = 1.0;
+//        c.weighty = 1.0;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         this.add(panelAbsentSet, c);
 
+        monthelyAbsence = new MonthelyAbsence();
+
+        c = new GridBagConstraints();
+        c.gridy = 3;
+        c.weighty = 1.0;
+        c.anchor = GridBagConstraints.FIRST_LINE_START;
+        this.add(monthelyAbsence.getPanelTable(), c);
     }
 
     public static void setLabelEmpName(String empName) {
@@ -117,10 +125,12 @@ public class ManageEmployee extends JPanel implements DateListener, EmployeeSele
     @Override
     public void employeeSelected(Employee employee) {
         this.currentSelectedEmployee = employee;
+        this.monthelyAbsence.setSelectedEmployeeId(employee.getId());
     }
 
     @Override
     public void employeeDeselected() {
         this.currentSelectedEmployee = null;
+        this.monthelyAbsence.setSelectedEmployeeId(0);
     }
 }

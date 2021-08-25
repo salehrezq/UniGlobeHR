@@ -7,6 +7,7 @@ package mainpackage;
 
 import gui.Menu;
 import gui.Stage;
+import java.awt.Dimension;
 import javax.swing.JFrame;
 
 /**
@@ -41,6 +42,7 @@ public class MainRun {
         //Add content to the window.
         frame.getContentPane().add(stage);
         frame.setJMenuBar(menu.getMenuBar());
+        frame.setMinimumSize(new Dimension(800, 550));
 
         //Display the window.
         frame.pack();

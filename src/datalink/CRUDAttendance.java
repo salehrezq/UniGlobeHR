@@ -10,12 +10,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
-import java.util.SortedSet;
-import java.util.TreeSet;
+import java.time.YearMonth;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Attendance;
-import model.Employee;
 
 /**
  *
@@ -92,5 +92,50 @@ public class CRUDAttendance {
             }
         }
         return employeeAbsentAtSpecificDate;
+    }
+
+    public static List getAbsenceRecordByEmployeeByMonth(int employeeID, YearMonth ym) {
+
+        List records = new ArrayList<>();
+
+        try {
+
+            //  YearMonth yearMonth = YearMonth.of(ym.getYear(), ym.getMonthValue());
+            LocalDate firstOfThisMonth = ym.atDay(1);
+            LocalDate firstOfNextMonth = ym.plusMonths(1).atDay(1);
+
+            String sql = "SELECT `date` FROM `attendance` WHERE `employeeID` = ? AND `date` >= ? AND `date` < ? AND `state` = ?";
+            conn = Connect.getConnection();
+            PreparedStatement p = conn.prepareStatement(sql);
+
+            p.setInt(1, employeeID);
+            p.setObject(2, firstOfThisMonth);
+            p.setObject(3, firstOfNextMonth);
+            p.setBoolean(4, false);
+
+            ResultSet result = p.executeQuery();
+
+            Object[] record = null;
+
+            while (result.next()) {
+
+                LocalDate resultDate = result.getDate("date").toLocalDate();
+                record = new Object[2];
+                record[0] = resultDate.getDayOfWeek().toString();
+                record[1] = resultDate.getDayOfMonth();
+                records.add(record);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDAttendance.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            try {
+                if (conn != null) {
+                    conn.close();
+                }
+            } catch (SQLException se) {
+                se.printStackTrace();
+            }
+        }
+        return records;
     }
 }
