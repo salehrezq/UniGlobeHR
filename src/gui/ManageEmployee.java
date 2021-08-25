@@ -26,8 +26,7 @@ import model.Employee;
 public class ManageEmployee extends JPanel implements DateListener, EmployeeSelectedListener {
 
     private final GridBagLayout gridbag;
-    private static JLabel lbEmpName;
-    private static JLabel lbDateEnrollment;
+
     private static JButton btnSetAbsent;
     private static DatePicker datePicker;
     private static SetEmployeeAsAbsentHandler setAbsentHandler;
@@ -35,6 +34,7 @@ public class ManageEmployee extends JPanel implements DateListener, EmployeeSele
     public static final String UNSELECTED = "UN-SELECTED";
     private Employee currentSelectedEmployee;
     private EmployeeController employeeController;
+    private EmployeeCard employeeCard;
     private MonthelyAbsence monthelyAbsence;
 
     public ManageEmployee() {
@@ -47,20 +47,13 @@ public class ManageEmployee extends JPanel implements DateListener, EmployeeSele
         this.setLayout(gridbag);
         GridBagConstraints c = new GridBagConstraints();
 
-        lbEmpName = new JLabel("Name: " + UNSELECTED);
-        c.gridx = 0;
-        c.gridy = 0;
-        c.weightx = 1.0;
-        c.insets = new Insets(5, 5, 0, 0);
-        c.anchor = GridBagConstraints.FIRST_LINE_START;
-        this.add(lbEmpName, c);
+        employeeCard = new EmployeeCard();
 
-        lbDateEnrollment = new JLabel("Enrollment Date: " + UNSELECTED);
         c = new GridBagConstraints();
-        c.insets = new Insets(5, 5, 0, 0);
         c.gridy = 1;
+        c.weightx = 1.0;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
-        this.add(lbDateEnrollment, c);
+        this.add(employeeCard, c);
 
         JPanel panelAbsentSet = new JPanel(new FlowLayout());
 
@@ -80,7 +73,6 @@ public class ManageEmployee extends JPanel implements DateListener, EmployeeSele
 
         c = new GridBagConstraints();
         c.gridy = 2;
-//        c.weighty = 1.0;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         this.add(panelAbsentSet, c);
 
@@ -91,14 +83,6 @@ public class ManageEmployee extends JPanel implements DateListener, EmployeeSele
         c.weighty = 1.0;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         this.add(monthelyAbsence.getPanelTable(), c);
-    }
-
-    public static void setLabelEmpName(String empName) {
-        lbEmpName.setText("Name: " + empName);
-    }
-
-    public static void setLbDateEnrollment(String aLbDateEnrollment) {
-        lbDateEnrollment.setText("Enrollment Date: " + aLbDateEnrollment);
     }
 
     public static void abilityBtnSetAbsent(boolean bool) {

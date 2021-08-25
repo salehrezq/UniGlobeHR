@@ -6,6 +6,7 @@
 package controller;
 
 import datalink.CRUDAttendance;
+import gui.EmployeeCard;
 import gui.EmployeeSelectedListener;
 import gui.ManageEmployee;
 import java.time.LocalDate;
@@ -33,9 +34,9 @@ public class EmployeeController implements EmployeeSelectedListener {
 
         if (employee != null) {
             // Employee node was selected
-            ManageEmployee.setLabelEmpName(employee.getName());
+            EmployeeCard.setLabelEmpName(employee.getName());
             String enrollmentDate = employee.getEnrolledDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-            ManageEmployee.setLbDateEnrollment(enrollmentDate);
+            EmployeeCard.setLbDateEnrollment(enrollmentDate);
             SetEmployeeAsAbsentHandler.setEmployeeContext(employee);
             LocalDate date = ManageEmployee.getAbsentSelectedDate();
             checkIfEmplyeeIsAreadyAbsent(employee.getId(), date);
@@ -45,8 +46,8 @@ public class EmployeeController implements EmployeeSelectedListener {
     @Override
     public void employeeDeselected() {
         ManageEmployee.abilityBtnSetAbsent(false);
-        ManageEmployee.setLabelEmpName("UN-SELECTED");
-        ManageEmployee.setLbDateEnrollment("UN-SELECTED");
+        EmployeeCard.setLabelEmpName("UN-SELECTED");
+        EmployeeCard.setLbDateEnrollment("UN-SELECTED");
     }
 
     public void checkIfEmplyeeIsAreadyAbsent(int employeeId, LocalDate date) {
