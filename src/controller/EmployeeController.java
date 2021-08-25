@@ -7,6 +7,7 @@ package controller;
 
 import datalink.CRUDAttendance;
 import gui.EmployeeCard;
+import gui.EmployeeDailyAbsence;
 import gui.EmployeeSelectedListener;
 import gui.ManageEmployee;
 import java.time.LocalDate;
@@ -38,23 +39,23 @@ public class EmployeeController implements EmployeeSelectedListener {
             String enrollmentDate = employee.getEnrolledDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
             EmployeeCard.setLbDateEnrollment(enrollmentDate);
             SetEmployeeAsAbsentHandler.setEmployeeContext(employee);
-            LocalDate date = ManageEmployee.getAbsentSelectedDate();
+            LocalDate date = EmployeeDailyAbsence.getAbsentSelectedDate();
             checkIfEmplyeeIsAreadyAbsent(employee.getId(), date);
         }
     }
 
     @Override
     public void employeeDeselected() {
-        ManageEmployee.abilityBtnSetAbsent(false);
+        EmployeeDailyAbsence.abilityBtnSetAbsent(false);
         EmployeeCard.setLabelEmpName("UN-SELECTED");
         EmployeeCard.setLbDateEnrollment("UN-SELECTED");
     }
 
     public void checkIfEmplyeeIsAreadyAbsent(int employeeId, LocalDate date) {
         if (CRUDAttendance.isEmployeeAbsentAtSpecificDate(employeeId, date)) {
-            ManageEmployee.abilityBtnSetAbsent(false);
+            EmployeeDailyAbsence.abilityBtnSetAbsent(false);
         } else {
-            ManageEmployee.abilityBtnSetAbsent(true);
+            EmployeeDailyAbsence.abilityBtnSetAbsent(true);
         }
     }
 }

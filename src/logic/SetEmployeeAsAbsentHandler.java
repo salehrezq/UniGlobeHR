@@ -6,6 +6,7 @@
 package logic;
 
 import datalink.CRUDAttendance;
+import gui.EmployeeDailyAbsence;
 import gui.ManageEmployee;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -29,7 +30,7 @@ public class SetEmployeeAsAbsentHandler implements ActionListener {
         attendance.setDate(selectedDate);
         int result = CRUDAttendance.create(attendance);
         if (result == 1) {
-            ManageEmployee.abilityBtnSetAbsent(false);
+            EmployeeDailyAbsence.abilityBtnSetAbsent(false);
         } else if (result == -1) {
             System.out.println("Already inserted");
         }

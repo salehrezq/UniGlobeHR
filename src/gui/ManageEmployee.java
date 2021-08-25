@@ -10,13 +10,9 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.time.LocalDate;
 import javax.swing.BorderFactory;
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import logic.SetEmployeeAsAbsentHandler;
 import model.Employee;
 
 /**
@@ -27,14 +23,10 @@ public class ManageEmployee extends JPanel implements DateListener, EmployeeSele
 
     private final GridBagLayout gridbag;
 
-    private static JButton btnSetAbsent;
-    private static DatePicker datePicker;
-    private static SetEmployeeAsAbsentHandler setAbsentHandler;
-    private static LocalDate dateAbsentSelected;
-    public static final String UNSELECTED = "UN-SELECTED";
     private Employee currentSelectedEmployee;
     private EmployeeController employeeController;
     private EmployeeCard employeeCard;
+    private EmployeeDailyAbsence employeeDailyAbsence;
     private MonthelyAbsence monthelyAbsence;
 
     public ManageEmployee() {
@@ -55,26 +47,12 @@ public class ManageEmployee extends JPanel implements DateListener, EmployeeSele
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         this.add(employeeCard, c);
 
-        JPanel panelAbsentSet = new JPanel(new FlowLayout());
-
-        datePicker = new DatePicker();
-        setAbsentHandler = new SetEmployeeAsAbsentHandler();
-        btnSetAbsent = new JButton("Set Absent");
-        btnSetAbsent.setEnabled(false);
-        btnSetAbsent.addActionListener(setAbsentHandler);
-        panelAbsentSet.add(btnSetAbsent);
-
-        // initial date value settings
-        datePicker.setTodayAsDefault();
-        dateAbsentSelected = datePicker.getDate();
-        setAbsentHandler.setAbsentDate(dateAbsentSelected);
-        datePicker.addDateListener(this);
-        panelAbsentSet.add(datePicker.getDatePicker());
+        employeeDailyAbsence = new EmployeeDailyAbsence();
 
         c = new GridBagConstraints();
         c.gridy = 2;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
-        this.add(panelAbsentSet, c);
+        this.add(employeeDailyAbsence, c);
 
         monthelyAbsence = new MonthelyAbsence();
 
@@ -83,14 +61,8 @@ public class ManageEmployee extends JPanel implements DateListener, EmployeeSele
         c.weighty = 1.0;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         this.add(monthelyAbsence.getPanelTable(), c);
-    }
 
-    public static void abilityBtnSetAbsent(boolean bool) {
-        btnSetAbsent.setEnabled(bool);
-    }
-
-    public static LocalDate getAbsentSelectedDate() {
-        return datePicker.getDate();
+        this.employeeDailyAbsence.getDatePicker().addDateListener(this);
     }
 
     public void setEmployeeController(EmployeeController employeeController) {
@@ -99,8 +71,7 @@ public class ManageEmployee extends JPanel implements DateListener, EmployeeSele
 
     @Override
     public void dateChanged(LocalDate date) {
-        ManageEmployee.dateAbsentSelected = date;
-        setAbsentHandler.setAbsentDate(date);
+        employeeDailyAbsence.setDateAbsentSelected(date);
         if (this.currentSelectedEmployee != null) {
             this.employeeController.checkIfEmplyeeIsAreadyAbsent(currentSelectedEmployee.getId(), date);
         }

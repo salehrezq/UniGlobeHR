@@ -5,7 +5,6 @@
  */
 package gui;
 
-import static gui.ManageEmployee.UNSELECTED;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
