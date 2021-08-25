@@ -7,10 +7,8 @@ package gui;
 
 import controller.EmployeeController;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.time.LocalDate;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
 import model.Employee;
@@ -19,7 +17,7 @@ import model.Employee;
  *
  * @author Saleh
  */
-public class ManageEmployee extends JPanel implements DateListener, EmployeeSelectedListener {
+public class ManageEmployee extends JPanel implements EmployeeSelectedListener {
 
     private final GridBagLayout gridbag;
 
@@ -61,31 +59,23 @@ public class ManageEmployee extends JPanel implements DateListener, EmployeeSele
         c.weighty = 1.0;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         this.add(monthelyAbsence.getPanelTable(), c);
-
-        this.employeeDailyAbsence.getDatePicker().addDateListener(this);
     }
 
     public void setEmployeeController(EmployeeController employeeController) {
-        this.employeeController = employeeController;
-    }
-
-    @Override
-    public void dateChanged(LocalDate date) {
-        employeeDailyAbsence.setDateAbsentSelected(date);
-        if (this.currentSelectedEmployee != null) {
-            this.employeeController.checkIfEmplyeeIsAreadyAbsent(currentSelectedEmployee.getId(), date);
-        }
+        this.employeeDailyAbsence.setEmployeeController(employeeController);
     }
 
     @Override
     public void employeeSelected(Employee employee) {
         this.currentSelectedEmployee = employee;
         this.monthelyAbsence.setSelectedEmployeeId(employee.getId());
+        this.employeeDailyAbsence.setEmployeeContext(employee);
     }
 
     @Override
     public void employeeDeselected() {
         this.currentSelectedEmployee = null;
         this.monthelyAbsence.setSelectedEmployeeId(0);
+        this.employeeDailyAbsence.setEmployeeContext(null);
     }
 }

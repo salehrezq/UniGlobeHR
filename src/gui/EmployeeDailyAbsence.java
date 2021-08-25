@@ -5,21 +5,25 @@
  */
 package gui;
 
+import controller.EmployeeController;
 import java.time.LocalDate;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import logic.SetEmployeeAsAbsentHandler;
+import model.Employee;
 
 /**
  *
  * @author Saleh
  */
-public class EmployeeDailyAbsence extends JPanel {
+public class EmployeeDailyAbsence extends JPanel implements DateListener {
 
     private static JButton btnSetAbsent;
     private static DatePicker datePicker;
     private static SetEmployeeAsAbsentHandler setAbsentHandler;
     private static LocalDate dateAbsentSelected;
+    private EmployeeController employeeController;
+    private Employee employeeContext;
 
     public EmployeeDailyAbsence() {
         super();
@@ -34,6 +38,7 @@ public class EmployeeDailyAbsence extends JPanel {
         // initial date value settings
         datePicker.setTodayAsDefault();
         dateAbsentSelected = datePicker.getDate();
+        datePicker.addDateListener(this);
         setAbsentHandler.setAbsentDate(dateAbsentSelected);
 //        datePicker.addDateListener(this);
         this.add(datePicker.getDatePicker());
@@ -54,6 +59,22 @@ public class EmployeeDailyAbsence extends JPanel {
     public void setDateAbsentSelected(LocalDate date) {
         dateAbsentSelected = date;
         setAbsentHandler.setAbsentDate(date);
+    }
+
+    public void setEmployeeContext(Employee e) {
+        this.employeeContext = e;
+    }
+
+    public void setEmployeeController(EmployeeController emc) {
+        this.employeeController = emc;
+    }
+
+    @Override
+    public void dateChanged(LocalDate date) {
+        this.setDateAbsentSelected(date);
+        if (this.employeeContext != null) {
+            this.employeeController.checkIfEmplyeeIsAreadyAbsent(this.employeeContext.getId(), date);
+        }
     }
 
 }
