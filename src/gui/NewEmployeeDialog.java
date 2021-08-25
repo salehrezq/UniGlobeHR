@@ -5,10 +5,13 @@
  */
 package gui;
 
+import datalink.CRUDEmployee;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ComponentEvent;
 import java.util.Date;
 import java.util.Properties;
@@ -25,7 +28,7 @@ import java.time.ZoneId;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.SwingConstants;
-import logic.InsertEmployeeHandler;
+import model.Employee;
 
 /**
  *
@@ -106,7 +109,7 @@ public class NewEmployeeDialog extends JDialog implements DateListener {
 
     private void btnInsertEmployee() {
         btnInsertEmployee = new JButton("Insert");
-        btnInsertEmployee.addActionListener(new InsertEmployeeHandler(this));
+        btnInsertEmployee.addActionListener(new InsertEmployeeHandler());
         grid(1, 3);
         gbc.anchor = GridBagConstraints.CENTER;
         panel.add(btnInsertEmployee, gbc);
@@ -136,6 +139,23 @@ public class NewEmployeeDialog extends JDialog implements DateListener {
     @Override
     public void dateChanged(LocalDate date) {
         this.enrollmetDate = date;
+    }
+
+    private class InsertEmployeeHandler implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent arg0) {
+            Employee employee = new Employee();
+            employee.setName(getEmployeeName());
+            employee.setEnrolledDate(getEnrollmentDate());
+            employee.setActive(getEmployeeIsActive());
+
+            if (CRUDEmployee.create(employee)) {
+                setVisible(false);
+                TreeEmployees.addEmployeeNode(employee);
+            }
+        }
+
     }
 
 }
