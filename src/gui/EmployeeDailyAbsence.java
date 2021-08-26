@@ -23,7 +23,7 @@ public class EmployeeDailyAbsence extends JPanel implements DateListener, Employ
     private static JButton btnSetAbsent;
     private static DatePicker datePicker;
     private static SetEmployeeAsAbsentHandler setAbsentHandler;
-    private static LocalDate dateAbsentSelected;
+//    private static LocalDate dateAbsentSelected;
     private Employee employeeContext;
 
     public EmployeeDailyAbsence() {
@@ -38,7 +38,7 @@ public class EmployeeDailyAbsence extends JPanel implements DateListener, Employ
 
         // initial date value settings
         datePicker.setTodayAsDefault();
-        dateAbsentSelected = datePicker.getDate();
+//        dateAbsentSelected = datePicker.getDate();
         datePicker.addDateListener(this);
 //        datePicker.addDateListener(this);
         this.add(datePicker.getDatePicker());
@@ -52,17 +52,8 @@ public class EmployeeDailyAbsence extends JPanel implements DateListener, Employ
         return datePicker.getDate();
     }
 
-    public void setDateAbsentSelected(LocalDate date) {
-        dateAbsentSelected = date;
-    }
-
-    public void setEmployeeContext(Employee e) {
-        this.employeeContext = e;
-    }
-
     @Override
     public void dateChanged(LocalDate date) {
-        this.setDateAbsentSelected(date);
         if (this.employeeContext != null) {
             if (CRUDAttendance.isEmployeeAbsentAtSpecificDate(employeeContext.getId(), date)) {
                 abilityBtnSetAbsent(false);
@@ -74,6 +65,7 @@ public class EmployeeDailyAbsence extends JPanel implements DateListener, Employ
 
     @Override
     public void employeeSelected(Employee employee) {
+        employeeContext = employee;
         if (CRUDAttendance.isEmployeeAbsentAtSpecificDate(employeeContext.getId(), datePicker.getDate())) {
             abilityBtnSetAbsent(false);
         } else {
@@ -83,6 +75,7 @@ public class EmployeeDailyAbsence extends JPanel implements DateListener, Employ
 
     @Override
     public void employeeDeselected() {
+        employeeContext = null;
         abilityBtnSetAbsent(false);
     }
 

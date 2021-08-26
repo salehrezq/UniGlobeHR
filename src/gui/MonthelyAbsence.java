@@ -25,12 +25,13 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
+import model.Employee;
 
 /**
  *
  * @author Saleh
  */
-public class MonthelyAbsence {
+public class MonthelyAbsence implements EmployeeSelectedListener {
 
     private DefaultTableModel model;
     private JTable table;
@@ -113,6 +114,16 @@ public class MonthelyAbsence {
 
         records = CRUDAttendance.getAbsenceRecordByEmployeeByMonth(employeeId, ym);
         return records;
+    }
+
+    @Override
+    public void employeeSelected(Employee employee) {
+        employeeId = employee.getId();
+    }
+
+    @Override
+    public void employeeDeselected() {
+        employeeId = -1;
     }
 
     private class ActionGetData implements ActionListener {

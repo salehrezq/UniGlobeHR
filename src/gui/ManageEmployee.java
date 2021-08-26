@@ -16,11 +16,10 @@ import model.Employee;
  *
  * @author Saleh
  */
-public class ManageEmployee extends JPanel implements EmployeeSelectedListener {
+public class ManageEmployee extends JPanel {
 
     private final GridBagLayout gridbag;
 
-    private Employee currentSelectedEmployee;
     private EmployeeCard employeeCard;
     private EmployeeDailyAbsence employeeDailyAbsence;
     private MonthelyAbsence monthelyAbsence;
@@ -59,25 +58,15 @@ public class ManageEmployee extends JPanel implements EmployeeSelectedListener {
         this.add(monthelyAbsence.getPanelTable(), c);
     }
 
-    @Override
-    public void employeeSelected(Employee employee) {
-        this.currentSelectedEmployee = employee;
-        this.monthelyAbsence.setSelectedEmployeeId(employee.getId());
-        this.employeeDailyAbsence.setEmployeeContext(employee);
-    }
-
-    @Override
-    public void employeeDeselected() {
-        this.currentSelectedEmployee = null;
-        this.monthelyAbsence.setSelectedEmployeeId(0);
-        this.employeeDailyAbsence.setEmployeeContext(null);
-    }
-
     public EmployeeCard getEmployeeCard() {
         return this.employeeCard;
     }
 
     public EmployeeDailyAbsence getEmployeeDailyAbsence() {
         return this.employeeDailyAbsence;
+    }
+
+    public MonthelyAbsence getMonthelyAbsence() {
+        return this.monthelyAbsence;
     }
 }
