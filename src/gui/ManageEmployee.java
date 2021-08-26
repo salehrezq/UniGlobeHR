@@ -5,7 +5,6 @@
  */
 package gui;
 
-import controller.EmployeeController;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -22,7 +21,6 @@ public class ManageEmployee extends JPanel implements EmployeeSelectedListener {
     private final GridBagLayout gridbag;
 
     private Employee currentSelectedEmployee;
-    private EmployeeController employeeController;
     private EmployeeCard employeeCard;
     private EmployeeDailyAbsence employeeDailyAbsence;
     private MonthelyAbsence monthelyAbsence;
@@ -61,10 +59,6 @@ public class ManageEmployee extends JPanel implements EmployeeSelectedListener {
         this.add(monthelyAbsence.getPanelTable(), c);
     }
 
-    public void setEmployeeController(EmployeeController employeeController) {
-        this.employeeDailyAbsence.setEmployeeController(employeeController);
-    }
-
     @Override
     public void employeeSelected(Employee employee) {
         this.currentSelectedEmployee = employee;
@@ -77,5 +71,13 @@ public class ManageEmployee extends JPanel implements EmployeeSelectedListener {
         this.currentSelectedEmployee = null;
         this.monthelyAbsence.setSelectedEmployeeId(0);
         this.employeeDailyAbsence.setEmployeeContext(null);
+    }
+
+    public EmployeeCard getEmployeeCard() {
+        return this.employeeCard;
+    }
+
+    public EmployeeDailyAbsence getEmployeeDailyAbsence() {
+        return this.employeeDailyAbsence;
     }
 }

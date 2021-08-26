@@ -5,7 +5,6 @@
  */
 package gui;
 
-import controller.EmployeeController;
 import datalink.CRUDEmployee;
 import java.time.LocalDate;
 import java.time.LocalDateTime;

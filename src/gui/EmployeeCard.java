@@ -8,14 +8,16 @@ package gui;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.time.format.DateTimeFormatter;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import model.Employee;
 
 /**
  *
  * @author Saleh
  */
-public class EmployeeCard extends JPanel {
+public class EmployeeCard extends JPanel implements EmployeeSelectedListener {
 
     private final GridBagLayout gridbag;
 
@@ -45,11 +47,23 @@ public class EmployeeCard extends JPanel {
         this.add(lbDateEnrollment, c);
     }
 
-    public static void setLabelEmpName(String empName) {
+    public void setLabelEmpName(String empName) {
         lbEmpName.setText("Name: " + empName);
     }
 
-    public static void setLbDateEnrollment(String aLbDateEnrollment) {
+    public void setLbDateEnrollment(String aLbDateEnrollment) {
         lbDateEnrollment.setText("Enrollment Date: " + aLbDateEnrollment);
+    }
+
+    @Override
+    public void employeeSelected(Employee employee) {
+        this.setLabelEmpName(employee.getName());
+        this.setLbDateEnrollment(employee.getEnrolledDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
+    }
+
+    @Override
+    public void employeeDeselected() {
+        this.setLabelEmpName(UNSELECTED);
+        this.setLbDateEnrollment(UNSELECTED);
     }
 }
