@@ -9,6 +9,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.ResultSet;
+import java.util.ArrayList;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Level;
@@ -52,20 +53,13 @@ public class CRUDEmployee {
         return insert > 0;
     }
 
-    public static SortedSet getAll() {
+    public static ArrayList<Employee> getAll() {
 
-        SortedSet<Employee> sortedEmployees = new TreeSet<>((emplyee1, employee2) -> {
-            if (emplyee1 instanceof Employee && employee2 instanceof Employee) {
-                String name1 = emplyee1.getName();
-                String name2 = employee2.getName();
-                return name1.compareTo(name2);
-            }
-            return 0; //To change body of generated lambdas, choose Tools | Templates.
-        });
+        ArrayList<Employee> employees = new ArrayList<>();
 
         try {
 
-            String sql = "SELECT * FROM `employees` WHERE `active` = 1";
+            String sql = "SELECT * FROM `employees` WHERE `active` = 1 ORDER BY `name` ASC";
             conn = Connect.getConnection();
             PreparedStatement p = conn.prepareStatement(sql);
             ResultSet result = p.executeQuery();
@@ -76,7 +70,7 @@ public class CRUDEmployee {
                 employee.setName(result.getString("name"));
                 employee.setEnrolledDate(result.getDate("enrolled_date").toLocalDate());
                 employee.setActive(result.getBoolean("active"));
-                sortedEmployees.add(employee);
+                employees.add(employee);
             }
         } catch (SQLException ex) {
             Logger.getLogger(CRUDEmployee.class.getName()).log(Level.SEVERE, null, ex);
@@ -89,6 +83,6 @@ public class CRUDEmployee {
                 se.printStackTrace();
             }
         }
-        return sortedEmployees;
+        return employees;
     }
 }

@@ -51,7 +51,7 @@ public class TreeEmployees implements TreeSelectionListener {
 
         DefaultMutableTreeNode employeeNode = null;
 
-        TreeSet<Employee> employees = (TreeSet<Employee>) CRUDEmployee.getAll();
+        ArrayList<Employee> employees = CRUDEmployee.getAll();
 
         for (Employee e : employees) {
             employeeNode = new DefaultMutableTreeNode(e);
