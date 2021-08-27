@@ -12,21 +12,15 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentEvent;
-import java.util.Date;
-import java.util.Properties;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import org.jdatepicker.impl.JDatePanelImpl;
-import org.jdatepicker.impl.JDatePickerImpl;
-import org.jdatepicker.impl.UtilDateModel;
 import java.time.LocalDate;
-import java.time.ZoneId;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 import model.Employee;
 
@@ -153,6 +147,10 @@ public class NewEmployeeDialog extends JDialog implements DateListener {
             if (CRUDEmployee.create(employee)) {
                 setVisible(false);
                 TreeEmployees.addEmployeeNode(employee);
+            } else {
+                JOptionPane.showConfirmDialog(panel,
+                        "Creating employee failed", "",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
             }
         }
 

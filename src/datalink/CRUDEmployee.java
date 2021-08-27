@@ -10,8 +10,6 @@ import java.sql.SQLException;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.util.ArrayList;
-import java.util.SortedSet;
-import java.util.TreeSet;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Employee;
@@ -26,19 +24,32 @@ public class CRUDEmployee {
 
     public static boolean create(Employee employee) {
 
-        int insert = -1;
+        int insert = 0;
 
         try {
 
             String sql = "INSERT INTO employees (`name`, `enrolled_date`, `active`) VALUES (?, ?, ?)";
             conn = Connect.getConnection();
-            PreparedStatement p = conn.prepareStatement(sql);
+            PreparedStatement p = conn.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
 
             p.setString(1, employee.getName());
             p.setObject(2, employee.getEnrolledDate());
             p.setBoolean(3, employee.isActive());
             insert = p.executeUpdate();
             conn.commit();
+
+            if (insert > 0) {
+                ResultSet generatedKeys;
+                try {
+                    generatedKeys = p.getGeneratedKeys();
+                    if (generatedKeys.next()) {
+                        employee.setId(generatedKeys.getInt(1));
+                    }
+                } catch (SQLException ex) {
+                    Logger.getLogger(CRUDEmployee.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+
         } catch (SQLException ex) {
             Logger.getLogger(CRUDEmployee.class.getName()).log(Level.SEVERE, null, ex);
         } finally {

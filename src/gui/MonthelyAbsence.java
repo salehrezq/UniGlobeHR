@@ -137,7 +137,7 @@ public class MonthelyAbsence implements EmployeeSelectedListener {
             if (list == null) {
                 JOptionPane.showConfirmDialog(panelGather,
                         "Select Employee", "",
-                        JOptionPane.OK_OPTION, JOptionPane.ERROR_MESSAGE);
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
                 return;
             }
 

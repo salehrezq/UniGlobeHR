@@ -6,11 +6,7 @@
 package gui;
 
 import datalink.CRUDEmployee;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.TreeSet;
-
 import javax.swing.JTree;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.TreeSelectionModel;
@@ -47,7 +43,7 @@ public class TreeEmployees implements TreeSelectionListener {
         return this.tree;
     }
 
-    private void createEmployeesNodes(DefaultMutableTreeNode top) {
+    private void createEmployeesNodes(DefaultMutableTreeNode laborers) {
 
         DefaultMutableTreeNode employeeNode = null;
 
@@ -55,12 +51,12 @@ public class TreeEmployees implements TreeSelectionListener {
 
         for (Employee e : employees) {
             employeeNode = new DefaultMutableTreeNode(e);
-            top.add(employeeNode);
+            laborers.add(employeeNode);
         }
     }
 
     public static void addEmployeeNode(Employee employee) {
-        DefaultMutableTreeNode employeeNode = new DefaultMutableTreeNode(employee.getName());
+        DefaultMutableTreeNode employeeNode = new DefaultMutableTreeNode(employee);
         TreeEmployees.laborers.add(employeeNode);
 
         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
