@@ -36,7 +36,7 @@ public class CRUDAttendance {
                 return ALREADY_INSERTED;
             }
 
-            String sql = "INSERT INTO attendance (`employeeID`, `date`, `state`) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO attendance (`employee_id`, `date`, `state`) VALUES (?, ?, ?)";
             conn = Connect.getConnection();
             PreparedStatement p = conn.prepareStatement(sql);
 
@@ -63,15 +63,15 @@ public class CRUDAttendance {
         return insert;
     }
 
-    public static boolean isEmployeeAbsentAtSpecificDate(int employeeID, LocalDate date) {
+    public static boolean isEmployeeAbsentAtSpecificDate(int employee_id, LocalDate date) {
 
         boolean employeeAbsentAtSpecificDate = false;
 
         try {
-            String sql = "SELECT * FROM `attendance` WHERE `employeeID` = ? AND `date` = ? AND `state` = ?";
+            String sql = "SELECT * FROM `attendance` WHERE `employee_id` = ? AND `date` = ? AND `state` = ?";
             conn = Connect.getConnection();
             PreparedStatement p = conn.prepareStatement(sql);
-            p.setInt(1, employeeID);
+            p.setInt(1, employee_id);
             p.setObject(2, date);
             p.setBoolean(3, false);
             ResultSet result = p.executeQuery();
@@ -104,7 +104,7 @@ public class CRUDAttendance {
             LocalDate firstOfThisMonth = ym.atDay(1);
             LocalDate firstOfNextMonth = ym.plusMonths(1).atDay(1);
 
-            String sql = "SELECT `date` FROM `attendance` WHERE `employeeID` = ? AND `date` >= ? AND `date` < ? AND `state` = ?";
+            String sql = "SELECT `date` FROM `attendance` WHERE `employee_id` = ? AND `date` >= ? AND `date` < ? AND `state` = ?";
             conn = Connect.getConnection();
             PreparedStatement p = conn.prepareStatement(sql);
 
