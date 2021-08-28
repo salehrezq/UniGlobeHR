@@ -146,7 +146,7 @@ public class NewEmployeeDialog extends JDialog implements DateListener {
 
             if (CRUDEmployee.create(employee)) {
                 setVisible(false);
-                TreeEmployees.addEmployeeNode(employee);
+                TreeEmployees.refreshEmployeesTree();
             } else {
                 JOptionPane.showConfirmDialog(panel,
                         "Creating employee failed", "",

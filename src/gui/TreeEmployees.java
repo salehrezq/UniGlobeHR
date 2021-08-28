@@ -43,7 +43,7 @@ public class TreeEmployees implements TreeSelectionListener {
         return this.tree;
     }
 
-    private void createEmployeesNodes(DefaultMutableTreeNode laborers) {
+    private static void createEmployeesNodes(DefaultMutableTreeNode laborers) {
 
         DefaultMutableTreeNode employeeNode = null;
 
@@ -55,13 +55,14 @@ public class TreeEmployees implements TreeSelectionListener {
         }
     }
 
-    public static void addEmployeeNode(Employee employee) {
-        DefaultMutableTreeNode employeeNode = new DefaultMutableTreeNode(employee);
-        TreeEmployees.laborers.add(employeeNode);
-
+    /**
+     * Used when inserting a new Employee node to the tree.
+     */
+    public static void refreshEmployeesTree() {
+        laborers.removeAllChildren();
         DefaultTreeModel model = (DefaultTreeModel) tree.getModel();
-        model.reload(TreeEmployees.laborers); // notify changes to model
-        tree.expandPath(tree.getSelectionPath());
+        createEmployeesNodes(laborers);
+        model.reload(TreeEmployees.laborers);
     }
 
     @Override
