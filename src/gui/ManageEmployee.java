@@ -21,7 +21,7 @@ public class ManageEmployee extends JPanel {
     private final GridBagLayout gridbag;
 
     private EmployeeCard employeeCard;
-    private EmployeeDailyAbsence employeeDailyAbsence;
+    private EmployeeDailyAttendance employeeDailyAttendance;
     private MonthelyAbsence monthelyAbsence;
 
     public ManageEmployee() {
@@ -42,12 +42,12 @@ public class ManageEmployee extends JPanel {
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         this.add(employeeCard, c);
 
-        employeeDailyAbsence = new EmployeeDailyAbsence();
+        employeeDailyAttendance = new EmployeeDailyAttendance();
 
         c = new GridBagConstraints();
         c.gridy = 2;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
-        this.add(employeeDailyAbsence, c);
+        this.add(employeeDailyAttendance, c);
 
         monthelyAbsence = new MonthelyAbsence();
 
@@ -62,8 +62,8 @@ public class ManageEmployee extends JPanel {
         return this.employeeCard;
     }
 
-    public EmployeeDailyAbsence getEmployeeDailyAbsence() {
-        return this.employeeDailyAbsence;
+    public EmployeeDailyAttendance getEmployeeDailyAbsence() {
+        return this.employeeDailyAttendance;
     }
 
     public MonthelyAbsence getMonthelyAbsence() {

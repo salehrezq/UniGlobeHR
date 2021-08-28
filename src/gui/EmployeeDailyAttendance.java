@@ -18,7 +18,7 @@ import model.Employee;
  *
  * @author Saleh
  */
-public class EmployeeDailyAbsence extends JPanel implements DateListener, EmployeeSelectedListener {
+public class EmployeeDailyAttendance extends JPanel implements DateListener, EmployeeSelectedListener {
 
     private static JButton btnSetAbsent;
     private static DatePicker datePicker;
@@ -26,7 +26,7 @@ public class EmployeeDailyAbsence extends JPanel implements DateListener, Employ
 //    private static LocalDate dateAbsentSelected;
     private Employee employeeContext;
 
-    public EmployeeDailyAbsence() {
+    public EmployeeDailyAttendance() {
         super();
 
         datePicker = new DatePicker();
