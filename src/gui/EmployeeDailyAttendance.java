@@ -9,8 +9,9 @@ import datalink.CRUDAttendance;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
-import javax.swing.JButton;
+import javax.swing.ButtonGroup;
 import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import model.Attendance;
 import model.Employee;
 
@@ -20,20 +21,38 @@ import model.Employee;
  */
 public class EmployeeDailyAttendance extends JPanel implements DateListener, EmployeeSelectedListener {
 
-    private static JButton btnSetAbsent;
+    private JRadioButton btnSetPresent;
+    private JRadioButton btnSetAbsent;
+    private ButtonGroup btnGroup;
     private static DatePicker datePicker;
-    private static SetEmployeeAsAbsentHandler setAbsentHandler;
+    private static AttendanceHandler attendanceHandler;
 //    private static LocalDate dateAbsentSelected;
     private Employee employeeContext;
+    private CRUDAttendance.EmployeeAttendanceStatus eas;
 
     public EmployeeDailyAttendance() {
         super();
 
-        datePicker = new DatePicker();
-        setAbsentHandler = new SetEmployeeAsAbsentHandler();
-        btnSetAbsent = new JButton("Set Absent");
+        eas = new CRUDAttendance.EmployeeAttendanceStatus();
+
+        btnSetPresent = new JRadioButton("Present");
+        btnSetAbsent = new JRadioButton("Absent");
+
+        btnSetPresent.setEnabled(false);
         btnSetAbsent.setEnabled(false);
-        btnSetAbsent.addActionListener(setAbsentHandler);
+
+        btnGroup = new ButtonGroup();
+        btnGroup.add(btnSetPresent);
+        btnGroup.add(btnSetAbsent);
+
+        attendanceHandler = new AttendanceHandler();
+
+        btnSetPresent.addActionListener(attendanceHandler);
+        btnSetAbsent.addActionListener(attendanceHandler);
+
+        datePicker = new DatePicker();
+
+        this.add(btnSetPresent);
         this.add(btnSetAbsent);
 
         // initial date value settings
@@ -44,10 +63,6 @@ public class EmployeeDailyAttendance extends JPanel implements DateListener, Emp
         this.add(datePicker.getDatePicker());
     }
 
-    public void abilityBtnSetAbsent(boolean bool) {
-        btnSetAbsent.setEnabled(bool);
-    }
-
     public LocalDate getAbsentSelectedDate() {
         return datePicker.getDate();
     }
@@ -55,43 +70,78 @@ public class EmployeeDailyAttendance extends JPanel implements DateListener, Emp
     @Override
     public void dateChanged(LocalDate date) {
         if (this.employeeContext != null) {
-            if (CRUDAttendance.isEmployeeAbsentAtSpecificDate(employeeContext.getId(), date)) {
-                abilityBtnSetAbsent(false);
+
+            eas = CRUDAttendance.getEmployeeAttendanceStatusOnSpecificDate(employeeContext.getId(), date);
+
+            btnSetPresent.setEnabled(true);
+            btnSetAbsent.setEnabled(true);
+
+            if (eas.getWasAttendanceBeenTaken()) {
+                if (eas.getEmployeeAttendanceState()) {
+                    // present
+                    btnSetPresent.setSelected(true);
+                } else {
+                    // absent
+                    btnSetAbsent.setSelected(true);
+                }
             } else {
-                abilityBtnSetAbsent(true);
+                // No attendance taken
+                btnGroup.clearSelection();
             }
+        } else {
+            btnSetPresent.setEnabled(false);
+            btnSetAbsent.setEnabled(false);
+            btnGroup.clearSelection();
         }
     }
 
     @Override
     public void employeeSelected(Employee employee) {
         employeeContext = employee;
-        if (CRUDAttendance.isEmployeeAbsentAtSpecificDate(employeeContext.getId(), datePicker.getDate())) {
-            abilityBtnSetAbsent(false);
+        btnSetPresent.setEnabled(true);
+        btnSetAbsent.setEnabled(true);
+
+        eas = CRUDAttendance.getEmployeeAttendanceStatusOnSpecificDate(employeeContext.getId(), datePicker.getDate());
+
+        if (eas.getWasAttendanceBeenTaken()) {
+            if (eas.getEmployeeAttendanceState()) {
+                // present
+                btnSetPresent.setSelected(true);
+            } else {
+                // absent
+                btnSetAbsent.setSelected(true);
+            }
         } else {
-            abilityBtnSetAbsent(true);
+            btnGroup.clearSelection();
         }
     }
 
     @Override
     public void employeeDeselected() {
         employeeContext = null;
-        abilityBtnSetAbsent(false);
+        btnSetPresent.setEnabled(false);
+        btnSetAbsent.setEnabled(false);
+        btnGroup.clearSelection();
     }
 
-    private class SetEmployeeAsAbsentHandler implements ActionListener {
+    private class AttendanceHandler implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent arg0) {
+
+            JRadioButton source = (JRadioButton) arg0.getSource();
+
             Attendance attendance = new Attendance();
             attendance.setEmployeeId(employeeContext.getId());
             attendance.setDate(datePicker.getDate());
-            int result = CRUDAttendance.create(attendance);
-            if (result == 1) {
-                abilityBtnSetAbsent(false);
-            } else if (result == -1) {
-                System.out.println("Already inserted");
+
+            if (source == btnSetPresent) {
+                attendance.setStateOfAttendance(true);
+            } else if (source == btnSetAbsent) {
+                attendance.setStateOfAttendance(false);
             }
+
+            eas = CRUDAttendance.takeAttendance(attendance);
         }
 
     }
