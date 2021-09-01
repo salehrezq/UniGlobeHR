@@ -118,11 +118,13 @@ public class MonthelyAbsence implements EmployeeSelectedListener {
 
     @Override
     public void employeeSelected(Employee employee) {
+        model.setRowCount(0);
         employeeId = employee.getId();
     }
 
     @Override
     public void employeeDeselected() {
+        model.setRowCount(0);
         employeeId = -1;
     }
 
