@@ -5,6 +5,8 @@
  */
 package gui;
 
+import gui.attendance.MonthelyAbsence;
+import gui.attendance.EmployeeDailyAttendance;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
