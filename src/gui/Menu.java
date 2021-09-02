@@ -40,7 +40,6 @@ public class Menu {
                 newEmployeeDialog = new NewEmployeeDialog(MainRun.getFrame(), "Create New Employee", true);
             }
         });
-        //menuInsertEmployee.doClick();
         menubar.add(menu);
     }
 

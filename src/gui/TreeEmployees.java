@@ -56,7 +56,13 @@ public class TreeEmployees implements TreeSelectionListener {
     }
 
     /**
-     * Used when inserting a new Employee node to the tree.
+     * Used to reflect correctly employee nodes data from database.
+     *
+     * Clears the laborers tree, and sets new tree of laborers from the
+     * database.
+     *
+     * Should be used after inserting a new Employee node to the tree so that it
+     * reflects correctly the real stored data from database
      */
     public static void refreshEmployeesTree() {
         laborers.removeAllChildren();
@@ -76,6 +82,7 @@ public class TreeEmployees implements TreeSelectionListener {
 
         Object selectedNode = node.getUserObject();
 
+        // Check if selected node is an instance of Employee
         if (selectedNode instanceof Employee) {
             // Employee node is selected
             employee = (Employee) selectedNode;

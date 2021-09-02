@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import model.Attendance;
 
 /**
@@ -33,9 +34,19 @@ public class CRUDAttendance {
     private static final int ATTENDANCE_UPDATED = 6;
     private static final int FAIL_ON_CREATE_OR_UPDATE = 7;
 
+    /**
+     * Inserts <code>Attendance</code> entity to the database, and returns the
+     * state of creation.
+     *
+     * @param attendance that will feed the method with the attendance state of
+     * employee
+     * @param eas that will be updated with the create state of attendance
+     * @return <code>EmployeeAttendanceStatus</code> that contains the create
+     * state of attendance.
+     */
     private static EmployeeAttendanceStatus create(Attendance attendance, EmployeeAttendanceStatus eas) {
 
-        int insert = 0;
+        int create = 0;
 
         try {
             String sql = "INSERT INTO attendance (`employee_id`, `date`, `state`) VALUES (?, ?, ?)";
@@ -45,8 +56,8 @@ public class CRUDAttendance {
             p.setInt(1, attendance.getEmployeeId());
             p.setObject(2, attendance.getDate());
             p.setBoolean(3, attendance.getStateOfAttendance());
-            insert = p.executeUpdate();
-            eas.setCreated(insert);
+            create = p.executeUpdate();
+            eas.setCreatedOrFailed(create);
             conn.commit();
         } catch (SQLException ex) {
             Logger.getLogger(CRUDAttendance.class.getName()).log(Level.SEVERE, null, ex);
@@ -59,22 +70,18 @@ public class CRUDAttendance {
                 se.printStackTrace();
             }
         }
-
-        /**
-         * 0 means no insertion 1 means one record has been inserted
-         */
         return eas;
-
     }
 
     /**
-     * Receives Attendance object, and returns 0 or 1.0 => no record updated 1 =
-     * > one record has been successfully updated 0 if no record updated, or 1
-     * if one record has been successfully updated
+     * Updates <code>Attendance</code> entity in the database, and returns the
+     * state of updating.
      *
-     * @param attendance
-     * @param eas
-     * @return EmployeeAttendanceStatus
+     * @param attendance that will feed the method with the attendance state of
+     * employee
+     * @param eas that will be updated with the update state of attendance.
+     * @return <code>EmployeeAttendanceStatus</code> that contains the update
+     * state of attendance.
      */
     private static EmployeeAttendanceStatus update(Attendance attendance, EmployeeAttendanceStatus eas) {
 
@@ -89,7 +96,7 @@ public class CRUDAttendance {
             p.setInt(2, attendance.getEmployeeId());
             p.setObject(3, attendance.getDate());
             update = p.executeUpdate();
-            eas.setUpdated(update);
+            eas.setUpdatedOrFailed(update);
             conn.commit();
         } catch (SQLException ex) {
             Logger.getLogger(CRUDAttendance.class.getName()).log(Level.SEVERE, null, ex);
@@ -102,27 +109,46 @@ public class CRUDAttendance {
                 se.printStackTrace();
             }
         }
-
-        /**
-         * 0 means no insertion 1 means one record has been inserted
-         */
         return eas;
     }
 
+    /**
+     * Takes the attendance using either create or update, if input state of
+     * attendance is the same as the stores, then no update is needed.
+     *
+     * @param attendance that will feed the method with the attendance state of
+     * employee
+     * @return <code>EmployeeAttendanceStatus</code> that contains the state of
+     * attendance create/update process
+     */
     public static EmployeeAttendanceStatus takeAttendance(Attendance attendance) {
 
         EmployeeAttendanceStatus eas = getEmployeeAttendanceStatusOnSpecificDate(attendance.getEmployeeId(), attendance.getDate());
 
-        if (eas.getWasAttendanceBeenTaken() == false) {
+        if (eas.getWasAttendanceTaken() == false) {
+            // If attendance was not taken, then take it
+            // and inform EmployeeAttendanceStatus about the state
             create(attendance, eas);
+            if (!eas.getCreateState()) {
+                JOptionPane.showConfirmDialog(null,
+                        "Fail to create attendance", "",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+            }
         } else {
+            // Attendance already was taken
             if (eas.getEmployeeAttendanceState() == attendance.getStateOfAttendance()) {
+                // No need to update since the input the same as the stored value.
                 eas.setWhetherUpdateNeeded(false);
             } else {
+                // input is different from the stored value, so we need to update it.
                 update(attendance, eas);
                 eas.setWhetherUpdateNeeded(true);
+                if (!eas.getUpdateState()) {
+                    JOptionPane.showConfirmDialog(null,
+                            "Fail to update attendance", "",
+                            JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+                }
             }
-            return null;
         }
         return eas;
     }
@@ -150,15 +176,13 @@ public class CRUDAttendance {
             boolean isRecordAvailable = result.isBeforeFirst();
 
             if (isRecordAvailable) {
-
-                // Move cursor to first record
+                // Move cursor to next record, which is the first in this case.
                 result.next();
-
-                eas.setWhetherAttendanceBeenTaken(ATTENDANCE_ALREADY_TAKEN);
-                // either true or false
+                eas.setWhetherAttendanceWasTaken(ATTENDANCE_ALREADY_TAKEN);
                 eas.setEmployeeAttendanceState(eas.retrieveAttendanceStateFromResultSet(result.getBoolean("state")));
             } else {
-                eas.setWhetherAttendanceBeenTaken(ATTENDANCE_NOT_TAKEN);
+                eas.setWhetherAttendanceWasTaken(ATTENDANCE_NOT_TAKEN);
+                eas.setEmployeeAttendanceState(ATTENDANCE_STATE_NOT_SET);
             }
         } catch (SQLException ex) {
             Logger.getLogger(CRUDAttendance.class.getName()).log(Level.SEVERE, null, ex);
@@ -175,36 +199,6 @@ public class CRUDAttendance {
         return eas;
     }
 
-//    public static boolean isEmployeeAbsentAtSpecificDate(int employee_id, LocalDate date) {
-//
-//        boolean employeeAbsentAtSpecificDate = false;
-//
-//        try {
-//            String sql = "SELECT * FROM `attendance` WHERE `employee_id` = ? AND `date` = ? AND `state` = ?";
-//            conn = Connect.getConnection();
-//            PreparedStatement p = conn.prepareStatement(sql);
-//            p.setInt(1, employee_id);
-//            p.setObject(2, date);
-//            p.setBoolean(3, false);
-//            ResultSet result = p.executeQuery();
-//
-//            // Check if there is a result
-//            if (result.isBeforeFirst()) {
-//                employeeAbsentAtSpecificDate = true;
-//            }
-//        } catch (SQLException ex) {
-//            Logger.getLogger(CRUDAttendance.class.getName()).log(Level.SEVERE, null, ex);
-//        } finally {
-//            try {
-//                if (conn != null) {
-//                    conn.close();
-//                }
-//            } catch (SQLException se) {
-//                se.printStackTrace();
-//            }
-//        }
-//        return employeeAbsentAtSpecificDate;
-//    }
     public static List getAbsenceRecordByEmployeeByMonth(int employeeID, YearMonth ym) {
 
         List records = new ArrayList<>();
@@ -258,21 +252,19 @@ public class CRUDAttendance {
         private int updated;
         private boolean isUpdateNeeded;
 
-        private void setWhetherAttendanceBeenTaken(int isTaken) {
+        private void setWhetherAttendanceWasTaken(int isTaken) {
             if (isTaken == ATTENDANCE_ALREADY_TAKEN) {
                 this.isAttendanceTaken = true;
             } else if (isTaken == ATTENDANCE_NOT_TAKEN) {
                 this.isAttendanceTaken = false;
-                this.setEmployeeAttendanceState(ATTENDANCE_STATE_NOT_SET);
             }
         }
 
-        public boolean getWasAttendanceBeenTaken() {
+        public boolean getWasAttendanceTaken() {
             return this.isAttendanceTaken;
         }
 
         private void setEmployeeAttendanceState(int attendanceState) {
-
             if (attendanceState == ATTENDANCE_STATE_PRESENT) {
                 this.employeeAttendanceState = Boolean.TRUE;
             } else if (attendanceState == ATTENDANCE_STATE_ABSENT) {
@@ -282,6 +274,12 @@ public class CRUDAttendance {
             }
         }
 
+        /**
+         * Helper method for setEmployeeAttendanceState()
+         *
+         * @param state
+         * @return <code>int</code>
+         */
         private int retrieveAttendanceStateFromResultSet(boolean state) {
             if (state) {
                 return ATTENDANCE_STATE_PRESENT;
@@ -294,28 +292,34 @@ public class CRUDAttendance {
             return employeeAttendanceState;
         }
 
-        private void setCreated(int created) {
-            if (created == 1) {
+        private void setCreatedOrFailed(int createdOrFailed) {
+            if (createdOrFailed == 1) {
                 this.created = ATTENDANCE_CREATED;
             } else {
                 this.created = FAIL_ON_CREATE_OR_UPDATE;
             }
         }
 
-        private int getCreated() {
-            return created;
+        private boolean getCreateState() {
+            if (this.created == ATTENDANCE_CREATED) {
+                return true;
+            }
+            return false;
         }
 
-        private void setUpdated(int updated) {
-            if (updated == 1) {
+        private void setUpdatedOrFailed(int updatedOrFailed) {
+            if (updatedOrFailed == 1) {
                 this.updated = ATTENDANCE_UPDATED;
             } else {
                 this.updated = FAIL_ON_CREATE_OR_UPDATE;
             }
         }
 
-        private int getUpdated() {
-            return updated;
+        private boolean getUpdateState() {
+            if (this.updated == ATTENDANCE_UPDATED) {
+                return true;
+            }
+            return false;
         }
 
         public boolean getWhetherUpdateNeeded() {
@@ -325,7 +329,6 @@ public class CRUDAttendance {
         private void setWhetherUpdateNeeded(boolean isUpdateNeeded) {
             this.isUpdateNeeded = isUpdateNeeded;
         }
-
     }
 
 }

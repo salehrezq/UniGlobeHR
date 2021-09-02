@@ -118,12 +118,14 @@ public class MonthelyAbsence implements EmployeeSelectedListener {
 
     @Override
     public void employeeSelected(Employee employee) {
+        // cleare the model when new employee node selected.
         model.setRowCount(0);
         employeeId = employee.getId();
     }
 
     @Override
     public void employeeDeselected() {
+        // cleare the model when no employee node selected.
         model.setRowCount(0);
         employeeId = -1;
     }
@@ -132,7 +134,8 @@ public class MonthelyAbsence implements EmployeeSelectedListener {
 
         @Override
         public void actionPerformed(ActionEvent arg0) {
-
+            // Clear the model every time, to append fresh results
+            // and not accumulate on previous results
             model.setRowCount(0);
 
             List<Object[]> list = getTata();
@@ -149,6 +152,15 @@ public class MonthelyAbsence implements EmployeeSelectedListener {
         }
     }
 
+    /**
+     * This method returns MaskFormatter that enforces 4 digits The # character
+     * represent digit, and four of them (####) means the allowed number of
+     * digits.
+     *
+     * The current year is used as a place holder.
+     *
+     * @return MaskFormatter
+     */
     private MaskFormatter getMaskFormatter() {
         MaskFormatter mask = null;
         try {

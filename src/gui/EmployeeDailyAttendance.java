@@ -26,7 +26,6 @@ public class EmployeeDailyAttendance extends JPanel implements DateListener, Emp
     private ButtonGroup btnGroup;
     private static DatePicker datePicker;
     private static AttendanceHandler attendanceHandler;
-//    private static LocalDate dateAbsentSelected;
     private Employee employeeContext;
     private CRUDAttendance.EmployeeAttendanceStatus eas;
 
@@ -57,9 +56,7 @@ public class EmployeeDailyAttendance extends JPanel implements DateListener, Emp
 
         // initial date value settings
         datePicker.setTodayAsDefault();
-//        dateAbsentSelected = datePicker.getDate();
         datePicker.addDateListener(this);
-//        datePicker.addDateListener(this);
         this.add(datePicker.getDatePicker());
     }
 
@@ -70,25 +67,31 @@ public class EmployeeDailyAttendance extends JPanel implements DateListener, Emp
     @Override
     public void dateChanged(LocalDate date) {
         if (this.employeeContext != null) {
-
+            // Employee node is selected, then check the state of attendance and
+            // initialize the interface accordingly
             eas = CRUDAttendance.getEmployeeAttendanceStatusOnSpecificDate(employeeContext.getId(), date);
 
-            btnSetPresent.setEnabled(true);
-            btnSetAbsent.setEnabled(true);
-
-            if (eas.getWasAttendanceBeenTaken()) {
+            if (eas.getWasAttendanceTaken()) {
+                // Attendance was taken, then initialize
+                // the buttons to which state; present or absent
                 if (eas.getEmployeeAttendanceState()) {
-                    // present
+                    // The state was present
                     btnSetPresent.setSelected(true);
                 } else {
-                    // absent
+                    // The state was absent
                     btnSetAbsent.setSelected(true);
                 }
             } else {
-                // No attendance taken
+                // Attendance was NOT taken yet, then clear the buttons
                 btnGroup.clearSelection();
             }
+            // After initializing the interface,
+            // activate the attendance buttons
+            btnSetPresent.setEnabled(true);
+            btnSetAbsent.setEnabled(true);
         } else {
+            // No employee node is selected, so disable attendance buttons
+            // and clear the selection
             btnSetPresent.setEnabled(false);
             btnSetAbsent.setEnabled(false);
             btnGroup.clearSelection();
@@ -98,29 +101,34 @@ public class EmployeeDailyAttendance extends JPanel implements DateListener, Emp
     @Override
     public void employeeSelected(Employee employee) {
         employeeContext = employee;
-        btnSetPresent.setEnabled(true);
-        btnSetAbsent.setEnabled(true);
 
         eas = CRUDAttendance.getEmployeeAttendanceStatusOnSpecificDate(employeeContext.getId(), datePicker.getDate());
 
-        if (eas.getWasAttendanceBeenTaken()) {
+        if (eas.getWasAttendanceTaken()) {
+            // Attendance was taken, then initialize
+            // the buttons which state; present or absent
             if (eas.getEmployeeAttendanceState()) {
-                // present
+                // The state was present
                 btnSetPresent.setSelected(true);
             } else {
-                // absent
+                // The state was absent
                 btnSetAbsent.setSelected(true);
             }
         } else {
+            // Attendance was NOT taken yet, then clear the buttons
             btnGroup.clearSelection();
         }
+        // After initializing the interface,
+        // activate the attendance buttons
+        btnSetPresent.setEnabled(true);
+        btnSetAbsent.setEnabled(true);
     }
 
     @Override
     public void employeeDeselected() {
-        employeeContext = null;
         btnSetPresent.setEnabled(false);
         btnSetAbsent.setEnabled(false);
+        employeeContext = null;
         btnGroup.clearSelection();
     }
 
