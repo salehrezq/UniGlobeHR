@@ -5,6 +5,7 @@
  */
 package gui;
 
+import gui.attendance.EmployeeAttendLate;
 import gui.attendance.MonthelyAbsence;
 import gui.attendance.EmployeeDailyAttendance;
 import java.awt.Color;
@@ -24,6 +25,7 @@ public class ManageEmployee extends JPanel {
 
     private EmployeeCard employeeCard;
     private EmployeeDailyAttendance employeeDailyAttendance;
+    private EmployeeAttendLate employeeAttendLate;
     private MonthelyAbsence monthelyAbsence;
 
     public ManageEmployee() {
@@ -51,10 +53,16 @@ public class ManageEmployee extends JPanel {
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         this.add(employeeDailyAttendance, c);
 
+        employeeAttendLate = new EmployeeAttendLate();
+        c = new GridBagConstraints();
+        c.gridy = 3;
+        c.anchor = GridBagConstraints.FIRST_LINE_START;
+        this.add(employeeAttendLate, c);
+
         monthelyAbsence = new MonthelyAbsence();
 
         c = new GridBagConstraints();
-        c.gridy = 3;
+        c.gridy = 4;
         c.weighty = 1.0;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         this.add(monthelyAbsence.getPanelTable(), c);
