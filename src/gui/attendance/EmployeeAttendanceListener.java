@@ -11,4 +11,7 @@ package gui.attendance;
  */
 public interface EmployeeAttendanceListener {
 
+    public void employeeIsPresent();
+
+    public void employeeIsAbsent();
 }

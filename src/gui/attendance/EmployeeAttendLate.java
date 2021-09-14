@@ -5,30 +5,40 @@
  */
 package gui.attendance;
 
+import datalink.CRUDAttendance;
+import gui.EmployeeSelectedListener;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.text.ParseException;
 import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 import javax.swing.text.MaskFormatter;
+import model.Employee;
 
 /**
  *
  * @author Saleh
  */
-public class EmployeeAttendLate extends JPanel {
+public class EmployeeAttendLate extends JPanel implements EmployeeAttendanceListener {
 
     private JCheckBox checkEmployeeLate;
-    private JFormattedTextField minutesLate;
+    private JFormattedTextField tfMinutesLate;
 
     public EmployeeAttendLate() {
 
         checkEmployeeLate = new JCheckBox();
-        minutesLate = new JFormattedTextField(getMaskFormatter());
-        minutesLate.setPreferredSize(new Dimension(30, 20));
+        checkEmployeeLate.setEnabled(false);
+        checkEmployeeLate.addItemListener(new CheckBoxHandler());
+        tfMinutesLate = new JFormattedTextField(getMaskFormatter());
+        tfMinutesLate.setPreferredSize(new Dimension(30, 20));
+        tfMinutesLate.setEnabled(false);
 
         this.add(checkEmployeeLate);
-        this.add(minutesLate);
+        this.add(tfMinutesLate);
     }
 
     /**
@@ -49,6 +59,34 @@ public class EmployeeAttendLate extends JPanel {
             e.printStackTrace();
         }
         return mask;
+    }
+
+    @Override
+    public void employeeIsPresent() {
+        checkEmployeeLate.setEnabled(true);
+    }
+
+    @Override
+    public void employeeIsAbsent() {
+        checkEmployeeLate.setEnabled(false);
+        checkEmployeeLate.setSelected(false);
+        tfMinutesLate.setEnabled(false);
+        tfMinutesLate.setText("000");
+    }
+
+    private class CheckBoxHandler implements ItemListener {
+
+        @Override
+        public void itemStateChanged(ItemEvent arg0) {
+
+            int state = arg0.getStateChange();
+            if (state == ItemEvent.SELECTED) {
+                tfMinutesLate.setEnabled(true);
+            } else {
+                tfMinutesLate.setEnabled(false);
+                tfMinutesLate.setText("000");
+            }
+        }
     }
 
 }

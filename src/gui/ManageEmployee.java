@@ -54,6 +54,7 @@ public class ManageEmployee extends JPanel {
         this.add(employeeDailyAttendance, c);
 
         employeeAttendLate = new EmployeeAttendLate();
+        employeeDailyAttendance.addEmployeeAttendanceListener(employeeAttendLate);
         c = new GridBagConstraints();
         c.gridy = 3;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
