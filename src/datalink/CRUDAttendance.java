@@ -136,7 +136,7 @@ public class CRUDAttendance {
             }
         } else {
             // Attendance already was taken
-            if (eas.getEmployeeAttendanceState() == attendance.getStateOfAttendance()) {
+            if (eas.getEmployeeStoredAttendanceState() == attendance.getStateOfAttendance()) {
                 // No need to update since the input the same as the stored value.
                 eas.setWhetherUpdateNeeded(false);
             } else {
@@ -178,11 +178,11 @@ public class CRUDAttendance {
             if (isRecordAvailable) {
                 // Move cursor to next record, which is the first in this case.
                 result.next();
-                eas.setWhetherAttendanceWasTaken(ATTENDANCE_ALREADY_TAKEN);
-                eas.setEmployeeAttendanceState(eas.retrieveAttendanceStateFromResultSet(result.getBoolean("state")));
+                eas.retrieveWhetherAttendanceWasTaken(ATTENDANCE_ALREADY_TAKEN);
+                eas.retrieveEmployeeStoredAttendanceState(eas.retrieveAttendanceStoredStateFromResultSet(result.getBoolean("state")));
             } else {
-                eas.setWhetherAttendanceWasTaken(ATTENDANCE_NOT_TAKEN);
-                eas.setEmployeeAttendanceState(ATTENDANCE_STATE_NOT_SET);
+                eas.retrieveWhetherAttendanceWasTaken(ATTENDANCE_NOT_TAKEN);
+                eas.retrieveEmployeeStoredAttendanceState(ATTENDANCE_STATE_NOT_SET);
             }
         } catch (SQLException ex) {
             Logger.getLogger(CRUDAttendance.class.getName()).log(Level.SEVERE, null, ex);
@@ -247,12 +247,12 @@ public class CRUDAttendance {
     public static class EmployeeAttendanceStatus {
 
         private boolean isAttendanceTaken;
-        private Boolean employeeAttendanceState;
+        private Boolean employeeStoredAttendanceState;
         private int created;
         private int updated;
         private boolean isUpdateNeeded;
 
-        private void setWhetherAttendanceWasTaken(int isTaken) {
+        private void retrieveWhetherAttendanceWasTaken(int isTaken) {
             if (isTaken == ATTENDANCE_ALREADY_TAKEN) {
                 this.isAttendanceTaken = true;
             } else if (isTaken == ATTENDANCE_NOT_TAKEN) {
@@ -264,23 +264,23 @@ public class CRUDAttendance {
             return this.isAttendanceTaken;
         }
 
-        private void setEmployeeAttendanceState(int attendanceState) {
+        private void retrieveEmployeeStoredAttendanceState(int attendanceState) {
             if (attendanceState == ATTENDANCE_STATE_PRESENT) {
-                this.employeeAttendanceState = Boolean.TRUE;
+                this.employeeStoredAttendanceState = Boolean.TRUE;
             } else if (attendanceState == ATTENDANCE_STATE_ABSENT) {
-                this.employeeAttendanceState = Boolean.FALSE;
+                this.employeeStoredAttendanceState = Boolean.FALSE;
             } else if (attendanceState == ATTENDANCE_STATE_NOT_SET) {
-                employeeAttendanceState = null;
+                employeeStoredAttendanceState = null;
             }
         }
 
         /**
-         * Helper method for setEmployeeAttendanceState()
+         * Helper method for retrieveEmployeeStoredAttendanceState()
          *
          * @param state
          * @return <code>int</code>
          */
-        private int retrieveAttendanceStateFromResultSet(boolean state) {
+        private int retrieveAttendanceStoredStateFromResultSet(boolean state) {
             if (state) {
                 return ATTENDANCE_STATE_PRESENT;
             } else {
@@ -288,8 +288,25 @@ public class CRUDAttendance {
             }
         }
 
-        public Boolean getEmployeeAttendanceState() {
-            return employeeAttendanceState;
+        /**
+         * Get the stored attendance state.
+         *
+         * The result is used to determine one of three cases: - There was no
+         * state recorded, in this case the returned state is null. - There was
+         * attendance state; which can be either true or false.
+         *
+         * Based on the state: If it is null that means no state was set
+         * previously and we need to record the input state. If it is either
+         * true or false; we compare the input state with the stored state. If
+         * the input and stored state are the same value, then no need to
+         * update. If the input and stored state are not the same value, then an
+         * update is issued with the new input state replacing the previous
+         * stored state.
+         *
+         * @return <code>Boolean</code> object.
+         */
+        public Boolean getEmployeeStoredAttendanceState() {
+            return employeeStoredAttendanceState;
         }
 
         private void setCreatedOrFailed(int createdOrFailed) {
