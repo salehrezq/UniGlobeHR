@@ -74,6 +74,66 @@ public class EmployeeAttendLate extends JPanel implements EmployeeAttendanceList
         tfMinutesLate.setText("000");
     }
 
+    @Override
+    public void employeeSelected(CRUDAttendance.EmployeeAttendanceStatus eas) {
+        if (eas.getWasAttendanceTaken()) {
+            // Attendance was taken, then initialize
+            // the buttons which state; present or absent
+            if (eas.getEmployeeStoredAttendanceState()) {
+                // The state was present
+                // Enable the checkbox of late
+                // Retreive from database if employee was late,
+                // if late update the minutes field
+                checkEmployeeLate.setEnabled(true);
+            } else {
+                // The state was absent
+                checkEmployeeLate.setEnabled(false);
+                checkEmployeeLate.setSelected(false);
+                tfMinutesLate.setEnabled(false);
+                tfMinutesLate.setText("000");
+            }
+        } else {
+            // Attendance was NOT taken yet
+            checkEmployeeLate.setEnabled(false);
+            checkEmployeeLate.setSelected(false);
+            tfMinutesLate.setEnabled(false);
+            tfMinutesLate.setText("000");
+        }
+    }
+
+    @Override
+    public void employeeDeselected() {
+        checkEmployeeLate.setEnabled(false);
+        checkEmployeeLate.setSelected(false);
+        tfMinutesLate.setEnabled(false);
+        tfMinutesLate.setText("000");
+    }
+
+    @Override
+    public void dateChanged(CRUDAttendance.EmployeeAttendanceStatus eas) {
+        if (eas.getWasAttendanceTaken()) {
+            if (eas.getEmployeeStoredAttendanceState()) {
+                // The state was present
+                // Enable the checkbox of late
+                // Retreive from database if employee was late,
+                // if late update the minutes field
+                checkEmployeeLate.setEnabled(true);
+            } else {
+                // The state was absent
+                checkEmployeeLate.setEnabled(false);
+                checkEmployeeLate.setSelected(false);
+                tfMinutesLate.setEnabled(false);
+                tfMinutesLate.setText("000");
+            }
+        } else {
+            // Attendance was NOT taken yet
+            checkEmployeeLate.setEnabled(false);
+            checkEmployeeLate.setSelected(false);
+            tfMinutesLate.setEnabled(false);
+            tfMinutesLate.setText("000");
+        }
+    }
+
     private class CheckBoxHandler implements ItemListener {
 
         @Override

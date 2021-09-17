@@ -78,6 +78,7 @@ public class EmployeeDailyAttendance extends JPanel implements DateListener, Emp
             // Employee node is selected, then check the state of attendance and
             // initialize the interface accordingly
             eas = CRUDAttendance.getEmployeeAttendanceStatusOnSpecificDate(employeeContext.getId(), date);
+            notifyDateChanged(eas);
 
             if (eas.getWasAttendanceTaken()) {
                 // Attendance was taken, then initialize
@@ -111,6 +112,7 @@ public class EmployeeDailyAttendance extends JPanel implements DateListener, Emp
         employeeContext = employee;
 
         eas = CRUDAttendance.getEmployeeAttendanceStatusOnSpecificDate(employeeContext.getId(), datePicker.getDate());
+        notifyEmployeeSelected(eas);
 
         if (eas.getWasAttendanceTaken()) {
             // Attendance was taken, then initialize
@@ -138,6 +140,7 @@ public class EmployeeDailyAttendance extends JPanel implements DateListener, Emp
         btnSetAbsent.setEnabled(false);
         employeeContext = null;
         btnGroup.clearSelection();
+        notifyEmployeeDeselected();
     }
 
     private class AttendanceHandler implements ActionListener {
@@ -176,6 +179,24 @@ public class EmployeeDailyAttendance extends JPanel implements DateListener, Emp
     private void notifyEmployeeAbsence() {
         this.employeeAttendanceListeners.forEach((eal) -> {
             eal.employeeIsAbsent();
+        });
+    }
+
+    private void notifyEmployeeSelected(CRUDAttendance.EmployeeAttendanceStatus eas) {
+        this.employeeAttendanceListeners.forEach((eal) -> {
+            eal.employeeSelected(eas);
+        });
+    }
+
+    private void notifyEmployeeDeselected() {
+        this.employeeAttendanceListeners.forEach((eal) -> {
+            eal.employeeDeselected();
+        });
+    }
+
+    private void notifyDateChanged(CRUDAttendance.EmployeeAttendanceStatus eas) {
+        this.employeeAttendanceListeners.forEach((eal) -> {
+            eal.dateChanged(eas);
         });
     }
 }

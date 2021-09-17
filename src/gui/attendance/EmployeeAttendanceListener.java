@@ -5,6 +5,8 @@
  */
 package gui.attendance;
 
+import datalink.CRUDAttendance;
+
 /**
  *
  * @author Saleh
@@ -14,4 +16,11 @@ public interface EmployeeAttendanceListener {
     public void employeeIsPresent();
 
     public void employeeIsAbsent();
+
+    public void employeeSelected(CRUDAttendance.EmployeeAttendanceStatus eas);
+
+    public void employeeDeselected();
+
+    public void dateChanged(CRUDAttendance.EmployeeAttendanceStatus eas);
+
 }
