@@ -15,6 +15,7 @@ import java.awt.event.ItemListener;
 import java.text.ParseException;
 import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.text.MaskFormatter;
 import model.Employee;
@@ -27,6 +28,7 @@ public class EmployeeAttendLate extends JPanel implements EmployeeAttendanceList
 
     private JCheckBox checkEmployeeLate;
     private JFormattedTextField tfMinutesLate;
+    private JLabel lbMinutes;
 
     public EmployeeAttendLate() {
 
@@ -36,9 +38,12 @@ public class EmployeeAttendLate extends JPanel implements EmployeeAttendanceList
         tfMinutesLate = new JFormattedTextField(getMaskFormatter());
         tfMinutesLate.setPreferredSize(new Dimension(30, 20));
         tfMinutesLate.setEnabled(false);
+        lbMinutes = new JLabel("Minutes");
+        lbMinutes.setEnabled(false);
 
         this.add(checkEmployeeLate);
         this.add(tfMinutesLate);
+        this.add(lbMinutes);
     }
 
     /**
@@ -64,6 +69,7 @@ public class EmployeeAttendLate extends JPanel implements EmployeeAttendanceList
     @Override
     public void employeeIsPresent() {
         checkEmployeeLate.setEnabled(true);
+        lbMinutes.setEnabled(true);
     }
 
     @Override
@@ -72,25 +78,26 @@ public class EmployeeAttendLate extends JPanel implements EmployeeAttendanceList
         checkEmployeeLate.setSelected(false);
         tfMinutesLate.setEnabled(false);
         tfMinutesLate.setText("000");
+        lbMinutes.setEnabled(false);
     }
 
     @Override
     public void employeeSelected(CRUDAttendance.EmployeeAttendanceStatus eas) {
         if (eas.getWasAttendanceTaken()) {
-            // Attendance was taken, then initialize
-            // the buttons which state; present or absent
             if (eas.getEmployeeStoredAttendanceState()) {
                 // The state was present
                 // Enable the checkbox of late
                 // Retreive from database if employee was late,
                 // if late update the minutes field
                 checkEmployeeLate.setEnabled(true);
+                lbMinutes.setEnabled(true);
             } else {
                 // The state was absent
                 checkEmployeeLate.setEnabled(false);
                 checkEmployeeLate.setSelected(false);
                 tfMinutesLate.setEnabled(false);
                 tfMinutesLate.setText("000");
+                lbMinutes.setEnabled(false);
             }
         } else {
             // Attendance was NOT taken yet
@@ -98,6 +105,7 @@ public class EmployeeAttendLate extends JPanel implements EmployeeAttendanceList
             checkEmployeeLate.setSelected(false);
             tfMinutesLate.setEnabled(false);
             tfMinutesLate.setText("000");
+            lbMinutes.setEnabled(false);
         }
     }
 
@@ -107,6 +115,7 @@ public class EmployeeAttendLate extends JPanel implements EmployeeAttendanceList
         checkEmployeeLate.setSelected(false);
         tfMinutesLate.setEnabled(false);
         tfMinutesLate.setText("000");
+        lbMinutes.setEnabled(false);
     }
 
     @Override
@@ -118,12 +127,14 @@ public class EmployeeAttendLate extends JPanel implements EmployeeAttendanceList
                 // Retreive from database if employee was late,
                 // if late update the minutes field
                 checkEmployeeLate.setEnabled(true);
+                lbMinutes.setEnabled(true);
             } else {
                 // The state was absent
                 checkEmployeeLate.setEnabled(false);
                 checkEmployeeLate.setSelected(false);
                 tfMinutesLate.setEnabled(false);
                 tfMinutesLate.setText("000");
+                lbMinutes.setEnabled(false);
             }
         } else {
             // Attendance was NOT taken yet
@@ -131,6 +142,7 @@ public class EmployeeAttendLate extends JPanel implements EmployeeAttendanceList
             checkEmployeeLate.setSelected(false);
             tfMinutesLate.setEnabled(false);
             tfMinutesLate.setText("000");
+            lbMinutes.setEnabled(false);
         }
     }
 
