@@ -25,7 +25,7 @@ import model.Employee;
  * @author Saleh
  */
 public class EmployeeAttendLate extends JPanel
-        implements EmployeeAttendanceListener, EmployeeAttendanceData, DateChangedAttendanceData {
+        implements EmployeeAttendanceListener, EmployeeAttendanceDataListener, DateChangedAttendanceDataListener {
 
     private JCheckBox checkEmployeeLate;
     private JFormattedTextField tfMinutesLate;

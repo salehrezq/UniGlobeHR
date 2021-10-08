@@ -35,8 +35,8 @@ public class EmployeeDailyAttendance extends JPanel implements DateListener, Emp
     private Employee employeeContext;
     private CRUDAttendance.EmployeeAttendanceStatus eas;
     private ArrayList<EmployeeAttendanceListener> employeeAttendanceListeners;
-    private ArrayList<EmployeeAttendanceData> employeeAttendanceData;
-    private ArrayList<DateChangedAttendanceData> dateChangedAttendanceDatas;
+    private ArrayList<EmployeeAttendanceDataListener> employeeAttendanceData;
+    private ArrayList<DateChangedAttendanceDataListener> dateChangedAttendanceDatas;
 
     public EmployeeDailyAttendance() {
         super();
@@ -186,7 +186,7 @@ public class EmployeeDailyAttendance extends JPanel implements DateListener, Emp
         });
     }
 
-    public void addEmployeeAttendanceDataListener(EmployeeAttendanceData ead) {
+    public void addEmployeeAttendanceDataListener(EmployeeAttendanceDataListener ead) {
         this.employeeAttendanceData.add(ead);
     }
 
@@ -202,7 +202,7 @@ public class EmployeeDailyAttendance extends JPanel implements DateListener, Emp
         });
     }
 
-    public void addDateChangedAttendanceDataListener(DateChangedAttendanceData dcad) {
+    public void addDateChangedAttendanceDataListener(DateChangedAttendanceDataListener dcad) {
         this.dateChangedAttendanceDatas.add(dcad);
     }
 

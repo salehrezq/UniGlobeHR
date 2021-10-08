@@ -11,7 +11,7 @@ import datalink.CRUDAttendance;
  *
  * @author Saleh
  */
-public interface EmployeeAttendanceData {
+public interface EmployeeAttendanceDataListener {
 
     public void employeeAttendanceDataOnSelection(CRUDAttendance.EmployeeAttendanceStatus eas);
 

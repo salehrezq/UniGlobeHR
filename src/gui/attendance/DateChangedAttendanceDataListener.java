@@ -11,7 +11,7 @@ import datalink.CRUDAttendance;
  *
  * @author Saleh
  */
-public interface DateChangedAttendanceData {
+public interface DateChangedAttendanceDataListener {
 
     public void dateChanged(CRUDAttendance.EmployeeAttendanceStatus eas);
 }
