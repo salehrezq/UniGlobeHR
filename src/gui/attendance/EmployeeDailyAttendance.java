@@ -35,12 +35,16 @@ public class EmployeeDailyAttendance extends JPanel implements DateListener, Emp
     private Employee employeeContext;
     private CRUDAttendance.EmployeeAttendanceStatus eas;
     private ArrayList<EmployeeAttendanceListener> employeeAttendanceListeners;
+    private ArrayList<EmployeeAttendanceData> employeeAttendanceData;
+    private ArrayList<DateChangedAttendanceData> dateChangedAttendanceDatas;
 
     public EmployeeDailyAttendance() {
         super();
 
         eas = new CRUDAttendance.EmployeeAttendanceStatus();
         employeeAttendanceListeners = new ArrayList<>();
+        employeeAttendanceData = new ArrayList<>();
+        dateChangedAttendanceDatas = new ArrayList<>();
 
         btnSetPresent = new JRadioButton("Present");
         btnSetAbsent = new JRadioButton("Absent");
@@ -112,7 +116,7 @@ public class EmployeeDailyAttendance extends JPanel implements DateListener, Emp
         employeeContext = employee;
 
         eas = CRUDAttendance.getEmployeeAttendanceStatusOnSpecificDate(employeeContext.getId(), datePicker.getDate());
-        notifyEmployeeSelected(eas);
+        notifyEmployeeAttendanceDataOnSelection(eas);
 
         if (eas.getWasAttendanceTaken()) {
             // Attendance was taken, then initialize
@@ -140,7 +144,7 @@ public class EmployeeDailyAttendance extends JPanel implements DateListener, Emp
         btnSetAbsent.setEnabled(false);
         employeeContext = null;
         btnGroup.clearSelection();
-        notifyEmployeeDeselected();
+        notifyEmployeeSelectionCleared();
     }
 
     private class AttendanceHandler implements ActionListener {
@@ -182,21 +186,30 @@ public class EmployeeDailyAttendance extends JPanel implements DateListener, Emp
         });
     }
 
-    private void notifyEmployeeSelected(CRUDAttendance.EmployeeAttendanceStatus eas) {
-        this.employeeAttendanceListeners.forEach((eal) -> {
-            eal.employeeSelected(eas);
+    public void addEmployeeAttendanceDataListener(EmployeeAttendanceData ead) {
+        this.employeeAttendanceData.add(ead);
+    }
+
+    private void notifyEmployeeAttendanceDataOnSelection(CRUDAttendance.EmployeeAttendanceStatus eas) {
+        this.employeeAttendanceData.forEach((ead) -> {
+            ead.employeeAttendanceDataOnSelection(eas);
         });
     }
 
-    private void notifyEmployeeDeselected() {
-        this.employeeAttendanceListeners.forEach((eal) -> {
-            eal.employeeDeselected();
+    private void notifyEmployeeSelectionCleared() {
+        this.employeeAttendanceData.forEach((ead) -> {
+            ead.employeeSelectionCleared();
         });
+    }
+
+    public void addDateChangedAttendanceDataListener(DateChangedAttendanceData dcad) {
+        this.dateChangedAttendanceDatas.add(dcad);
     }
 
     private void notifyDateChanged(CRUDAttendance.EmployeeAttendanceStatus eas) {
-        this.employeeAttendanceListeners.forEach((eal) -> {
-            eal.dateChanged(eas);
+        this.dateChangedAttendanceDatas.forEach((dcad) -> {
+            dcad.dateChanged(eas);
         });
     }
+
 }

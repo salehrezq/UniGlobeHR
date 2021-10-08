@@ -5,10 +5,33 @@
  */
 package gui.attendance;
 
+import gui.EmployeeSelectedListener;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import model.Employee;
+
 /**
  *
  * @author Saleh
  */
-public class SubmitAttendance {
+public class SubmitAttendance extends JPanel implements EmployeeSelectedListener {
+
+    private final JButton btnSubmitAttendance;
+
+    public SubmitAttendance() {
+        btnSubmitAttendance = new JButton("Submit");
+        btnSubmitAttendance.setEnabled(false);
+        this.add(btnSubmitAttendance);
+    }
+
+    @Override
+    public void employeeSelected(Employee employee) {
+        btnSubmitAttendance.setEnabled(true);
+    }
+
+    @Override
+    public void employeeDeselected() {
+        btnSubmitAttendance.setEnabled(false);
+    }
 
 }

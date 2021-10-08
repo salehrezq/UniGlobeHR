@@ -17,10 +17,7 @@ public interface EmployeeAttendanceListener {
 
     public void employeeIsAbsent();
 
-    public void employeeSelected(CRUDAttendance.EmployeeAttendanceStatus eas);
-
-    public void employeeDeselected();
-
-    public void dateChanged(CRUDAttendance.EmployeeAttendanceStatus eas);
-
+//    public void employeeSelected(CRUDAttendance.EmployeeAttendanceStatus eas);
+//    public void employeeDeselected();
+    //public void dateChanged(CRUDAttendance.EmployeeAttendanceStatus eas);
 }

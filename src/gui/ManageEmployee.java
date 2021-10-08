@@ -8,6 +8,7 @@ package gui;
 import gui.attendance.EmployeeAttendLate;
 import gui.attendance.MonthelyAbsence;
 import gui.attendance.EmployeeDailyAttendance;
+import gui.attendance.SubmitAttendance;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -26,6 +27,7 @@ public class ManageEmployee extends JPanel {
     private EmployeeCard employeeCard;
     private EmployeeDailyAttendance employeeDailyAttendance;
     private EmployeeAttendLate employeeAttendLate;
+    private SubmitAttendance submitAttendancePanel;
     private MonthelyAbsence monthelyAbsence;
 
     public ManageEmployee() {
@@ -55,15 +57,23 @@ public class ManageEmployee extends JPanel {
 
         employeeAttendLate = new EmployeeAttendLate();
         employeeDailyAttendance.addEmployeeAttendanceListener(employeeAttendLate);
+        employeeDailyAttendance.addEmployeeAttendanceDataListener(employeeAttendLate);
+        employeeDailyAttendance.addEmployeeAttendanceDataListener(employeeAttendLate);
         c = new GridBagConstraints();
         c.gridy = 3;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         this.add(employeeAttendLate, c);
 
+        submitAttendancePanel = new SubmitAttendance();
+        c = new GridBagConstraints();
+        c.gridy = 4;
+        c.anchor = GridBagConstraints.FIRST_LINE_START;
+        this.add(submitAttendancePanel, c);
+
         monthelyAbsence = new MonthelyAbsence();
 
         c = new GridBagConstraints();
-        c.gridy = 4;
+        c.gridy = 5;
         c.weighty = 1.0;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         this.add(monthelyAbsence.getPanelTable(), c);
@@ -75,6 +85,10 @@ public class ManageEmployee extends JPanel {
 
     public EmployeeDailyAttendance getEmployeeDailyAbsence() {
         return this.employeeDailyAttendance;
+    }
+
+    public SubmitAttendance getSubmitAttendancePanel() {
+        return this.submitAttendancePanel;
     }
 
     public MonthelyAbsence getMonthelyAbsence() {

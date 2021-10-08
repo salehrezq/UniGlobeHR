@@ -24,7 +24,8 @@ import model.Employee;
  *
  * @author Saleh
  */
-public class EmployeeAttendLate extends JPanel implements EmployeeAttendanceListener {
+public class EmployeeAttendLate extends JPanel
+        implements EmployeeAttendanceListener, EmployeeAttendanceData, DateChangedAttendanceData {
 
     private JCheckBox checkEmployeeLate;
     private JFormattedTextField tfMinutesLate;
@@ -82,7 +83,7 @@ public class EmployeeAttendLate extends JPanel implements EmployeeAttendanceList
     }
 
     @Override
-    public void employeeSelected(CRUDAttendance.EmployeeAttendanceStatus eas) {
+    public void employeeAttendanceDataOnSelection(CRUDAttendance.EmployeeAttendanceStatus eas) {
         if (eas.getWasAttendanceTaken()) {
             if (eas.getEmployeeStoredAttendanceState()) {
                 // The state was present
@@ -110,7 +111,7 @@ public class EmployeeAttendLate extends JPanel implements EmployeeAttendanceList
     }
 
     @Override
-    public void employeeDeselected() {
+    public void employeeSelectionCleared() {
         checkEmployeeLate.setEnabled(false);
         checkEmployeeLate.setSelected(false);
         tfMinutesLate.setEnabled(false);

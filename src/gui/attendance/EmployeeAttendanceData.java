@@ -5,10 +5,16 @@
  */
 package gui.attendance;
 
+import datalink.CRUDAttendance;
+
 /**
  *
  * @author Saleh
  */
 public interface EmployeeAttendanceData {
+
+    public void employeeAttendanceDataOnSelection(CRUDAttendance.EmployeeAttendanceStatus eas);
+
+    public void employeeSelectionCleared();
 
 }

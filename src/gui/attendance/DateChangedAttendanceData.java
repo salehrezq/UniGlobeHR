@@ -5,10 +5,13 @@
  */
 package gui.attendance;
 
+import datalink.CRUDAttendance;
+
 /**
  *
  * @author Saleh
  */
 public interface DateChangedAttendanceData {
 
+    public void dateChanged(CRUDAttendance.EmployeeAttendanceStatus eas);
 }

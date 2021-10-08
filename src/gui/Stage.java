@@ -32,6 +32,7 @@ public class Stage extends JPanel {
         ManageEmployee manageEmployee = controls.getManageEmployee();
         treeEmployees.addEmployeeSelectedListener(manageEmployee.getEmployeeCard());
         treeEmployees.addEmployeeSelectedListener(manageEmployee.getEmployeeDailyAbsence());
+        treeEmployees.addEmployeeSelectedListener(manageEmployee.getSubmitAttendancePanel());
         treeEmployees.addEmployeeSelectedListener(manageEmployee.getMonthelyAbsence());
         //Add the scroll panes to a split pane.
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
