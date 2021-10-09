@@ -14,9 +14,10 @@ import model.Employee;
  *
  * @author Saleh
  */
-public class SubmitAttendance extends JPanel implements EmployeeSelectedListener {
+public class SubmitAttendance extends JPanel implements EmployeeSelectedListener, EmployeeAttendanceListener {
 
     private final JButton btnSubmitAttendance;
+    private Boolean isPresent;
 
     public SubmitAttendance() {
         btnSubmitAttendance = new JButton("Submit");
@@ -26,12 +27,26 @@ public class SubmitAttendance extends JPanel implements EmployeeSelectedListener
 
     @Override
     public void employeeSelected(Employee employee) {
-        btnSubmitAttendance.setEnabled(true);
+        if (isPresent != null) {
+            btnSubmitAttendance.setEnabled(true);
+        }
     }
 
     @Override
     public void employeeDeselected() {
         btnSubmitAttendance.setEnabled(false);
+    }
+
+    @Override
+    public void employeeIsPresent() {
+        isPresent = Boolean.TRUE;
+        btnSubmitAttendance.setEnabled(true);
+    }
+
+    @Override
+    public void employeeIsAbsent() {
+        isPresent = Boolean.FALSE;
+        btnSubmitAttendance.setEnabled(true);
     }
 
 }
