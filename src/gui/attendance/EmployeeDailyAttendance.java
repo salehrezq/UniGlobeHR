@@ -23,14 +23,18 @@ import model.Employee;
  *
  * @author Saleh
  */
-public class EmployeeDailyAttendance extends JPanel implements DateListener, EmployeeSelectedListener {
+public class EmployeeDailyAttendance extends JPanel
+        implements
+        DateListener,
+        EmployeeSelectedListener,
+        SubmitAttendanceListener {
 
     private JRadioButton btnSetPresent;
     private JRadioButton btnSetAbsent;
     private final boolean boolPresent = true;
     private final boolean boolAbsent = false;
     private ButtonGroup btnGroup;
-    private static DatePicker datePicker;
+    private DatePicker datePicker;
     private static AttendanceHandler attendanceHandler;
     private Employee employeeContext;
     private CRUDAttendance.EmployeeAttendanceStatus eas;
@@ -72,6 +76,10 @@ public class EmployeeDailyAttendance extends JPanel implements DateListener, Emp
         this.add(datePicker.getDatePicker());
     }
 
+    public DatePicker getDatePicker() {
+        return this.datePicker;
+    }
+
     public LocalDate getAbsentSelectedDate() {
         return datePicker.getDate();
     }
@@ -85,6 +93,8 @@ public class EmployeeDailyAttendance extends JPanel implements DateListener, Emp
             notifyDateChanged(eas);
 
             if (eas.getWasAttendanceTaken()) {
+                btnSetPresent.setEnabled(false);
+                btnSetAbsent.setEnabled(false);
                 // Attendance was taken, then initialize
                 // the buttons to which state; present or absent
                 if (eas.getEmployeeStoredAttendanceState()) {
@@ -97,11 +107,9 @@ public class EmployeeDailyAttendance extends JPanel implements DateListener, Emp
             } else {
                 // Attendance was NOT taken yet, then clear the buttons
                 btnGroup.clearSelection();
+                btnSetPresent.setEnabled(true);
+                btnSetAbsent.setEnabled(true);
             }
-            // After initializing the interface,
-            // activate the attendance buttons
-            btnSetPresent.setEnabled(true);
-            btnSetAbsent.setEnabled(true);
         } else {
             // No employee node is selected, so disable attendance buttons
             // and clear the selection
@@ -119,6 +127,8 @@ public class EmployeeDailyAttendance extends JPanel implements DateListener, Emp
         notifyEmployeeAttendanceDataOnSelection(eas);
 
         if (eas.getWasAttendanceTaken()) {
+            btnSetPresent.setEnabled(false);
+            btnSetAbsent.setEnabled(false);
             // Attendance was taken, then initialize
             // the buttons which state; present or absent
             if (eas.getEmployeeStoredAttendanceState()) {
@@ -131,11 +141,9 @@ public class EmployeeDailyAttendance extends JPanel implements DateListener, Emp
         } else {
             // Attendance was NOT taken yet, then clear the buttons
             btnGroup.clearSelection();
+            btnSetPresent.setEnabled(true);
+            btnSetAbsent.setEnabled(true);
         }
-        // After initializing the interface,
-        // activate the attendance buttons
-        btnSetPresent.setEnabled(true);
-        btnSetAbsent.setEnabled(true);
     }
 
     @Override
@@ -145,6 +153,17 @@ public class EmployeeDailyAttendance extends JPanel implements DateListener, Emp
         employeeContext = null;
         btnGroup.clearSelection();
         notifyEmployeeSelectionCleared();
+    }
+
+    @Override
+    public void attendanceSubmitSucceeded() {
+        this.btnSetPresent.setEnabled(false);
+        this.btnSetAbsent.setEnabled(false);
+    }
+
+    @Override
+    public void attendanceSubmitFailed() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     private class AttendanceHandler implements ActionListener {
@@ -166,7 +185,7 @@ public class EmployeeDailyAttendance extends JPanel implements DateListener, Emp
                 notifyEmployeeAbsence();
             }
 
-            eas = CRUDAttendance.takeAttendance(attendance);
+            // eas = CRUDAttendance.takeAttendance(attendance);
         }
     }
 

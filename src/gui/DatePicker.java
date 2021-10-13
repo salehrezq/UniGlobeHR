@@ -6,11 +6,9 @@
 package gui;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Properties;
 import org.jdatepicker.impl.JDatePanelImpl;
 import org.jdatepicker.impl.JDatePickerImpl;
@@ -62,6 +60,10 @@ public class DatePicker {
         dateModel.setDate(today.getYear(), today.getMonthValue() - 1, today.getDayOfMonth());
         dateModel.setSelected(true);
         this.date = today;
+    }
+
+    public LocalDate getDefaultToday() {
+        return this.date;
     }
 
     public void addDateListener(DateListener dateListner) {

@@ -11,4 +11,7 @@ package gui.attendance;
  */
 public interface SubmitAttendanceListener {
 
+    public void attendanceSubmitSucceeded();
+
+    public void attendanceSubmitFailed();
 }

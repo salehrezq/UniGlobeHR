@@ -6,10 +6,7 @@
 package gui.attendance;
 
 import datalink.CRUDAttendance;
-import gui.EmployeeSelectedListener;
 import java.awt.Dimension;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.text.ParseException;
@@ -18,14 +15,17 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.text.MaskFormatter;
-import model.Employee;
 
 /**
  *
  * @author Saleh
  */
 public class EmployeeAttendLate extends JPanel
-        implements EmployeeAttendanceListener, EmployeeAttendanceDataListener, DateChangedAttendanceDataListener {
+        implements
+        EmployeeAttendanceListener,
+        EmployeeAttendanceDataListener,
+        DateChangedAttendanceDataListener,
+        SubmitAttendanceListener {
 
     private JCheckBox checkEmployeeLate;
     private JFormattedTextField tfMinutesLate;
@@ -90,23 +90,11 @@ public class EmployeeAttendLate extends JPanel
                 // Enable the checkbox of late
                 // Retreive from database if employee was late,
                 // if late update the minutes field
-                checkEmployeeLate.setEnabled(true);
-                lbMinutes.setEnabled(true);
             } else {
                 // The state was absent
-                checkEmployeeLate.setEnabled(false);
-                checkEmployeeLate.setSelected(false);
-                tfMinutesLate.setEnabled(false);
-                tfMinutesLate.setText("000");
-                lbMinutes.setEnabled(false);
             }
         } else {
             // Attendance was NOT taken yet
-            checkEmployeeLate.setEnabled(false);
-            checkEmployeeLate.setSelected(false);
-            tfMinutesLate.setEnabled(false);
-            tfMinutesLate.setText("000");
-            lbMinutes.setEnabled(false);
         }
     }
 
@@ -127,24 +115,24 @@ public class EmployeeAttendLate extends JPanel
                 // Enable the checkbox of late
                 // Retreive from database if employee was late,
                 // if late update the minutes field
-                checkEmployeeLate.setEnabled(true);
-                lbMinutes.setEnabled(true);
             } else {
                 // The state was absent
-                checkEmployeeLate.setEnabled(false);
-                checkEmployeeLate.setSelected(false);
-                tfMinutesLate.setEnabled(false);
-                tfMinutesLate.setText("000");
-                lbMinutes.setEnabled(false);
             }
         } else {
             // Attendance was NOT taken yet
-            checkEmployeeLate.setEnabled(false);
-            checkEmployeeLate.setSelected(false);
-            tfMinutesLate.setEnabled(false);
-            tfMinutesLate.setText("000");
-            lbMinutes.setEnabled(false);
         }
+    }
+
+    @Override
+    public void attendanceSubmitSucceeded() {
+        this.checkEmployeeLate.setEnabled(false);
+        this.tfMinutesLate.setEnabled(false);
+        this.lbMinutes.setEnabled(false);
+    }
+
+    @Override
+    public void attendanceSubmitFailed() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     private class CheckBoxHandler implements ItemListener {

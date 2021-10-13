@@ -65,7 +65,12 @@ public class ManageEmployee extends JPanel {
         this.add(employeeAttendLate, c);
 
         submitAttendancePanel = new SubmitAttendance();
+        submitAttendancePanel.addSubmitAttendanceListener(employeeDailyAttendance);
+        submitAttendancePanel.addSubmitAttendanceListener(employeeAttendLate);
         employeeDailyAttendance.addEmployeeAttendanceListener(submitAttendancePanel);
+        DatePicker datePicker = employeeDailyAttendance.getDatePicker();
+        submitAttendancePanel.setDateInitial(datePicker.getDefaultToday());
+        datePicker.addDateListener(submitAttendancePanel);
         c = new GridBagConstraints();
         c.gridy = 4;
         c.anchor = GridBagConstraints.FIRST_LINE_START;

@@ -317,7 +317,7 @@ public class CRUDAttendance {
             }
         }
 
-        private boolean getCreateState() {
+        public boolean getCreateState() {
             if (this.created == ATTENDANCE_CREATED) {
                 return true;
             }
@@ -332,7 +332,7 @@ public class CRUDAttendance {
             }
         }
 
-        private boolean getUpdateState() {
+        public boolean getUpdateState() {
             if (this.updated == ATTENDANCE_UPDATED) {
                 return true;
             }
