@@ -12,10 +12,8 @@ package model;
 public class Late {
 
     private int id;
-    private int employee_id;
     private int attendance_id;
     private int minutes_late;
-    private int deduction;
 
     public int getId() {
         return id;
@@ -23,14 +21,6 @@ public class Late {
 
     public void setId(int id) {
         this.id = id;
-    }
-
-    public int getEmployee_id() {
-        return employee_id;
-    }
-
-    public void setEmployee_id(int employee_id) {
-        this.employee_id = employee_id;
     }
 
     public int getAttendance_id() {
@@ -47,14 +37,6 @@ public class Late {
 
     public void setMinutes_late(int minutes_late) {
         this.minutes_late = minutes_late;
-    }
-
-    public int getDeduction() {
-        return deduction;
-    }
-
-    public void setDeduction(int deduction) {
-        this.deduction = deduction;
     }
 
 }

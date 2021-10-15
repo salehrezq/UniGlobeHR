@@ -10,5 +10,11 @@ package gui.attendance;
  * @author Saleh
  */
 public interface LateAttendanceListener {
-    
+
+    public void employeeAttendedLate();
+
+    public void attendMinutesLate(int minutesLate);
+
+    public void employeeAttendedFine();
+
 }

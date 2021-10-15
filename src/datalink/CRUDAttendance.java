@@ -164,7 +164,7 @@ public class CRUDAttendance {
         EmployeeAttendanceStatus eas = new EmployeeAttendanceStatus();
 
         try {
-            String sql = "SELECT `state` FROM `attendance` WHERE `employee_id` = ? AND `date` = ?";
+            String sql = "SELECT `id` `state` FROM `attendance` WHERE `employee_id` = ? AND `date` = ?";
             conn = Connect.getConnection();
             PreparedStatement p = conn.prepareStatement(sql);
             p.setInt(1, employeeId);
@@ -178,6 +178,7 @@ public class CRUDAttendance {
             if (isRecordAvailable) {
                 // Move cursor to next record, which is the first in this case.
                 result.next();
+                eas.setAttendanceId(result.getInt("id"));
                 eas.retrieveWhetherAttendanceWasTaken(ATTENDANCE_ALREADY_TAKEN);
                 eas.retrieveEmployeeStoredAttendanceState(eas.retrieveAttendanceStoredStateFromResultSet(result.getBoolean("state")));
             } else {
@@ -246,11 +247,20 @@ public class CRUDAttendance {
 
     public static class EmployeeAttendanceStatus {
 
+        private int attendanceId;
         private boolean isAttendanceTaken;
         private Boolean employeeStoredAttendanceState;
         private int created;
         private int updated;
         private boolean isUpdateNeeded;
+
+        public void setAttendanceId(int attendanceId) {
+            this.attendanceId = attendanceId;
+        }
+
+        public int getAttendanceId() {
+            return this.attendanceId;
+        }
 
         private void retrieveWhetherAttendanceWasTaken(int isTaken) {
             if (isTaken == ATTENDANCE_ALREADY_TAKEN) {

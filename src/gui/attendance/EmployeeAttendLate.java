@@ -6,15 +6,18 @@
 package gui.attendance;
 
 import datalink.CRUDAttendance;
+import datalink.CRUDLateAttendance;
 import java.awt.Dimension;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.text.ParseException;
+import java.util.ArrayList;
 import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.text.MaskFormatter;
+import model.Late;
 
 /**
  *
@@ -30,6 +33,7 @@ public class EmployeeAttendLate extends JPanel
     private JCheckBox checkEmployeeLate;
     private JFormattedTextField tfMinutesLate;
     private JLabel lbMinutes;
+    private ArrayList<LateAttendanceListener> lateAttendanceListeners;
 
     public EmployeeAttendLate() {
 
@@ -86,6 +90,16 @@ public class EmployeeAttendLate extends JPanel
     public void employeeAttendanceDataOnSelection(CRUDAttendance.EmployeeAttendanceStatus eas) {
         if (eas.getWasAttendanceTaken()) {
             if (eas.getEmployeeStoredAttendanceState()) {
+                Late lateAttendance = CRUDLateAttendance.getLateAttendance(eas.getAttendanceId());
+                if (lateAttendance != null) {
+                    checkEmployeeLate.setSelected(true);
+                    tfMinutesLate.setText(String.valueOf(lateAttendance.getMinutes_late()));
+                } else {
+                    checkEmployeeLate.setSelected(false);
+                    tfMinutesLate.setText("000");
+                }
+
+                // Ask database if if was late
                 // The state was present
                 // Enable the checkbox of late
                 // Retreive from database if employee was late,
@@ -143,11 +157,34 @@ public class EmployeeAttendLate extends JPanel
             int state = arg0.getStateChange();
             if (state == ItemEvent.SELECTED) {
                 tfMinutesLate.setEnabled(true);
+                notifyEmployeeAttendedLate();
             } else {
                 tfMinutesLate.setEnabled(false);
+                notifyemployeeAttendedFine();
                 tfMinutesLate.setText("000");
             }
         }
     }
 
+    public void addLateAttendanceListener(LateAttendanceListener lateal) {
+        this.lateAttendanceListeners.add(lateal);
+    }
+
+    private void notifyEmployeeAttendedLate() {
+        this.lateAttendanceListeners.forEach((lateal) -> {
+            lateal.employeeAttendedLate();
+        });
+    }
+
+    private void notifyAttendMinutesLate(int minutesLate) {
+        this.lateAttendanceListeners.forEach((lateal) -> {
+            lateal.attendMinutesLate(minutesLate);
+        });
+    }
+
+    private void notifyemployeeAttendedFine() {
+        this.lateAttendanceListeners.forEach((lateal) -> {
+            lateal.employeeAttendedFine();
+        });
+    }
 }

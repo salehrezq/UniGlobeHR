@@ -17,6 +17,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import model.Attendance;
 import model.Employee;
+import model.Late;
 
 /**
  *
@@ -32,6 +33,7 @@ public class SubmitAttendance extends JPanel
 
     private final JButton btnSubmitAttendance;
     private Attendance attendance;
+    private Late lateAttendance;
     private CRUDAttendance.EmployeeAttendanceStatus eas;
     private LocalDate date;
     private ArrayList<SubmitAttendanceListener> submitAttendanceListeners;
