@@ -16,6 +16,9 @@ import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.text.MaskFormatter;
 import model.Late;
 
@@ -31,44 +34,26 @@ public class EmployeeAttendLate extends JPanel
         SubmitAttendanceListener {
 
     private JCheckBox checkEmployeeLate;
-    private JFormattedTextField tfMinutesLate;
+    private JSpinner spinnerMinutesLate;
     private JLabel lbMinutes;
     private ArrayList<LateAttendanceListener> lateAttendanceListeners;
 
     public EmployeeAttendLate() {
 
+        lateAttendanceListeners = new ArrayList<>();
         checkEmployeeLate = new JCheckBox();
         checkEmployeeLate.setEnabled(false);
         checkEmployeeLate.addItemListener(new CheckBoxHandler());
-        tfMinutesLate = new JFormattedTextField(getMaskFormatter());
-        tfMinutesLate.setPreferredSize(new Dimension(30, 20));
-        tfMinutesLate.setEnabled(false);
+        SpinnerModel spnModel = new SpinnerNumberModel(1, 1, 60, 1);
+        spinnerMinutesLate = new JSpinner(spnModel);
+        spinnerMinutesLate.setPreferredSize(new Dimension(45, 20));
+        spinnerMinutesLate.setEnabled(false);
         lbMinutes = new JLabel("Minutes");
         lbMinutes.setEnabled(false);
 
         this.add(checkEmployeeLate);
-        this.add(tfMinutesLate);
+        this.add(spinnerMinutesLate);
         this.add(lbMinutes);
-    }
-
-    /**
-     * This method returns MaskFormatter that enforces 3 digits The # character
-     * represent digit, and three of them (###) represents the allowed number of
-     * digits.
-     *
-     * 000 is placeholder.
-     *
-     * @return MaskFormatter
-     */
-    private MaskFormatter getMaskFormatter() {
-        MaskFormatter mask = null;
-        try {
-            mask = new MaskFormatter("###");
-            mask.setPlaceholder("000");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        return mask;
     }
 
     @Override
@@ -81,8 +66,8 @@ public class EmployeeAttendLate extends JPanel
     public void employeeIsAbsent() {
         checkEmployeeLate.setEnabled(false);
         checkEmployeeLate.setSelected(false);
-        tfMinutesLate.setEnabled(false);
-        tfMinutesLate.setText("000");
+        spinnerMinutesLate.setEnabled(false);
+        spinnerMinutesLate.setValue(1);
         lbMinutes.setEnabled(false);
     }
 
@@ -91,14 +76,14 @@ public class EmployeeAttendLate extends JPanel
         if (eas.getWasAttendanceTaken()) {
             if (eas.getEmployeeStoredAttendanceState()) {
                 Late lateAttendance = CRUDLateAttendance.getLateAttendance(eas.getAttendanceId());
+                checkEmployeeLate.setEnabled(false);
                 if (lateAttendance != null) {
                     checkEmployeeLate.setSelected(true);
-                    tfMinutesLate.setText(String.valueOf(lateAttendance.getMinutes_late()));
+                    spinnerMinutesLate.setValue(lateAttendance.getMinutes_late());
                 } else {
                     checkEmployeeLate.setSelected(false);
-                    tfMinutesLate.setText("000");
+                    spinnerMinutesLate.setValue(1);
                 }
-
                 // Ask database if if was late
                 // The state was present
                 // Enable the checkbox of late
@@ -106,9 +91,13 @@ public class EmployeeAttendLate extends JPanel
                 // if late update the minutes field
             } else {
                 // The state was absent
+                checkEmployeeLate.setEnabled(false);
+                checkEmployeeLate.setSelected(false);
             }
         } else {
             // Attendance was NOT taken yet
+            checkEmployeeLate.setEnabled(false);
+            checkEmployeeLate.setSelected(false);
         }
     }
 
@@ -116,8 +105,8 @@ public class EmployeeAttendLate extends JPanel
     public void employeeSelectionCleared() {
         checkEmployeeLate.setEnabled(false);
         checkEmployeeLate.setSelected(false);
-        tfMinutesLate.setEnabled(false);
-        tfMinutesLate.setText("000");
+        spinnerMinutesLate.setEnabled(false);
+        spinnerMinutesLate.setValue(1);
         lbMinutes.setEnabled(false);
     }
 
@@ -140,7 +129,7 @@ public class EmployeeAttendLate extends JPanel
     @Override
     public void attendanceSubmitSucceeded() {
         this.checkEmployeeLate.setEnabled(false);
-        this.tfMinutesLate.setEnabled(false);
+        this.spinnerMinutesLate.setEnabled(false);
         this.lbMinutes.setEnabled(false);
     }
 
@@ -156,12 +145,12 @@ public class EmployeeAttendLate extends JPanel
 
             int state = arg0.getStateChange();
             if (state == ItemEvent.SELECTED) {
-                tfMinutesLate.setEnabled(true);
+                spinnerMinutesLate.setEnabled(true);
                 notifyEmployeeAttendedLate();
             } else {
-                tfMinutesLate.setEnabled(false);
+                spinnerMinutesLate.setEnabled(false);
                 notifyemployeeAttendedFine();
-                tfMinutesLate.setText("000");
+                spinnerMinutesLate.setValue(1);
             }
         }
     }

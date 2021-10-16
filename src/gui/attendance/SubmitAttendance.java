@@ -103,7 +103,9 @@ public class SubmitAttendance extends JPanel
 
     @Override
     public void dateChanged(LocalDate date) {
-        attendance.setDate(date);
+        if (attendance != null) {
+            attendance.setDate(date);
+        }
     }
 
     class SubmitAttendanceAction extends AbstractAction {
