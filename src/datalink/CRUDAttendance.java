@@ -6,6 +6,7 @@
 package datalink;
 
 import java.sql.Connection;
+import java.sql.Statement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -51,12 +52,32 @@ public class CRUDAttendance {
         try {
             String sql = "INSERT INTO attendance (`employee_id`, `date`, `state`) VALUES (?, ?, ?)";
             conn = Connect.getConnection();
-            PreparedStatement p = conn.prepareStatement(sql);
-
+            PreparedStatement p = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            //  System.out.println(attendance.getStateOfAttendance()? "present":"absent");
             p.setInt(1, attendance.getEmployeeId());
             p.setObject(2, attendance.getDate());
             p.setBoolean(3, attendance.getStateOfAttendance());
             create = p.executeUpdate();
+
+            if (create == 0) {
+                if (!eas.getCreateState()) {
+                    JOptionPane.showConfirmDialog(null,
+                            "Fail to create attendance inner", "",
+                            JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
+            try ( ResultSet generatedKeys = p.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    //  user.setId(generatedKeys.getLong(1));
+                    eas.setAttendanceId(generatedKeys.getInt(1));
+                } else {
+                    JOptionPane.showConfirmDialog(null,
+                            "Fail to create attendance inner 2", "",
+                            JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+                }
+            }
+
             eas.setCreatedOrFailed(create);
             conn.commit();
         } catch (SQLException ex) {

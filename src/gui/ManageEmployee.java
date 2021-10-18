@@ -67,6 +67,7 @@ public class ManageEmployee extends JPanel {
         submitAttendancePanel.addSubmitAttendanceListener(employeeDailyAttendance);
         submitAttendancePanel.addSubmitAttendanceListener(employeeAttendLate);
         employeeDailyAttendance.addEmployeeAttendanceListener(submitAttendancePanel);
+        employeeAttendLate.addLateAttendanceListener(submitAttendancePanel);
         DatePicker datePicker = employeeDailyAttendance.getDatePicker();
         submitAttendancePanel.setDateInitial(datePicker.getDefaultToday());
         datePicker.addDateListener(submitAttendancePanel);

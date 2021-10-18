@@ -6,6 +6,7 @@
 package gui.attendance;
 
 import datalink.CRUDAttendance;
+import datalink.CRUDLateAttendance;
 import gui.DateListener;
 import gui.EmployeeSelectedListener;
 import java.awt.event.ActionEvent;
@@ -14,7 +15,6 @@ import java.util.ArrayList;
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import model.Attendance;
 import model.Employee;
 import model.Late;
@@ -27,6 +27,7 @@ public class SubmitAttendance extends JPanel
         implements
         EmployeeSelectedListener,
         EmployeeAttendanceListener,
+        LateAttendanceListener,
         EmployeeAttendanceDataListener,
         DateChangedAttendanceDataListener,
         DateListener {
@@ -108,6 +109,23 @@ public class SubmitAttendance extends JPanel
         }
     }
 
+    @Override
+    public void employeeAttendedLate() {
+        lateAttendance = new Late();
+        // default one minute
+        lateAttendance.setMinutes_late(1);
+    }
+
+    @Override
+    public void attendMinutesLate(int minutesLate) {
+        lateAttendance.setMinutes_late(minutesLate);
+    }
+
+    @Override
+    public void employeeAttendedFine() {
+        lateAttendance = null;
+    }
+
     class SubmitAttendanceAction extends AbstractAction {
 
         @Override
@@ -116,6 +134,15 @@ public class SubmitAttendance extends JPanel
             if (eas.getCreateState()) {
                 btnSubmitAttendance.setEnabled(false);
                 notifyAttendanceSubmitSuccedded();
+                // Check if employee is present to check if he is late or not.
+                if (attendance.getStateOfAttendance()) {
+                    // Check if employee is late.
+                    if (lateAttendance != null) {
+                        // Set attendance it for the late record 
+                        lateAttendance.setAttendance_id(eas.getAttendanceId());
+                        CRUDLateAttendance.create(lateAttendance);
+                    }
+                }
             }
         }
     }

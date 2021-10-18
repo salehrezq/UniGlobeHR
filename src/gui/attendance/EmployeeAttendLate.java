@@ -19,6 +19,8 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 import javax.swing.text.MaskFormatter;
 import model.Late;
 
@@ -46,6 +48,7 @@ public class EmployeeAttendLate extends JPanel
         checkEmployeeLate.addItemListener(new CheckBoxHandler());
         SpinnerModel spnModel = new SpinnerNumberModel(1, 1, 60, 1);
         spinnerMinutesLate = new JSpinner(spnModel);
+        spinnerMinutesLate.addChangeListener(new MinutesLateSpinnerHandler());
         spinnerMinutesLate.setPreferredSize(new Dimension(45, 20));
         spinnerMinutesLate.setEnabled(false);
         lbMinutes = new JLabel("Minutes");
@@ -152,6 +155,16 @@ public class EmployeeAttendLate extends JPanel
                 notifyemployeeAttendedFine();
                 spinnerMinutesLate.setValue(1);
             }
+        }
+    }
+
+    private class MinutesLateSpinnerHandler implements ChangeListener {
+
+        @Override
+        public void stateChanged(ChangeEvent arg0) {
+            JSpinner s = (JSpinner) arg0.getSource();
+            int minutes = (int) s.getValue();
+            notifyAttendMinutesLate(minutes);
         }
     }
 

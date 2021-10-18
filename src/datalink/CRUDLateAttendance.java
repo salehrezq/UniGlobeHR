@@ -21,7 +21,7 @@ public class CRUDLateAttendance {
 
     private static Connection conn;
 
-    private static void create(Late lateAttendance) {
+    public static void create(Late lateAttendance) {
 
         int create = 0;
 
