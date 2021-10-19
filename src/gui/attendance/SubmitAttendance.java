@@ -136,20 +136,32 @@ public class SubmitAttendance extends JPanel
         @Override
         public void actionPerformed(ActionEvent arg0) {
             btnSubmitAttendance.setEnabled(false);
-            // In case employee is late, then do not commit the executed statement
-            // but wait for the late insert statement to be executed to commit both
-            // in a single commit.
+
             boolean commitAndDontWaitAnotherExecuteStmt = false;
 
-            if (attendance.getStateOfAttendance() == false
-                    || (attendance.getStateOfAttendance() && hasEmployeeAttendedFine)) {
-                // Employee is either absent, then no need to be late,
-                // or employee attend without being late
-                // so commit immediatley in either cases.
+            boolean employeeIsEitherAbsentOrAttendedFine
+                    = (attendance.getStateOfAttendance() == false)
+                    || (attendance.getStateOfAttendance() && hasEmployeeAttendedFine);
+
+            boolean employeeAttendedAndLate
+                    = attendance.getStateOfAttendance()
+                    && lateAttendance != null;
+
+            if (employeeIsEitherAbsentOrAttendedFine) {
                 commitAndDontWaitAnotherExecuteStmt = true;
             }
 
+            if (employeeAttendedAndLate) {
+                commitAndDontWaitAnotherExecuteStmt = false;
+            }
+
             eas = CRUDAttendance.takeAttendance(attendance, commitAndDontWaitAnotherExecuteStmt);
+
+            if (employeeIsEitherAbsentOrAttendedFine) {
+                if (eas.getCreateState()) {
+                    notifyAttendanceSubmitSuccedded();
+                }
+            }
 
             int lateAttendanceInserted = 0;
             // Employee attended but late.
@@ -160,15 +172,6 @@ public class SubmitAttendance extends JPanel
                 lateAttendanceInserted = CRUDLateAttendance.create(lateAttendance);
 
                 if (lateAttendanceInserted == 1) {
-                    notifyAttendanceSubmitSuccedded();
-                }
-            }
-
-            // Employee is either absen, then no need to be late,
-            // or employee attend without being late
-            // so notifyAttendanceSubmitSuccedded 
-            if (attendance.getStateOfAttendance() == false || (attendance.getStateOfAttendance() && hasEmployeeAttendedFine)) {
-                if (eas.getCreateState()) {
                     notifyAttendanceSubmitSuccedded();
                 }
             }
