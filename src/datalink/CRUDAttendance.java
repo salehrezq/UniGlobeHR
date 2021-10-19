@@ -181,7 +181,7 @@ public class CRUDAttendance {
         EmployeeAttendanceStatus eas = new EmployeeAttendanceStatus();
 
         try {
-            String sql = "SELECT `id` `state` FROM `attendance` WHERE `employee_id` = ? AND `date` = ?";
+            String sql = "SELECT `id`, `state` FROM `attendance` WHERE `employee_id` = ? AND `date` = ?";
             conn = Connect.getConnection();
             PreparedStatement p = conn.prepareStatement(sql);
             p.setInt(1, employeeId);
