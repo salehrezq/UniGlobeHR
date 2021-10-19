@@ -8,6 +8,8 @@ package gui.attendance;
 import datalink.CRUDAttendance;
 import datalink.CRUDLateAttendance;
 import java.awt.Dimension;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.text.ParseException;
@@ -45,7 +47,7 @@ public class EmployeeAttendLate extends JPanel
         lateAttendanceListeners = new ArrayList<>();
         checkEmployeeLate = new JCheckBox();
         checkEmployeeLate.setEnabled(false);
-        checkEmployeeLate.addItemListener(new CheckBoxHandler());
+        checkEmployeeLate.addActionListener(new CheckBoxHandler());
         SpinnerModel spnModel = new SpinnerNumberModel(1, 1, 60, 1);
         spinnerMinutesLate = new JSpinner(spnModel);
         spinnerMinutesLate.addChangeListener(new MinutesLateSpinnerHandler());
@@ -144,13 +146,14 @@ public class EmployeeAttendLate extends JPanel
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    private class CheckBoxHandler implements ItemListener {
+    private class CheckBoxHandler implements ActionListener {
 
         @Override
-        public void itemStateChanged(ItemEvent arg0) {
+        public void actionPerformed(ActionEvent arg0) {
 
-            int state = arg0.getStateChange();
-            if (state == ItemEvent.SELECTED) {
+            JCheckBox checkboxLate = (JCheckBox) arg0.getSource();
+
+            if (checkboxLate.getModel().isSelected()) {
                 spinnerMinutesLate.setEnabled(true);
                 notifyEmployeeAttendedLate();
             } else {
