@@ -34,6 +34,7 @@ public class CRUDAttendance {
     private static final int ATTENDANCE_CREATED = 5;
     private static final int ATTENDANCE_UPDATED = 6;
     private static final int FAIL_ON_CREATE_OR_UPDATE = 7;
+    private static boolean commitAndDontWaitAnotherExecuteStmt;
 
     /**
      * Inserts <code>Attendance</code> entity to the database, and returns the
@@ -45,7 +46,7 @@ public class CRUDAttendance {
      * @return <code>EmployeeAttendanceStatus</code> that contains the create
      * state of attendance.
      */
-    private static EmployeeAttendanceStatus create(Attendance attendance, EmployeeAttendanceStatus eas) {
+    private static EmployeeAttendanceStatus create(Attendance attendance, EmployeeAttendanceStatus eas, boolean commitAndDontWaitAnotherExecuteStmt) {
 
         int create = 0;
 
@@ -59,36 +60,41 @@ public class CRUDAttendance {
             p.setBoolean(3, attendance.getStateOfAttendance());
             create = p.executeUpdate();
 
-            if (create == 0) {
-                if (!eas.getCreateState()) {
-                    JOptionPane.showConfirmDialog(null,
-                            "Fail to create attendance inner", "",
-                            JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
-                }
-            }
-
-            try ( ResultSet generatedKeys = p.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    //  user.setId(generatedKeys.getLong(1));
-                    eas.setAttendanceId(generatedKeys.getInt(1));
-                } else {
-                    JOptionPane.showConfirmDialog(null,
-                            "Fail to create attendance inner 2", "",
-                            JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
-                }
-            }
-
             eas.setCreatedOrFailed(create);
-            conn.commit();
+            if (eas.getCreateState() == false) {
+                // Failed to insert attendance record.
+                JOptionPane.showConfirmDialog(null,
+                        "Fail to create attendance", "",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+            }
+
+            if (eas.getCreateState()) {
+                // Succeeded to insert attendance record, now get the record id.
+                try ( ResultSet generatedKeys = p.getGeneratedKeys()) {
+                    if (generatedKeys.next()) {
+                        eas.setAttendanceId(generatedKeys.getInt(1));
+                    } else {
+                        JOptionPane.showConfirmDialog(null,
+                                "Fail to create attendance inner 2", "",
+                                JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+                    }
+                }
+            }
+
+            if (commitAndDontWaitAnotherExecuteStmt && eas.getCreateState()) {
+                conn.commit();
+            }
         } catch (SQLException ex) {
             Logger.getLogger(CRUDAttendance.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
+            if (commitAndDontWaitAnotherExecuteStmt) {
+                try {
+                    if (conn != null) {
+                        conn.close();
+                    }
+                } catch (SQLException se) {
+                    se.printStackTrace();
                 }
-            } catch (SQLException se) {
-                se.printStackTrace();
             }
         }
         return eas;
@@ -139,24 +145,26 @@ public class CRUDAttendance {
      *
      * @param attendance that will feed the method with the attendance state of
      * employee
+     * @param commitAndDontWaitAnotherExecuteStmt that will set if connection is
+     * auto committed <code>true</code> or block/atom committed
+     * <code>false</code>. It will be set to <code>true</code> in normal cases,
+     * and <code>false</code> when we need to execute multiple insert statements
+     * which have to be either all inserted altogether successfully or fail
+     * altogether. For example the case when we need to insert both attendance
+     * as present and also insert a `late` record for that attendance.
      * @return <code>EmployeeAttendanceStatus</code> that contains the state of
      * attendance create/update process
      */
-    public static EmployeeAttendanceStatus takeAttendance(Attendance attendance) {
+    public static EmployeeAttendanceStatus takeAttendance(Attendance attendance, boolean commitAndDontWaitAnotherExecuteStmt) {
 
         EmployeeAttendanceStatus eas = getEmployeeAttendanceStatusOnSpecificDate(attendance.getEmployeeId(), attendance.getDate());
 
         if (eas.getWasAttendanceTaken() == false) {
             // If attendance was not taken, then take it
             // and inform EmployeeAttendanceStatus about the state
-            create(attendance, eas);
-            if (!eas.getCreateState()) {
-                JOptionPane.showConfirmDialog(null,
-                        "Fail to create attendance", "",
-                        JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
-            }
+            create(attendance, eas, commitAndDontWaitAnotherExecuteStmt);
         } else {
-            // Attendance already was taken
+            // Attendance already was taken, then it is update call.
             if (eas.getEmployeeStoredAttendanceState() == attendance.getStateOfAttendance()) {
                 // No need to update since the input the same as the stored value.
                 eas.setWhetherUpdateNeeded(false);

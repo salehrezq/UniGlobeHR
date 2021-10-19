@@ -35,6 +35,7 @@ public class SubmitAttendance extends JPanel
     private final JButton btnSubmitAttendance;
     private Attendance attendance;
     private Late lateAttendance;
+    private boolean hasEmployeeAttendedFine;
     private CRUDAttendance.EmployeeAttendanceStatus eas;
     private LocalDate date;
     private ArrayList<SubmitAttendanceListener> submitAttendanceListeners;
@@ -111,6 +112,7 @@ public class SubmitAttendance extends JPanel
 
     @Override
     public void employeeAttendedLate() {
+        hasEmployeeAttendedFine = false;
         lateAttendance = new Late();
         // default one minute
         lateAttendance.setMinutes_late(1);
@@ -118,11 +120,14 @@ public class SubmitAttendance extends JPanel
 
     @Override
     public void attendMinutesLate(int minutesLate) {
-        lateAttendance.setMinutes_late(minutesLate);
+        if (lateAttendance != null) {
+            lateAttendance.setMinutes_late(minutesLate);
+        }
     }
 
     @Override
     public void employeeAttendedFine() {
+        hasEmployeeAttendedFine = true;
         lateAttendance = null;
     }
 
@@ -130,19 +135,46 @@ public class SubmitAttendance extends JPanel
 
         @Override
         public void actionPerformed(ActionEvent arg0) {
-            eas = CRUDAttendance.takeAttendance(attendance);
-            if (eas.getCreateState()) {
-                btnSubmitAttendance.setEnabled(false);
-                notifyAttendanceSubmitSuccedded();
-                // Check if employee is present to check if he is late or not.
-                if (attendance.getStateOfAttendance()) {
-                    // Check if employee is late.
-                    if (lateAttendance != null) {
-                        // Set attendance it for the late record 
-                        lateAttendance.setAttendance_id(eas.getAttendanceId());
-                        CRUDLateAttendance.create(lateAttendance);
-                    }
+            btnSubmitAttendance.setEnabled(false);
+            // In case employee is late, then do not commit the executed statement
+            // but wait for the late insert statement to be executed to commit both
+            // in a single commit.
+            boolean commitAndDontWaitAnotherExecuteStmt = false;
+
+            if (attendance.getStateOfAttendance() == false
+                    || (attendance.getStateOfAttendance() && hasEmployeeAttendedFine)) {
+                // Employee is either absent, then no need to be late,
+                // or employee attend without being late
+                // so commit immediatley in either cases.
+                commitAndDontWaitAnotherExecuteStmt = true;
+            }
+
+            eas = CRUDAttendance.takeAttendance(attendance, commitAndDontWaitAnotherExecuteStmt);
+
+            int lateAttendanceInserted = 0;
+            // Employee attended but late.
+            if (eas.getCreateState() && attendance.getStateOfAttendance() && lateAttendance != null) {
+                // Set attendance id for the late record 
+                lateAttendance.setAttendance_id(eas.getAttendanceId());
+                // Insert the late attendance data.
+                lateAttendanceInserted = CRUDLateAttendance.create(lateAttendance);
+
+                if (lateAttendanceInserted == 1) {
+                    notifyAttendanceSubmitSuccedded();
                 }
+            }
+
+            // Employee is either absen, then no need to be late,
+            // or employee attend without being late
+            // so notifyAttendanceSubmitSuccedded 
+            if (attendance.getStateOfAttendance() == false || (attendance.getStateOfAttendance() && hasEmployeeAttendedFine)) {
+                if (eas.getCreateState()) {
+                    notifyAttendanceSubmitSuccedded();
+                }
+            }
+
+            if (eas.getCreateState() == false || ((lateAttendance != null) && (lateAttendanceInserted == 0))) {
+                btnSubmitAttendance.setEnabled(true);
             }
         }
     }

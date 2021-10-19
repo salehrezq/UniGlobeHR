@@ -11,6 +11,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import model.Late;
 
 /**
@@ -21,18 +22,28 @@ public class CRUDLateAttendance {
 
     private static Connection conn;
 
-    public static void create(Late lateAttendance) {
+    public static int create(Late lateAttendance) {
 
         int create = 0;
 
         try {
             String sql = "INSERT INTO late (`attendance_id`, `minutes_late`) VALUES (?, ?)";
-            conn = Connect.getConnection();
+            // true input to use connection from previous connection
+            // that was used for executing query for inserting attendance.
+            // We use previous connection for atomic commit.
+            conn = Connect.getConnection(true);
             PreparedStatement p = conn.prepareStatement(sql);
 
             p.setInt(1, lateAttendance.getAttendance_id());
             p.setInt(2, lateAttendance.getMinutes_late());
             create = p.executeUpdate();
+
+            if (create == 0) {
+                JOptionPane.showConfirmDialog(null,
+                        "Fail to create late attendence", "",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+            }
+
             // eas.setCreatedOrFailed(create);
             conn.commit();
         } catch (SQLException ex) {
@@ -46,6 +57,7 @@ public class CRUDLateAttendance {
                 se.printStackTrace();
             }
         }
+        return create;
     }
 
     public static Late getLateAttendance(int attendance_id) {
