@@ -41,13 +41,7 @@ public class CRUDEmployee {
         } catch (SQLException ex) {
             Logger.getLogger(CRUDEmployee.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
+            Connect.cleanUp();
         }
         return insert > 0;
     }
@@ -74,13 +68,7 @@ public class CRUDEmployee {
         } catch (SQLException ex) {
             Logger.getLogger(CRUDEmployee.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
+            Connect.cleanUp();
         }
         return employees;
     }

@@ -49,13 +49,7 @@ public class CRUDLateAttendance {
         } catch (SQLException ex) {
             Logger.getLogger(CRUDLateAttendance.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
+            Connect.cleanUp();
         }
         return create;
     }
@@ -84,13 +78,7 @@ public class CRUDLateAttendance {
         } catch (SQLException ex) {
             Logger.getLogger(CRUDLateAttendance.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
+            Connect.cleanUp();
         }
         return lateAttendance;
     }

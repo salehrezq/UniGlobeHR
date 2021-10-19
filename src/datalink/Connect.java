@@ -31,6 +31,7 @@ public class Connect {
     private static Connection conn;
 
     public static Connection getConnection() {
+        cleanUp();
         conn = null;
         try {
             Class.forName(JDBC_DRIVER);
@@ -58,5 +59,15 @@ public class Connect {
             Logger.getLogger(Connect.class.getName()).log(Level.SEVERE, null, ex);
         }
         return conn;
+    }
+
+    public static void cleanUp() {
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(Connect.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 }

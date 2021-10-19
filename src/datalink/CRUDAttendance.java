@@ -88,13 +88,7 @@ public class CRUDAttendance {
             Logger.getLogger(CRUDAttendance.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             if (commitAndDontWaitAnotherExecuteStmt) {
-                try {
-                    if (conn != null) {
-                        conn.close();
-                    }
-                } catch (SQLException se) {
-                    se.printStackTrace();
-                }
+                Connect.cleanUp();
             }
         }
         return eas;
@@ -128,13 +122,7 @@ public class CRUDAttendance {
         } catch (SQLException ex) {
             Logger.getLogger(CRUDAttendance.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
+            Connect.cleanUp();
         }
         return eas;
     }
@@ -217,13 +205,7 @@ public class CRUDAttendance {
         } catch (SQLException ex) {
             Logger.getLogger(CRUDAttendance.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
+            Connect.cleanUp();
         }
 
         return eas;
@@ -263,13 +245,7 @@ public class CRUDAttendance {
         } catch (SQLException ex) {
             Logger.getLogger(CRUDAttendance.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            try {
-                if (conn != null) {
-                    conn.close();
-                }
-            } catch (SQLException se) {
-                se.printStackTrace();
-            }
+            Connect.cleanUp();
         }
         return records;
     }
