@@ -106,6 +106,7 @@ public class EmployeeAttendLate extends JPanel
             checkEmployeeLate.setEnabled(false);
             spinnerMinutesLate.setEnabled(false);
             checkEmployeeLate.setSelected(false);
+            spinnerMinutesLate.setValue(1);
         }
     }
 
