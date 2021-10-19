@@ -80,9 +80,12 @@ public class EmployeeAttendLate extends JPanel
     public void employeeAttendanceDataOnSelection(CRUDAttendance.EmployeeAttendanceStatus eas) {
         if (eas.getWasAttendanceTaken()) {
             if (eas.getEmployeeStoredAttendanceState()) {
-                Late lateAttendance = CRUDLateAttendance.getLateAttendance(eas.getAttendanceId());
                 checkEmployeeLate.setEnabled(false);
                 spinnerMinutesLate.setEnabled(false);
+                // The state was present
+                // Ask database if employee was late
+                // if late update the minutes field
+                Late lateAttendance = CRUDLateAttendance.getLateAttendance(eas.getAttendanceId());
                 if (lateAttendance != null) {
                     checkEmployeeLate.setSelected(true);
                     spinnerMinutesLate.setValue(lateAttendance.getMinutes_late());
@@ -90,11 +93,6 @@ public class EmployeeAttendLate extends JPanel
                     checkEmployeeLate.setSelected(false);
                     spinnerMinutesLate.setValue(1);
                 }
-                // Ask database if if was late
-                // The state was present
-                // Enable the checkbox of late
-                // Retreive from database if employee was late,
-                // if late update the minutes field
             } else {
                 // The state was absent
                 checkEmployeeLate.setEnabled(false);
