@@ -78,10 +78,27 @@ public class EmployeeAttendLate extends JPanel
 
     @Override
     public void employeeAttendanceDataOnSelection(CRUDAttendance.EmployeeAttendanceStatus eas) {
+        attendanceDataReflected(eas);
+    }
+
+    @Override
+    public void dateChanged(CRUDAttendance.EmployeeAttendanceStatus eas) {
+        attendanceDataReflected(eas);
+    }
+
+    @Override
+    public void employeeSelectionCleared() {
+        checkEmployeeLate.setEnabled(false);
+        checkEmployeeLate.setSelected(false);
+        spinnerMinutesLate.setEnabled(false);
+        spinnerMinutesLate.setValue(1);
+        lbMinutes.setEnabled(false);
+    }
+
+    private void attendanceDataReflected(CRUDAttendance.EmployeeAttendanceStatus eas) {
         if (eas.getWasAttendanceTaken()) {
             if (eas.getEmployeeStoredAttendanceState()) {
-                checkEmployeeLate.setEnabled(false);
-                spinnerMinutesLate.setEnabled(false);
+                resetLateAttendanceControls();
                 // The state was present
                 // Ask database if employee was late
                 // if late update the minutes field
@@ -95,42 +112,19 @@ public class EmployeeAttendLate extends JPanel
                 }
             } else {
                 // The state was absent
-                checkEmployeeLate.setEnabled(false);
-                spinnerMinutesLate.setEnabled(false);
-                checkEmployeeLate.setSelected(false);
+                resetLateAttendanceControls();
             }
         } else {
             // Attendance was NOT taken yet
-            checkEmployeeLate.setEnabled(false);
-            spinnerMinutesLate.setEnabled(false);
-            checkEmployeeLate.setSelected(false);
-            spinnerMinutesLate.setValue(1);
+            resetLateAttendanceControls();
         }
     }
 
-    @Override
-    public void employeeSelectionCleared() {
+    private void resetLateAttendanceControls() {
         checkEmployeeLate.setEnabled(false);
-        checkEmployeeLate.setSelected(false);
         spinnerMinutesLate.setEnabled(false);
+        checkEmployeeLate.setSelected(false);
         spinnerMinutesLate.setValue(1);
-        lbMinutes.setEnabled(false);
-    }
-
-    @Override
-    public void dateChanged(CRUDAttendance.EmployeeAttendanceStatus eas) {
-        if (eas.getWasAttendanceTaken()) {
-            if (eas.getEmployeeStoredAttendanceState()) {
-                // The state was present
-                // Enable the checkbox of late
-                // Retreive from database if employee was late,
-                // if late update the minutes field
-            } else {
-                // The state was absent
-            }
-        } else {
-            // Attendance was NOT taken yet
-        }
     }
 
     @Override
