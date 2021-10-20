@@ -105,6 +105,7 @@ public class SubmitAttendance extends JPanel
 
     @Override
     public void dateChanged(LocalDate date) {
+        this.date = date;
         if (attendance != null) {
             attendance.setDate(date);
         }
