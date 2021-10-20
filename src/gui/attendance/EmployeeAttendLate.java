@@ -78,12 +78,12 @@ public class EmployeeAttendLate extends JPanel
 
     @Override
     public void employeeAttendanceDataOnSelection(CRUDAttendance.EmployeeAttendanceStatus eas) {
-        attendanceDataReflected(eas);
+        reactiveControlsOnLateAttendance(eas);
     }
 
     @Override
     public void dateChanged(CRUDAttendance.EmployeeAttendanceStatus eas) {
-        attendanceDataReflected(eas);
+        reactiveControlsOnLateAttendance(eas);
     }
 
     @Override
@@ -95,10 +95,15 @@ public class EmployeeAttendLate extends JPanel
         lbMinutes.setEnabled(false);
     }
 
-    private void attendanceDataReflected(CRUDAttendance.EmployeeAttendanceStatus eas) {
+    private void reactiveControlsOnLateAttendance(CRUDAttendance.EmployeeAttendanceStatus eas) {
+
+        checkEmployeeLate.setEnabled(false);
+        spinnerMinutesLate.setEnabled(false);
+        checkEmployeeLate.setSelected(false);
+        spinnerMinutesLate.setValue(1);
+
         if (eas.getWasAttendanceTaken()) {
             if (eas.getEmployeeStoredAttendanceState()) {
-                resetLateAttendanceControls();
                 // The state was present
                 // Ask database if employee was late
                 // if late update the minutes field
@@ -106,25 +111,9 @@ public class EmployeeAttendLate extends JPanel
                 if (lateAttendance != null) {
                     checkEmployeeLate.setSelected(true);
                     spinnerMinutesLate.setValue(lateAttendance.getMinutes_late());
-                } else {
-                    checkEmployeeLate.setSelected(false);
-                    spinnerMinutesLate.setValue(1);
                 }
-            } else {
-                // The state was absent
-                resetLateAttendanceControls();
             }
-        } else {
-            // Attendance was NOT taken yet
-            resetLateAttendanceControls();
         }
-    }
-
-    private void resetLateAttendanceControls() {
-        checkEmployeeLate.setEnabled(false);
-        spinnerMinutesLate.setEnabled(false);
-        checkEmployeeLate.setSelected(false);
-        spinnerMinutesLate.setValue(1);
     }
 
     @Override
