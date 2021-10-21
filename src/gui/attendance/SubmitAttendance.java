@@ -35,7 +35,6 @@ public class SubmitAttendance extends JPanel
     private final JButton btnSubmitAttendance;
     private Attendance attendance;
     private Late lateAttendance;
-    private boolean hasEmployeeAttendedFine;
     private CRUDAttendance.EmployeeAttendanceStatus eas;
     private LocalDate date;
     private ArrayList<SubmitAttendanceListener> submitAttendanceListeners;
@@ -113,7 +112,6 @@ public class SubmitAttendance extends JPanel
 
     @Override
     public void employeeAttendedLate() {
-        hasEmployeeAttendedFine = false;
         lateAttendance = new Late();
         // default one minute
         lateAttendance.setMinutes_late(1);
@@ -128,7 +126,6 @@ public class SubmitAttendance extends JPanel
 
     @Override
     public void employeeAttendedFine() {
-        hasEmployeeAttendedFine = true;
         lateAttendance = null;
     }
 
@@ -142,7 +139,7 @@ public class SubmitAttendance extends JPanel
 
             boolean employeeIsEitherAbsentOrAttendedFine
                     = (attendance.getStateOfAttendance() == false)
-                    || (attendance.getStateOfAttendance() && hasEmployeeAttendedFine);
+                    || (attendance.getStateOfAttendance() && lateAttendance == null);
 
             boolean employeeAttendedAndLate
                     = attendance.getStateOfAttendance()
