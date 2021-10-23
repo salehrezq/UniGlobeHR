@@ -172,8 +172,25 @@ public class NewEmployeeDialog extends JDialog implements DateListener {
 
         @Override
         public void actionPerformed(ActionEvent arg0) {
+
+            String name = getEmployeeName();
+
+            if (name.isBlank()) {
+                JOptionPane.showConfirmDialog(panel,
+                        "Provide a name", "",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            if (tfSalary.getValue() == null || tfSalary.getValue().toString().isBlank()) {
+                JOptionPane.showConfirmDialog(panel,
+                        "Provide a salary", "",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
             Employee employee = new Employee();
-            employee.setName(getEmployeeName());
+            employee.setName(name);
             employee.setEnrolledDate(getEnrollmentDate());
 
             String salaryString = tfSalary.getValue().toString();
