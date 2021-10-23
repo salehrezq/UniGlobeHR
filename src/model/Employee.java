@@ -16,6 +16,7 @@ public class Employee {
     private int id;
     private String name;
     private LocalDate enrolledDate;
+    private double salary;
     private boolean active;
 
     public int getId() {
@@ -40,6 +41,14 @@ public class Employee {
 
     public void setEnrolledDate(LocalDate enrolledDate) {
         this.enrolledDate = enrolledDate;
+    }
+
+    public double getSalary() {
+        return salary;
+    }
+
+    public void setSalary(double salary) {
+        this.salary = salary;
     }
 
     public boolean isActive() {

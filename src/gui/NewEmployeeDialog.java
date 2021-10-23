@@ -12,6 +12,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.NumberFormat;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -20,8 +21,12 @@ import javax.swing.JTextField;
 import java.time.LocalDate;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.text.NumberFormatter;
 import model.Employee;
 
 /**
@@ -39,6 +44,8 @@ public class NewEmployeeDialog extends JDialog implements DateListener {
     private JLabel lbDate;
     private LocalDate enrollmetDate;
     private DatePicker datePicker;
+    private JLabel lbSalary;
+    private JFormattedTextField tfSalary;
     private JCheckBox fActive;
     private JButton btnInsertEmployee;
 
@@ -46,13 +53,14 @@ public class NewEmployeeDialog extends JDialog implements DateListener {
         super(parentFrame, title, modal);
 
         this.width = 400;
-        this.height = 200;
+        this.height = 350;
 
         panel = new JPanel(new GridBagLayout());
         gbc = new GridBagConstraints();
 
         fieldName();
         fieldDate();
+        fieldSalary();
         fieldActive();
         btnInsertEmployee();
 
@@ -91,12 +99,37 @@ public class NewEmployeeDialog extends JDialog implements DateListener {
         panel.add(datePicker.getDatePicker(), gbc);
     }
 
+    private void fieldSalary() {
+        lbSalary = new JLabel("Salary:");
+        insets(0, 10, 10, 0);
+        grid(0, 2);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        panel.add(lbSalary, gbc);
+        grid(1, 2);
+        gbc.anchor = GridBagConstraints.WEST;
+
+        NumberFormat format = NumberFormat.getInstance();
+        format.setGroupingUsed(false);//Remove comma from number greater than 4 digit
+
+        NumberFormatter salaryFormatter = new NumberFormatter(format);
+        salaryFormatter.setValueClass(Double.class);
+        salaryFormatter.setMinimum(0);
+        salaryFormatter.setMaximum(1000000);
+        salaryFormatter.setAllowsInvalid(false);
+        salaryFormatter.setCommitsOnValidEdit(true);// committ value on each keystroke instead of focus lost
+
+        tfSalary = new JFormattedTextField(format);
+        tfSalary.getDocument().addDocumentListener(new DocumentRegex());
+        tfSalary.setPreferredSize(new Dimension(100, 20));
+        panel.add(tfSalary, gbc);
+    }
+
     private void fieldActive() {
         fActive = new JCheckBox("Is employee active?");
         fActive.setSelected(true);
         fActive.setHorizontalTextPosition(SwingConstants.LEFT);
         insets(0, 6, 10, 0);
-        grid(0, 2);
+        grid(0, 3);
         gbc.anchor = GridBagConstraints.LINE_START;
         panel.add(fActive, gbc);
     }
@@ -104,7 +137,7 @@ public class NewEmployeeDialog extends JDialog implements DateListener {
     private void btnInsertEmployee() {
         btnInsertEmployee = new JButton("Insert");
         btnInsertEmployee.addActionListener(new InsertEmployeeHandler());
-        grid(1, 3);
+        grid(1, 4);
         gbc.anchor = GridBagConstraints.CENTER;
         panel.add(btnInsertEmployee, gbc);
     }
@@ -142,6 +175,11 @@ public class NewEmployeeDialog extends JDialog implements DateListener {
             Employee employee = new Employee();
             employee.setName(getEmployeeName());
             employee.setEnrolledDate(getEnrollmentDate());
+
+            String salaryString = tfSalary.getValue().toString();
+            double salary = Double.valueOf(salaryString);
+
+            employee.setSalary(salary);
             employee.setActive(getEmployeeIsActive());
 
             if (CRUDEmployee.create(employee)) {
@@ -152,6 +190,36 @@ public class NewEmployeeDialog extends JDialog implements DateListener {
                         "Creating employee failed", "",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
             }
+        }
+
+    }
+
+    class DocumentRegex implements DocumentListener {
+
+        String oldText = tfSalary.getText();
+
+        private void doWork() {
+            // Regex match DECIMAL(12,3)
+            if (tfSalary.getText().matches("^\\d{0,9}(?:(?<=\\d)\\.(?=\\d)\\d{0,3})?$")) {
+                btnInsertEmployee.setEnabled(true);
+            } else {
+                btnInsertEmployee.setEnabled(false);
+            }
+        }
+
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            doWork();
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            doWork();
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            doWork();
         }
 
     }

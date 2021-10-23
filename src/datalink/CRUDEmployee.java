@@ -28,13 +28,14 @@ public class CRUDEmployee {
 
         try {
 
-            String sql = "INSERT INTO employees (`name`, `enrolled_date`, `active`) VALUES (?, ?, ?)";
+            String sql = "INSERT INTO employees (`name`, `enrolled_date`, `salary`, `active`) VALUES (?, ?, ?, ?)";
             conn = Connect.getConnection();
             PreparedStatement p = conn.prepareStatement(sql);
 
             p.setString(1, employee.getName());
             p.setObject(2, employee.getEnrolledDate());
-            p.setBoolean(3, employee.isActive());
+            p.setDouble(3, employee.getSalary());
+            p.setBoolean(4, employee.isActive());
             insert = p.executeUpdate();
             conn.commit();
 
