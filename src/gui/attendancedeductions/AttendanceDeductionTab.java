@@ -5,6 +5,8 @@
  */
 package gui.attendancedeductions;
 
+import gui.EmployeeCard;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.JPanel;
 
@@ -15,11 +17,22 @@ import javax.swing.JPanel;
 public class AttendanceDeductionTab extends JPanel {
 
     private final GridBagLayout gridbag;
+    private EmployeeCard employeeCard;
 
     public AttendanceDeductionTab() {
         super();
         this.gridbag = new GridBagLayout();
         this.setLayout(gridbag);
+        GridBagConstraints c = new GridBagConstraints();
+
+        employeeCard = new EmployeeCard();
+
+        c = new GridBagConstraints();
+        c.gridy = 1;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.anchor = GridBagConstraints.FIRST_LINE_START;
+        this.add(employeeCard, c);
     }
 
 }
