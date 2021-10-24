@@ -5,10 +5,21 @@
  */
 package gui.attendancedeductions;
 
+import java.awt.GridBagLayout;
+import javax.swing.JPanel;
+
 /**
  *
  * @author Saleh
  */
-public class AttendanceDeductionTab {
+public class AttendanceDeductionTab extends JPanel {
+
+    private final GridBagLayout gridbag;
+
+    public AttendanceDeductionTab() {
+        super();
+        this.gridbag = new GridBagLayout();
+        this.setLayout(gridbag);
+    }
 
 }
