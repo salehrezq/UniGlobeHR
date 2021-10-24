@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
+package gui.attendance;
 
+import gui.DatePicker;
+import gui.EmployeeCard;
 import gui.attendance.EmployeeAttendLate;
 import gui.attendance.MonthelyAbsence;
 import gui.attendance.EmployeeDailyAttendance;
@@ -20,7 +22,7 @@ import model.Employee;
  *
  * @author Saleh
  */
-public class ManageEmployee extends JPanel {
+public class AttendanceTab extends JPanel {
 
     private final GridBagLayout gridbag;
 
@@ -30,7 +32,7 @@ public class ManageEmployee extends JPanel {
     private SubmitAttendance submitAttendancePanel;
     private MonthelyAbsence monthelyAbsence;
 
-    public ManageEmployee() {
+    public AttendanceTab() {
 
         super();
         this.setBorder(BorderFactory.createLineBorder(Color.red));

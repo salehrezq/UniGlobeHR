@@ -5,6 +5,7 @@
  */
 package gui;
 
+import gui.attendance.AttendanceTab;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.JPanel;
@@ -29,7 +30,7 @@ public class Stage extends JPanel {
         this.setLayout(new GridLayout(1, 0));
         treeEmployees = new TreeEmployees();
         controls = new Controls();
-        ManageEmployee manageEmployee = controls.getManageEmployee();
+        AttendanceTab manageEmployee = controls.getManageEmployee();
         treeEmployees.addEmployeeSelectedListener(manageEmployee.getEmployeeCard());
         treeEmployees.addEmployeeSelectedListener(manageEmployee.getEmployeeDailyAbsence());
         treeEmployees.addEmployeeSelectedListener(manageEmployee.getSubmitAttendancePanel());

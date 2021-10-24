@@ -5,7 +5,7 @@
  */
 package gui;
 
-import java.awt.Dimension;
+import gui.attendance.AttendanceTab;
 import java.awt.GridLayout;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -17,21 +17,20 @@ import javax.swing.JTabbedPane;
 public class Controls extends JPanel {
 
     private JTabbedPane tabs;
-    private ManageEmployee manageEmployees;
+    private AttendanceTab attendancePanel;
 
     public Controls() {
         super();
         this.setLayout(new GridLayout(1, 0));
 
-        manageEmployees = new ManageEmployee();
+        attendancePanel = new AttendanceTab();
         tabs = new JTabbedPane();
-        tabs.add(manageEmployees, "Employees CRUD");
+        tabs.add(attendancePanel, "Attendance");
         this.add(tabs);
-
     }
 
-    public ManageEmployee getManageEmployee() {
-        return this.manageEmployees;
+    public AttendanceTab getManageEmployee() {
+        return this.attendancePanel;
     }
 
 }
