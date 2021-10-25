@@ -6,6 +6,7 @@
 package gui;
 
 import gui.attendance.AttendanceTab;
+import gui.attendancedeductions.AttendanceDeductionTab;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.JPanel;
@@ -30,12 +31,16 @@ public class Stage extends JPanel {
         this.setLayout(new GridLayout(1, 0));
         treeEmployees = new TreeEmployees();
         controls = new Controls();
-        AttendanceTab manageEmployee = controls.getManageEmployee();
-        treeEmployees.addEmployeeSelectedListener(manageEmployee.getEmployeeCard());
-        treeEmployees.addEmployeeSelectedListener(manageEmployee.getEmployeeDailyAbsence());
-        treeEmployees.addEmployeeSelectedListener(manageEmployee.getSubmitAttendancePanel());
-        treeEmployees.addEmployeeSelectedListener(manageEmployee.getMonthelyAbsence());
-        //Add the scroll panes to a split pane.
+        // Attendance panel
+        AttendanceTab attendancePanel = controls.getManageEmployee();
+        treeEmployees.addEmployeeSelectedListener(attendancePanel.getEmployeeCard());
+        treeEmployees.addEmployeeSelectedListener(attendancePanel.getEmployeeDailyAbsence());
+        treeEmployees.addEmployeeSelectedListener(attendancePanel.getSubmitAttendancePanel());
+        treeEmployees.addEmployeeSelectedListener(attendancePanel.getMonthelyAbsence());
+        // Attendance deductions panel
+        AttendanceDeductionTab attendanceDeductionPanel = controls.getAttendanceDeductionPanel();
+        treeEmployees.addEmployeeSelectedListener(attendanceDeductionPanel.geteEmployeeCard());
+        // Add the scroll panes to a split pane.
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         splitPane.setDividerSize(5);
         JScrollPane scrollPane = new JScrollPane(treeEmployees.getTree());

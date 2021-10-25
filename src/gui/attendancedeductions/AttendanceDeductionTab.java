@@ -35,4 +35,8 @@ public class AttendanceDeductionTab extends JPanel {
         this.add(employeeCard, c);
     }
 
+    public EmployeeCard geteEmployeeCard() {
+        return this.employeeCard;
+    }
+
 }

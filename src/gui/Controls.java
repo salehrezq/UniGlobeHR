@@ -38,4 +38,8 @@ public class Controls extends JPanel {
         return this.attendancePanel;
     }
 
+    public AttendanceDeductionTab getAttendanceDeductionPanel() {
+        return attendanceDeductionPanel;
+    }
+
 }

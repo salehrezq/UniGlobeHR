@@ -21,9 +21,9 @@ public class EmployeeCard extends JPanel implements EmployeeSelectedListener {
 
     private final GridBagLayout gridbag;
 
-    private static JLabel lbEmpName;
-    private static JLabel lbDateEnrollment;
-    public static final String UNSELECTED = "UN-SELECTED";
+    private JLabel lbEmpName;
+    private JLabel lbDateEnrollment;
+    private final String UNSELECTED = "UN-SELECTED";
 
     public EmployeeCard() {
         super();
