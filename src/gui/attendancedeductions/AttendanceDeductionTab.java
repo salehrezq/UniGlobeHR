@@ -18,6 +18,7 @@ public class AttendanceDeductionTab extends JPanel {
 
     private final GridBagLayout gridbag;
     private EmployeeCard employeeCard;
+    private MonthAttendanceDeductions monthAttendanceDeductions;
 
     public AttendanceDeductionTab() {
         super();
@@ -26,17 +27,27 @@ public class AttendanceDeductionTab extends JPanel {
         GridBagConstraints c = new GridBagConstraints();
 
         employeeCard = new EmployeeCard();
-
         c = new GridBagConstraints();
         c.gridy = 1;
         c.weightx = 1.0;
-        c.weighty = 1.0;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         this.add(employeeCard, c);
+
+        monthAttendanceDeductions = new MonthAttendanceDeductions();
+        c = new GridBagConstraints();
+        c.gridy = 2;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.anchor = GridBagConstraints.FIRST_LINE_START;
+        this.add(monthAttendanceDeductions.getPanelTable(), c);
     }
 
     public EmployeeCard geteEmployeeCard() {
         return this.employeeCard;
+    }
+
+    public MonthAttendanceDeductions getMonthAttendanceDeductions() {
+        return monthAttendanceDeductions;
     }
 
 }

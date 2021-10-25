@@ -40,6 +40,7 @@ public class Stage extends JPanel {
         // Attendance deductions panel
         AttendanceDeductionTab attendanceDeductionPanel = controls.getAttendanceDeductionPanel();
         treeEmployees.addEmployeeSelectedListener(attendanceDeductionPanel.geteEmployeeCard());
+        treeEmployees.addEmployeeSelectedListener(attendanceDeductionPanel.getMonthAttendanceDeductions());
         // Add the scroll panes to a split pane.
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         splitPane.setDividerSize(5);

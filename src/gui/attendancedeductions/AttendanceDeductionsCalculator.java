@@ -5,10 +5,21 @@
  */
 package gui.attendancedeductions;
 
+import java.util.List;
+
 /**
  *
  * @author Saleh
  */
 public class AttendanceDeductionsCalculator {
+
+    public static void calculateDeductions(List<Object[]> attendance) {
+
+        attendance.forEach((item) -> {
+            System.out.println(item[0]);
+            System.out.println(item[1]);
+        });
+
+    }
 
 }
