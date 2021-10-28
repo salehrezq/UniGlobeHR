@@ -112,6 +112,7 @@ public class MonthAttendanceDeductions implements EmployeeSelectedListener {
         int year = Integer.valueOf(tfYear.getText());
         int month = this.monthsList.getSelectedIndex() + 1;
         YearMonth ym = YearMonth.of(year, month);
+        setYearAndMonth(ym);
 
         records = CRUDAttendance.getAbsenceRecordByEmployeeByMonth(employeeId, ym);
         return records;
@@ -140,6 +141,7 @@ public class MonthAttendanceDeductions implements EmployeeSelectedListener {
             model.setRowCount(0);
 
             List<Object[]> list = getTata();
+            AttendanceDeductionsCalculator.calculateDeductions(list, yearAndMonth);
             if (list == null) {
                 JOptionPane.showConfirmDialog(panelGather,
                         "Select Employee", "",

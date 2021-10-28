@@ -5,6 +5,8 @@
  */
 package gui.attendancedeductions;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.List;
 
 /**
@@ -13,13 +15,35 @@ import java.util.List;
  */
 public class AttendanceDeductionsCalculator {
 
-    public static void calculateDeductions(List<Object[]> attendance) {
+    public static void calculateDeductions(List<Object[]> attendance, YearMonth ym) {
 
-        attendance.forEach((item) -> {
-            System.out.println(item[0]);
-            System.out.println(item[1]);
-        });
+        int size = attendance.size();
 
+        for (int i = 0; i < size; i++) {
+
+            if (size == 1) {
+                System.out.println("only day single deduction");
+                break;
+            }
+
+            if (size > 1 && i == 0) {
+                System.out.println("first day - single day deduction");
+            }
+
+            int day = (int) attendance.get(i)[1];
+            int nextDay = -1;
+            if ((i + 1) < size) {
+                nextDay = (int) attendance.get(i + 1)[1];
+            }
+            // If no more days found.
+            if (nextDay == -1) {
+                break;
+            }
+            if ((nextDay - day) < 6) {
+                System.out.println("double deduction");
+            } else {
+                System.out.println("single day deduction");
+            }
+        }
     }
-
 }

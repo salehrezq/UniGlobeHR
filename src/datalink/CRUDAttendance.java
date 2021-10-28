@@ -221,7 +221,7 @@ public class CRUDAttendance {
             LocalDate firstOfThisMonth = ym.atDay(1);
             LocalDate firstOfNextMonth = ym.plusMonths(1).atDay(1);
 
-            String sql = "SELECT `date` FROM `attendance` WHERE `employee_id` = ? AND `date` >= ? AND `date` < ? AND `state` = ?";
+            String sql = "SELECT `date` FROM `attendance` WHERE `employee_id` = ? AND `date` >= ? AND `date` < ? AND `state` = ?  ORDER BY `date` ASC";
             conn = Connect.getConnection();
             PreparedStatement p = conn.prepareStatement(sql);
 
