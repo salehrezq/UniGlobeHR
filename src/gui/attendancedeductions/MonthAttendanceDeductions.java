@@ -140,16 +140,16 @@ public class MonthAttendanceDeductions implements EmployeeSelectedListener {
             // and not accumulate on previous results
             model.setRowCount(0);
 
-            List<Object[]> list = getTata();
-            AttendanceDeductionsCalculator.calculateDeductions(list, yearAndMonth);
-            if (list == null) {
+            List<Object[]> listOfAbsentDays = getTata();
+            AttendanceDeductionsCalculator.calculateDeductions(listOfAbsentDays, yearAndMonth);
+            if (listOfAbsentDays == null) {
                 JOptionPane.showConfirmDialog(panelGather,
                         "Select Employee", "",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            list.forEach((item) -> {
+            listOfAbsentDays.forEach((item) -> {
                 model.addRow(item);
             });
         }
