@@ -213,7 +213,7 @@ public class CRUDAttendance {
 
     public static List getAbsenceRecordByEmployeeByMonth(int employeeID, YearMonth ym) {
 
-        List records = new ArrayList<>();
+        List<Attendance> absentRecordList = new ArrayList<>();
 
         try {
 
@@ -221,7 +221,7 @@ public class CRUDAttendance {
             LocalDate firstOfThisMonth = ym.atDay(1);
             LocalDate firstOfNextMonth = ym.plusMonths(1).atDay(1);
 
-            String sql = "SELECT `date` FROM `attendance` WHERE `employee_id` = ? AND `date` >= ? AND `date` < ? AND `state` = ?  ORDER BY `date` ASC";
+            String sql = "SELECT `id`, `date` FROM `attendance` WHERE `employee_id` = ? AND `date` >= ? AND `date` < ? AND `state` = ?  ORDER BY `date` ASC";
             conn = Connect.getConnection();
             PreparedStatement p = conn.prepareStatement(sql);
 
@@ -232,22 +232,22 @@ public class CRUDAttendance {
 
             ResultSet result = p.executeQuery();
 
-            Object[] record = null;
+            Attendance absentRecord = null;
 
             while (result.next()) {
-
-                LocalDate resultDate = result.getDate("date").toLocalDate();
-                record = new Object[2];
-                record[0] = resultDate.getDayOfWeek().toString();
-                record[1] = resultDate.getDayOfMonth();
-                records.add(record);
+                absentRecord = new Attendance();
+                absentRecord.setId(result.getInt("id"));
+                absentRecord.setDate(result.getDate("date").toLocalDate());
+                absentRecord.setStateOfAttendance(false);
+                absentRecord.setEmployeeId(employeeID);
+                absentRecordList.add(absentRecord);
             }
         } catch (SQLException ex) {
             Logger.getLogger(CRUDAttendance.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             Connect.cleanUp();
         }
-        return records;
+        return absentRecordList;
     }
 
     public static class EmployeeAttendanceStatus {

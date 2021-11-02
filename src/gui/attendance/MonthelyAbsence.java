@@ -27,6 +27,7 @@ import javax.swing.text.MaskFormatter;
 import model.Employee;
 import gui.EmployeeSelectedListener;
 import datalink.CRUDAttendance;
+import model.Attendance;
 
 /**
  *
@@ -139,17 +140,27 @@ public class MonthelyAbsence implements EmployeeSelectedListener {
             // and not accumulate on previous results
             model.setRowCount(0);
 
-            List<Object[]> list = getTata();
-            if (list == null) {
+            List<Attendance> absentsList = getTata();
+
+            if (absentsList == null) {
                 JOptionPane.showConfirmDialog(panelGather,
                         "Select Employee", "",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
-            list.forEach((item) -> {
-                model.addRow(item);
+            absentsList.forEach((item) -> {
+                Attendance absentRecord = (Attendance) item;
+                model.addRow(this.getModelData(absentRecord));
             });
+        }
+
+        private Object[] getModelData(Attendance absentRecord) {
+            Object[] objModel = new Object[2];
+            LocalDate date = absentRecord.getDate();
+            objModel[0] = date.getDayOfWeek().toString();
+            objModel[1] = date.getDayOfMonth();
+            return objModel;
         }
     }
 

@@ -10,6 +10,7 @@ import java.time.Month;
 import java.time.YearMonth;
 import java.time.temporal.ChronoField;
 import java.util.List;
+import model.Attendance;
 
 /**
  *
@@ -35,7 +36,7 @@ public class AttendanceDeductionsCalculator {
      * @param listOfAbsentDays
      * @param ym
      */
-    public static void calculateDeductions(List<Object[]> listOfAbsentDays, YearMonth ym) {
+    public static void calculateDeductions(List<Attendance> listOfAbsentDays, YearMonth ym) {
 
         int size = listOfAbsentDays.size();
 
@@ -50,10 +51,10 @@ public class AttendanceDeductionsCalculator {
                 System.out.println("first day - single day deduction");
             }
 
-            int day = (int) listOfAbsentDays.get(i)[1];
+            int day = (int) listOfAbsentDays.get(i).getDate().getDayOfMonth();
             int nextDay = -1;
             if ((i + 1) < size) {
-                nextDay = (int) listOfAbsentDays.get(i + 1)[1];
+                nextDay = (int) listOfAbsentDays.get(i + 1).getDate().getDayOfMonth();
             }
             // If no more days found.
             if (nextDay == -1) {

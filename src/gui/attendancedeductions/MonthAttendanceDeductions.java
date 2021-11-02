@@ -26,6 +26,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
+import model.Attendance;
 import model.Employee;
 
 /**
@@ -140,7 +141,7 @@ public class MonthAttendanceDeductions implements EmployeeSelectedListener {
             // and not accumulate on previous results
             model.setRowCount(0);
 
-            List<Object[]> listOfAbsentDays = getTata();
+            List<Attendance> listOfAbsentDays = getTata();
 
             if (listOfAbsentDays == null) {
                 JOptionPane.showConfirmDialog(panelGather,
@@ -152,8 +153,17 @@ public class MonthAttendanceDeductions implements EmployeeSelectedListener {
             AttendanceDeductionsCalculator.calculateDeductions(listOfAbsentDays, yearAndMonth);
 
             listOfAbsentDays.forEach((item) -> {
-                model.addRow(item);
+                Attendance absentRecord = (Attendance) item;
+                model.addRow(this.getModelData(absentRecord));
             });
+        }
+
+        private Object[] getModelData(Attendance absentRecord) {
+            Object[] objModel = new Object[2];
+            LocalDate date = absentRecord.getDate();
+            objModel[0] = date.getDayOfWeek().toString();
+            objModel[1] = date.getDayOfMonth();
+            return objModel;
         }
     }
 
