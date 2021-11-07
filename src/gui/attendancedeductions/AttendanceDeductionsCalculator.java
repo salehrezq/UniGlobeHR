@@ -5,18 +5,44 @@
  */
 package gui.attendancedeductions;
 
+import datalink.CRUDEmployee;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
 import java.time.temporal.ChronoField;
 import java.util.List;
 import model.Attendance;
+import model.AttendanceDeduction;
+import model.Employee;
 
 /**
  *
  * @author Saleh
  */
 public class AttendanceDeductionsCalculator {
+
+    public enum Deduction {
+
+        SINGLE("Single day salary deducted", "\u062E\u0635\u0645 \u0631\u0627\u062A\u0628 \u064A\u0648\u0645"),
+        DOUBLE("Two days salary deducted", "\u062E\u0635\u0645 \u0631\u0627\u062A\u0628 \u064A\u0648\u0645\u0627\u0646"),
+        DOUBLE_FRIDAY_OMITTED("Two days salary deducted -> Friday omitted", "\u062E\u0635\u0645 \u0631\u0627\u062A\u0628 \u064A\u0648\u0645\u0627\u0646\u061B \u062C\u0645\u0639\u0629 \u0645\u062A\u062E\u0637\u0627\u0629");
+
+        private final String descriptionEN;
+        private final String descriptionAR;
+
+        Deduction(String descriptionEN, String descriptionAR) {
+            this.descriptionEN = descriptionEN;
+            this.descriptionAR = descriptionAR;
+        }
+
+        String singleDescriptionEN() {
+            return this.descriptionEN;
+        }
+
+        String singleDescriptionAR() {
+            return this.descriptionAR;
+        }
+    }
 
     /**
      * Steps of deductions.
@@ -43,12 +69,12 @@ public class AttendanceDeductionsCalculator {
         for (int i = 0; i < size; i++) {
 
             if (size == 1) {
-                System.out.println("only day single deduction");
+                setAttendanceDeduction(listOfAbsentDays.get(i), Deduction.SINGLE);
                 break;
             }
 
             if (size > 1 && i == 0) {
-                System.out.println("first day - single day deduction");
+                setAttendanceDeduction(listOfAbsentDays.get(i), Deduction.SINGLE);
             }
 
             int day = (int) listOfAbsentDays.get(i).getDate().getDayOfMonth();
@@ -70,11 +96,13 @@ public class AttendanceDeductionsCalculator {
             }
 
             if (((nextDay - fridayDedected) - day) < 6) {
-                System.out.print("double deduction");
-                System.out.print((fridayDedected > 0) ? " Friday omited" : "");
-                System.out.println();
+                if (fridayDedected == 0) {
+                    setAttendanceDeduction(listOfAbsentDays.get(i), Deduction.DOUBLE);
+                } else {
+                    setAttendanceDeduction(listOfAbsentDays.get(i), Deduction.DOUBLE_FRIDAY_OMITTED);
+                }
             } else {
-                System.out.println("single day deduction");
+                setAttendanceDeduction(listOfAbsentDays.get(i), Deduction.SINGLE);
             }
         }
     }
@@ -104,6 +132,25 @@ public class AttendanceDeductionsCalculator {
             }
         }
         return fridayDedected;
+    }
+
+    private static void setAttendanceDeduction(Attendance absentRecord, Deduction deduction) {
+
+        AttendanceDeduction attendanceDeduction = new AttendanceDeduction();
+        attendanceDeduction.setAttendanceId(absentRecord.getId());
+        attendanceDeduction.setDescriptionAR(deduction.singleDescriptionAR());
+        attendanceDeduction.setDescriptionEN(deduction.singleDescriptionEN());
+        attendanceDeduction.setDeduction(getDaySalary(absentRecord.getEmployeeId()));
+
+        System.out.println(deduction.singleDescriptionAR());
+        System.out.println(deduction.singleDescriptionEN());
+    }
+
+    private static double getDaySalary(int id) {
+        Employee employee = CRUDEmployee.getById(id);
+        double salary = employee.getSalary();
+        double daySalary = salary / 30;
+        return daySalary;
     }
 
 }

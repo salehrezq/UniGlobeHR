@@ -63,6 +63,7 @@ public class CRUDEmployee {
                 employee.setId(result.getInt("id"));
                 employee.setName(result.getString("name"));
                 employee.setEnrolledDate(result.getDate("enrolled_date").toLocalDate());
+                employee.setSalary(result.getDouble("salary"));
                 employee.setActive(result.getBoolean("active"));
                 employees.add(employee);
             }
@@ -72,5 +73,33 @@ public class CRUDEmployee {
             Connect.cleanUp();
         }
         return employees;
+    }
+
+    public static Employee getById(int id) {
+
+        Employee employee = null;
+
+        try {
+
+            String sql = "SELECT * FROM `employees` WHERE `active` = 1 AND `id` = ?";
+            conn = Connect.getConnection();
+            PreparedStatement p = conn.prepareStatement(sql);
+            p.setInt(1, id);
+            ResultSet result = p.executeQuery();
+
+            while (result.next()) {
+                employee = new Employee();
+                employee.setId(result.getInt("id"));
+                employee.setName(result.getString("name"));
+                employee.setEnrolledDate(result.getDate("enrolled_date").toLocalDate());
+                employee.setSalary(result.getDouble("salary"));
+                employee.setActive(result.getBoolean("active"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDEmployee.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            Connect.cleanUp();
+        }
+        return employee;
     }
 }
