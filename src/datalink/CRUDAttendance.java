@@ -70,7 +70,7 @@ public class CRUDAttendance {
 
             if (eas.getCreateState()) {
                 // Succeeded to insert attendance record, now get the record id.
-                try ( ResultSet generatedKeys = p.getGeneratedKeys()) {
+                try (ResultSet generatedKeys = p.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         eas.setAttendanceId(generatedKeys.getInt(1));
                     } else {
