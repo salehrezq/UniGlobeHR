@@ -6,10 +6,12 @@
 package gui.attendancedeductions;
 
 import datalink.CRUDEmployee;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
-import java.time.Month;
 import java.time.YearMonth;
 import java.time.temporal.ChronoField;
+import java.util.ArrayList;
 import java.util.List;
 import model.Attendance;
 import model.AttendanceDeduction;
@@ -20,6 +22,8 @@ import model.Employee;
  * @author Saleh
  */
 public class AttendanceDeductionsCalculator {
+
+    private static List<AttendanceDeduction> attendanceDeductionsList;
 
     public enum Deduction {
 
@@ -61,8 +65,11 @@ public class AttendanceDeductionsCalculator {
      *
      * @param listOfAbsentDays
      * @param ym
+     * @return List<AttendanceDeduction>
      */
-    public static void calculateDeductions(List<Attendance> listOfAbsentDays, YearMonth ym) {
+    public static List<AttendanceDeduction> calculateDeductions(List<Attendance> listOfAbsentDays, YearMonth ym) {
+
+        attendanceDeductionsList = new ArrayList<>();
 
         int size = listOfAbsentDays.size();
 
@@ -105,6 +112,8 @@ public class AttendanceDeductionsCalculator {
                 setAttendanceDeduction(listOfAbsentDays.get(i), Deduction.SINGLE);
             }
         }
+
+        return attendanceDeductionsList;
     }
 
     /**
@@ -135,15 +144,14 @@ public class AttendanceDeductionsCalculator {
     }
 
     private static void setAttendanceDeduction(Attendance absentRecord, Deduction deduction) {
-
         AttendanceDeduction attendanceDeduction = new AttendanceDeduction();
         attendanceDeduction.setAttendanceId(absentRecord.getId());
         attendanceDeduction.setDescriptionAR(deduction.singleDescriptionAR());
         attendanceDeduction.setDescriptionEN(deduction.singleDescriptionEN());
-        attendanceDeduction.setDeduction(getDaySalary(absentRecord.getEmployeeId()));
-
-        System.out.println(deduction.singleDescriptionAR());
-        System.out.println(deduction.singleDescriptionEN());
+        double daySalary = getDaySalary(absentRecord.getEmployeeId());
+        double salaryDeuction = getDeduction(deduction, daySalary);
+        attendanceDeduction.setDeduction(rounding(salaryDeuction));
+        attendanceDeductionsList.add(attendanceDeduction);
     }
 
     private static double getDaySalary(int id) {
@@ -151,6 +159,29 @@ public class AttendanceDeductionsCalculator {
         double salary = employee.getSalary();
         double daySalary = salary / 30;
         return daySalary;
+    }
+
+    private static double getDeduction(Deduction deduction, double daySalary) {
+        double salaryDeduction = 0;
+        switch (deduction) {
+            case SINGLE:
+                salaryDeduction = daySalary;
+                break;
+            case DOUBLE:
+            case DOUBLE_FRIDAY_OMITTED:
+                salaryDeduction = daySalary * 2;
+                break;
+            default:
+                salaryDeduction = 0;
+                break;
+        }
+        return salaryDeduction;
+    }
+
+    private static double rounding(double salaryDeuction) {
+        BigDecimal dec = new BigDecimal(salaryDeuction);
+        BigDecimal roundedDecimal = dec.setScale(3, RoundingMode.HALF_UP);
+        return roundedDecimal.doubleValue();
     }
 
 }

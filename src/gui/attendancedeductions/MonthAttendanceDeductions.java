@@ -9,6 +9,7 @@ import datalink.CRUDAttendance;
 import gui.EmployeeSelectedListener;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
@@ -27,6 +28,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 import model.Attendance;
+import model.AttendanceDeduction;
 import model.Employee;
 
 /**
@@ -73,16 +75,23 @@ public class MonthAttendanceDeductions implements EmployeeSelectedListener {
         panelControlls.add(tfYear);
         panelControlls.add(monthsList);
 
-        model = new DefaultTableModel(new String[]{"Day Name", "Day Num"}, 0);
+        model = new DefaultTableModel(new String[]{"Day Name", "Day Num", "Deduction", "Desc EN", "Desc AR"}, 0);
         table = new JTable(model);
-        table.setPreferredScrollableViewportSize(new Dimension(200, 250));
+        table.setFont(new Font("SansSerif", Font.BOLD, 14));
+        table.setPreferredScrollableViewportSize(new Dimension(880, 250));
         table.setFillsViewportHeight(true);
-        scrollTable = new JScrollPane(table);
+        table.getColumnModel().getColumn(0).setPreferredWidth(50);
+        table.getColumnModel().getColumn(1).setPreferredWidth(15);
+        table.getColumnModel().getColumn(2).setPreferredWidth(30);
+        table.getColumnModel().getColumn(3).setPreferredWidth(280);
+        table.getColumnModel().getColumn(4).setPreferredWidth(280);
+        table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        scrollTable = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         panelTable = new JPanel();
         panelTable.add(scrollTable);
 
         panelGather = new JPanel();
-        panelGather.setPreferredSize(new Dimension(250, 350));
+        panelGather.setPreferredSize(new Dimension(900, 350));
         panelGather.setBorder(BorderFactory.createLineBorder(Color.red));
 
         BoxLayout boxlayout = new BoxLayout(panelGather, BoxLayout.X_AXIS);
@@ -150,20 +159,21 @@ public class MonthAttendanceDeductions implements EmployeeSelectedListener {
                 return;
             }
 
-            AttendanceDeductionsCalculator.calculateDeductions(listOfAbsentDays, yearAndMonth);
+            List<AttendanceDeduction> attendanceDeductionsList
+                    = AttendanceDeductionsCalculator
+                            .calculateDeductions(listOfAbsentDays, yearAndMonth);
 
-            listOfAbsentDays.forEach((item) -> {
-                Attendance absentRecord = (Attendance) item;
-                model.addRow(this.getModelData(absentRecord));
-            });
-        }
-
-        private Object[] getModelData(Attendance absentRecord) {
-            Object[] objModel = new Object[2];
-            LocalDate date = absentRecord.getDate();
-            objModel[0] = date.getDayOfWeek().toString();
-            objModel[1] = date.getDayOfMonth();
-            return objModel;
+            Object[] modelRow = new Object[5];
+            for (int i = 0; i < listOfAbsentDays.size(); i++) {
+                LocalDate date = listOfAbsentDays.get(i).getDate();
+                modelRow[0] = date.getDayOfWeek().toString();
+                modelRow[1] = date.getDayOfMonth();
+                AttendanceDeduction attendanceDeduction = attendanceDeductionsList.get(i);
+                modelRow[2] = attendanceDeduction.getDeduction();
+                modelRow[3] = attendanceDeduction.getDescriptionEN();
+                modelRow[4] = attendanceDeduction.getDescriptionAR();
+                model.addRow(modelRow);
+            }
         }
     }
 
