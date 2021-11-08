@@ -8,6 +8,7 @@ package gui.attendancedeductions;
 import datalink.CRUDAttendance;
 import gui.EmployeeSelectedListener;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -25,6 +26,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 import model.Attendance;
@@ -86,6 +88,8 @@ public class MonthAttendanceDeductions implements EmployeeSelectedListener {
         table.getColumnModel().getColumn(3).setPreferredWidth(280);
         table.getColumnModel().getColumn(4).setPreferredWidth(280);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        table.getColumnModel().getColumn(4).setCellRenderer(getRightAlignmentRenderer(4));
+
         scrollTable = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         panelTable = new JPanel();
         panelTable.add(scrollTable);
@@ -99,6 +103,33 @@ public class MonthAttendanceDeductions implements EmployeeSelectedListener {
         panelGather.add(panelTable);
         panelGather.setVisible(true);
 
+    }
+
+    private DefaultTableCellRenderer getRightAlignmentRenderer(int targetColumn) {
+
+        DefaultTableCellRenderer renderer;
+        renderer = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(
+                    JTable table,
+                    Object value,
+                    boolean isSelected,
+                    boolean hasFocus,
+                    int row,
+                    int column) {
+                Component tableCellRendererComponent
+                        = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                int align = DefaultTableCellRenderer.LEFT;
+                if (column == targetColumn) {
+                    align = DefaultTableCellRenderer.RIGHT;
+                }
+                ((DefaultTableCellRenderer) tableCellRendererComponent).setHorizontalAlignment(align);
+                return tableCellRendererComponent;
+            }
+        };
+
+        return renderer;
     }
 
     public JPanel getPanelTable() {
