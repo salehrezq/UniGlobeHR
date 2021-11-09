@@ -30,6 +30,7 @@ public class AttendanceTab extends JPanel {
     private EmployeeDailyAttendance employeeDailyAttendance;
     private EmployeeAttendLate employeeAttendLate;
     private SubmitAttendance submitAttendancePanel;
+    private EditAttendance editAttendance;
     private MonthelyAbsence monthelyAbsence;
 
     public AttendanceTab() {
@@ -45,15 +46,14 @@ public class AttendanceTab extends JPanel {
         employeeCard = new EmployeeCard();
 
         c = new GridBagConstraints();
-        c.gridy = 1;
-        c.weightx = 1.0;
+        c.gridy = 0;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         this.add(employeeCard, c);
 
         employeeDailyAttendance = new EmployeeDailyAttendance();
 
         c = new GridBagConstraints();
-        c.gridy = 2;
+        c.gridy = 1;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         this.add(employeeDailyAttendance, c);
 
@@ -62,7 +62,7 @@ public class AttendanceTab extends JPanel {
         employeeDailyAttendance.addEmployeeAttendanceDataListener(employeeAttendLate);
         employeeDailyAttendance.addDateChangedAttendanceDataListener(employeeAttendLate);
         c = new GridBagConstraints();
-        c.gridy = 3;
+        c.gridy = 2;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         this.add(employeeAttendLate, c);
 
@@ -77,14 +77,20 @@ public class AttendanceTab extends JPanel {
         submitAttendancePanel.setDateInitial(datePicker.getDefaultToday());
         datePicker.addDateListener(submitAttendancePanel);
         c = new GridBagConstraints();
-        c.gridy = 4;
+        c.gridy = 3;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         this.add(submitAttendancePanel, c);
+        
+        editAttendance = new EditAttendance();
+        c = new GridBagConstraints();
+        c.gridy = 3;
+        c.weightx = 1.0;
+        c.anchor = GridBagConstraints.FIRST_LINE_START;
+        this.add(editAttendance, c);
 
         monthelyAbsence = new MonthelyAbsence();
-
         c = new GridBagConstraints();
-        c.gridy = 5;
+        c.gridy = 4;
         c.weighty = 1.0;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         this.add(monthelyAbsence.getPanelTable(), c);
