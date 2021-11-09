@@ -89,19 +89,29 @@ public class SubmitAttendance extends JPanel
 
     @Override
     public void employeeAttendanceDataOnSelection(CRUDAttendance.EmployeeAttendanceStatus eas) {
-
+        btnSubmitAttendance.setEnabled(false);
     }
 
     @Override
     public void employeeSelectionCleared() {
-
+        btnSubmitAttendance.setEnabled(false);
     }
 
+    /**
+     * In case date changed and employee is already recorded in the attendance.
+     *
+     * @param eas
+     */
     @Override
     public void dateChanged(CRUDAttendance.EmployeeAttendanceStatus eas) {
-
+        btnSubmitAttendance.setEnabled(false);
     }
 
+    /**
+     * In case date changed but employee is not recorded in the attendance.
+     *
+     * @param date
+     */
     @Override
     public void dateChanged(LocalDate date) {
         this.date = date;

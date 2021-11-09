@@ -70,6 +70,8 @@ public class AttendanceTab extends JPanel {
         submitAttendancePanel.addSubmitAttendanceListener(employeeDailyAttendance);
         submitAttendancePanel.addSubmitAttendanceListener(employeeAttendLate);
         employeeDailyAttendance.addEmployeeAttendanceListener(submitAttendancePanel);
+        employeeDailyAttendance.addEmployeeAttendanceDataListener(submitAttendancePanel);
+        employeeDailyAttendance.addDateChangedAttendanceDataListener(submitAttendancePanel);
         employeeAttendLate.addLateAttendanceListener(submitAttendancePanel);
         DatePicker datePicker = employeeDailyAttendance.getDatePicker();
         submitAttendancePanel.setDateInitial(datePicker.getDefaultToday());
