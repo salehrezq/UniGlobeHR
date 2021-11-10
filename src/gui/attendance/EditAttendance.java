@@ -5,10 +5,47 @@
  */
 package gui.attendance;
 
+import datalink.CRUDAttendance;
+import gui.EmployeeSelectedListener;
+import javax.swing.JButton;
+import javax.swing.JPanel;
+import javax.swing.plaf.basic.BasicArrowButton;
+import model.Employee;
+
 /**
  *
  * @author Saleh
  */
-public class EditAttendance {
+public class EditAttendance extends JPanel implements EmployeeAttendanceDataListener, DateChangedAttendanceDataListener {
 
+    private final JButton btnEditModeAttendance;
+
+    public EditAttendance() {
+        btnEditModeAttendance = new JButton("Edit Mode");
+        btnEditModeAttendance.setEnabled(false);
+        this.add(btnEditModeAttendance);
+    }
+
+    @Override
+    public void employeeAttendanceDataOnSelection(CRUDAttendance.EmployeeAttendanceStatus eas) {
+        if (eas.getWasAttendanceTaken()) {
+            btnEditModeAttendance.setEnabled(true);
+        } else {
+            btnEditModeAttendance.setEnabled(false);
+        }
+    }
+
+    @Override
+    public void employeeSelectionCleared() {
+        btnEditModeAttendance.setEnabled(false);
+    }
+
+    @Override
+    public void dateChanged(CRUDAttendance.EmployeeAttendanceStatus eas) {
+        if (eas.getWasAttendanceTaken()) {
+            btnEditModeAttendance.setEnabled(true);
+        } else {
+            btnEditModeAttendance.setEnabled(false);
+        }
+    }
 }

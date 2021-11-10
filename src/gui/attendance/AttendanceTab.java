@@ -80,8 +80,10 @@ public class AttendanceTab extends JPanel {
         c.gridy = 3;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         this.add(submitAttendancePanel, c);
-        
+
         editAttendance = new EditAttendance();
+        employeeDailyAttendance.addEmployeeAttendanceDataListener(editAttendance);
+        employeeDailyAttendance.addDateChangedAttendanceDataListener(editAttendance);
         c = new GridBagConstraints();
         c.gridy = 3;
         c.weightx = 1.0;
