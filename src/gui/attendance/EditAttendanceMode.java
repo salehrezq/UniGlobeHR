@@ -19,7 +19,7 @@ import model.Late;
  *
  * @author Saleh
  */
-public class EditAttendance extends JPanel implements EmployeeAttendanceDataListener, DateChangedAttendanceDataListener {
+public class EditAttendanceMode extends JPanel implements EmployeeAttendanceDataListener, DateChangedAttendanceDataListener {
 
     private final JButton btnEditModeAttendance;
     private CRUDAttendance.EmployeeAttendanceStatus eas;
@@ -27,7 +27,7 @@ public class EditAttendance extends JPanel implements EmployeeAttendanceDataList
     private Attendance attendance;
     private Late lateAttendance;
 
-    public EditAttendance() {
+    public EditAttendanceMode() {
         btnEditModeAttendance = new JButton("Edit Mode");
         btnEditModeAttendance.setEnabled(false);
         btnEditModeAttendance.addActionListener(new EditAttendanceModeAction());

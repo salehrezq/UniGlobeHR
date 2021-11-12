@@ -25,7 +25,7 @@ public class AttendanceTab extends JPanel {
     private EmployeeDailyAttendance employeeDailyAttendance;
     private EmployeeAttendLate employeeAttendLate;
     private SubmitAttendance submitAttendancePanel;
-    private EditAttendance editAttendance;
+    private EditAttendanceMode editAttendance;
     private MonthelyAbsence monthelyAbsence;
 
     public AttendanceTab() {
@@ -76,7 +76,7 @@ public class AttendanceTab extends JPanel {
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         this.add(submitAttendancePanel, c);
 
-        editAttendance = new EditAttendance();
+        editAttendance = new EditAttendanceMode();
         employeeDailyAttendance.addEmployeeAttendanceDataListener(editAttendance);
         employeeDailyAttendance.addDateChangedAttendanceDataListener(editAttendance);
         editAttendance.addAttendanceEditModeListener(employeeDailyAttendance);
