@@ -54,7 +54,7 @@ public class CRUDLateAttendance {
         return create;
     }
 
-    public static Late getLateAttendance(int attendance_id) {
+    public static Late getById(int attendance_id) {
 
         Late lateAttendance = null;
 

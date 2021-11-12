@@ -250,6 +250,33 @@ public class CRUDAttendance {
         return absentRecordList;
     }
 
+    public static Attendance getById(int id) {
+
+        Attendance attendance = null;
+
+        try {
+
+            String sql = "SELECT * FROM `attendance` WHERE `id` = ?";
+            conn = Connect.getConnection();
+            PreparedStatement p = conn.prepareStatement(sql);
+            p.setInt(1, id);
+            ResultSet result = p.executeQuery();
+
+            while (result.next()) {
+                attendance = new Attendance();
+                attendance.setId(result.getInt("id"));
+                attendance.setEmployeeId(result.getInt("employee_id"));
+                attendance.setDate(result.getDate("date").toLocalDate());
+                attendance.setStateOfAttendance(result.getBoolean("state"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDAttendance.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            Connect.cleanUp();
+        }
+        return attendance;
+    }
+
     public static class EmployeeAttendanceStatus {
 
         private int attendanceId;

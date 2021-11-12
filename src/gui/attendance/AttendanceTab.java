@@ -7,16 +7,11 @@ package gui.attendance;
 
 import gui.DatePicker;
 import gui.EmployeeCard;
-import gui.attendance.EmployeeAttendLate;
-import gui.attendance.MonthelyAbsence;
-import gui.attendance.EmployeeDailyAttendance;
-import gui.attendance.SubmitAttendance;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import javax.swing.BorderFactory;
 import javax.swing.JPanel;
-import model.Employee;
 
 /**
  *
@@ -84,6 +79,8 @@ public class AttendanceTab extends JPanel {
         editAttendance = new EditAttendance();
         employeeDailyAttendance.addEmployeeAttendanceDataListener(editAttendance);
         employeeDailyAttendance.addDateChangedAttendanceDataListener(editAttendance);
+        editAttendance.addAttendanceEditModeListener(employeeDailyAttendance);
+        editAttendance.addAttendanceEditModeListener(employeeAttendLate);
         c = new GridBagConstraints();
         c.gridy = 3;
         c.weightx = 1.0;

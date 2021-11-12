@@ -10,12 +10,8 @@ import datalink.CRUDLateAttendance;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.text.ParseException;
 import java.util.ArrayList;
 import javax.swing.JCheckBox;
-import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -23,7 +19,7 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import javax.swing.text.MaskFormatter;
+import model.Attendance;
 import model.Late;
 
 /**
@@ -35,7 +31,8 @@ public class EmployeeAttendLate extends JPanel
         EmployeeAttendanceListener,
         EmployeeAttendanceDataListener,
         DateChangedAttendanceDataListener,
-        SubmitAttendanceListener {
+        SubmitAttendanceListener,
+        AttendanceEditModeListener {
 
     private JCheckBox checkEmployeeLate;
     private JSpinner spinnerMinutesLate;
@@ -107,7 +104,7 @@ public class EmployeeAttendLate extends JPanel
                 // The state was present
                 // Ask database if employee was late
                 // if late update the minutes field
-                Late lateAttendance = CRUDLateAttendance.getLateAttendance(eas.getAttendanceId());
+                Late lateAttendance = CRUDLateAttendance.getById(eas.getAttendanceId());
                 if (lateAttendance != null) {
                     checkEmployeeLate.setSelected(true);
                     spinnerMinutesLate.setValue(lateAttendance.getMinutes_late());
@@ -126,6 +123,17 @@ public class EmployeeAttendLate extends JPanel
     @Override
     public void attendanceSubmitFailed() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void attendanceEditModeReact(Attendance attendance, Late lateAttendance) {
+        if (lateAttendance != null) {
+            checkEmployeeLate.setEnabled(true);
+            spinnerMinutesLate.setEnabled(true);
+        } else {
+            checkEmployeeLate.setEnabled(false);
+            spinnerMinutesLate.setEnabled(false);
+        }
     }
 
     private class CheckBoxHandler implements ActionListener {

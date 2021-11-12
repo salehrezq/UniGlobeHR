@@ -18,6 +18,7 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import model.Attendance;
 import model.Employee;
+import model.Late;
 
 /**
  *
@@ -27,7 +28,8 @@ public class EmployeeDailyAttendance extends JPanel
         implements
         DateListener,
         EmployeeSelectedListener,
-        SubmitAttendanceListener {
+        SubmitAttendanceListener,
+        AttendanceEditModeListener {
 
     private JRadioButton btnSetPresent;
     private JRadioButton btnSetAbsent;
@@ -164,6 +166,14 @@ public class EmployeeDailyAttendance extends JPanel
     @Override
     public void attendanceSubmitFailed() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void attendanceEditModeReact(Attendance attendance, Late lateAttendance) {
+        if (attendance != null) {
+            btnSetPresent.setEnabled(true);
+            btnSetAbsent.setEnabled(true);
+        }
     }
 
     private class AttendanceHandler implements ActionListener {
