@@ -54,7 +54,7 @@ public class CRUDLateAttendance {
         return create;
     }
 
-    public static Late getById(int attendance_id) {
+    public static Late getById(int lateId) {
 
         Late lateAttendance = null;
 
@@ -62,7 +62,7 @@ public class CRUDLateAttendance {
             String sql = "SELECT `minutes_late` FROM `late` WHERE `attendance_id` = ?";
             conn = Connect.getConnection();
             PreparedStatement p = conn.prepareStatement(sql);
-            p.setInt(1, attendance_id);
+            p.setInt(1, lateId);
 
             ResultSet result = p.executeQuery();
 
@@ -81,6 +81,59 @@ public class CRUDLateAttendance {
             Connect.cleanUp();
         }
         return lateAttendance;
+    }
+
+    public static Late getByAttendanceId(int attendance_id) {
+
+        Late lateAttendance = null;
+
+        try {
+            String sql = "SELECT * FROM `late` WHERE `attendance_id` = ?";
+            conn = Connect.getConnection();
+            PreparedStatement p = conn.prepareStatement(sql);
+            p.setInt(1, attendance_id);
+
+            ResultSet result = p.executeQuery();
+
+            // Check if there is a result
+            boolean isRecordAvailable = result.isBeforeFirst();
+
+            if (isRecordAvailable) {
+                // Move cursor to next record, which is the first in this case.
+                result.next();
+                lateAttendance = new Late();
+                lateAttendance.setId(result.getInt("id"));
+                lateAttendance.setAttendance_id(attendance_id);
+                lateAttendance.setMinutes_late(result.getInt("minutes_late"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDLateAttendance.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            Connect.cleanUp();
+        }
+        return lateAttendance;
+    }
+
+    public static int deleteByAttendenceId(int attendanceId) {
+
+        int deletedCount = 0;
+        try {
+            String sql = "DELETE FROM `late` WHERE `attendance_id` = ? LIMIT 1";
+            conn = Connect.getConnection();
+            PreparedStatement p = conn.prepareStatement(sql);
+            p.setInt(1, attendanceId);
+            deletedCount = p.executeUpdate();
+
+            if (deletedCount == 1) {
+                conn.commit();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDLateAttendance.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+
+            Connect.cleanUp();
+        }
+        return deletedCount;
     }
 
 }

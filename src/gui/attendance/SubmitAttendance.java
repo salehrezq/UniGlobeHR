@@ -30,7 +30,8 @@ public class SubmitAttendance extends JPanel
         LateAttendanceListener,
         EmployeeAttendanceDataListener,
         DateChangedAttendanceDataListener,
-        DateListener {
+        DateListener,
+        AttendanceEditModeListener {
 
     private final JButton btnSubmitAttendance;
     private Attendance attendance;
@@ -137,6 +138,12 @@ public class SubmitAttendance extends JPanel
     @Override
     public void employeeAttendedFine() {
         lateAttendance = null;
+    }
+
+    @Override
+    public void attendanceEditModeReact(Attendance attendance, Late lateAttendance) {
+        this.attendance = attendance;
+        this.lateAttendance = lateAttendance;
     }
 
     class SubmitAttendanceAction extends AbstractAction {
