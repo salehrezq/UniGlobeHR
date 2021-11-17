@@ -19,7 +19,10 @@ import model.Late;
  *
  * @author Saleh
  */
-public class EditAttendanceMode extends JPanel implements EmployeeAttendanceDataListener, DateChangedAttendanceDataListener {
+public class EditAttendanceMode extends JPanel implements
+        EmployeeAttendanceDataListener,
+        DateChangedAttendanceDataListener,
+        SubmitAttendanceListener {
 
     private final JButton btnEditModeAttendance;
     private CRUDAttendance.EmployeeAttendanceStatus eas;
@@ -72,6 +75,16 @@ public class EditAttendanceMode extends JPanel implements EmployeeAttendanceData
         }
     }
 
+    @Override
+    public void attendanceSubmitSucceeded() {
+        btnEditModeAttendance.setEnabled(true);
+    }
+
+    @Override
+    public void attendanceSubmitFailed() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     class EditAttendanceModeAction extends AbstractAction {
 
         @Override
@@ -80,6 +93,7 @@ public class EditAttendanceMode extends JPanel implements EmployeeAttendanceData
                 int attendanceId = eas.getAttendanceId();
                 attendance = CRUDAttendance.getById(attendanceId);
                 lateAttendance = CRUDLateAttendance.getById(attendanceId);
+                btnEditModeAttendance.setEnabled(false);
                 notifyAttendanceEditMode();
             }
         }

@@ -71,7 +71,7 @@ public class CRUDAttendance {
 
             if (eas.getCreateState()) {
                 // Succeeded to insert attendance record, now get the record id.
-                try (ResultSet generatedKeys = p.getGeneratedKeys()) {
+                try ( ResultSet generatedKeys = p.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         eas.setAttendanceId(generatedKeys.getInt(1));
                     } else {
@@ -105,7 +105,7 @@ public class CRUDAttendance {
      * @return <code>EmployeeAttendanceStatus</code> that contains the update
      * state of attendance.
      */
-    private static EmployeeAttendanceStatus update(Attendance attendance, EmployeeAttendanceStatus eas) {
+    private static EmployeeAttendanceStatus update(Attendance attendance, EmployeeAttendanceStatus eas, boolean commitAndDontWaitAnotherExecuteStmt) {
 
         int update = 0;
 
@@ -119,11 +119,16 @@ public class CRUDAttendance {
             p.setObject(3, attendance.getDate());
             update = p.executeUpdate();
             eas.setUpdatedOrFailed(update);
-            conn.commit();
+
+            if (commitAndDontWaitAnotherExecuteStmt && eas.getUpdateState()) {
+                conn.commit();
+            }
         } catch (SQLException ex) {
             Logger.getLogger(CRUDAttendance.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            Connect.cleanUp();
+            if (commitAndDontWaitAnotherExecuteStmt) {
+                Connect.cleanUp();
+            }
         }
         return eas;
     }
@@ -167,6 +172,7 @@ public class CRUDAttendance {
                 // don't forget to update eas.setWhetherUpdateNeeded(true);
                 // Late lateAttendance = CRUDLateAttendance.getByAttendanceId(attendance.getId());
                 System.out.println("may be late require update");
+                eas.setWhetherUpdateNeeded(false);
             } else if (!eas.getEmployeeStoredAttendanceState() && !attendance.getStateOfAttendance()) {
                 // check if stored and passed attendance are both the same state
                 // and this state is false which means employee is absent
@@ -174,7 +180,7 @@ public class CRUDAttendance {
                 eas.setWhetherUpdateNeeded(false);
             } else {
                 // input is different from the stored value, so we need to update it.
-                update(attendance, eas);
+                update(attendance, eas, commitAndDontWaitAnotherExecuteStmt);
                 eas.setWhetherUpdateNeeded(true);
                 if (!eas.getUpdateState()) {
                     JOptionPane.showConfirmDialog(null,

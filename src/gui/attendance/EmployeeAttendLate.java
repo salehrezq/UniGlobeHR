@@ -127,11 +127,16 @@ public class EmployeeAttendLate extends JPanel
 
     @Override
     public void attendanceEditModeReact(Attendance attendance, Late lateAttendance) {
-        if (lateAttendance != null) {
+        if (attendance.getStateOfAttendance() && lateAttendance == null) {
             checkEmployeeLate.setEnabled(true);
+            spinnerMinutesLate.setEnabled(false);
+        } else if (attendance.getStateOfAttendance() && lateAttendance != null) {
+            checkEmployeeLate.setEnabled(true);
+            checkEmployeeLate.setSelected(true);
             spinnerMinutesLate.setEnabled(true);
         } else {
             checkEmployeeLate.setEnabled(false);
+            checkEmployeeLate.setSelected(false);
             spinnerMinutesLate.setEnabled(false);
         }
     }
