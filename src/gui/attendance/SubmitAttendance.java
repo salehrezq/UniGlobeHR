@@ -207,11 +207,12 @@ public class SubmitAttendance extends JPanel
             //  At this point; the attendance is either created or updated or nothing changed.
             //  ******************************************************************************
             //**
-            // if either employee is absent or present without being late
-            // and there was creat or update operation;
-            // then switch entityStatechanged flag to true.
-            if (employeeIsEitherAbsentOrAttendedFine) {
-                if (eas.getCreateState() || eas.getUpdateState()) {
+            int lateAttendanceInserted = 0;
+            if (eas.getCreateState() || eas.getUpdateState()) {
+                // if either employee is absent or present without being late
+                // and there was creat or update operation;
+                // then switch entityStatechanged flag to true.
+                if (employeeIsEitherAbsentOrAttendedFine) {
                     // Case where attendance stored state was present
                     // and now switched to absent, then delete any related late entity if any.
                     if (eas.getEmployeeStoredAttendanceState() && !attendance.getStateOfAttendance()) {
@@ -220,23 +221,21 @@ public class SubmitAttendance extends JPanel
                         CRUDLateAttendance.deleteByAttendenceId(attendance.getId());
                     }
                     entityStatechanged = true;
-                }
-            }
-
-            // Commiting the case of attendance with state present, and late;
-            // is dependent on the completion of the late record. Also the
-            // same thing for notify attendance submition succedded
-            // which is achieved in the following codes
-            int lateAttendanceInserted = 0;
-            // The attendance is already as above either created or updated
-            // and the state of attendance is present and employee is also late
-            if (((eas.getCreateState() || eas.getUpdateState()) && employeeAttendedAndLate)) {
-                // Set attendance id for the late record
-                lateAttendance.setAttendance_id(eas.getAttendanceId());
-                // Insert the late attendance data.
-                lateAttendanceInserted = CRUDLateAttendance.create(lateAttendance, true);
-                if (lateAttendanceInserted == 1) {
-                    entityStatechanged = true;
+                } else if (employeeAttendedAndLate) {
+                    // Commiting the case of attendance with state present, and late;
+                    // is dependent on the completion of the late record. Also the
+                    // same thing for notify attendance submition succedded
+                    // which is achieved in the following and subsequent codes
+                    //**************
+                    // The attendance is already as above either created or updated
+                    // and the state of attendance is present and employee is also late
+                    // Set attendance id for the late record
+                    lateAttendance.setAttendance_id(eas.getAttendanceId());
+                    // Insert the late attendance data.
+                    lateAttendanceInserted = CRUDLateAttendance.create(lateAttendance, true);
+                    if (lateAttendanceInserted == 1) {
+                        entityStatechanged = true;
+                    }
                 }
             }
 
