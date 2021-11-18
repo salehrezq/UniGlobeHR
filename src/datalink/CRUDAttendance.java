@@ -159,24 +159,12 @@ public class CRUDAttendance {
             create(attendance, eas, commitAndDontWaitAnotherExecuteStmt);
         } else {
             // Attendance already was taken, then it is update call.
-            if (eas.getEmployeeStoredAttendanceState() && !attendance.getStateOfAttendance()) {
-                // if updated to absent; remove late record if any.
-                CRUDLateAttendance.deleteByAttendenceId(attendance.getId());
-            }
-            if (eas.getEmployeeStoredAttendanceState() && attendance.getStateOfAttendance()) {
+            if (eas.getEmployeeStoredAttendanceState() == attendance.getStateOfAttendance()) {
                 // check if stored and passed attendance are both the same state
-                // and this state is true which means present
-                // If the stored and passed attendance states are true which means employee is present
+                // no matter it is present or absent.
+                // No need to update attendance since the input the same as the stored value.
                 // then check if Late data changed instead.
-                // No need to update since the input the same as the stored value.
-                // don't forget to update eas.setWhetherUpdateNeeded(true);
-                // Late lateAttendance = CRUDLateAttendance.getByAttendanceId(attendance.getId());
-                System.out.println("may be late require update");
-                eas.setWhetherUpdateNeeded(false);
-            } else if (!eas.getEmployeeStoredAttendanceState() && !attendance.getStateOfAttendance()) {
-                // check if stored and passed attendance are both the same state
-                // and this state is false which means employee is absent
-                // then nothing need to be updated
+                // flag eas.setWhetherUpdateNeeded(false);
                 eas.setWhetherUpdateNeeded(false);
             } else {
                 // input is different from the stored value, so we need to update it.
