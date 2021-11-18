@@ -84,6 +84,7 @@ public class SubmitAttendance extends JPanel
 
     @Override
     public void employeeIsAbsent() {
+        lateAttendance = null;
         attendance.setStateOfAttendance(false);
         btnSubmitAttendance.setEnabled(true);
     }
