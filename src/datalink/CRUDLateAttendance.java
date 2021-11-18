@@ -22,7 +22,7 @@ public class CRUDLateAttendance {
 
     private static Connection conn;
 
-    public static int create(Late lateAttendance, boolean useAttendanceCommit) {
+    public static int create(Late lateAttendance, boolean useAttendanceConnection) {
 
         int create = 0;
 
@@ -31,7 +31,7 @@ public class CRUDLateAttendance {
             // true input to use connection from previous connection
             // that was used for executing query for inserting attendance.
             // We use previous connection for atomic commit.
-            conn = Connect.getConnection(useAttendanceCommit);
+            conn = Connect.getConnection(useAttendanceConnection);
             PreparedStatement p = conn.prepareStatement(sql);
 
             p.setInt(1, lateAttendance.getAttendance_id());
@@ -114,13 +114,13 @@ public class CRUDLateAttendance {
         return lateAttendance;
     }
 
-    public static int update(Late lateAttendance, boolean useAttendanceCommit) {
+    public static int update(Late lateAttendance, boolean useAttendanceConnection) {
 
         int update = 0;
 
         try {
             String sql = "UPDATE `late` SET `minutes_late`= ? WHERE `attendance_id` = ?";
-            conn = Connect.getConnection(useAttendanceCommit);
+            conn = Connect.getConnection(useAttendanceConnection);
             PreparedStatement p = conn.prepareStatement(sql);
 
             p.setInt(1, lateAttendance.getMinutes_late());

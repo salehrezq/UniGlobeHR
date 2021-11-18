@@ -154,15 +154,19 @@ public class SubmitAttendance extends JPanel
         @Override
         public void actionPerformed(ActionEvent arg0) {
 
+            // Some entity state change occured
+            boolean entityStatechanged = false;
+
             // Once clicked; set submit button to false.
             btnSubmitAttendance.setEnabled(false);
 
-            // Uset to flag atomic commit to the database.
+            // Used to flag atomic commit to the database.
+            // If switched to false it enforces atomic commit
+            // for both attendance with state present, and late.
             boolean commitAndDontWaitAnotherExecuteStmt = false;
 
             // true if employee is either absent or present without being late.
             // If employee is present and late then the value become false.
-            // false flag is used to allow late attendance record.
             boolean employeeIsEitherAbsentOrAttendedFine
                     = (attendance.getStateOfAttendance() == false)
                     || (attendance.getStateOfAttendance() && lateAttendance == null);
@@ -173,13 +177,13 @@ public class SubmitAttendance extends JPanel
                     && lateAttendance != null;
 
             // if either employee is absent or present without being late
-            // flag set to true to not wait for late record;
+            // flag switched to true to not wait for late record;
             // because there is no late record.
             if (employeeIsEitherAbsentOrAttendedFine) {
                 commitAndDontWaitAnotherExecuteStmt = true;
             }
 
-            // If employee is present and also late then flag set to false
+            // If employee is present and also late then flag switched to false
             // to not commit immediately but wait for late record to be inserted
             // and after that; commit both the attendance and late record in a single commit.
             if (employeeAttendedAndLate) {
@@ -188,9 +192,8 @@ public class SubmitAttendance extends JPanel
 
             // Either create or update attendance record.
             // Or if the passed attendance is the same as the stored record
-            // then no update is issued. However, below the code you will find
-            // the case of attendance state is present and it is the same as the stored
-            // but late record is updated.
+            // then no update operation is commited. Note that Late entity operation is not
+            // covered in this method, but subsequent code does.
             eas = CRUDAttendance.takeAttendance(attendance, commitAndDontWaitAnotherExecuteStmt);
 
             //  ******************************************************************************
@@ -198,14 +201,19 @@ public class SubmitAttendance extends JPanel
             //  ******************************************************************************
             //**
             // if either employee is absent or present without being late
-            // and there was creat or update operation, then;
+            // and there was creat or update operation, then run;
             // notify attendance submition succedded.
             if (employeeIsEitherAbsentOrAttendedFine) {
                 if (eas.getCreateState() || eas.getUpdateState()) {
                     notifyAttendanceSubmitSuccedded();
+                    entityStatechanged = true;
                 }
             }
 
+            // Commiting the case of attendance with state present, and late;
+            // is dependent on the completion of the late record. Also the
+            // same thing for notify attendance submition succedded
+            // which is achieved in the following codes
             int lateAttendanceInserted = 0;
             // The attendance is already as above either created or updated
             // and the state of attendance is present and employee is also late
@@ -218,43 +226,54 @@ public class SubmitAttendance extends JPanel
 
                 if (lateAttendanceInserted == 1) {
                     notifyAttendanceSubmitSuccedded();
+                    entityStatechanged = true;
                 }
             }
 
+            // Following codes is for when attendance not changed
+            // and the state of attendance is present;
+            // the only changes are related only to late entity operations
+            // either create or update or delete.
             boolean lateRecordAreadyExist = false;
             Late lateAttendanceStored = CRUDLateAttendance.getByAttendanceId(attendance.getId());
-            // Following code is to affect only late record
-            // either create or update or delete.
-            if (!eas.getCreateState() && !eas.getUpdateState()
-                    && (attendance.getStateOfAttendance() && lateAttendance != null)) {
-                // Case of late checkbox checked; while the state was already present without change.
-                // Set attendance id for the late record
-                lateAttendance.setAttendance_id(eas.getAttendanceId());
-                // Check if late record is not already exist.
-                // If late record is not exist then it is create operation.
-                if (lateAttendanceStored == null) {
-                    // Insert the late attendance data.
-                    lateAttendanceInserted = CRUDLateAttendance.create(lateAttendance, false);
-                    if (lateAttendanceInserted == 1) {
+
+            if (!eas.getCreateState() && !eas.getUpdateState() && attendance.getStateOfAttendance()) {
+                if (lateAttendance != null) {
+                    // Case of late checkbox checked; while the state was already present without change.
+                    // Set attendance id for the late record
+                    lateAttendance.setAttendance_id(eas.getAttendanceId());
+                    // Check if late record is not already exist in the database.
+                    // If late record is not exist then it is create operation.
+                    if (lateAttendanceStored == null) {
+                        // Insert the late attendance data.
+                        lateAttendanceInserted = CRUDLateAttendance.create(lateAttendance, false);
+                        if (lateAttendanceInserted == 1) {
+                            notifyAttendanceSubmitSuccedded();
+                            entityStatechanged = true;
+                        }
+                    } else {
+                        // late record is exist then it is update operation.
+                        // Update only if passed late entity minutes are different from stored late entity.
+                        lateRecordAreadyExist = true;
+                        if (lateAttendance.getMinutes_late() != lateAttendanceStored.getMinutes_late()) {
+                            CRUDLateAttendance.update(lateAttendance, false);
+                            notifyAttendanceSubmitSuccedded();
+                            entityStatechanged = true;
+                        }
+                    }
+                } else if (lateAttendance == null) {
+                    // Case of late checkbox unchecked; while the stored state is already present without change.
+                    // then it is delete operation.
+                    int deleteLateAttendance = CRUDLateAttendance.deleteByAttendenceId(attendance.getId());
+                    if (deleteLateAttendance == 1) {
                         notifyAttendanceSubmitSuccedded();
+                        entityStatechanged = true;
                     }
-                } else {
-                    // late record is exist then it is update operation.
-                    // Update only if passed late entity minutes are different from stored late entity.
-                    lateRecordAreadyExist = true;
-                    if (lateAttendance.getMinutes_late() != lateAttendanceStored.getMinutes_late()) {
-                        CRUDLateAttendance.update(lateAttendance, false);
-                    }
-                    notifyAttendanceSubmitSuccedded();
                 }
-            } else if (!eas.getCreateState() && !eas.getUpdateState()
-                    && (attendance.getStateOfAttendance() && lateAttendance == null)) {
-                // Case of late checkbox unchecked; while the stored state is already present without change.
-                // then it is delete operation.
-                int deleteLateAttendance = CRUDLateAttendance.deleteByAttendenceId(attendance.getId());
-                if (deleteLateAttendance == 1) {
-                    notifyAttendanceSubmitSuccedded();
-                }
+            }
+
+            if (!entityStatechanged) {
+                System.out.println("No change at all");
             }
 
             if ((eas.getCreateState() == false)
