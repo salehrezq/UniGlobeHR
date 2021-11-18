@@ -164,6 +164,13 @@ public class EmployeeDailyAttendance extends JPanel
     }
 
     @Override
+    public void attendanceNoChange() {
+        // Same behavior as of attendanceSubmitSucceeded()
+        // because no special reaction for no change case.
+        attendanceSubmitSucceeded();
+    }
+
+    @Override
     public void attendanceSubmitFailed() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

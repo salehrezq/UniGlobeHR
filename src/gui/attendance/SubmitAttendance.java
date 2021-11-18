@@ -62,6 +62,12 @@ public class SubmitAttendance extends JPanel
         });
     }
 
+    private void notifyAttendanceNoChange() {
+        this.submitAttendanceListeners.forEach((sal) -> {
+            sal.attendanceNoChange();
+        });
+    }
+
     @Override
     public void employeeSelected(Employee employee) {
         btnSubmitAttendance.setEnabled(false);
@@ -206,7 +212,6 @@ public class SubmitAttendance extends JPanel
             // notify attendance submition succedded.
             if (employeeIsEitherAbsentOrAttendedFine) {
                 if (eas.getCreateState() || eas.getUpdateState()) {
-                    notifyAttendanceSubmitSuccedded();
                     entityStatechanged = true;
                 }
             }
@@ -224,9 +229,7 @@ public class SubmitAttendance extends JPanel
                 lateAttendance.setAttendance_id(eas.getAttendanceId());
                 // Insert the late attendance data.
                 lateAttendanceInserted = CRUDLateAttendance.create(lateAttendance, true);
-
                 if (lateAttendanceInserted == 1) {
-                    notifyAttendanceSubmitSuccedded();
                     entityStatechanged = true;
                 }
             }
@@ -249,7 +252,6 @@ public class SubmitAttendance extends JPanel
                         // Insert the late attendance data.
                         lateAttendanceInserted = CRUDLateAttendance.create(lateAttendance, false);
                         if (lateAttendanceInserted == 1) {
-                            notifyAttendanceSubmitSuccedded();
                             entityStatechanged = true;
                         }
                     } else {
@@ -258,7 +260,6 @@ public class SubmitAttendance extends JPanel
                         lateRecordAreadyExist = true;
                         if (lateAttendance.getMinutes_late() != lateAttendanceStored.getMinutes_late()) {
                             CRUDLateAttendance.update(lateAttendance, false);
-                            notifyAttendanceSubmitSuccedded();
                             entityStatechanged = true;
                         }
                     }
@@ -267,14 +268,15 @@ public class SubmitAttendance extends JPanel
                     // then it is delete operation.
                     int deleteLateAttendance = CRUDLateAttendance.deleteByAttendenceId(attendance.getId());
                     if (deleteLateAttendance == 1) {
-                        notifyAttendanceSubmitSuccedded();
                         entityStatechanged = true;
                     }
                 }
             }
 
-            if (!entityStatechanged) {
-                System.out.println("No change at all");
+            if (entityStatechanged) {
+                notifyAttendanceSubmitSuccedded();
+            } else {
+                notifyAttendanceNoChange();
             }
 
             if ((eas.getCreateState() == false)

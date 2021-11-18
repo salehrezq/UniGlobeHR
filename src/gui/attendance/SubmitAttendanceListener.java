@@ -13,5 +13,7 @@ public interface SubmitAttendanceListener {
 
     public void attendanceSubmitSucceeded();
 
+    public void attendanceNoChange();
+
     public void attendanceSubmitFailed();
 }
