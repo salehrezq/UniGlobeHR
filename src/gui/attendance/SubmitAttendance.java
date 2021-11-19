@@ -208,16 +208,15 @@ public class SubmitAttendance extends JPanel
             //  ******************************************************************************
             //**
             int lateAttendanceInserted = 0;
+            // Either attendance create or update operation occured.
             if (eas.getCreateState() || eas.getUpdateState()) {
-                // if either employee is absent or present without being late
-                // and there was creat or update operation;
-                // then switch entityStatechanged flag to true.
                 if (employeeIsEitherAbsentOrAttendedFine) {
-                    // Case where attendance stored state was present
-                    // and now switched to absent, then delete any related late entity if any.
+                    // if employee is either absent or present without being late
+                    // and there was creat or update operation;
+                    // then switch entityStatechanged flag to true.
                     if (eas.getEmployeeStoredAttendanceState() && !attendance.getStateOfAttendance()) {
-                        // if attendance state switched/updated from present to absent;
-                        // remove related late record if any.
+                        // Case where attendance stored state was present
+                        // and now switched to absent, then delete any related late entity if any.
                         CRUDLateAttendance.deleteByAttendenceId(attendance.getId());
                     }
                     entityStatechanged = true;
@@ -231,7 +230,7 @@ public class SubmitAttendance extends JPanel
                     // and the state of attendance is present and employee is also late
                     // Set attendance id for the late record
                     lateAttendance.setAttendance_id(eas.getAttendanceId());
-                    // Insert the late attendance data.
+                    // Insert the late attendance record.
                     lateAttendanceInserted = CRUDLateAttendance.create(lateAttendance, true);
                     if (lateAttendanceInserted == 1) {
                         entityStatechanged = true;
@@ -250,7 +249,7 @@ public class SubmitAttendance extends JPanel
                 if (lateAttendance != null) {
                     // Case of late checkbox checked; while the state was already present without change.
                     // Set attendance id for the late record
-                    lateAttendance.setAttendance_id(eas.getAttendanceId());
+                    lateAttendance.setAttendance_id(attendance.getId());
                     // Check if late record is not already exist in the database.
                     // If late record is not exist then it is create operation.
                     if (lateAttendanceStored == null) {
