@@ -42,7 +42,6 @@ public class MainRun {
         //Add content to the window.
         frame.getContentPane().add(stage);
         frame.setJMenuBar(menu.getMenuBar());
-        frame.setMinimumSize(new Dimension(800, 600));
 
         //Display the window.
         frame.pack();

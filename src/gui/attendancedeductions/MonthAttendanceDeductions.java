@@ -11,6 +11,8 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
@@ -46,6 +48,7 @@ public class MonthAttendanceDeductions implements EmployeeSelectedListener {
     private JPanel panelControlls;
     private JPanel panelTable;
     private JButton btnRequestData;
+    GridBagConstraints c;
     private List records;
     private int employeeId;
     private YearMonth yearAndMonth;
@@ -80,7 +83,6 @@ public class MonthAttendanceDeductions implements EmployeeSelectedListener {
         model = new DefaultTableModel(new String[]{"Day Name", "Day Num", "Deduction", "Desc EN", "Desc AR"}, 0);
         table = new JTable(model);
         table.setFont(new Font("SansSerif", Font.BOLD, 14));
-        table.setPreferredScrollableViewportSize(new Dimension(880, 250));
         table.setFillsViewportHeight(true);
         table.getColumnModel().getColumn(0).setPreferredWidth(50);
         table.getColumnModel().getColumn(1).setPreferredWidth(15);
@@ -91,16 +93,35 @@ public class MonthAttendanceDeductions implements EmployeeSelectedListener {
         table.getColumnModel().getColumn(4).setCellRenderer(getRightAlignmentRenderer(4));
 
         scrollTable = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
-        panelTable = new JPanel();
-        panelTable.add(scrollTable);
 
-        panelGather = new JPanel();
-        panelGather.setPreferredSize(new Dimension(900, 350));
+        panelTable = new JPanel(new GridBagLayout());
+        c = new GridBagConstraints();
+        c.anchor = GridBagConstraints.CENTER;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        panelTable.add(scrollTable, c);
+
+        panelGather = new JPanel(new GridBagLayout());
         panelGather.setBorder(BorderFactory.createLineBorder(Color.red));
+        c = new GridBagConstraints();
+        c.anchor = GridBagConstraints.PAGE_START;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1.0;
+        panelGather.add(panelControlls, c);
 
-        BoxLayout boxlayout = new BoxLayout(panelGather, BoxLayout.X_AXIS);
-        panelGather.add(panelControlls);
-        panelGather.add(panelTable);
+        c = new GridBagConstraints();
+        c.gridx = 0;
+        c.gridy = 1;
+        c.anchor = GridBagConstraints.CENTER;
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        panelGather.add(panelTable, c);
         panelGather.setVisible(true);
 
     }

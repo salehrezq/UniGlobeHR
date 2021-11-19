@@ -7,7 +7,6 @@ package gui;
 
 import gui.attendance.AttendanceTab;
 import gui.attendancedeductions.AttendanceDeductionTab;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -48,10 +47,6 @@ public class Stage extends JPanel {
         splitPane.setTopComponent(scrollPane);
         splitPane.setBottomComponent(controls);
         splitPane.setDividerLocation(100);
-        splitPane.setPreferredSize(new Dimension(500, 300));
-
         this.add(splitPane);
-
     }
-
 }

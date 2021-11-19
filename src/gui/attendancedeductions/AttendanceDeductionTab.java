@@ -28,17 +28,19 @@ public class AttendanceDeductionTab extends JPanel {
 
         employeeCard = new EmployeeCard();
         c = new GridBagConstraints();
-        c.gridy = 1;
+        c.gridy = 0;
         c.weightx = 1.0;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
+        c.fill = GridBagConstraints.BOTH;
         this.add(employeeCard, c);
 
         monthAttendanceDeductions = new MonthAttendanceDeductions();
         c = new GridBagConstraints();
-        c.gridy = 2;
+        c.gridy = 1;
         c.weightx = 1.0;
         c.weighty = 1.0;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
+        c.fill = GridBagConstraints.BOTH;
         this.add(monthAttendanceDeductions.getPanelTable(), c);
     }
 
