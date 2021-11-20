@@ -27,6 +27,8 @@ import javax.swing.text.MaskFormatter;
 import model.Employee;
 import gui.EmployeeSelectedListener;
 import datalink.CRUDAttendance;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import model.Attendance;
 
 /**
@@ -75,21 +77,34 @@ public class MonthelyAbsence implements EmployeeSelectedListener {
 
         model = new DefaultTableModel(new String[]{"Day Name", "Day Num"}, 0);
         table = new JTable(model);
-        table.setPreferredScrollableViewportSize(new Dimension(200, 250));
         table.setFillsViewportHeight(true);
         scrollTable = new JScrollPane(table);
-        panelTable = new JPanel();
-        panelTable.add(scrollTable);
+        panelTable = new JPanel(new GridBagLayout());
+        GridBagConstraints c;
+        c = new GridBagConstraints();
+        c.gridy = 0;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.anchor = GridBagConstraints.CENTER;
+        c.fill = GridBagConstraints.BOTH;
+        panelTable.add(scrollTable, c);
 
-        panelGather = new JPanel();
-        panelGather.setPreferredSize(new Dimension(250, 350));
+        panelGather = new JPanel(new GridBagLayout());
         panelGather.setBorder(BorderFactory.createLineBorder(Color.red));
+        c = new GridBagConstraints();
+        c.gridy = 0;
+        c.weightx = 1.0;
+        c.anchor = GridBagConstraints.PAGE_START;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        panelGather.add(panelControlls, c);
 
-        BoxLayout boxlayout = new BoxLayout(panelGather, BoxLayout.X_AXIS);
-        panelGather.add(panelControlls);
-        panelGather.add(panelTable);
-        panelGather.setVisible(true);
-
+        c = new GridBagConstraints();
+        c.gridy = 1;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        c.anchor = GridBagConstraints.CENTER;
+        c.fill = GridBagConstraints.BOTH;
+        panelGather.add(panelTable, c);
     }
 
     public JPanel getPanelTable() {

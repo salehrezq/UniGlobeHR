@@ -36,20 +36,20 @@ public class AttendanceTab extends JPanel {
         gridbag = new GridBagLayout();
 
         this.setLayout(gridbag);
-        GridBagConstraints c = new GridBagConstraints();
+        GridBagConstraints c;
 
         employeeCard = new EmployeeCard();
-
         c = new GridBagConstraints();
         c.gridy = 0;
-        c.anchor = GridBagConstraints.FIRST_LINE_START;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.PAGE_START;
         this.add(employeeCard, c);
 
         employeeDailyAttendance = new EmployeeDailyAttendance();
-
         c = new GridBagConstraints();
         c.gridy = 1;
-        c.anchor = GridBagConstraints.FIRST_LINE_START;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.PAGE_START;
         this.add(employeeDailyAttendance, c);
 
         employeeAttendLate = new EmployeeAttendLate();
@@ -58,8 +58,11 @@ public class AttendanceTab extends JPanel {
         employeeDailyAttendance.addDateChangedAttendanceDataListener(employeeAttendLate);
         c = new GridBagConstraints();
         c.gridy = 2;
-        c.anchor = GridBagConstraints.FIRST_LINE_START;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.PAGE_START;
         this.add(employeeAttendLate, c);
+
+        JPanel gatherSubmitEditPanel = new JPanel();
 
         submitAttendancePanel = new SubmitAttendance();
         submitAttendancePanel.addSubmitAttendanceListener(employeeDailyAttendance);
@@ -71,10 +74,7 @@ public class AttendanceTab extends JPanel {
         DatePicker datePicker = employeeDailyAttendance.getDatePicker();
         submitAttendancePanel.setDateInitial(datePicker.getDefaultToday());
         datePicker.addDateListener(submitAttendancePanel);
-        c = new GridBagConstraints();
-        c.gridy = 3;
-        c.anchor = GridBagConstraints.FIRST_LINE_START;
-        this.add(submitAttendancePanel, c);
+        gatherSubmitEditPanel.add(submitAttendancePanel);
 
         editAttendanceMode = new EditAttendanceMode();
         employeeDailyAttendance.addEmployeeAttendanceDataListener(editAttendanceMode);
@@ -85,15 +85,19 @@ public class AttendanceTab extends JPanel {
         editAttendanceMode.addAttendanceEditModeListener(submitAttendancePanel);
         c = new GridBagConstraints();
         c.gridy = 3;
-        c.weightx = 1.0;
-        c.anchor = GridBagConstraints.FIRST_LINE_START;
-        this.add(editAttendanceMode, c);
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.PAGE_START;
+        gatherSubmitEditPanel.add(editAttendanceMode);
+
+        this.add(gatherSubmitEditPanel, c);
 
         monthelyAbsence = new MonthelyAbsence();
         c = new GridBagConstraints();
         c.gridy = 4;
         c.weighty = 1.0;
-        c.anchor = GridBagConstraints.FIRST_LINE_START;
+        c.weightx = 1.0;
+        c.anchor = GridBagConstraints.CENTER;
+        c.fill = GridBagConstraints.BOTH;
         this.add(monthelyAbsence.getPanelTable(), c);
     }
 

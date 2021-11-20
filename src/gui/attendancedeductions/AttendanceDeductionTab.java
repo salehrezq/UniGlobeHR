@@ -39,7 +39,7 @@ public class AttendanceDeductionTab extends JPanel {
         c.gridy = 1;
         c.weightx = 1.0;
         c.weighty = 1.0;
-        c.anchor = GridBagConstraints.FIRST_LINE_START;
+        c.anchor = GridBagConstraints.CENTER;
         c.fill = GridBagConstraints.BOTH;
         this.add(monthAttendanceDeductions.getPanelTable(), c);
     }
