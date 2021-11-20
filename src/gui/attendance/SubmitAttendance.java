@@ -214,7 +214,7 @@ public class SubmitAttendance extends JPanel
                     // if employee is either absent or present without being late
                     // and there was creat or update operation;
                     // then switch entityStatechanged flag to true.
-                    if (eas.getEmployeeStoredAttendanceState() && !attendance.getStateOfAttendance()) {
+                    if (eas.getEmployeeStoredAttendanceState() != null && eas.getEmployeeStoredAttendanceState() && !attendance.getStateOfAttendance()) {
                         // Case where attendance stored state was present
                         // and now switched to absent, then delete any related late entity if any.
                         CRUDLateAttendance.deleteByAttendenceId(attendance.getId());
