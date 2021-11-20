@@ -45,22 +45,23 @@ public class AttendanceTab extends JPanel {
         c.anchor = GridBagConstraints.PAGE_START;
         this.add(employeeCard, c);
 
+        JPanel gatherAttendancePanel = new JPanel();
+
+        employeeAttendLate = new EmployeeAttendLate();
+        gatherAttendancePanel.add(employeeAttendLate);
+
         employeeDailyAttendance = new EmployeeDailyAttendance();
+        gatherAttendancePanel.add(employeeDailyAttendance);
+
+        employeeDailyAttendance.addEmployeeAttendanceListener(employeeAttendLate);
+        employeeDailyAttendance.addEmployeeAttendanceDataListener(employeeAttendLate);
+        employeeDailyAttendance.addDateChangedAttendanceDataListener(employeeAttendLate);
+
         c = new GridBagConstraints();
         c.gridy = 1;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.PAGE_START;
-        this.add(employeeDailyAttendance, c);
-
-        employeeAttendLate = new EmployeeAttendLate();
-        employeeDailyAttendance.addEmployeeAttendanceListener(employeeAttendLate);
-        employeeDailyAttendance.addEmployeeAttendanceDataListener(employeeAttendLate);
-        employeeDailyAttendance.addDateChangedAttendanceDataListener(employeeAttendLate);
-        c = new GridBagConstraints();
-        c.gridy = 2;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.anchor = GridBagConstraints.PAGE_START;
-        this.add(employeeAttendLate, c);
+        this.add(gatherAttendancePanel, c);
 
         JPanel gatherSubmitEditPanel = new JPanel();
 
