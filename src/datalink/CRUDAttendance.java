@@ -41,9 +41,14 @@ public class CRUDAttendance {
      * Inserts <code>Attendance</code> entity to the database, and returns the
      * state of creation.
      *
-     * @param attendance that will feed the method with the attendance state of
-     * employee
+     * @param attendance entity to be stored into the database
      * @param eas that will be updated with the create state of attendance
+     * @param commitAndDontWaitAnotherExecuteStmt if {@code false} then employee
+     * is present and late. In this case, the INSERT statement will not be
+     * committed here. However the same connection will be used on the late
+     * entity operation and there will be committed, so both attendance and late
+     * will be committed altogether or fail altogether. If {@code true} then no
+     * follow up related late entity, so the INSERT will be committed here.
      * @return <code>EmployeeAttendanceStatus</code> that contains the create
      * state of attendance.
      */
@@ -96,28 +101,18 @@ public class CRUDAttendance {
     }
 
     /**
-     * Updates <code>Attendance</code> entity in the database, and returns the
-     * state of updating.
+     * Updates {@code Attendance} entity in the database, and returns the state
+     * of updating.
      *
-     * @param attendance that will feed the method with the attendance state of
-     * employee
-     * @param eas that will be updated with the update state of attendance.
-     * @return <code>EmployeeAttendanceStatus</code> that contains the update
-     * state of attendance.
-     */
-
-    /**
-     * Updates {@code Attendance} entity in the database, and returns the
-     * state of updating.
-     *
-     * @param attendance that will feed the method with the attendance state of
-     * employee
-     * @param eas that will be updated with the update state of attendance.
+     * @param attendance entity to be used to update relevant record in the
+     * database.
+     * @param eas this will be updated with the update state of attendance.
      * @param commitAndDontWaitAnotherExecuteStmt if {@code false} then employee
-     * is present and late. In this case, the update will not be committed here.
-     * However the same connection will be used on the late entity operation
-     * and there will be committed, so both attendance and late will be committed
-     * altogether or fail together. If {@code true} then no late entity follow up.
+     * is present and late. In this case, the UPDATE statement will not be
+     * committed here. However the same connection will be used on the late
+     * entity operation and there will be committed, so both attendance and late
+     * will be committed altogether or fail altogether. If {@code true} then no
+     * follow up related late entity, so the UPDATE will be committed here.
      * @return <code>EmployeeAttendanceStatus</code> that contains the update
      * state of attendance.
      */
@@ -156,12 +151,13 @@ public class CRUDAttendance {
      * @param attendance that will feed the method with the attendance state of
      * employee
      * @param commitAndDontWaitAnotherExecuteStmt since auto commit is set to
-     * <code>false</code> for better control; so that we can achieve atomic operation
-     * <code>false</code>. It will be set to <code>true</code> in normal cases,
-     * and <code>false</code> when we need to execute more than one insert statement
-     * which have to be either all inserted altogether successfully or fail
-     * altogether. For example the case when we need to insert both attendance
-     * as present and also insert a `late` record for that attendance.
+     * <code>false</code> for better control; so that we can achieve atomic
+     * operation <code>false</code>. It will be set to <code>true</code> in
+     * normal cases, and <code>false</code> when we need to execute more than
+     * one insert statement which have to be either all inserted altogether
+     * successfully or fail altogether. For example the case when we need to
+     * insert both attendance as present and also insert a `late` record for
+     * that attendance.
      * @return <code>EmployeeAttendanceStatus</code> that contains the state of
      * attendance create/update process
      */

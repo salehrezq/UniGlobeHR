@@ -22,6 +22,19 @@ public class CRUDLateAttendance {
 
     private static Connection conn;
 
+    /**
+     * Create Late entity as database record.
+     *
+     * @param lateAttendance entity to be stored into the database.
+     * @param useAttendanceConnection if {@code true} then there are INSERT
+     * operations for both; this Late entity and also its related
+     * {@code Attendance} entity from which we use the same connection to be
+     * committed as a transaction. If {@code false} then only this Late entity
+     * that need to be INSERTed because its related {@code Attendance} entity
+     * was already INSERTed ahead in a previous operation.
+     * @return {@code int} 1 if there was successful INSERT of one record, or 0
+     * if no INSERT due to some problem.
+     */
     public static int create(Late lateAttendance, boolean useAttendanceConnection) {
 
         int create = 0;
@@ -43,8 +56,6 @@ public class CRUDLateAttendance {
                         "Fail to create late attendence", "",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
             }
-
-            // eas.setCreatedOrFailed(create);
             conn.commit();
         } catch (SQLException ex) {
             Logger.getLogger(CRUDLateAttendance.class.getName()).log(Level.SEVERE, null, ex);
@@ -114,6 +125,15 @@ public class CRUDLateAttendance {
         return lateAttendance;
     }
 
+    /**
+     * Update Late entity in a database record.
+     *
+     * @param lateAttendance entity to be used to update relevant record in the
+     * database.
+     * @return {@code int} 1 if there was successful UPDATE of one record, or 0
+     * if no UPDATE; no update because no record was found to update or some
+     * other problem.
+     */
     public static int update(Late lateAttendance) {
 
         int update = 0;
