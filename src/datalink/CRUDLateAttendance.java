@@ -114,13 +114,13 @@ public class CRUDLateAttendance {
         return lateAttendance;
     }
 
-    public static int update(Late lateAttendance, boolean useAttendanceConnection) {
+    public static int update(Late lateAttendance) {
 
         int update = 0;
 
         try {
             String sql = "UPDATE `late` SET `minutes_late`= ? WHERE `attendance_id` = ?";
-            conn = Connect.getConnection(useAttendanceConnection);
+            conn = Connect.getConnection();
             PreparedStatement p = conn.prepareStatement(sql);
 
             p.setInt(1, lateAttendance.getMinutes_late());

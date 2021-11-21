@@ -263,7 +263,7 @@ public class SubmitAttendance extends JPanel
                         // Update only if passed late entity minutes are different from stored late entity.
                         lateRecordAreadyExist = true;
                         if (lateAttendance.getMinutes_late() != lateAttendanceStored.getMinutes_late()) {
-                            CRUDLateAttendance.update(lateAttendance, false);
+                            CRUDLateAttendance.update(lateAttendance);
                             entityStatechanged = true;
                         }
                     }
