@@ -39,6 +39,7 @@ public class SubmitAttendance extends JPanel
     private CRUDAttendance.EmployeeAttendanceStatus eas;
     private LocalDate date;
     private ArrayList<SubmitAttendanceListener> submitAttendanceListeners;
+    private ArrayList<SubmittedAttendanceEntitiesListener> submittedAttendanceEntitiesListeners;
 
     public SubmitAttendance() {
         btnSubmitAttendance = new JButton("Submit");
@@ -46,6 +47,7 @@ public class SubmitAttendance extends JPanel
         this.add(btnSubmitAttendance);
         btnSubmitAttendance.addActionListener(new SubmitAttendanceAction());
         submitAttendanceListeners = new ArrayList<>();
+        submittedAttendanceEntitiesListeners = new ArrayList<>();
     }
 
     public void setDateInitial(LocalDate date) {
@@ -65,6 +67,16 @@ public class SubmitAttendance extends JPanel
     private void notifyAttendanceNoChange() {
         this.submitAttendanceListeners.forEach((sal) -> {
             sal.attendanceNoChange();
+        });
+    }
+
+    public void addSubmittedAttendanceEntitiesListener(SubmittedAttendanceEntitiesListener sael) {
+        this.submittedAttendanceEntitiesListeners.add(sael);
+    }
+
+    private void notifySubmittedAttendanceEntitiesListener(Attendance submittedAttendanceEntity, Late submittedLateAttendanceEntity) {
+        this.submittedAttendanceEntitiesListeners.forEach((sael) -> {
+            sael.submittedAttendanceEntities(submittedAttendanceEntity, submittedLateAttendanceEntity);
         });
     }
 
@@ -278,7 +290,16 @@ public class SubmitAttendance extends JPanel
             }
 
             if (entityStatechanged) {
+
                 notifyAttendanceSubmitSuccedded();
+
+                if (employeeIsEitherAbsentOrAttendedFine || lateAttendance != null) {
+                    // After creation of Attendace and Late (if any)
+                    // they are passed to whichever class that need
+                    // to know the submitted entities.
+                    attendance.setId(eas.getAttendanceId());
+                    notifySubmittedAttendanceEntitiesListener(attendance, lateAttendance);
+                }
             } else {
                 notifyAttendanceNoChange();
             }

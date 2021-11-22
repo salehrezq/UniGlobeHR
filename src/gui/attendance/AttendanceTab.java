@@ -81,6 +81,7 @@ public class AttendanceTab extends JPanel {
         employeeDailyAttendance.addEmployeeAttendanceDataListener(editAttendanceMode);
         employeeDailyAttendance.addDateChangedAttendanceDataListener(editAttendanceMode);
         submitAttendancePanel.addSubmitAttendanceListener(editAttendanceMode);
+        submitAttendancePanel.addSubmittedAttendanceEntitiesListener(editAttendanceMode);
         editAttendanceMode.addAttendanceEditModeListener(employeeDailyAttendance);
         editAttendanceMode.addAttendanceEditModeListener(employeeAttendLate);
         editAttendanceMode.addAttendanceEditModeListener(submitAttendancePanel);

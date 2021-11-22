@@ -4,10 +4,14 @@
  */
 package gui.attendance;
 
+import model.Attendance;
+import model.Late;
+
 /**
  *
  * @author Saleh
  */
 public interface SubmittedAttendanceEntitiesListener {
 
+    public void submittedAttendanceEntities(Attendance submittedAttendanceEntity, Late submittedLateAttendanceEntity);
 }

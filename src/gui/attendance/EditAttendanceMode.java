@@ -22,7 +22,8 @@ import model.Late;
 public class EditAttendanceMode extends JPanel implements
         EmployeeAttendanceDataListener,
         DateChangedAttendanceDataListener,
-        SubmitAttendanceListener {
+        SubmitAttendanceListener,
+        SubmittedAttendanceEntitiesListener {
 
     private final JButton btnEditModeAttendance;
     private CRUDAttendance.EmployeeAttendanceStatus eas;
@@ -42,7 +43,7 @@ public class EditAttendanceMode extends JPanel implements
         this.attendanceEditModeListeners.add(aeml);
     }
 
-    private void notifyAttendanceEditMode() {
+    private void notifyAttendanceEditMode(Attendance attendance, Late lateAttendance) {
         this.attendanceEditModeListeners.forEach((aeml) -> {
             aeml.attendanceEditModeReact(attendance, lateAttendance);
         });
@@ -92,16 +93,35 @@ public class EditAttendanceMode extends JPanel implements
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     * Receives newly submitted entities to the database.
+     *
+     * @param submittedAttendanceEntity
+     * @param submittedLateAttendanceEntity
+     */
+    @Override
+    public void submittedAttendanceEntities(Attendance submittedAttendanceEntity, Late submittedLateAttendanceEntity) {
+        this.attendance = submittedAttendanceEntity;
+        this.lateAttendance = submittedLateAttendanceEntity;
+    }
+
     class EditAttendanceModeAction extends AbstractAction {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             if (eas != null) {
+                // This branch is reached after employeeAttendanceDataOnSelection() is called
+                // and also subsequent dateChanged() calls;
+                // which is the case when we select stored employee with specific date.
                 int attendanceId = eas.getAttendanceId();
                 attendance = CRUDAttendance.getById(attendanceId);
                 lateAttendance = CRUDLateAttendance.getById(attendanceId);
                 btnEditModeAttendance.setEnabled(false);
-                notifyAttendanceEditMode();
+                notifyAttendanceEditMode(attendance, lateAttendance);
+            } else if ((attendance != null) || (lateAttendance != null)) {
+                // This branch is reached after submittedAttendanceEntities() is called,
+                // which is the case after fresh submitted records.
+                notifyAttendanceEditMode(attendance, lateAttendance);
             }
         }
     }
