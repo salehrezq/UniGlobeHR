@@ -217,10 +217,10 @@ public class MonthAttendanceDeductions implements EmployeeSelectedListener {
 
             Object[] modelRow = new Object[5];
             for (int i = 0; i < listOfAbsentDays.size(); i++) {
-                LocalDate date = listOfAbsentDays.get(i).getDate();
+                AttendanceDeduction attendanceDeduction = attendanceDeductionsList.get(i);
+                LocalDate date = attendanceDeduction.geDate();
                 modelRow[0] = date.getDayOfWeek().toString();
                 modelRow[1] = date.getDayOfMonth();
-                AttendanceDeduction attendanceDeduction = attendanceDeductionsList.get(i);
                 modelRow[2] = attendanceDeduction.getDeduction();
                 modelRow[3] = attendanceDeduction.getDescriptionEN();
                 modelRow[4] = attendanceDeduction.getDescriptionAR();

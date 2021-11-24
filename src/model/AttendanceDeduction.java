@@ -5,12 +5,15 @@
  */
 package model;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author Saleh
  */
 public class AttendanceDeduction {
 
+    private LocalDate date;
     private int id;
     private int attendanceId;
     private String descriptionAR;
@@ -55,6 +58,14 @@ public class AttendanceDeduction {
 
     public void setDeduction(double deduction) {
         this.deduction = deduction;
+    }
+
+    public LocalDate geDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate elementPosition) {
+        this.date = elementPosition;
     }
 
 }

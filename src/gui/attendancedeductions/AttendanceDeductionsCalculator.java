@@ -53,15 +53,15 @@ public class AttendanceDeductionsCalculator {
      *
      * First day of month is always single day deduction.
      *
-     * subsequent day: - If it comes within the next 5 days from the previous
-     * one; deduct 2 days. - If it comes after 5 days from the previous one;
+     * subsequent day: - If it occurs within the next 5 days from the previous
+     * one; deduct 2 days. - If it occurs after 5 days from the previous one;
      * deduct 1 day.
      *
      * Fridays are always dropped from calculations; in that if a subsequent day
-     * comes after 6 days from the previous one, and one day of these 6 days is
-     * a Friday; 1 is dropped from the 6 days which accounts for the Friday, and
-     * in this case the subsequent day is assumed to be after 5 days because of
-     * omitting the Friday.
+     * occurs as the 7th day from the previous one, and Friday occurs between
+     * the previous day and the 7th day then this Friday is dropped such that
+     * the subsequent day will be accounted as the 6th day from the previous day
+     * instead of being the 7th day.
      *
      * @param listOfAbsentDays
      * @param ym
@@ -76,17 +76,23 @@ public class AttendanceDeductionsCalculator {
         for (int i = 0; i < size; i++) {
 
             if (size == 1) {
+                // If only single day in the list, then apply the deduction and leave the loop.
                 setAttendanceDeduction(listOfAbsentDays.get(i), Deduction.SINGLE);
                 break;
             }
 
             if (size > 1 && i == 0) {
+                // If more than one day in the list, then record it
+                // and continue to check next day if any.
                 setAttendanceDeduction(listOfAbsentDays.get(i), Deduction.SINGLE);
             }
 
+            // Check the difference between this day and the next day
+            // and apply whatever deduction parameters.
             int day = (int) listOfAbsentDays.get(i).getDate().getDayOfMonth();
             int nextDay = -1;
-            if ((i + 1) < size) {
+            int nextDayPosition = i + 1;
+            if (nextDayPosition < size) {
                 nextDay = (int) listOfAbsentDays.get(i + 1).getDate().getDayOfMonth();
             }
             // If no more days found.
@@ -94,22 +100,31 @@ public class AttendanceDeductionsCalculator {
                 break;
             }
 
-            // If Friday exists within then next 6 days from day, then omit the Friday
+            // If Friday occurs between day and nextDay then omit the Friday
             // asume it is 6 days and omit the Friday.
             int diff = nextDay - day;
             int fridayDedected = 0;
             if (diff == 6) {
+                // If diff = 6; that means that nextDay is the 7th day from day,
+                // hence we check if Friday occurs between day and nextDay
                 fridayDedected = dedectFridayBetweenTwoDaysOfMonth(day, nextDay, ym);
             }
 
             if (((nextDay - fridayDedected) - day) < 6) {
+                // If Friday occurred it will be omitted.
+                // Then, if diff between nextDay and day is less than 6;
+                // it means that nextDay occurs at maximum as the 6th day or less.
+                // Hence deduct double days salary.
                 if (fridayDedected == 0) {
-                    setAttendanceDeduction(listOfAbsentDays.get(i), Deduction.DOUBLE);
+                    setAttendanceDeduction(listOfAbsentDays.get(nextDayPosition), Deduction.DOUBLE);
                 } else {
-                    setAttendanceDeduction(listOfAbsentDays.get(i), Deduction.DOUBLE_FRIDAY_OMITTED);
+                    setAttendanceDeduction(listOfAbsentDays.get(nextDayPosition), Deduction.DOUBLE_FRIDAY_OMITTED);
                 }
             } else {
-                setAttendanceDeduction(listOfAbsentDays.get(i), Deduction.SINGLE);
+                // If diff between nextDay and day is equal or more than 6;
+                // it means that nextDay occurs after the 6th day.
+                // Hence deduct single days salary.
+                setAttendanceDeduction(listOfAbsentDays.get(nextDayPosition), Deduction.SINGLE);
             }
         }
 
@@ -148,6 +163,7 @@ public class AttendanceDeductionsCalculator {
         attendanceDeduction.setAttendanceId(absentRecord.getId());
         attendanceDeduction.setDescriptionAR(deduction.singleDescriptionAR());
         attendanceDeduction.setDescriptionEN(deduction.singleDescriptionEN());
+        attendanceDeduction.setDate(absentRecord.getDate());
         double daySalary = getDaySalary(absentRecord.getEmployeeId());
         double salaryDeuction = getDeduction(deduction, daySalary);
         attendanceDeduction.setDeduction(rounding(salaryDeuction));
