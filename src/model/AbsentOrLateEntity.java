@@ -4,10 +4,31 @@
  */
 package model;
 
+import java.time.LocalDate;
+
 /**
  *
  * @author Saleh
  */
 public abstract class AbsentOrLateEntity {
+
+    private int employeeId;
+    private LocalDate date;
+
+    public int getEmployeeId() {
+        return employeeId;
+    }
+
+    public void setEmployeeId(int employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public LocalDate getDate() {
+        return date;
+    }
+
+    public void setDate(LocalDate date) {
+        this.date = date;
+    }
 
 }

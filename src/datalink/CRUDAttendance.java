@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import model.AbsentOrLateEntity;
 import model.Attendance;
 import model.Late;
 
@@ -76,7 +77,7 @@ public class CRUDAttendance {
 
             if (eas.getCreateState()) {
                 // Succeeded to insert attendance record, now get the record id.
-                try ( ResultSet generatedKeys = p.getGeneratedKeys()) {
+                try (ResultSet generatedKeys = p.getGeneratedKeys()) {
                     if (generatedKeys.next()) {
                         eas.setAttendanceId(generatedKeys.getInt(1));
                     } else {
@@ -270,6 +271,64 @@ public class CRUDAttendance {
             Connect.cleanUp();
         }
         return absentRecordList;
+    }
+
+    public static List getAbsenceAndLatesRecordByEmployeeByMonth(int employeeID, YearMonth ym) {
+
+        List<AbsentOrLateEntity> absentOrLateEnities = new ArrayList<>();
+
+        try {
+            LocalDate firstOfThisMonth = ym.atDay(1);
+            LocalDate firstOfNextMonth = ym.plusMonths(1).atDay(1);
+
+            String sql = "SELECT *"
+                    + " FROM `attendance` LEFT JOIN `late` ON (attendance.id = late.attendance_id)"
+                    + " WHERE attendance.employee_id = ?"
+                    + " AND attendance.date >= ? AND attendance.date < ?"
+                    + " AND (attendance.state = FALSE OR (attendance.state = TRUE AND late.id IS NOT NULL))"
+                    + " ORDER BY `date` ASC;";
+
+            conn = Connect.getConnection();
+            PreparedStatement p = conn.prepareStatement(sql);
+
+            p.setInt(1, employeeID);
+            p.setObject(2, firstOfThisMonth);
+            p.setObject(3, firstOfNextMonth);
+
+            ResultSet result = p.executeQuery();
+
+            Attendance absentRecord = null;
+            Late lateAttendance = null;
+
+            while (result.next()) {
+
+                Integer lateID = (Integer) result.getObject("late.id");
+
+                if (lateID == null) {
+                    // Case of employee is absent
+                    absentRecord = new Attendance();
+                    absentRecord.setId(result.getInt("attendance.id"));
+                    absentRecord.setDate(result.getDate("attendance.date").toLocalDate());
+                    absentRecord.setStateOfAttendance(false);
+                    absentRecord.setEmployeeId(employeeID);
+                    absentOrLateEnities.add(absentRecord);
+                } else {
+                    // Case of employee is late
+                    lateAttendance = new Late();
+                    lateAttendance.setId(lateID);
+                    lateAttendance.setEmployeeId(employeeID);
+                    lateAttendance.setDate(result.getDate("attendance.date").toLocalDate());
+                    lateAttendance.setAttendance_id(result.getInt("late.attendance_id"));
+                    lateAttendance.setMinutes_late(result.getInt("late.minutes_late"));
+                    absentOrLateEnities.add(lateAttendance);
+                }
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDAttendance.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            Connect.cleanUp();
+        }
+        return absentOrLateEnities;
     }
 
     public static Attendance getById(int id) {

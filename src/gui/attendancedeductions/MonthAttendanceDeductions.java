@@ -31,6 +31,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
+import model.AbsentOrLateEntity;
 import model.Attendance;
 import model.AttendanceDeduction;
 import model.Employee;
@@ -80,17 +81,18 @@ public class MonthAttendanceDeductions implements EmployeeSelectedListener {
         panelControlls.add(tfYear);
         panelControlls.add(monthsList);
 
-        model = new DefaultTableModel(new String[]{"Day Name", "Day Num", "Deduction", "Desc EN", "Desc AR"}, 0);
+        model = new DefaultTableModel(new String[]{"Day Name", "Day Num", "Type", "Deduction", "Desc EN", "Desc AR"}, 0);
         table = new JTable(model);
         table.setFont(new Font("SansSerif", Font.BOLD, 14));
         table.setFillsViewportHeight(true);
         table.getColumnModel().getColumn(0).setPreferredWidth(50);
-        table.getColumnModel().getColumn(1).setPreferredWidth(15);
-        table.getColumnModel().getColumn(2).setPreferredWidth(30);
-        table.getColumnModel().getColumn(3).setPreferredWidth(280);
+        table.getColumnModel().getColumn(1).setPreferredWidth(5);
+        table.getColumnModel().getColumn(2).setPreferredWidth(15);
+        table.getColumnModel().getColumn(3).setPreferredWidth(30);
         table.getColumnModel().getColumn(4).setPreferredWidth(280);
+        table.getColumnModel().getColumn(5).setPreferredWidth(280);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
-        table.getColumnModel().getColumn(4).setCellRenderer(getRightAlignmentRenderer(4));
+        table.getColumnModel().getColumn(5).setCellRenderer(getRightAlignmentRenderer(5));
 
         scrollTable = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
@@ -165,7 +167,7 @@ public class MonthAttendanceDeductions implements EmployeeSelectedListener {
         this.yearAndMonth = ym;
     }
 
-    public List getTata() {
+    public List<AbsentOrLateEntity> getTata() {
 
         if (employeeId < 1) {
             return null;
@@ -176,7 +178,8 @@ public class MonthAttendanceDeductions implements EmployeeSelectedListener {
         YearMonth ym = YearMonth.of(year, month);
         setYearAndMonth(ym);
 
-        records = CRUDAttendance.getAbsenceRecordByEmployeeByMonth(employeeId, ym);
+        records = CRUDAttendance.getAbsenceAndLatesRecordByEmployeeByMonth(employeeId, ym);
+
         return records;
     }
 
@@ -202,9 +205,9 @@ public class MonthAttendanceDeductions implements EmployeeSelectedListener {
             // and not accumulate on previous results
             model.setRowCount(0);
 
-            List<Attendance> listOfAbsentDays = getTata();
+            List<AbsentOrLateEntity> listOfAbsentAndLateDays = getTata();
 
-            if (listOfAbsentDays == null) {
+            if (listOfAbsentAndLateDays == null) {
                 JOptionPane.showConfirmDialog(panelGather,
                         "Select Employee", "",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
@@ -213,17 +216,19 @@ public class MonthAttendanceDeductions implements EmployeeSelectedListener {
 
             List<AttendanceDeduction> attendanceDeductionsList
                     = AttendanceDeductionsCalculator
-                            .calculateDeductions(listOfAbsentDays, yearAndMonth);
+                            .getAbsentsAndLatesDeductions(listOfAbsentAndLateDays, yearAndMonth);
 
-            Object[] modelRow = new Object[5];
-            for (int i = 0; i < listOfAbsentDays.size(); i++) {
+            Object[] modelRow = new Object[6];
+            int size = attendanceDeductionsList.size();
+            for (int i = 0; i < size; i++) {
                 AttendanceDeduction attendanceDeduction = attendanceDeductionsList.get(i);
                 LocalDate date = attendanceDeduction.geDate();
                 modelRow[0] = date.getDayOfWeek().toString();
                 modelRow[1] = date.getDayOfMonth();
-                modelRow[2] = attendanceDeduction.getDeduction();
-                modelRow[3] = attendanceDeduction.getDescriptionEN();
-                modelRow[4] = attendanceDeduction.getDescriptionAR();
+                modelRow[2] = (attendanceDeduction.getType() == AttendanceDeduction.Type.ABSENT ? "Absent" : "Late");
+                modelRow[3] = attendanceDeduction.getDeduction();
+                modelRow[4] = attendanceDeduction.getDescriptionEN();
+                modelRow[5] = attendanceDeduction.getDescriptionAR();
                 model.addRow(modelRow);
             }
         }

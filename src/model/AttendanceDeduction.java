@@ -19,6 +19,19 @@ public class AttendanceDeduction {
     private String descriptionAR;
     private String descriptionEN;
     private double deduction;
+    private Type type;
+
+    public enum Type {
+        ABSENT, LATE
+    }
+
+    public Type getType() {
+        return type;
+    }
+
+    public void setType(Type type) {
+        this.type = type;
+    }
 
     public int getId() {
         return id;

@@ -9,7 +9,7 @@ package model;
  *
  * @author Saleh
  */
-public class Late {
+public class Late extends AbsentOrLateEntity {
 
     private int id;
     private int attendance_id;

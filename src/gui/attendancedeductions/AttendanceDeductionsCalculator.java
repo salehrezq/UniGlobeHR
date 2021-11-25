@@ -12,10 +12,14 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import model.AbsentOrLateEntity;
 import model.Attendance;
 import model.AttendanceDeduction;
 import model.Employee;
+import model.Late;
 
 /**
  *
@@ -48,6 +52,23 @@ public class AttendanceDeductionsCalculator {
         }
     }
 
+    public static List<AttendanceDeduction> getAbsentsAndLatesDeductions(List<AbsentOrLateEntity> listOfAbsentsAndLates, YearMonth ym) {
+
+        List<AttendanceDeduction> absentsDeductions = new ArrayList<>();
+
+        List<AttendanceDeduction> absents = getAbsentsDeductions(listOfAbsentsAndLates, ym);
+        List<AttendanceDeduction> lates = getLatesDeductions(listOfAbsentsAndLates, ym);
+
+        absentsDeductions.addAll(absents);
+        absentsDeductions.addAll(lates);
+
+        Collections.sort(absentsDeductions, (AttendanceDeduction date1, AttendanceDeduction date2) -> {
+            return date1.geDate().compareTo(date2.geDate());
+        });
+
+        return absentsDeductions;
+    }
+
     /**
      * Steps of deductions.
      *
@@ -63,28 +84,29 @@ public class AttendanceDeductionsCalculator {
      * the subsequent day will be accounted as the 6th day from the previous day
      * instead of being the 7th day.
      *
-     * @param listOfAbsentDays
+     * @param absentOrLateEnitiy
      * @param ym
-     * @return List<AttendanceDeduction>
+     * @return {@code List<AttendanceDeduction>}
      */
-    public static List<AttendanceDeduction> calculateDeductions(List<Attendance> listOfAbsentDays, YearMonth ym) {
+    public static List<AttendanceDeduction> getAbsentsDeductions(List<AbsentOrLateEntity> absentOrLateEnitiy, YearMonth ym) {
 
-        attendanceDeductionsList = new ArrayList<>();
+        List<AbsentOrLateEntity> listOfAbsentDays = extractAbsents(absentOrLateEnitiy);
 
+        List<AttendanceDeduction> deductions = new ArrayList<>();
         int size = listOfAbsentDays.size();
 
         for (int i = 0; i < size; i++) {
 
             if (size == 1) {
                 // If only single day in the list, then apply the deduction and leave the loop.
-                setAttendanceDeduction(listOfAbsentDays.get(i), Deduction.SINGLE);
+                deductions.add(getAbsentsDeductions(listOfAbsentDays.get(i), Deduction.SINGLE));
                 break;
             }
 
             if (size > 1 && i == 0) {
                 // If more than one day in the list, then record it
                 // and continue to check next day if any.
-                setAttendanceDeduction(listOfAbsentDays.get(i), Deduction.SINGLE);
+                deductions.add(getAbsentsDeductions(listOfAbsentDays.get(i), Deduction.SINGLE));
             }
 
             // Check the difference between this day and the next day
@@ -92,16 +114,15 @@ public class AttendanceDeductionsCalculator {
             int day = (int) listOfAbsentDays.get(i).getDate().getDayOfMonth();
             int nextDay = -1;
             int nextDayPosition = i + 1;
-            if (nextDayPosition < size) {
-                nextDay = (int) listOfAbsentDays.get(i + 1).getDate().getDayOfMonth();
+            if ((i + 1) < size) {
+                nextDay = (int) listOfAbsentDays.get(nextDayPosition).getDate().getDayOfMonth();
             }
-            // If no more days found.
+            //  If no more days found.
             if (nextDay == -1) {
                 break;
             }
-
-            // If Friday occurs between day and nextDay then omit the Friday
-            // asume it is 6 days and omit the Friday.
+            //  If Friday occurs within then next 6 days from day, then omit the Friday
+            //  asume it is 6 days and omit the Friday.
             int diff = nextDay - day;
             int fridayDedected = 0;
             if (diff == 6) {
@@ -116,19 +137,88 @@ public class AttendanceDeductionsCalculator {
                 // it means that nextDay occurs at maximum as the 6th day or less.
                 // Hence deduct double days salary.
                 if (fridayDedected == 0) {
-                    setAttendanceDeduction(listOfAbsentDays.get(nextDayPosition), Deduction.DOUBLE);
+                    deductions.add(getAbsentsDeductions(listOfAbsentDays.get(nextDayPosition), Deduction.DOUBLE));
                 } else {
-                    setAttendanceDeduction(listOfAbsentDays.get(nextDayPosition), Deduction.DOUBLE_FRIDAY_OMITTED);
+                    deductions.add(getAbsentsDeductions(listOfAbsentDays.get(nextDayPosition), Deduction.DOUBLE_FRIDAY_OMITTED));
                 }
             } else {
-                // If diff between nextDay and day is equal or more than 6;
-                // it means that nextDay occurs after the 6th day.
-                // Hence deduct single days salary.
-                setAttendanceDeduction(listOfAbsentDays.get(nextDayPosition), Deduction.SINGLE);
+                deductions.add(getAbsentsDeductions(listOfAbsentDays.get(nextDayPosition), Deduction.SINGLE));
+            }
+        }
+        return deductions;
+    }
+
+    public static List<AttendanceDeduction> getLatesDeductions(List<AbsentOrLateEntity> v, YearMonth ym) {
+
+        List<AbsentOrLateEntity> listOfLateDays = extractLateAttendance(v);
+
+        List<AttendanceDeduction> deductions = new ArrayList<>();
+        int size = listOfLateDays.size();
+
+        for (int i = 0; i < size; i++) {
+
+            if (size == 1) {
+                deductions.add(getLatesDeductions(listOfLateDays.get(i), Deduction.SINGLE));
+                break;
+            }
+
+            if (size > 1 && i == 0) {
+                deductions.add(getLatesDeductions(listOfLateDays.get(i), Deduction.SINGLE));
+            }
+
+            int day = (int) ((Late) listOfLateDays.get(i)).getDate().getDayOfMonth();
+            int nextDay = -1;
+            int nextDayPosition = i + 1;
+            if ((i + 1) < size) {
+                nextDay = (int) ((Late) listOfLateDays.get(nextDayPosition)).getDate().getDayOfMonth();
+            }
+            // If no more days found.
+            if (nextDay == -1) {
+                break;
+            }
+
+            // If Friday occurs between day and nextDay then omit the Friday
+            // asume it is 6 days and omit the Friday.
+            int diff = nextDay - day;
+            int fridayDedected = 0;
+            if (diff == 6) {
+                fridayDedected = dedectFridayBetweenTwoDaysOfMonth(day, nextDay, ym);
+            }
+
+            if (((nextDay - fridayDedected) - day) < 6) {
+                if (fridayDedected == 0) {
+                    deductions.add(getLatesDeductions(listOfLateDays.get(nextDayPosition), Deduction.DOUBLE));
+                } else {
+                    deductions.add(getLatesDeductions(listOfLateDays.get(nextDayPosition), Deduction.DOUBLE_FRIDAY_OMITTED));
+                }
+            } else {
+                deductions.add(getLatesDeductions(listOfLateDays.get(nextDayPosition), Deduction.SINGLE));
             }
         }
 
-        return attendanceDeductionsList;
+        return deductions;
+    }
+
+    private static List<AbsentOrLateEntity> extractAbsents(List<AbsentOrLateEntity> absentsAndLate) {
+
+        List<AbsentOrLateEntity> absents = new ArrayList<>();
+        absentsAndLate.stream().forEach((absentRecord) -> {
+            if (absentRecord instanceof Attendance) {
+                absents.add(absentRecord);
+            }
+        });
+        return absents;
+    }
+
+    private static List<AbsentOrLateEntity> extractLateAttendance(List<AbsentOrLateEntity> absentsAndLate) {
+
+        List<AbsentOrLateEntity> lates = new ArrayList<>();
+        absentsAndLate.stream().forEach((lateRecord) -> {
+            if (lateRecord instanceof Late) {
+                lates.add(lateRecord);
+            }
+        });
+        return lates;
     }
 
     /**
@@ -168,6 +258,40 @@ public class AttendanceDeductionsCalculator {
         double salaryDeuction = getDeduction(deduction, daySalary);
         attendanceDeduction.setDeduction(rounding(salaryDeuction));
         attendanceDeductionsList.add(attendanceDeduction);
+    }
+
+    private static AttendanceDeduction getAbsentsDeductions(AbsentOrLateEntity absentState, Deduction deduction) {
+        AttendanceDeduction attendanceDeduction = null;
+        if (absentState instanceof Attendance) {
+            Attendance absentRecord = (Attendance) absentState;
+            attendanceDeduction = new AttendanceDeduction();
+            attendanceDeduction.setType(AttendanceDeduction.Type.ABSENT);
+            attendanceDeduction.setAttendanceId(absentRecord.getId());
+            attendanceDeduction.setDescriptionAR(deduction.singleDescriptionAR());
+            attendanceDeduction.setDescriptionEN(deduction.singleDescriptionEN());
+            attendanceDeduction.setDate(absentRecord.getDate());
+            double daySalary = getDaySalary(absentRecord.getEmployeeId());
+            double salaryDeuction = getDeduction(deduction, daySalary);
+            attendanceDeduction.setDeduction(rounding(salaryDeuction));
+        }
+        return attendanceDeduction;
+    }
+
+    private static AttendanceDeduction getLatesDeductions(AbsentOrLateEntity late, Deduction deduction) {
+        AttendanceDeduction attendanceDeduction = null;
+        if (late instanceof Late) {
+            Late lateRecord = (Late) late;
+            attendanceDeduction = new AttendanceDeduction();
+            attendanceDeduction.setType(AttendanceDeduction.Type.LATE);
+            attendanceDeduction.setAttendanceId(lateRecord.getAttendance_id());
+            attendanceDeduction.setDescriptionAR("late in english");
+            attendanceDeduction.setDescriptionEN("late in arabic");
+            attendanceDeduction.setDate(late.getDate());
+            double daySalary = getDaySalary(lateRecord.getEmployeeId());
+            double salaryDeuction = 5.5;//getDeduction(deduction, daySalary);
+            attendanceDeduction.setDeduction(rounding(salaryDeuction));
+        }
+        return attendanceDeduction;
     }
 
     private static double getDaySalary(int id) {
