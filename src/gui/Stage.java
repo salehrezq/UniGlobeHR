@@ -6,7 +6,6 @@
 package gui;
 
 import gui.attendance.AttendanceTab;
-import gui.attendancedeductions.AttendanceDeductionTab;
 import java.awt.GridLayout;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -35,11 +34,7 @@ public class Stage extends JPanel {
         treeEmployees.addEmployeeSelectedListener(attendancePanel.getEmployeeCard());
         treeEmployees.addEmployeeSelectedListener(attendancePanel.getEmployeeDailyAbsence());
         treeEmployees.addEmployeeSelectedListener(attendancePanel.getSubmitAttendancePanel());
-        treeEmployees.addEmployeeSelectedListener(attendancePanel.getMonthelyAbsence());
-        // Attendance deductions panel
-        AttendanceDeductionTab attendanceDeductionPanel = controls.getAttendanceDeductionPanel();
-        treeEmployees.addEmployeeSelectedListener(attendanceDeductionPanel.geteEmployeeCard());
-        treeEmployees.addEmployeeSelectedListener(attendanceDeductionPanel.getMonthAttendanceDeductions());
+        treeEmployees.addEmployeeSelectedListener(attendancePanel.getMonthAttendanceDeductions());
         // Add the scroll panes to a split pane.
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         splitPane.setDividerSize(5);

@@ -26,7 +26,7 @@ public class AttendanceTab extends JPanel {
     private EmployeeAttendLate employeeAttendLate;
     private SubmitAttendance submitAttendancePanel;
     private EditAttendanceMode editAttendanceMode;
-    private MonthelyAbsence monthelyAbsence;
+    private MonthAttendanceDeductions monthAttendanceDeductions;
 
     public AttendanceTab() {
 
@@ -93,14 +93,14 @@ public class AttendanceTab extends JPanel {
 
         this.add(gatherSubmitEditPanel, c);
 
-        monthelyAbsence = new MonthelyAbsence();
+        monthAttendanceDeductions = new MonthAttendanceDeductions();
         c = new GridBagConstraints();
         c.gridy = 4;
         c.weighty = 1.0;
         c.weightx = 1.0;
         c.anchor = GridBagConstraints.CENTER;
         c.fill = GridBagConstraints.BOTH;
-        this.add(monthelyAbsence.getPanelTable(), c);
+        this.add(monthAttendanceDeductions.getPanelTable(), c);
     }
 
     public EmployeeCard getEmployeeCard() {
@@ -115,7 +115,7 @@ public class AttendanceTab extends JPanel {
         return this.submitAttendancePanel;
     }
 
-    public MonthelyAbsence getMonthelyAbsence() {
-        return this.monthelyAbsence;
+    public MonthAttendanceDeductions getMonthAttendanceDeductions() {
+        return this.monthAttendanceDeductions;
     }
 }
