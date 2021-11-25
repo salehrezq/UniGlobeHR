@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui.attendancedeductions;
+package gui.attendance;
 
 import datalink.CRUDEmployee;
 import java.math.BigDecimal;
@@ -13,7 +13,6 @@ import java.time.YearMonth;
 import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import model.AbsentOrLateEntity;
 import model.Attendance;

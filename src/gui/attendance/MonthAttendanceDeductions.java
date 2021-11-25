@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui.attendancedeductions;
+package gui.attendance;
 
 import datalink.CRUDAttendance;
 import gui.EmployeeSelectedListener;
@@ -20,7 +20,6 @@ import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.List;
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -32,7 +31,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 import model.AbsentOrLateEntity;
-import model.Attendance;
 import model.AttendanceDeduction;
 import model.Employee;
 
