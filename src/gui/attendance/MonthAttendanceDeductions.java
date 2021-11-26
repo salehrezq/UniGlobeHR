@@ -54,6 +54,7 @@ public class MonthAttendanceDeductions implements EmployeeSelectedListener {
     private JFormattedTextField tfYear;
     private JComboBox monthsList;
     private final String[] monthsNums;
+    private Color lateColor;
 
     public MonthAttendanceDeductions() {
         super();
@@ -91,6 +92,11 @@ public class MonthAttendanceDeductions implements EmployeeSelectedListener {
         table.getColumnModel().getColumn(5).setPreferredWidth(280);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         table.getColumnModel().getColumn(5).setCellRenderer(getRightAlignmentRenderer(5));
+
+        lateColor = new Color(255, 255, 219);
+        for (int i = 0; i < 6; i++) {
+            table.getColumnModel().getColumn(i).setCellRenderer(getRowsColorRenderer(i));
+        }
 
         scrollTable = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
@@ -150,6 +156,36 @@ public class MonthAttendanceDeductions implements EmployeeSelectedListener {
             }
         };
 
+        return renderer;
+    }
+
+    private DefaultTableCellRenderer getRowsColorRenderer(int targetColumn) {
+
+        DefaultTableCellRenderer renderer;
+        renderer = new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(
+                    JTable table,
+                    Object value,
+                    boolean isSelected,
+                    boolean hasFocus,
+                    int row,
+                    int column) {
+                Component tableCellRendererComponent
+                        = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+                String type = (String) table.getModel().getValueAt(row, 2);
+
+                if (type.contains("Late")) {
+                    setBackground(lateColor);
+                    setForeground(table.getForeground());
+                } else {
+                    setBackground(table.getBackground());
+                    setForeground(table.getForeground());
+                }
+                return tableCellRendererComponent;
+            }
+        };
         return renderer;
     }
 
