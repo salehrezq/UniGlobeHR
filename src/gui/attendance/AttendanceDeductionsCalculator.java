@@ -285,6 +285,7 @@ public class AttendanceDeductionsCalculator {
             attendanceDeduction.setAttendanceId(lateRecord.getAttendance_id());
             attendanceDeduction.setDescriptionAR("late in english");
             attendanceDeduction.setDescriptionEN("late in arabic");
+            attendanceDeduction.setMinutesLate(lateRecord.getMinutes_late());
             attendanceDeduction.setDate(late.getDate());
             double daySalary = getDaySalary(lateRecord.getEmployeeId());
             double salaryDeuction = 5.5;//getDeduction(deduction, daySalary);

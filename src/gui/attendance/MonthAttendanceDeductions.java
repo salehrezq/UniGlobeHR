@@ -259,12 +259,25 @@ public class MonthAttendanceDeductions implements EmployeeSelectedListener {
                 LocalDate date = attendanceDeduction.geDate();
                 modelRow[0] = date.getDayOfWeek().toString();
                 modelRow[1] = date.getDayOfMonth();
-                modelRow[2] = (attendanceDeduction.getType() == AttendanceDeduction.Type.ABSENT ? "Absent" : "Late");
+                modelRow[2] = getValueBasedOnType(attendanceDeduction);
                 modelRow[3] = attendanceDeduction.getDeduction();
                 modelRow[4] = attendanceDeduction.getDescriptionEN();
                 modelRow[5] = attendanceDeduction.getDescriptionAR();
                 model.addRow(modelRow);
             }
+        }
+
+        private String getValueBasedOnType(AttendanceDeduction attendanceDeduction) {
+
+            String typeValue = null;
+            AttendanceDeduction.Type type = attendanceDeduction.getType();
+
+            if (type == AttendanceDeduction.Type.ABSENT) {
+                typeValue = "Absent";
+            } else if (type == AttendanceDeduction.Type.LATE) {
+                typeValue = "Late (" + attendanceDeduction.getMinutesLate() + ")";
+            }
+            return typeValue;
         }
     }
 

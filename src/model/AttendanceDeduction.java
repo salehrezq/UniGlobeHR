@@ -20,6 +20,15 @@ public class AttendanceDeduction {
     private String descriptionEN;
     private double deduction;
     private Type type;
+    private int minutesLate;
+
+    public int getMinutesLate() {
+        return minutesLate;
+    }
+
+    public void setMinutesLate(int minutesLate) {
+        this.minutesLate = minutesLate;
+    }
 
     public enum Type {
         ABSENT, LATE
