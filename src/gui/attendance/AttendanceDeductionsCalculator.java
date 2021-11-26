@@ -26,8 +26,6 @@ import model.Late;
  */
 public class AttendanceDeductionsCalculator {
 
-    private static List<AttendanceDeduction> attendanceDeductionsList;
-
     public enum Deduction {
 
         SINGLE("Single day salary deducted", "\u062E\u0635\u0645 \u0631\u0627\u062A\u0628 \u064A\u0648\u0645"),
@@ -55,8 +53,8 @@ public class AttendanceDeductionsCalculator {
 
         List<AttendanceDeduction> absentsDeductions = new ArrayList<>();
 
-        List<AttendanceDeduction> absents = getAbsentsDeductions(listOfAbsentsAndLates, ym);
-        List<AttendanceDeduction> lates = getLatesDeductions(listOfAbsentsAndLates, ym);
+        List<AttendanceDeduction> absents = getAbsentsDeductionsList(listOfAbsentsAndLates, ym);
+        List<AttendanceDeduction> lates = getLatesDeductionsList(listOfAbsentsAndLates, ym);
 
         absentsDeductions.addAll(absents);
         absentsDeductions.addAll(lates);
@@ -87,7 +85,7 @@ public class AttendanceDeductionsCalculator {
      * @param ym
      * @return {@code List<AttendanceDeduction>}
      */
-    public static List<AttendanceDeduction> getAbsentsDeductions(List<AbsentOrLateEntity> absentOrLateEnitiy, YearMonth ym) {
+    public static List<AttendanceDeduction> getAbsentsDeductionsList(List<AbsentOrLateEntity> absentOrLateEnitiy, YearMonth ym) {
 
         List<AbsentOrLateEntity> listOfAbsentDays = extractAbsents(absentOrLateEnitiy);
 
@@ -98,14 +96,14 @@ public class AttendanceDeductionsCalculator {
 
             if (size == 1) {
                 // If only single day in the list, then apply the deduction and leave the loop.
-                deductions.add(getAbsentsDeductions(listOfAbsentDays.get(i), Deduction.SINGLE));
+                deductions.add(getAbsentDeduction(listOfAbsentDays.get(i), Deduction.SINGLE));
                 break;
             }
 
             if (size > 1 && i == 0) {
                 // If more than one day in the list, then record it
                 // and continue to check next day if any.
-                deductions.add(getAbsentsDeductions(listOfAbsentDays.get(i), Deduction.SINGLE));
+                deductions.add(getAbsentDeduction(listOfAbsentDays.get(i), Deduction.SINGLE));
             }
 
             // Check the difference between this day and the next day
@@ -116,12 +114,12 @@ public class AttendanceDeductionsCalculator {
             if ((i + 1) < size) {
                 nextDay = (int) listOfAbsentDays.get(nextDayPosition).getDate().getDayOfMonth();
             }
-            //  If no more days found.
+            // If no more days found.
             if (nextDay == -1) {
                 break;
             }
-            //  If Friday occurs within then next 6 days from day, then omit the Friday
-            //  asume it is 6 days and omit the Friday.
+            // If Friday occurs within then next 6 days from day, then omit the Friday
+            // asume it is 6 days and omit the Friday.
             int diff = nextDay - day;
             int fridayDedected = 0;
             if (diff == 6) {
@@ -136,18 +134,18 @@ public class AttendanceDeductionsCalculator {
                 // it means that nextDay occurs at maximum as the 6th day or less.
                 // Hence deduct double days salary.
                 if (fridayDedected == 0) {
-                    deductions.add(getAbsentsDeductions(listOfAbsentDays.get(nextDayPosition), Deduction.DOUBLE));
+                    deductions.add(getAbsentDeduction(listOfAbsentDays.get(nextDayPosition), Deduction.DOUBLE));
                 } else {
-                    deductions.add(getAbsentsDeductions(listOfAbsentDays.get(nextDayPosition), Deduction.DOUBLE_FRIDAY_OMITTED));
+                    deductions.add(getAbsentDeduction(listOfAbsentDays.get(nextDayPosition), Deduction.DOUBLE_FRIDAY_OMITTED));
                 }
             } else {
-                deductions.add(getAbsentsDeductions(listOfAbsentDays.get(nextDayPosition), Deduction.SINGLE));
+                deductions.add(getAbsentDeduction(listOfAbsentDays.get(nextDayPosition), Deduction.SINGLE));
             }
         }
         return deductions;
     }
 
-    public static List<AttendanceDeduction> getLatesDeductions(List<AbsentOrLateEntity> v, YearMonth ym) {
+    public static List<AttendanceDeduction> getLatesDeductionsList(List<AbsentOrLateEntity> v, YearMonth ym) {
 
         List<AbsentOrLateEntity> listOfLateDays = extractLateAttendance(v);
 
@@ -157,12 +155,12 @@ public class AttendanceDeductionsCalculator {
         for (int i = 0; i < size; i++) {
 
             if (size == 1) {
-                deductions.add(getLatesDeductions(listOfLateDays.get(i), Deduction.SINGLE));
+                deductions.add(getLateDeduction(listOfLateDays.get(i), Deduction.SINGLE));
                 break;
             }
 
             if (size > 1 && i == 0) {
-                deductions.add(getLatesDeductions(listOfLateDays.get(i), Deduction.SINGLE));
+                deductions.add(getLateDeduction(listOfLateDays.get(i), Deduction.SINGLE));
             }
 
             int day = (int) ((Late) listOfLateDays.get(i)).getDate().getDayOfMonth();
@@ -186,12 +184,12 @@ public class AttendanceDeductionsCalculator {
 
             if (((nextDay - fridayDedected) - day) < 6) {
                 if (fridayDedected == 0) {
-                    deductions.add(getLatesDeductions(listOfLateDays.get(nextDayPosition), Deduction.DOUBLE));
+                    deductions.add(getLateDeduction(listOfLateDays.get(nextDayPosition), Deduction.DOUBLE));
                 } else {
-                    deductions.add(getLatesDeductions(listOfLateDays.get(nextDayPosition), Deduction.DOUBLE_FRIDAY_OMITTED));
+                    deductions.add(getLateDeduction(listOfLateDays.get(nextDayPosition), Deduction.DOUBLE_FRIDAY_OMITTED));
                 }
             } else {
-                deductions.add(getLatesDeductions(listOfLateDays.get(nextDayPosition), Deduction.SINGLE));
+                deductions.add(getLateDeduction(listOfLateDays.get(nextDayPosition), Deduction.SINGLE));
             }
         }
 
@@ -247,19 +245,7 @@ public class AttendanceDeductionsCalculator {
         return fridayDedected;
     }
 
-    private static void setAttendanceDeduction(Attendance absentRecord, Deduction deduction) {
-        AttendanceDeduction attendanceDeduction = new AttendanceDeduction();
-        attendanceDeduction.setAttendanceId(absentRecord.getId());
-        attendanceDeduction.setDescriptionAR(deduction.singleDescriptionAR());
-        attendanceDeduction.setDescriptionEN(deduction.singleDescriptionEN());
-        attendanceDeduction.setDate(absentRecord.getDate());
-        double daySalary = getDaySalary(absentRecord.getEmployeeId());
-        double salaryDeuction = getDeduction(deduction, daySalary);
-        attendanceDeduction.setDeduction(rounding(salaryDeuction));
-        attendanceDeductionsList.add(attendanceDeduction);
-    }
-
-    private static AttendanceDeduction getAbsentsDeductions(AbsentOrLateEntity absentState, Deduction deduction) {
+    private static AttendanceDeduction getAbsentDeduction(AbsentOrLateEntity absentState, Deduction deduction) {
         AttendanceDeduction attendanceDeduction = null;
         if (absentState instanceof Attendance) {
             Attendance absentRecord = (Attendance) absentState;
@@ -276,7 +262,7 @@ public class AttendanceDeductionsCalculator {
         return attendanceDeduction;
     }
 
-    private static AttendanceDeduction getLatesDeductions(AbsentOrLateEntity late, Deduction deduction) {
+    private static AttendanceDeduction getLateDeduction(AbsentOrLateEntity late, Deduction deduction) {
         AttendanceDeduction attendanceDeduction = null;
         if (late instanceof Late) {
             Late lateRecord = (Late) late;
