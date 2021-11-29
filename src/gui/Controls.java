@@ -17,7 +17,7 @@ import javax.swing.JTabbedPane;
 public class Controls extends JPanel {
 
     private JTabbedPane tabs;
-    private AttendanceTab attendancePanel;
+    private AttendanceTab attendanceTab;
 
     public Controls() {
         super();
@@ -25,12 +25,12 @@ public class Controls extends JPanel {
 
         tabs = new JTabbedPane();
 
-        attendancePanel = new AttendanceTab();
-        tabs.add(attendancePanel, "Attendance");
+        attendanceTab = new AttendanceTab();
+        tabs.add(attendanceTab, "Attendance");
         this.add(tabs);
     }
 
-    public AttendanceTab getManageEmployee() {
-        return this.attendancePanel;
+    public AttendanceTab getAttendanceTab() {
+        return this.attendanceTab;
     }
 }

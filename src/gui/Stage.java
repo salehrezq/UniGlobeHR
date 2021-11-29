@@ -30,7 +30,7 @@ public class Stage extends JPanel {
         treeEmployees = new TreeEmployees();
         controls = new Controls();
         // Attendance panel
-        AttendanceTab attendancePanel = controls.getManageEmployee();
+        AttendanceTab attendancePanel = controls.getAttendanceTab();
         treeEmployees.addEmployeeSelectedListener(attendancePanel.getEmployeeCard());
         treeEmployees.addEmployeeSelectedListener(attendancePanel.getEmployeeDailyAbsence());
         treeEmployees.addEmployeeSelectedListener(attendancePanel.getSubmitAttendancePanel());
