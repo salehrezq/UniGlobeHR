@@ -6,6 +6,7 @@
 package gui;
 
 import gui.attendance.AttendanceTab;
+import gui.performance.PerformanceTab;
 import java.awt.GridLayout;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
@@ -18,6 +19,7 @@ public class Controls extends JPanel {
 
     private JTabbedPane tabs;
     private AttendanceTab attendanceTab;
+    private PerformanceTab performanceTab;
 
     public Controls() {
         super();
@@ -27,10 +29,19 @@ public class Controls extends JPanel {
 
         attendanceTab = new AttendanceTab();
         tabs.add(attendanceTab, "Attendance");
+
+        performanceTab = new PerformanceTab();
+        tabs.add(performanceTab.performanceTab(), "Performance");
+
         this.add(tabs);
     }
 
     public AttendanceTab getAttendanceTab() {
         return this.attendanceTab;
     }
+
+    public PerformanceTab getPerformanceTab() {
+        return performanceTab;
+    }
+
 }
