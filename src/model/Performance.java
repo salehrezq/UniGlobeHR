@@ -1,6 +1,7 @@
 package model;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 /**
  *
@@ -10,7 +11,7 @@ public class Performance {
 
     private int id;
     private int employeeId;
-    private LocalDate date;
+    private LocalDateTime dateTime;
     private String descriptionEN;
     private String descriptionAR;
     private double amount;
@@ -32,12 +33,12 @@ public class Performance {
         this.employeeId = employeeId;
     }
 
-    public LocalDate getDate() {
-        return date;
+    public LocalDateTime getDate() {
+        return dateTime;
     }
 
-    public void setDate(LocalDate date) {
-        this.date = date;
+    public void setDate(LocalDateTime date) {
+        this.dateTime = date;
     }
 
     public String getDescriptionEN() {
