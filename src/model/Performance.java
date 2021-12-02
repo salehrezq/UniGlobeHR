@@ -12,8 +12,8 @@ public class Performance {
     private int id;
     private int employeeId;
     private LocalDateTime dateTime;
-    private String descriptionEN;
-    private String descriptionAR;
+    private String title;
+    private String description;
     private double amount;
     private boolean state;
 
@@ -33,28 +33,28 @@ public class Performance {
         this.employeeId = employeeId;
     }
 
-    public LocalDateTime getDate() {
+    public LocalDateTime getDateTime() {
         return dateTime;
     }
 
-    public void setDate(LocalDateTime date) {
+    public void setDateTime(LocalDateTime date) {
         this.dateTime = date;
     }
 
-    public String getDescriptionEN() {
-        return descriptionEN;
+    public String getTitle() {
+        return title;
     }
 
-    public void setDescriptionEN(String descriptionEN) {
-        this.descriptionEN = descriptionEN;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getDescriptionAR() {
-        return descriptionAR;
+    public String getDescription() {
+        return description;
     }
 
-    public void setDescriptionAR(String descriptionAR) {
-        this.descriptionAR = descriptionAR;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public double getAmount() {
@@ -65,7 +65,7 @@ public class Performance {
         this.amount = amount;
     }
 
-    public boolean isState() {
+    public boolean getState() {
         return state;
     }
 

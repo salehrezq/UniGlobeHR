@@ -40,6 +40,7 @@ public class Stage extends JPanel {
         // Performance tab panel
         PerformanceTab performanceTab = controls.getPerformanceTab();
         treeEmployees.addEmployeeSelectedListener(performanceTab.getEmployeeCard());
+        treeEmployees.addEmployeeSelectedListener(performanceTab.getPerformanceRequest());
         // Add the scroll panes to a split pane.
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         splitPane.setDividerSize(5);
