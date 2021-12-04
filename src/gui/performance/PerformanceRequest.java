@@ -1,10 +1,8 @@
 package gui.performance;
 
-import datalink.CRUDAttendance;
 import datalink.CRUDPerformance;
 import gui.EmployeeSelectedListener;
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -23,11 +21,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
-import model.AbsentOrLateEntity;
-import model.AttendanceDeduction;
 import model.Employee;
 import model.Performance;
 
@@ -89,16 +84,6 @@ public class PerformanceRequest implements EmployeeSelectedListener {
 
         scrollTable = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
-        panelTable = new JPanel(new GridBagLayout());
-        c = new GridBagConstraints();
-        c.anchor = GridBagConstraints.CENTER;
-        c.gridx = 0;
-        c.gridy = 0;
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1.0;
-        c.weighty = 1.0;
-        panelTable.add(scrollTable, c);
-
         panelGather = new JPanel(new GridBagLayout());
         panelGather.setBorder(BorderFactory.createLineBorder(Color.red));
         c = new GridBagConstraints();
@@ -116,9 +101,7 @@ public class PerformanceRequest implements EmployeeSelectedListener {
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1.0;
         c.weighty = 1.0;
-        panelGather.add(panelTable, c);
-        panelGather.setVisible(true);
-
+        panelGather.add(scrollTable, c);
     }
 
     public JPanel getPanelTable() {
