@@ -75,19 +75,19 @@ public class PerformanceInput implements EmployeeSelectedListener {
 
     @Override
     public void employeeSelected(Employee employee) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println(employee.getName());
     }
 
     @Override
     public void employeeDeselected() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //   throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     private class DateListenerImpli implements DateListener {
 
         @Override
         public void dateChanged(LocalDate date) {
-
+            System.out.println(date);
         }
     }
 

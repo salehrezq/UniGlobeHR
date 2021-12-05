@@ -18,8 +18,8 @@ public class PerformanceTab {
     private JPanel panelInputs;
     private JPanel panelRequests;
     private EmployeeCard employeeCard;
-    private PerformanceRequest performanceRequest;
     private PerformanceInput performanceInput;
+    private PerformanceRequest performanceRequest;
 
     public PerformanceTab() {
 
@@ -73,6 +73,10 @@ public class PerformanceTab {
 
     public PerformanceRequest getPerformanceRequest() {
         return performanceRequest;
+    }
+
+    public PerformanceInput getPerformanceInput() {
+        return performanceInput;
     }
 
 }
