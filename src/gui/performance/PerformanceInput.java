@@ -20,8 +20,9 @@ import model.Employee;
  */
 public class PerformanceInput implements EmployeeSelectedListener {
 
-    private JPanel panelInputs;
-    private JPanel panelControls;
+    private JPanel mainPanel;
+    private JPanel panelStoryInputs;
+    private JPanel panelMetaInputs;
     private JTextField tfTitle;
     private JScrollPane scrollableTextArea;
     private JTextArea taDescription;
@@ -29,48 +30,60 @@ public class PerformanceInput implements EmployeeSelectedListener {
 
     public PerformanceInput() {
 
-        panelInputs = new JPanel(new GridBagLayout());
-        panelControls = new JPanel();
+        panelMetaInputs = new JPanel();
 
         GridBagConstraints c;
 
         datePicker = new DatePicker();
         datePicker.setTodayAsDefault();
         datePicker.addDateListener(new DateListenerImpli());
-        panelControls.add(datePicker.getDatePicker());
-        c = new GridBagConstraints();
-        c.anchor = GridBagConstraints.CENTER;
-        c.gridx = 0;
-        c.gridy = 0;
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1.0;
-        panelInputs.add(panelControls, c);
+        panelMetaInputs.add(datePicker.getDatePicker());
 
+        panelStoryInputs = new JPanel(new GridBagLayout());
         c = new GridBagConstraints();
         tfTitle = new JTextField();
         c.anchor = GridBagConstraints.PAGE_START;
         c.gridx = 0;
-        c.gridy = 1;
+        c.gridy = 0;
         c.fill = GridBagConstraints.HORIZONTAL;
-        c.insets = new Insets(5, 30, 5, 30);
         c.weightx = 1.0;
-        panelInputs.add(tfTitle, c);
+        panelStoryInputs.add(tfTitle, c);
 
         c = new GridBagConstraints();
         taDescription = new JTextArea();
         scrollableTextArea = new JScrollPane(taDescription);
         c.anchor = GridBagConstraints.CENTER;
         c.gridx = 0;
-        c.gridy = 2;
+        c.gridy = 1;
+        c.fill = GridBagConstraints.BOTH;
+        c.weightx = 1.0;
+        c.weighty = 1.0;
+        panelStoryInputs.add(scrollableTextArea, c);
+
+        mainPanel = new JPanel(new GridBagLayout());
+
+        c = new GridBagConstraints();
+        c.anchor = GridBagConstraints.PAGE_START;
+        c.gridx = 0;
+        c.gridy = 0;
+        c.fill = GridBagConstraints.BOTH;
+        c.insets = new Insets(5, 30, 5, 30);
+        c.weightx = 1.0;
+        mainPanel.add(panelMetaInputs, c);
+
+        c = new GridBagConstraints();
+        c.anchor = GridBagConstraints.CENTER;
+        c.gridx = 0;
+        c.gridy = 1;
         c.fill = GridBagConstraints.BOTH;
         c.insets = new Insets(5, 30, 5, 30);
         c.weightx = 1.0;
         c.weighty = 1.0;
-        panelInputs.add(scrollableTextArea, c);
+        mainPanel.add(panelStoryInputs, c);
     }
 
-    public JPanel getPanelInputs() {
-        return panelInputs;
+    public JPanel getPerformanceInputsPanel() {
+        return mainPanel;
     }
 
     @Override

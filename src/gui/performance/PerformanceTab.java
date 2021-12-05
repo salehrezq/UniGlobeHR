@@ -45,7 +45,7 @@ public class PerformanceTab {
         c.weighty = 0.5;
         c.fill = GridBagConstraints.BOTH;
         c.anchor = GridBagConstraints.PAGE_START;
-        panelInputs.add(performanceInput.getPanelInputs(), c);
+        panelInputs.add(performanceInput.getPerformanceInputsPanel(), c);
 
         performanceRequest = new PerformanceRequest();
         c = new GridBagConstraints();
