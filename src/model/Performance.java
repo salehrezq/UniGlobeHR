@@ -14,6 +14,7 @@ public class Performance {
     private LocalDateTime dateTime;
     private String title;
     private String description;
+    private int type;
     private double amount;
     private boolean state;
 
@@ -55,6 +56,14 @@ public class Performance {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
     }
 
     public double getAmount() {
