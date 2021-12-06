@@ -10,7 +10,7 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.time.LocalDate;
-import javax.swing.JFormattedTextField;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -30,13 +30,16 @@ public class PerformanceInput implements EmployeeSelectedListener {
     private JPanel panelStoryInputs;
     private JPanel panelMetaInputs;
     private JLabel lbTime;
-    private JFormattedTextField fieldTime;
+    private JTextField fieldTime;
     private DatePicker datePicker;
+    private JComboBox stateOfPerformance;
+    private JLabel lbAmount;
+    private JTextField fieldAmount;
     private JTextField tfTitle;
     private JScrollPane scrollableTextArea;
     private JTextArea taDescription;
-    private Color timeRight;
-    private Color timeWrong;
+    private Color fieldRight;
+    private Color fieldWrong;
 
     public PerformanceInput() {
 
@@ -44,16 +47,18 @@ public class PerformanceInput implements EmployeeSelectedListener {
 
         GridBagConstraints c;
 
-        timeRight = new Color(226, 252, 237);
-        timeWrong = new Color(254, 225, 214);
+        fieldRight = new Color(226, 252, 237);
+        fieldWrong = new Color(254, 225, 214);
 
         lbTime = new JLabel("Time:");
         panelMetaInputs.add(lbTime);
 
-        fieldTime = new JFormattedTextField();
+        DocumentRegex docRegx = new DocumentRegex();
+
+        fieldTime = new JTextField();
         fieldTime.setFont(new Font("SansSerif", Font.BOLD, 12));
-        fieldTime.setBackground(timeRight);
-        fieldTime.getDocument().addDocumentListener(new DocumentRegex());
+        fieldTime.setBackground(fieldRight);
+        fieldTime.getDocument().addDocumentListener(docRegx);
         fieldTime.setPreferredSize(new Dimension(60, 27));
         panelMetaInputs.add(fieldTime);
 
@@ -61,6 +66,20 @@ public class PerformanceInput implements EmployeeSelectedListener {
         datePicker.setTodayAsDefault();
         datePicker.addDateListener(new DateListenerImpli());
         panelMetaInputs.add(datePicker.getDatePicker());
+
+        stateOfPerformance = new JComboBox<>(new String[]{"Positive", "Negative"});
+        stateOfPerformance.setSelectedIndex(0);
+        panelMetaInputs.add(stateOfPerformance);
+
+        lbAmount = new JLabel("Amount+:");
+        panelMetaInputs.add(lbAmount);
+
+        fieldAmount = new JTextField();
+        fieldAmount.setFont(new Font("SansSerif", Font.BOLD, 12));
+        fieldAmount.setBackground(fieldRight);
+        fieldAmount.getDocument().addDocumentListener(docRegx);
+        fieldAmount.setPreferredSize(new Dimension(95, 27));
+        panelMetaInputs.add(fieldAmount);
 
         panelStoryInputs = new JPanel(new GridBagLayout());
         c = new GridBagConstraints();
@@ -130,10 +149,26 @@ public class PerformanceInput implements EmployeeSelectedListener {
     class DocumentRegex implements DocumentListener {
 
         private void doWork() {
-            if (fieldTime.getText().matches("^(00|0[0-9]|1[012]):[0-5][0-9] ((a|p)m|(A|P)M)$")) {
-                fieldTime.setBackground(timeRight);
+
+            if (fieldTime.getText().isEmpty()) {
+                fieldTime.setBackground(fieldRight);
             } else {
-                fieldTime.setBackground(timeWrong);
+                if (fieldTime.getText().matches("^(00|0[0-9]|1[012]):[0-5][0-9] ((a|p)m|(A|P)M)$")) {
+                    fieldTime.setBackground(fieldRight);
+                } else {
+                    fieldTime.setBackground(fieldWrong);
+                }
+            }
+
+            if (fieldAmount.getText().isEmpty()) {
+                fieldAmount.setBackground(fieldRight);
+            } else {
+                // Regex match DECIMAL(12,3)
+                if (fieldAmount.getText().matches("^\\d{0,9}(?:(?<=\\d)\\.(?=\\d)\\d{0,3})?$")) {
+                    fieldAmount.setBackground(fieldRight);
+                } else {
+                    fieldAmount.setBackground(fieldWrong);
+                }
             }
         }
 
