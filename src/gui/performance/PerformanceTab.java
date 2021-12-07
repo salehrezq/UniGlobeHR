@@ -19,6 +19,7 @@ public class PerformanceTab {
     private JPanel panelRequests;
     private EmployeeCard employeeCard;
     private PerformanceInput performanceInput;
+    private PerformanceSubmit performanceSubmit;
     private PerformanceRequest performanceRequest;
 
     public PerformanceTab() {
@@ -47,13 +48,16 @@ public class PerformanceTab {
         c.anchor = GridBagConstraints.PAGE_START;
         panelInputs.add(performanceInput.getPerformanceInputsPanel(), c);
 
-        performanceRequest = new PerformanceRequest();
+        performanceSubmit = new PerformanceSubmit();
         c = new GridBagConstraints();
         c.gridy = 2;
         c.weightx = 1.0;
-        c.weighty = 0.5;
-        c.fill = GridBagConstraints.BOTH;
+        c.weighty = 0.0;
+        c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.PAGE_END;
+        panelInputs.add(performanceSubmit.getMainPanel(), c);
+
+        performanceRequest = new PerformanceRequest();
         panelRequests.add(performanceRequest.getPanelTable(), BorderLayout.CENTER);
 
         splitPaneContainer = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
