@@ -200,6 +200,14 @@ public class PerformanceInput implements EmployeeSelectedListener {
 
     }
 
+    private void populateComboTypes(boolean state) {
+        List<PerformanceType> performanceTypes = CRUDPerformanceType.getPerformanceTypesByState(state);
+        comboType.removeAllItems();
+        performanceTypes.stream().forEach(pType -> {
+            comboType.addItem(pType.getType());
+        });
+    }
+
     class ItemChangeListener implements ItemListener {
 
         @Override
@@ -208,17 +216,9 @@ public class PerformanceInput implements EmployeeSelectedListener {
             if (source == comboStateOfPerformance) {
                 if (event.getStateChange() == ItemEvent.SELECTED) {
                     if (event.getItem().equals("Negative")) {
-                        List<PerformanceType> performanceTypes = CRUDPerformanceType.getPerformanceTypesByState(false);
-                        comboType.removeAllItems();
-                        performanceTypes.stream().forEach(pType -> {
-                            comboType.addItem(pType.getType());
-                        });
+                        populateComboTypes(false);
                     } else if (event.getItem().equals("Positive")) {
-                        List<PerformanceType> performanceTypes = CRUDPerformanceType.getPerformanceTypesByState(true);
-                        comboType.removeAllItems();
-                        performanceTypes.stream().forEach(pType -> {
-                            comboType.addItem(pType.getType());
-                        });
+                        populateComboTypes(true);
                     }
                 }
             }
