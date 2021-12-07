@@ -79,7 +79,11 @@ public class PerformanceInput implements EmployeeSelectedListener {
         panelMetaInputs.add(comboStateOfPerformance);
 
         comboType = new JComboBox<>();
-        //  comboType.setSelectedIndex(0);
+        comboType.setPreferredSize(new Dimension(145, 25));
+        populateComboTypes(true);
+        if (comboType.getItemCount() > 0) {
+            comboType.setSelectedIndex(0);
+        }
         panelMetaInputs.add(comboType);
 
         lbAmount = new JLabel("Amount+:");
