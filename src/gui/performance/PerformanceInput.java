@@ -164,7 +164,7 @@ public class PerformanceInput implements EmployeeSelectedListener {
             if (fieldTime.getText().isEmpty()) {
                 fieldTime.setBackground(fieldRight);
             } else {
-                if (fieldTime.getText().matches("^(00|0[0-9]|1[012]):[0-5][0-9] ((a|p)m|(A|P)M)$")) {
+                if (fieldTime.getText().matches("^(0[1-9]|1[0-2]):([0-5][0-9]) ((a|p)m|(A|P)M)$")) {
                     fieldTime.setBackground(fieldRight);
                 } else {
                     fieldTime.setBackground(fieldWrong);
