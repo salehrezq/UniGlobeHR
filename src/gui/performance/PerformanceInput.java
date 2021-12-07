@@ -1,5 +1,6 @@
 package gui.performance;
 
+import datalink.CRUDPerformanceType;
 import gui.DateListener;
 import gui.DatePicker;
 import gui.EmployeeSelectedListener;
@@ -9,7 +10,10 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.time.LocalDate;
+import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,6 +23,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import model.Employee;
+import model.PerformanceType;
 
 /**
  *
@@ -32,7 +37,8 @@ public class PerformanceInput implements EmployeeSelectedListener {
     private JLabel lbTime;
     private JTextField fieldTime;
     private DatePicker datePicker;
-    private JComboBox stateOfPerformance;
+    private JComboBox comboStateOfPerformance;
+    private JComboBox comboType;
     private JLabel lbAmount;
     private JTextField fieldAmount;
     private JTextField tfTitle;
@@ -67,9 +73,14 @@ public class PerformanceInput implements EmployeeSelectedListener {
         datePicker.addDateListener(new DateListenerImpli());
         panelMetaInputs.add(datePicker.getDatePicker());
 
-        stateOfPerformance = new JComboBox<>(new String[]{"Positive", "Negative"});
-        stateOfPerformance.setSelectedIndex(0);
-        panelMetaInputs.add(stateOfPerformance);
+        comboStateOfPerformance = new JComboBox<>(new String[]{"Positive", "Negative"});
+        comboStateOfPerformance.addItemListener(new ItemChangeListener());
+        comboStateOfPerformance.setSelectedIndex(0);
+        panelMetaInputs.add(comboStateOfPerformance);
+
+        comboType = new JComboBox<>();
+        //  comboType.setSelectedIndex(0);
+        panelMetaInputs.add(comboType);
 
         lbAmount = new JLabel("Amount+:");
         panelMetaInputs.add(lbAmount);
@@ -189,4 +200,28 @@ public class PerformanceInput implements EmployeeSelectedListener {
 
     }
 
+    class ItemChangeListener implements ItemListener {
+
+        @Override
+        public void itemStateChanged(ItemEvent event) {
+            Object source = event.getSource();
+            if (source == comboStateOfPerformance) {
+                if (event.getStateChange() == ItemEvent.SELECTED) {
+                    if (event.getItem().equals("Negative")) {
+                        List<PerformanceType> performanceTypes = CRUDPerformanceType.getPerformanceTypesByState(false);
+                        comboType.removeAllItems();
+                        performanceTypes.stream().forEach(pType -> {
+                            comboType.addItem(pType.getType());
+                        });
+                    } else if (event.getItem().equals("Positive")) {
+                        List<PerformanceType> performanceTypes = CRUDPerformanceType.getPerformanceTypesByState(true);
+                        comboType.removeAllItems();
+                        performanceTypes.stream().forEach(pType -> {
+                            comboType.addItem(pType.getType());
+                        });
+                    }
+                }
+            }
+        }
+    }
 }
