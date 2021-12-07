@@ -4,6 +4,6 @@ package gui.performance;
  *
  * @author Saleh
  */
-public class SubmitPerformance {
+public class PerformanceSubmit {
 
 }
