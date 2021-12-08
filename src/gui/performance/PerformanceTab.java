@@ -27,7 +27,7 @@ public class PerformanceTab {
         GridBagConstraints c;
 
         panelInputs = new JPanel(new GridBagLayout());
-        panelInputs.setPreferredSize(new Dimension(400, 150));
+        panelInputs.setPreferredSize(new Dimension(400, 100));
         panelRequests = new JPanel(new BorderLayout());
 
         employeeCard = new EmployeeCard();
