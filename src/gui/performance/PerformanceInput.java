@@ -73,17 +73,13 @@ public class PerformanceInput implements EmployeeSelectedListener {
         datePicker.addDateListener(new DateListenerImpli());
         panelMetaInputs.add(datePicker.getDatePicker());
 
-        comboStateOfPerformance = new JComboBox<>(new String[]{"Positive", "Negative"});
+        comboStateOfPerformance = new JComboBox<>(new String[]{"Select...", "Positive", "Negative"});
         comboStateOfPerformance.addItemListener(new ItemChangeListener());
         comboStateOfPerformance.setSelectedIndex(0);
         panelMetaInputs.add(comboStateOfPerformance);
 
         comboType = new JComboBox<>();
         comboType.setPreferredSize(new Dimension(145, 25));
-        populateComboTypes(true);
-        if (comboType.getItemCount() > 0) {
-            comboType.setSelectedIndex(0);
-        }
         panelMetaInputs.add(comboType);
 
         lbAmount = new JLabel("Amount+:");
@@ -251,6 +247,8 @@ public class PerformanceInput implements EmployeeSelectedListener {
                         populateComboTypes(false);
                     } else if (event.getItem().equals("Positive")) {
                         populateComboTypes(true);
+                    } else if (comboStateOfPerformance.getSelectedIndex() == 0) {
+                        comboType.removeAllItems();
                     }
                 }
             }
