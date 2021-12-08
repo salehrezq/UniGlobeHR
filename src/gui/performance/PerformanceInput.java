@@ -44,8 +44,8 @@ public class PerformanceInput implements EmployeeSelectedListener {
     private JTextField tfTitle;
     private JScrollPane scrollableTextArea;
     private JTextArea taDescription;
-    private Color fieldRight;
-    private Color fieldWrong;
+    private Color colorFieldRight;
+    private Color colorFieldWrong;
 
     public PerformanceInput() {
 
@@ -53,8 +53,8 @@ public class PerformanceInput implements EmployeeSelectedListener {
 
         GridBagConstraints c;
 
-        fieldRight = new Color(226, 252, 237);
-        fieldWrong = new Color(254, 225, 214);
+        colorFieldRight = new Color(226, 252, 237);
+        colorFieldWrong = new Color(254, 225, 214);
 
         lbTime = new JLabel("Time:");
         panelMetaInputs.add(lbTime);
@@ -63,7 +63,7 @@ public class PerformanceInput implements EmployeeSelectedListener {
 
         fieldTime = new JTextField();
         fieldTime.setFont(new Font("SansSerif", Font.BOLD, 12));
-        fieldTime.setBackground(fieldRight);
+        fieldTime.setBackground(colorFieldRight);
         fieldTime.getDocument().addDocumentListener(docRegx);
         fieldTime.setPreferredSize(new Dimension(60, 27));
         panelMetaInputs.add(fieldTime);
@@ -91,7 +91,7 @@ public class PerformanceInput implements EmployeeSelectedListener {
 
         fieldAmount = new JTextField();
         fieldAmount.setFont(new Font("SansSerif", Font.BOLD, 12));
-        fieldAmount.setBackground(fieldRight);
+        fieldAmount.setBackground(colorFieldRight);
         fieldAmount.getDocument().addDocumentListener(docRegx);
         fieldAmount.setPreferredSize(new Dimension(95, 27));
         panelMetaInputs.add(fieldAmount);
@@ -153,6 +153,34 @@ public class PerformanceInput implements EmployeeSelectedListener {
         //   throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    public String getTime() {
+        return fieldTime.getText();
+    }
+
+    public LocalDate getDate() {
+        return datePicker.getDate();
+    }
+
+    public String getStateOfPerformance() {
+        return (String) comboStateOfPerformance.getSelectedItem();
+    }
+
+    public int getType() {
+        return comboType.getSelectedIndex();
+    }
+
+    public String getAmount() {
+        return fieldAmount.getText();
+    }
+
+    public String getTitle() {
+        return tfTitle.getText();
+    }
+
+    public String getDescription() {
+        return taDescription.getText();
+    }
+
     private class DateListenerImpli implements DateListener {
 
         @Override
@@ -166,23 +194,23 @@ public class PerformanceInput implements EmployeeSelectedListener {
         private void doWork() {
 
             if (fieldTime.getText().isEmpty()) {
-                fieldTime.setBackground(fieldRight);
+                fieldTime.setBackground(colorFieldRight);
             } else {
                 if (fieldTime.getText().matches("^(0[1-9]|1[0-2]):([0-5][0-9]) ((a|p)m|(A|P)M)$")) {
-                    fieldTime.setBackground(fieldRight);
+                    fieldTime.setBackground(colorFieldRight);
                 } else {
-                    fieldTime.setBackground(fieldWrong);
+                    fieldTime.setBackground(colorFieldWrong);
                 }
             }
 
             if (fieldAmount.getText().isEmpty()) {
-                fieldAmount.setBackground(fieldRight);
+                fieldAmount.setBackground(colorFieldRight);
             } else {
                 // Regex match DECIMAL(12,3)
                 if (fieldAmount.getText().matches("^\\d{0,9}(?:(?<=\\d)\\.(?=\\d)\\d{0,3})?$")) {
-                    fieldAmount.setBackground(fieldRight);
+                    fieldAmount.setBackground(colorFieldRight);
                 } else {
-                    fieldAmount.setBackground(fieldWrong);
+                    fieldAmount.setBackground(colorFieldWrong);
                 }
             }
         }

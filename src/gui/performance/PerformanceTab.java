@@ -49,6 +49,7 @@ public class PerformanceTab {
         panelInputs.add(performanceInput.getPerformanceInputsPanel(), c);
 
         performanceSubmit = new PerformanceSubmit();
+        performanceSubmit.setPerformanceInput(performanceInput);
         c = new GridBagConstraints();
         c.gridy = 2;
         c.weightx = 1.0;
