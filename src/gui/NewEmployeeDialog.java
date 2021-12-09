@@ -33,7 +33,10 @@ import model.Employee;
  *
  * @author Saleh
  */
-public class NewEmployeeDialog extends JDialog implements DateListener {
+public class NewEmployeeDialog extends JDialog
+        implements
+        DateListener,
+        DateDeselectedListener {
 
     private JPanel panel;
     private int width;
@@ -94,6 +97,7 @@ public class NewEmployeeDialog extends JDialog implements DateListener {
         datePicker = new DatePicker();
         datePicker.setTodayAsDefault();
         datePicker.addDateListener(this);
+        datePicker.addDateDeselectedListener(this);
         // initial setting
         enrollmetDate = datePicker.getDate();
         panel.add(datePicker.getDatePicker(), gbc);
@@ -166,6 +170,13 @@ public class NewEmployeeDialog extends JDialog implements DateListener {
     @Override
     public void dateChanged(LocalDate date) {
         this.enrollmetDate = date;
+        btnInsertEmployee.setEnabled(true);
+    }
+
+    @Override
+    public void dateDeselected() {
+        btnInsertEmployee.setEnabled(false);
+        this.enrollmetDate = null;
     }
 
     private class InsertEmployeeHandler implements ActionListener {

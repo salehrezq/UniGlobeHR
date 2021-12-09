@@ -7,6 +7,7 @@ package gui.attendance;
 
 import datalink.CRUDAttendance;
 import datalink.CRUDLateAttendance;
+import gui.DateDeselectedListener;
 import gui.DateListener;
 import gui.EmployeeSelectedListener;
 import java.awt.event.ActionEvent;
@@ -31,6 +32,7 @@ public class SubmitAttendance extends JPanel
         EmployeeAttendanceDataListener,
         DateChangedAttendanceDataListener,
         DateListener,
+        DateDeselectedListener,
         AttendanceEditModeListener {
 
     private final JButton btnSubmitAttendance;
@@ -138,6 +140,11 @@ public class SubmitAttendance extends JPanel
         if (attendance != null) {
             attendance.setDate(date);
         }
+    }
+
+    @Override
+    public void dateDeselected() {
+        btnSubmitAttendance.setEnabled(false);
     }
 
     @Override

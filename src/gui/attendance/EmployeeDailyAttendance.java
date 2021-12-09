@@ -6,6 +6,7 @@
 package gui.attendance;
 
 import datalink.CRUDAttendance;
+import gui.DateDeselectedListener;
 import gui.DateListener;
 import gui.DatePicker;
 import gui.EmployeeSelectedListener;
@@ -27,6 +28,7 @@ import model.Late;
 public class EmployeeDailyAttendance extends JPanel
         implements
         DateListener,
+        DateDeselectedListener,
         EmployeeSelectedListener,
         SubmitAttendanceListener,
         AttendanceEditModeListener {
@@ -37,6 +39,7 @@ public class EmployeeDailyAttendance extends JPanel
     private final boolean boolAbsent = false;
     private ButtonGroup btnGroup;
     private DatePicker datePicker;
+    private boolean boolDateSelected;
     private static AttendanceHandler attendanceHandler;
     private Employee employeeContext;
     private CRUDAttendance.EmployeeAttendanceStatus eas;
@@ -74,7 +77,9 @@ public class EmployeeDailyAttendance extends JPanel
 
         // initial date value settings
         datePicker.setTodayAsDefault();
+        boolDateSelected = true;
         datePicker.addDateListener(this);
+        datePicker.addDateDeselectedListener(this);
         this.add(datePicker.getDatePicker());
     }
 
@@ -88,6 +93,7 @@ public class EmployeeDailyAttendance extends JPanel
 
     @Override
     public void dateChanged(LocalDate date) {
+        boolDateSelected = true;
         if (this.employeeContext != null) {
             // Employee node is selected, then check the state of attendance and
             // initialize the interface accordingly
@@ -122,8 +128,25 @@ public class EmployeeDailyAttendance extends JPanel
     }
 
     @Override
+    public void dateDeselected() {
+        boolDateSelected = false;
+        btnSetPresent.setEnabled(false);
+        btnSetAbsent.setEnabled(false);
+        btnGroup.clearSelection();
+    }
+
+    @Override
     public void employeeSelected(Employee employee) {
         employeeContext = employee;
+
+        if (!boolDateSelected) {
+            // If date is NOT selected:
+            // then clear the buttons and disable them and return out.
+            btnGroup.clearSelection();
+            btnSetPresent.setEnabled(false);
+            btnSetAbsent.setEnabled(false);
+            return;
+        }
 
         eas = CRUDAttendance.getEmployeeAttendanceStatusOnSpecificDate(employeeContext.getId(), datePicker.getDate());
         notifyEmployeeAttendanceDataOnSelection(eas);

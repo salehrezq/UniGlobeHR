@@ -6,4 +6,5 @@ package gui;
  */
 public interface DateDeselectedListener {
 
+    public void dateDeselected();
 }

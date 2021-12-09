@@ -7,6 +7,7 @@ package gui.attendance;
 
 import datalink.CRUDAttendance;
 import datalink.CRUDLateAttendance;
+import gui.DateDeselectedListener;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,7 +33,8 @@ public class EmployeeAttendLate extends JPanel
         EmployeeAttendanceDataListener,
         DateChangedAttendanceDataListener,
         SubmitAttendanceListener,
-        AttendanceEditModeListener {
+        AttendanceEditModeListener,
+        DateDeselectedListener {
 
     private JCheckBox checkEmployeeLate;
     private JSpinner spinnerMinutesLate;
@@ -84,7 +86,16 @@ public class EmployeeAttendLate extends JPanel
     }
 
     @Override
+    public void dateDeselected() {
+        deselection();
+    }
+
+    @Override
     public void employeeSelectionCleared() {
+        deselection();
+    }
+
+    private void deselection() {
         checkEmployeeLate.setEnabled(false);
         checkEmployeeLate.setSelected(false);
         spinnerMinutesLate.setEnabled(false);

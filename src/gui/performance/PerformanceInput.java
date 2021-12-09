@@ -1,6 +1,7 @@
 package gui.performance;
 
 import datalink.CRUDPerformanceType;
+import gui.DateDeselectedListener;
 import gui.DateListener;
 import gui.DatePicker;
 import gui.EmployeeSelectedListener;
@@ -70,7 +71,9 @@ public class PerformanceInput implements EmployeeSelectedListener {
 
         datePicker = new DatePicker();
         datePicker.setTodayAsDefault();
-        datePicker.addDateListener(new DateListenerImpli());
+        DateListenerImpli dateListenerImpli = new DateListenerImpli();
+        datePicker.addDateListener(dateListenerImpli);
+        datePicker.addDateDeselectedListener(dateListenerImpli);
         panelMetaInputs.add(datePicker.getDatePicker());
 
         comboStateOfPerformance = new JComboBox<>(new String[]{"Select...", "Positive", "Negative"});
@@ -141,7 +144,7 @@ public class PerformanceInput implements EmployeeSelectedListener {
 
     @Override
     public void employeeSelected(Employee employee) {
-        System.out.println(employee.getName());
+//        System.out.println(employee.getName());
     }
 
     @Override
@@ -177,11 +180,16 @@ public class PerformanceInput implements EmployeeSelectedListener {
         return taDescription.getText();
     }
 
-    private class DateListenerImpli implements DateListener {
+    private class DateListenerImpli implements DateListener, DateDeselectedListener {
 
         @Override
         public void dateChanged(LocalDate date) {
-            System.out.println(date);
+//            System.out.println(date);
+        }
+
+        @Override
+        public void dateDeselected() {
+            System.out.println("PerformanceInput dateDeselected");
         }
     }
 

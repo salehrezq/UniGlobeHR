@@ -7,6 +7,7 @@ package gui.attendance;
 
 import datalink.CRUDAttendance;
 import datalink.CRUDLateAttendance;
+import gui.DateDeselectedListener;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import javax.swing.AbstractAction;
@@ -23,7 +24,8 @@ public class EditAttendanceMode extends JPanel implements
         EmployeeAttendanceDataListener,
         DateChangedAttendanceDataListener,
         SubmitAttendanceListener,
-        SubmittedAttendanceEntitiesListener {
+        SubmittedAttendanceEntitiesListener,
+        DateDeselectedListener {
 
     private final JButton btnEditModeAttendance;
     private CRUDAttendance.EmployeeAttendanceStatus eas;
@@ -74,6 +76,11 @@ public class EditAttendanceMode extends JPanel implements
             this.eas = null;
             btnEditModeAttendance.setEnabled(false);
         }
+    }
+
+    @Override
+    public void dateDeselected() {
+        this.btnEditModeAttendance.setEnabled(false);
     }
 
     @Override

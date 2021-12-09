@@ -51,11 +51,13 @@ public class AttendanceTab extends JPanel {
         gatherAttendancePanel.add(employeeAttendLate);
 
         employeeDailyAttendance = new EmployeeDailyAttendance();
+        DatePicker datePicker = employeeDailyAttendance.getDatePicker();
         gatherAttendancePanel.add(employeeDailyAttendance);
 
         employeeDailyAttendance.addEmployeeAttendanceListener(employeeAttendLate);
         employeeDailyAttendance.addEmployeeAttendanceDataListener(employeeAttendLate);
         employeeDailyAttendance.addDateChangedAttendanceDataListener(employeeAttendLate);
+        datePicker.addDateDeselectedListener(employeeAttendLate);
 
         c = new GridBagConstraints();
         c.gridy = 1;
@@ -72,12 +74,14 @@ public class AttendanceTab extends JPanel {
         employeeDailyAttendance.addEmployeeAttendanceDataListener(submitAttendancePanel);
         employeeDailyAttendance.addDateChangedAttendanceDataListener(submitAttendancePanel);
         employeeAttendLate.addLateAttendanceListener(submitAttendancePanel);
-        DatePicker datePicker = employeeDailyAttendance.getDatePicker();
+
         submitAttendancePanel.setDateInitial(datePicker.getDefaultToday());
         datePicker.addDateListener(submitAttendancePanel);
+        datePicker.addDateDeselectedListener(submitAttendancePanel);
         gatherSubmitEditPanel.add(submitAttendancePanel);
 
         editAttendanceMode = new EditAttendanceMode();
+        datePicker.addDateDeselectedListener(editAttendanceMode);
         employeeDailyAttendance.addEmployeeAttendanceDataListener(editAttendanceMode);
         employeeDailyAttendance.addDateChangedAttendanceDataListener(editAttendanceMode);
         submitAttendancePanel.addSubmitAttendanceListener(editAttendanceMode);

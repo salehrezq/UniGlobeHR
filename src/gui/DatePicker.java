@@ -25,12 +25,14 @@ public class DatePicker {
     private JDatePanelImpl datePanel;
     private LocalDate date;
     private ArrayList<DateListener> dateListeners;
+    private ArrayList<DateDeselectedListener> dateDeselectedListeners;
 
     public DatePicker() {
 
         super();
 
         dateListeners = new ArrayList<>();
+        dateDeselectedListeners = new ArrayList<>();
 
         dateModel = new UtilDateModel();
         Properties p = new Properties();
@@ -49,7 +51,8 @@ public class DatePicker {
             if (selectedDate != null) {
                 date = LocalDate.ofInstant(selectedDate.toInstant(), ZoneId.systemDefault());
                 this.notifyDateChange(date);
-                //System.out.println("propagate date " + date);
+            } else {
+                this.notifyDateDeselected();
             }
         });
         return fDatePicker;
@@ -73,6 +76,16 @@ public class DatePicker {
     private void notifyDateChange(LocalDate date) {
         dateListeners.forEach((dateListener) -> {
             dateListener.dateChanged(date);
+        });
+    }
+
+    public void addDateDeselectedListener(DateDeselectedListener ddesl) {
+        dateDeselectedListeners.add(ddesl);
+    }
+
+    private void notifyDateDeselected() {
+        dateDeselectedListeners.forEach((ddesl) -> {
+            ddesl.dateDeselected();
         });
     }
 
