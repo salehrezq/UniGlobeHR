@@ -4,6 +4,6 @@ package gui.performance;
  *
  * @author Saleh
  */
-public interface PerformanceInputListener {
+public interface PerformanceInputsFilledListener {
 
 }
