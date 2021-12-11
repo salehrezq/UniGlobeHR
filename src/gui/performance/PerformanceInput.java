@@ -47,6 +47,11 @@ public class PerformanceInput implements EmployeeSelectedListener {
     private JTextArea taDescription;
     private Color colorFieldRight;
     private Color colorFieldWrong;
+    private boolean booltfTimeFilled;
+    private boolean boolDateFilled;
+    private boolean boolComboStateFilled;
+    private boolean boolComboTypeFilled;
+    private boolean booltfAmountFilled;
 
     public PerformanceInput() {
 
@@ -71,17 +76,20 @@ public class PerformanceInput implements EmployeeSelectedListener {
 
         datePicker = new DatePicker();
         datePicker.setTodayAsDefault();
+        boolDateFilled = true;
         DateListenerImpli dateListenerImpli = new DateListenerImpli();
         datePicker.addDateListener(dateListenerImpli);
         datePicker.addDateDeselectedListener(dateListenerImpli);
         panelMetaInputs.add(datePicker.getDatePicker());
 
+        ItemChangeListener comboBoxListener = new ItemChangeListener();
         comboStateOfPerformance = new JComboBox<>(new String[]{"Select...", "Positive", "Negative"});
-        comboStateOfPerformance.addItemListener(new ItemChangeListener());
+        comboStateOfPerformance.addItemListener(comboBoxListener);
         comboStateOfPerformance.setSelectedIndex(0);
         panelMetaInputs.add(comboStateOfPerformance);
 
         comboType = new JComboBox<>();
+        comboType.addItemListener(comboBoxListener);
         comboType.setPreferredSize(new Dimension(145, 25));
         panelMetaInputs.add(comboType);
 
@@ -180,16 +188,36 @@ public class PerformanceInput implements EmployeeSelectedListener {
         return taDescription.getText();
     }
 
+    public boolean getBooltfTimeFilled() {
+        return booltfTimeFilled;
+    }
+
+    public boolean getBoolDateFilled() {
+        return boolDateFilled;
+    }
+
+    public boolean getBoolComboState() {
+        return boolComboStateFilled;
+    }
+
+    public boolean getBoolComboType() {
+        return boolComboTypeFilled;
+    }
+
+    public boolean getBooltfAmountFilled() {
+        return booltfAmountFilled;
+    }
+
     private class DateListenerImpli implements DateListener, DateDeselectedListener {
 
         @Override
         public void dateChanged(LocalDate date) {
-//            System.out.println(date);
+            boolDateFilled = true;
         }
 
         @Override
         public void dateDeselected() {
-            System.out.println("PerformanceInput dateDeselected");
+            boolDateFilled = false;
         }
     }
 
@@ -202,8 +230,10 @@ public class PerformanceInput implements EmployeeSelectedListener {
             } else {
                 if (fieldTime.getText().matches("^(0[1-9]|1[0-2]):([0-5][0-9]) ((a|p)m|(A|P)M)$")) {
                     fieldTime.setBackground(colorFieldRight);
+                    booltfTimeFilled = true;
                 } else {
                     fieldTime.setBackground(colorFieldWrong);
+                    booltfTimeFilled = false;
                 }
             }
 
@@ -213,8 +243,10 @@ public class PerformanceInput implements EmployeeSelectedListener {
                 // Regex match DECIMAL(12,3)
                 if (fieldAmount.getText().matches("^\\d{0,9}(?:(?<=\\d)\\.(?=\\d)\\d{0,3})?$")) {
                     fieldAmount.setBackground(colorFieldRight);
+                    booltfAmountFilled = true;
                 } else {
                     fieldAmount.setBackground(colorFieldWrong);
+                    booltfAmountFilled = false;
                 }
             }
         }
@@ -239,9 +271,11 @@ public class PerformanceInput implements EmployeeSelectedListener {
     private void populateComboTypes(boolean state) {
         List<PerformanceType> performanceTypes = CRUDPerformanceType.getPerformanceTypesByState(state);
         comboType.removeAllItems();
+        comboType.addItem("Select...");
         performanceTypes.stream().forEach(pType -> {
             comboType.addItem(pType.getType());
         });
+        boolComboStateFilled = true;
     }
 
     class ItemChangeListener implements ItemListener {
@@ -257,6 +291,16 @@ public class PerformanceInput implements EmployeeSelectedListener {
                         populateComboTypes(true);
                     } else if (comboStateOfPerformance.getSelectedIndex() == 0) {
                         comboType.removeAllItems();
+                        boolComboStateFilled = false;
+                        boolComboTypeFilled = false;
+                    }
+                }
+            } else if (source == comboType) {
+                if (event.getStateChange() == ItemEvent.SELECTED) {
+                    if (comboType.getSelectedIndex() == 0) {
+                        boolComboTypeFilled = false;
+                    } else {
+                        boolComboTypeFilled = true;
                     }
                 }
             }

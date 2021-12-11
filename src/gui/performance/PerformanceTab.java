@@ -76,6 +76,10 @@ public class PerformanceTab {
         return employeeCard;
     }
 
+    public PerformanceSubmit getPerformanceSubmit() {
+        return performanceSubmit;
+    }
+
     public PerformanceRequest getPerformanceRequest() {
         return performanceRequest;
     }
