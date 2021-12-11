@@ -56,7 +56,7 @@ public class PerformanceSubmit implements EmployeeSelectedListener {
         List<String> messages = new ArrayList<>();
         List<Boolean> booleans = new ArrayList<>();
 
-        if (performanceInput.getBooltfTimeFilled()) {
+        if (performanceInput.getBoolTfTimeFilled()) {
             booleans.add(true);
         } else {
             booleans.add(false);
@@ -80,7 +80,7 @@ public class PerformanceSubmit implements EmployeeSelectedListener {
             booleans.add(false);
             messages.add("Type: not selected");
         }
-        if (performanceInput.getBooltfAmountFilled()) {
+        if (performanceInput.getBoolTfAmountFilled()) {
             booleans.add(true);
         } else {
             booleans.add(false);

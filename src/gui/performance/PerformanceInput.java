@@ -36,22 +36,22 @@ public class PerformanceInput implements EmployeeSelectedListener {
     private JPanel panelStoryInputs;
     private JPanel panelMetaInputs;
     private JLabel lbTime;
-    private JTextField fieldTime;
+    private JTextField tfTime;
     private DatePicker datePicker;
     private JComboBox comboStateOfPerformance;
     private JComboBox comboType;
     private JLabel lbAmount;
-    private JTextField fieldAmount;
+    private JTextField tfAmount;
     private JTextField tfTitle;
     private JScrollPane scrollableTextArea;
     private JTextArea taDescription;
     private Color colorFieldRight;
     private Color colorFieldWrong;
-    private boolean booltfTimeFilled;
+    private boolean boolTfTimeFilled;
     private boolean boolDateFilled;
     private boolean boolComboStateFilled;
     private boolean boolComboTypeFilled;
-    private boolean booltfAmountFilled;
+    private boolean boolTfAmountFilled;
 
     public PerformanceInput() {
 
@@ -67,12 +67,12 @@ public class PerformanceInput implements EmployeeSelectedListener {
 
         DocumentRegex docRegx = new DocumentRegex();
 
-        fieldTime = new JTextField();
-        fieldTime.setFont(new Font("SansSerif", Font.BOLD, 12));
-        fieldTime.setBackground(colorFieldRight);
-        fieldTime.getDocument().addDocumentListener(docRegx);
-        fieldTime.setPreferredSize(new Dimension(60, 27));
-        panelMetaInputs.add(fieldTime);
+        tfTime = new JTextField();
+        tfTime.setFont(new Font("SansSerif", Font.BOLD, 12));
+        tfTime.setBackground(colorFieldRight);
+        tfTime.getDocument().addDocumentListener(docRegx);
+        tfTime.setPreferredSize(new Dimension(60, 27));
+        panelMetaInputs.add(tfTime);
 
         datePicker = new DatePicker();
         datePicker.setTodayAsDefault();
@@ -96,12 +96,12 @@ public class PerformanceInput implements EmployeeSelectedListener {
         lbAmount = new JLabel("Amount+:");
         panelMetaInputs.add(lbAmount);
 
-        fieldAmount = new JTextField();
-        fieldAmount.setFont(new Font("SansSerif", Font.BOLD, 12));
-        fieldAmount.setBackground(colorFieldRight);
-        fieldAmount.getDocument().addDocumentListener(docRegx);
-        fieldAmount.setPreferredSize(new Dimension(95, 27));
-        panelMetaInputs.add(fieldAmount);
+        tfAmount = new JTextField();
+        tfAmount.setFont(new Font("SansSerif", Font.BOLD, 12));
+        tfAmount.setBackground(colorFieldRight);
+        tfAmount.getDocument().addDocumentListener(docRegx);
+        tfAmount.setPreferredSize(new Dimension(95, 27));
+        panelMetaInputs.add(tfAmount);
 
         panelStoryInputs = new JPanel(new GridBagLayout());
         c = new GridBagConstraints();
@@ -161,7 +161,7 @@ public class PerformanceInput implements EmployeeSelectedListener {
     }
 
     public String getTime() {
-        return fieldTime.getText();
+        return tfTime.getText();
     }
 
     public LocalDate getDate() {
@@ -177,7 +177,7 @@ public class PerformanceInput implements EmployeeSelectedListener {
     }
 
     public String getAmount() {
-        return fieldAmount.getText();
+        return tfAmount.getText();
     }
 
     public String getTitle() {
@@ -188,8 +188,8 @@ public class PerformanceInput implements EmployeeSelectedListener {
         return taDescription.getText();
     }
 
-    public boolean getBooltfTimeFilled() {
-        return booltfTimeFilled;
+    public boolean getBoolTfTimeFilled() {
+        return boolTfTimeFilled;
     }
 
     public boolean getBoolDateFilled() {
@@ -204,8 +204,8 @@ public class PerformanceInput implements EmployeeSelectedListener {
         return boolComboTypeFilled;
     }
 
-    public boolean getBooltfAmountFilled() {
-        return booltfAmountFilled;
+    public boolean getBoolTfAmountFilled() {
+        return boolTfAmountFilled;
     }
 
     private class DateListenerImpli implements DateListener, DateDeselectedListener {
@@ -225,28 +225,28 @@ public class PerformanceInput implements EmployeeSelectedListener {
 
         private void doWork() {
 
-            if (fieldTime.getText().isEmpty()) {
-                fieldTime.setBackground(colorFieldRight);
+            if (tfTime.getText().isEmpty()) {
+                tfTime.setBackground(colorFieldRight);
             } else {
-                if (fieldTime.getText().matches("^(0[1-9]|1[0-2]):([0-5][0-9]) ((a|p)m|(A|P)M)$")) {
-                    fieldTime.setBackground(colorFieldRight);
-                    booltfTimeFilled = true;
+                if (tfTime.getText().matches("^(0[1-9]|1[0-2]):([0-5][0-9]) ((a|p)m|(A|P)M)$")) {
+                    tfTime.setBackground(colorFieldRight);
+                    boolTfTimeFilled = true;
                 } else {
-                    fieldTime.setBackground(colorFieldWrong);
-                    booltfTimeFilled = false;
+                    tfTime.setBackground(colorFieldWrong);
+                    boolTfTimeFilled = false;
                 }
             }
 
-            if (fieldAmount.getText().isEmpty()) {
-                fieldAmount.setBackground(colorFieldRight);
+            if (tfAmount.getText().isEmpty()) {
+                tfAmount.setBackground(colorFieldRight);
             } else {
                 // Regex match DECIMAL(12,3)
-                if (fieldAmount.getText().matches("^\\d{0,9}(?:(?<=\\d)\\.(?=\\d)\\d{0,3})?$")) {
-                    fieldAmount.setBackground(colorFieldRight);
-                    booltfAmountFilled = true;
+                if (tfAmount.getText().matches("^\\d{0,9}(?:(?<=\\d)\\.(?=\\d)\\d{0,3})?$")) {
+                    tfAmount.setBackground(colorFieldRight);
+                    boolTfAmountFilled = true;
                 } else {
-                    fieldAmount.setBackground(colorFieldWrong);
-                    booltfAmountFilled = false;
+                    tfAmount.setBackground(colorFieldWrong);
+                    boolTfAmountFilled = false;
                 }
             }
         }
