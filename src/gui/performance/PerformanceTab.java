@@ -39,7 +39,9 @@ public class PerformanceTab {
         c.anchor = GridBagConstraints.PAGE_START;
         panelInputs.add(employeeCard, c);
 
+        performanceSubmit = new PerformanceSubmit();
         performanceInput = new PerformanceInput();
+        performanceSubmit.addPerformanceSubmittedListener(performanceInput);
         c = new GridBagConstraints();
         c.gridy = 1;
         c.weightx = 1.0;
@@ -48,7 +50,6 @@ public class PerformanceTab {
         c.anchor = GridBagConstraints.PAGE_START;
         panelInputs.add(performanceInput.getPerformanceInputsPanel(), c);
 
-        performanceSubmit = new PerformanceSubmit();
         performanceSubmit.setPerformanceInput(performanceInput);
         c = new GridBagConstraints();
         c.gridy = 2;

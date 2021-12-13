@@ -28,9 +28,11 @@ public class PerformanceSubmit implements EmployeeSelectedListener {
     private PerformanceInput performanceInput;
     private StringBuilder stringBuilder;
     private Employee employee;
+    private List<PerformanceSubmittedListener> performanceSubmittedListeners;
 
     public PerformanceSubmit() {
 
+        performanceSubmittedListeners = new ArrayList<>();
         mainPanel = new JPanel();
         btnSubmit = new JButton("Submit");
         btnSubmit.setEnabled(false);
@@ -42,6 +44,16 @@ public class PerformanceSubmit implements EmployeeSelectedListener {
 
     public void setPerformanceInput(PerformanceInput performanceInput) {
         this.performanceInput = performanceInput;
+    }
+
+    public void addPerformanceSubmittedListener(PerformanceSubmittedListener pfsl) {
+        this.performanceSubmittedListeners.add(pfsl);
+    }
+
+    private void notifyPerformanceSubmitted() {
+        this.performanceSubmittedListeners.forEach((pfsl) -> {
+            pfsl.performanceSubmitted();
+        });
     }
 
     public JPanel getMainPanel() {
@@ -118,11 +130,19 @@ public class PerformanceSubmit implements EmployeeSelectedListener {
             booleans.add(false);
             messages.add("Amount: input either incorrect or empty");
         }
-        if (!performanceInput.getTitle().isBlank() && performanceInput.getTitle().length() >= 10) {
-            booleans.add(true);
-        } else {
+
+        String title = performanceInput.getTitle();
+        boolean isTitleBlanck = title.isBlank();
+        int titleLength = title.length();
+
+        if (isTitleBlanck) {
             booleans.add(false);
             messages.add("Title: empty input");
+        } else if (!isTitleBlanck && titleLength < 10) {
+            booleans.add(false);
+            messages.add("Title: minimum 10 charachters required");
+        } else if (!isTitleBlanck && titleLength >= 10) {
+            booleans.add(true);
         }
 
         return new ValidateWithMessages(booleans, messages);
@@ -164,7 +184,10 @@ public class PerformanceSubmit implements EmployeeSelectedListener {
                 performance.setTitle(performanceInput.getTitle());
                 performance.setDescription(performanceInput.getDescription());
 
-                CRUDPerformance.create(performance);
+                boolean submitted = CRUDPerformance.create(performance);
+                if (submitted) {
+                    notifyPerformanceSubmitted();
+                }
             } else {
                 JOptionPane.showConfirmDialog(null,
                         prepareInputsFailMessage(validateWithMessages.messages), "Incorrect inputs or empty fields",

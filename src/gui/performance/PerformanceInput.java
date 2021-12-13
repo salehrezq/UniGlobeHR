@@ -30,7 +30,10 @@ import model.PerformanceType;
  *
  * @author Saleh
  */
-public class PerformanceInput implements EmployeeSelectedListener {
+public class PerformanceInput
+        implements
+        EmployeeSelectedListener,
+        PerformanceSubmittedListener {
 
     private JPanel mainPanel;
     private JPanel panelStoryInputs;
@@ -221,6 +224,25 @@ public class PerformanceInput implements EmployeeSelectedListener {
 
     public boolean getBoolTfAmountFilled() {
         return boolTfAmountFilled;
+    }
+
+    private void clearInputFields() {
+        tfTime.setText(null);
+        boolTfTimeFilled = false;
+        // Setting comboStateOfPerformance selected index to zero
+        // invokes ItemListener methods which contains the code
+        // to set the other linked combo box to zero
+        // and also the boolean values to false.
+        comboStateOfPerformance.setSelectedIndex(0);
+        tfAmount.setText(null);
+        boolTfAmountFilled = false;
+        tfTitle.setText(null);
+        taDescription.setText(null);
+    }
+
+    @Override
+    public void performanceSubmitted() {
+        clearInputFields();
     }
 
     private class DateListenerImpli implements DateListener, DateDeselectedListener {
