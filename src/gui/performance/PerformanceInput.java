@@ -40,6 +40,8 @@ public class PerformanceInput implements EmployeeSelectedListener {
     private DatePicker datePicker;
     private JComboBox comboStateOfPerformance;
     private JComboBox comboType;
+    List<PerformanceType> performanceTypes;
+    private PerformanceType selectedPerformanceType;
     private JLabel lbAmount;
     private JTextField tfAmount;
     private JTextField tfTitle;
@@ -168,16 +170,25 @@ public class PerformanceInput implements EmployeeSelectedListener {
         return datePicker.getDate();
     }
 
-    public String getStateOfPerformance() {
-        return (String) comboStateOfPerformance.getSelectedItem();
+    public boolean getStateOfPerformance() {
+
+        String stateName = (String) comboStateOfPerformance.getSelectedItem();
+        Boolean state = null;
+
+        if (stateName.equals("Positive")) {
+            state = Boolean.TRUE;
+        } else if (stateName.equals("Negative")) {
+            state = Boolean.FALSE;
+        }
+        return state;
     }
 
-    public int getType() {
-        return comboType.getSelectedIndex();
+    public PerformanceType getPerformanceType() {
+        return this.selectedPerformanceType;
     }
 
-    public String getAmount() {
-        return tfAmount.getText();
+    public double getAmount() {
+        return Double.parseDouble(tfAmount.getText());
     }
 
     public String getTitle() {
@@ -185,6 +196,10 @@ public class PerformanceInput implements EmployeeSelectedListener {
     }
 
     public String getDescription() {
+        if (taDescription.getText().isBlank()) {
+            // Useful for database empty entry to be null.
+            return null;
+        }
         return taDescription.getText();
     }
 
@@ -269,11 +284,12 @@ public class PerformanceInput implements EmployeeSelectedListener {
     }
 
     private void populateComboTypes(boolean state) {
-        List<PerformanceType> performanceTypes = CRUDPerformanceType.getPerformanceTypesByState(state);
+        performanceTypes = CRUDPerformanceType.getPerformanceTypesByState(state);
         comboType.removeAllItems();
-        comboType.addItem("Select...");
+        comboType.addItem(new PerformanceType(0, "Select...", null));
+
         performanceTypes.stream().forEach(pType -> {
-            comboType.addItem(pType.getType());
+            comboType.addItem(new PerformanceType(pType.getId(), pType.getType(), pType.getState()));
         });
         boolComboStateFilled = true;
     }
@@ -290,6 +306,9 @@ public class PerformanceInput implements EmployeeSelectedListener {
                     } else if (event.getItem().equals("Positive")) {
                         populateComboTypes(true);
                     } else if (comboStateOfPerformance.getSelectedIndex() == 0) {
+                        // If the index is zero, then it is the label
+                        // that tells the user to select from the dropdown.
+                        // so the value is not yet selected to an effective value.
                         comboType.removeAllItems();
                         boolComboStateFilled = false;
                         boolComboTypeFilled = false;
@@ -298,8 +317,13 @@ public class PerformanceInput implements EmployeeSelectedListener {
             } else if (source == comboType) {
                 if (event.getStateChange() == ItemEvent.SELECTED) {
                     if (comboType.getSelectedIndex() == 0) {
+                        // If the index is zero, then it is the label
+                        // that tells the user to select from the dropdown.
+                        // so the value is not yet selected to an effective value.
                         boolComboTypeFilled = false;
+                        selectedPerformanceType = null;
                     } else {
+                        selectedPerformanceType = (PerformanceType) event.getItem();
                         boolComboTypeFilled = true;
                     }
                 }

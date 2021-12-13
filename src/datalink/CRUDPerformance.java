@@ -24,6 +24,36 @@ public class CRUDPerformance {
 
     private static Connection conn;
 
+    public static boolean create(Performance performance) {
+
+        int insert = 0;
+
+        try {
+            String sql = "INSERT INTO performance ("
+                    + "`employee_id`, `date_time`, `type_id`,"
+                    + " `state`, `amount`, `title`, `description` )"
+                    + " VALUES (?, ?, ?, ?, ?, ?, ?)";
+            conn = Connect.getConnection();
+            PreparedStatement p = conn.prepareStatement(sql);
+
+            p.setInt(1, performance.getEmployeeId());
+            p.setObject(2, performance.getDateTime());
+            p.setInt(3, performance.getTypeId());
+            p.setBoolean(4, performance.getState());
+            p.setDouble(5, performance.getAmount());
+            p.setString(6, performance.getTitle());
+            p.setString(7, performance.getDescription());
+            insert = p.executeUpdate();
+            conn.commit();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDPerformance.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            Connect.cleanUp();
+        }
+        return insert > 0;
+    }
+
     public static List getPerformanceRecordByEmployeeByMonth(int employeeID, YearMonth ym) {
 
         List<Performance> performanceList = new ArrayList<>();

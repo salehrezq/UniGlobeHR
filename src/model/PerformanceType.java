@@ -8,7 +8,17 @@ public class PerformanceType {
 
     private int id;
     private String type;
-    private boolean state;
+    private Boolean state;
+
+    public PerformanceType() {
+
+    }
+
+    public PerformanceType(int id, String type, Boolean state) {
+        this.id = id;
+        this.type = type;
+        this.state = state;
+    }
 
     public int getId() {
         return id;
@@ -32,6 +42,11 @@ public class PerformanceType {
 
     public void setState(boolean state) {
         this.state = state;
+    }
+
+    @Override
+    public String toString() {
+        return this.type;
     }
 
 }

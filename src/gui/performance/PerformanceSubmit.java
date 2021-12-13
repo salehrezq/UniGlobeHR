@@ -1,14 +1,21 @@
 package gui.performance;
 
+import datalink.CRUDPerformance;
 import gui.EmployeeSelectedListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import model.Employee;
+import model.Performance;
 
 /**
  *
@@ -20,6 +27,7 @@ public class PerformanceSubmit implements EmployeeSelectedListener {
     private JButton btnSubmit;
     private PerformanceInput performanceInput;
     private StringBuilder stringBuilder;
+    private Employee employee;
 
     public PerformanceSubmit() {
 
@@ -49,6 +57,19 @@ public class PerformanceSubmit implements EmployeeSelectedListener {
         });
 
         return this.stringBuilder.toString();
+    }
+
+    private LocalDateTime getDateTimeCombined() {
+
+        LocalDate date = performanceInput.getDate();
+        String time = performanceInput.getTime();
+
+        // Formate time from "01:15 pm" to "13:15"
+        DateTimeFormatter parseStringTime = DateTimeFormatter.ofPattern("hh:mm a", Locale.UK);
+        LocalTime timeParsedFromString_12_to_24 = LocalTime.parse(time, parseStringTime);
+
+        LocalDateTime dateTime = LocalDateTime.of(date, timeParsedFromString_12_to_24);
+        return dateTime;
     }
 
     private void checkFilledInputs() {
@@ -100,7 +121,17 @@ public class PerformanceSubmit implements EmployeeSelectedListener {
         boolean areAllInputsFilled = booleans.stream().allMatch(Boolean::booleanValue);
 
         if (areAllInputsFilled) {
-            System.out.println("Here you insert values to the database");
+            // employee_id, date_time, type_id, state, amount, title, description
+            Performance performance = new Performance();
+            performance.setEmployeeId(employee.getId());
+            performance.setDateTime(getDateTimeCombined());
+            performance.setTypeId(performanceInput.getPerformanceType().getId());
+            performance.setState(performanceInput.getStateOfPerformance());
+            performance.setAmount(performanceInput.getAmount());
+            performance.setTitle(performanceInput.getTitle());
+            performance.setDescription(performanceInput.getDescription());
+
+            CRUDPerformance.create(performance);
         } else {
             JOptionPane.showConfirmDialog(null,
                     prepareInputsFailMessage(messages), "Incorrect inputs or empty fields",
@@ -111,11 +142,13 @@ public class PerformanceSubmit implements EmployeeSelectedListener {
     @Override
     public void employeeSelected(Employee employee) {
         btnSubmit.setEnabled(true);
+        this.employee = employee;
     }
 
     @Override
     public void employeeDeselected() {
         btnSubmit.setEnabled(false);
+        this.employee = null;
     }
 
     class SubmitPerformance implements ActionListener {

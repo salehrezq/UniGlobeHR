@@ -14,9 +14,9 @@ public class Performance {
     private LocalDateTime dateTime;
     private String title;
     private String description;
-    private int type;
+    private int typeId;
     private double amount;
-    private boolean state;
+    private Boolean state;
 
     public int getId() {
         return id;
@@ -58,12 +58,12 @@ public class Performance {
         this.description = description;
     }
 
-    public int getType() {
-        return type;
+    public int getTypeId() {
+        return typeId;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
     }
 
     public double getAmount() {
@@ -74,11 +74,11 @@ public class Performance {
         this.amount = amount;
     }
 
-    public boolean getState() {
+    public Boolean getState() {
         return state;
     }
 
-    public void setState(boolean state) {
+    public void setState(Boolean state) {
         this.state = state;
     }
 
