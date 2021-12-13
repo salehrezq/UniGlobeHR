@@ -72,7 +72,18 @@ public class PerformanceSubmit implements EmployeeSelectedListener {
         return dateTime;
     }
 
-    private void checkFilledInputs() {
+    private class ValidateWithMessages {
+
+        private List<String> messages;
+        private List<Boolean> booleans;
+
+        public ValidateWithMessages(List<Boolean> booleans, List<String> messages) {
+            this.booleans = booleans;
+            this.messages = messages;
+        }
+    }
+
+    private ValidateWithMessages validatePerformanceInputs() {
 
         List<String> messages = new ArrayList<>();
         List<Boolean> booleans = new ArrayList<>();
@@ -114,29 +125,7 @@ public class PerformanceSubmit implements EmployeeSelectedListener {
             messages.add("Title: empty input");
         }
 
-        // Check if List of boolean values are all true or one value at least is false
-        // Important note: If booleans.size() is zero;
-        // the result of allMatch() is always true.
-        // So you have to check the size first, or depending on context needs.
-        boolean areAllInputsFilled = booleans.stream().allMatch(Boolean::booleanValue);
-
-        if (areAllInputsFilled) {
-            // employee_id, date_time, type_id, state, amount, title, description
-            Performance performance = new Performance();
-            performance.setEmployeeId(employee.getId());
-            performance.setDateTime(getDateTimeCombined());
-            performance.setTypeId(performanceInput.getPerformanceType().getId());
-            performance.setState(performanceInput.getStateOfPerformance());
-            performance.setAmount(performanceInput.getAmount());
-            performance.setTitle(performanceInput.getTitle());
-            performance.setDescription(performanceInput.getDescription());
-
-            CRUDPerformance.create(performance);
-        } else {
-            JOptionPane.showConfirmDialog(null,
-                    prepareInputsFailMessage(messages), "Incorrect inputs or empty fields",
-                    JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
-        }
+        return new ValidateWithMessages(booleans, messages);
     }
 
     @Override
@@ -156,7 +145,31 @@ public class PerformanceSubmit implements EmployeeSelectedListener {
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            checkFilledInputs();
+            ValidateWithMessages validateWithMessages = validatePerformanceInputs();
+
+            // Check if List of boolean values are all true or one value at least is false
+            // Important note: If booleans.size() is zero;
+            // the result of allMatch() is always true.
+            // So you have to check the size first, or depending on context needs.
+            boolean areAllInputsFilled = validateWithMessages.booleans.stream().allMatch(Boolean::booleanValue);
+
+            if (areAllInputsFilled) {
+                // employee_id, date_time, type_id, state, amount, title, description
+                Performance performance = new Performance();
+                performance.setEmployeeId(employee.getId());
+                performance.setDateTime(getDateTimeCombined());
+                performance.setTypeId(performanceInput.getPerformanceType().getId());
+                performance.setState(performanceInput.getStateOfPerformance());
+                performance.setAmount(performanceInput.getAmount());
+                performance.setTitle(performanceInput.getTitle());
+                performance.setDescription(performanceInput.getDescription());
+
+                CRUDPerformance.create(performance);
+            } else {
+                JOptionPane.showConfirmDialog(null,
+                        prepareInputsFailMessage(validateWithMessages.messages), "Incorrect inputs or empty fields",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 
