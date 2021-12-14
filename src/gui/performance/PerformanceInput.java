@@ -306,7 +306,7 @@ public class PerformanceInput
     }
 
     private void populateComboTypes(boolean state) {
-        performanceTypes = CRUDPerformanceType.getPerformanceTypesByState(state);
+        performanceTypes = CRUDPerformanceType.getByState(state);
         comboType.removeAllItems();
         comboType.addItem(new PerformanceType(0, "Select...", null));
 

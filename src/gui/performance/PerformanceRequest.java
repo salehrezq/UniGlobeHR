@@ -1,6 +1,7 @@
 package gui.performance;
 
 import datalink.CRUDPerformance;
+import datalink.CRUDPerformanceType;
 import gui.EmployeeSelectedListener;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -169,17 +170,22 @@ public class PerformanceRequest implements EmployeeSelectedListener {
                 return;
             }
 
-            Object[] modelRow = new Object[4];
+            Object[] modelRow = new Object[5];
 
             int size = performanceList.size();
             for (int i = 0; i < size; i++) {
                 Performance performance = performanceList.get(i);
                 modelRow[0] = performance.getDateTime();
                 modelRow[1] = performanceState(performance.getState());
-                modelRow[2] = performance.getAmount();
-                modelRow[3] = performance.getTitle();
+                modelRow[2] = getTypeText(performance.getTypeId());
+                modelRow[3] = performance.getAmount();
+                modelRow[4] = performance.getTitle();
                 model.addRow(modelRow);
             }
+        }
+
+        private String getTypeText(int typeID) {
+            return CRUDPerformanceType.getById(typeID).getType();
         }
 
         private String performanceState(boolean state) {

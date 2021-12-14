@@ -18,7 +18,7 @@ public class CRUDPerformanceType {
 
     private static Connection conn;
 
-    public static List getPerformanceTypesByState(boolean state) {
+    public static List getByState(boolean state) {
 
         List<PerformanceType> performanceTypesList = new ArrayList<>();
         try {
@@ -47,4 +47,31 @@ public class CRUDPerformanceType {
         return performanceTypesList;
     }
 
+    public static PerformanceType getById(int typeId) {
+
+        PerformanceType performanceType = null;
+        try {
+            String sql = "SELECT * FROM `performance_types`"
+                    + " WHERE `id` = ?";
+
+            conn = Connect.getConnection();
+            PreparedStatement p = conn.prepareStatement(sql);
+
+            p.setInt(1, typeId);
+
+            ResultSet result = p.executeQuery();
+
+            while (result.next()) {
+                performanceType = new PerformanceType();
+                performanceType.setId(result.getInt("id"));
+                performanceType.setType(result.getString("type"));
+                performanceType.setState(result.getBoolean("state"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDPerformanceType.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            Connect.cleanUp();
+        }
+        return performanceType;
+    }
 }
