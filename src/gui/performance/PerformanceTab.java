@@ -57,8 +57,9 @@ public class PerformanceTab {
         c.weightx = 0.0;
         c.weighty = 0.0;
         c.anchor = GridBagConstraints.LINE_END;
-        c.insets = new Insets(0, 0, 0, 25);
-        panelInputs.add(performanceSubmit.getMainPanel(), c);
+        // top, left, buttom, right
+        c.insets = new Insets(3, 0, 5, 31);
+        panelInputs.add(performanceSubmit.getSubmitButton(), c);
 
         performanceRequest = new PerformanceRequest();
         panelRequests.add(performanceRequest.getPanelTable(), BorderLayout.CENTER);

@@ -23,7 +23,6 @@ import model.Performance;
  */
 public class PerformanceSubmit implements EmployeeSelectedListener {
 
-    private JPanel mainPanel;
     private JButton btnSubmit;
     private PerformanceInput performanceInput;
     private StringBuilder stringBuilder;
@@ -33,11 +32,9 @@ public class PerformanceSubmit implements EmployeeSelectedListener {
     public PerformanceSubmit() {
 
         performanceSubmittedListeners = new ArrayList<>();
-        mainPanel = new JPanel();
         btnSubmit = new JButton("Submit");
         btnSubmit.setEnabled(false);
         btnSubmit.addActionListener(new SubmitPerformance());
-        mainPanel.add(btnSubmit);
         stringBuilder = new StringBuilder(145);
 
     }
@@ -56,8 +53,8 @@ public class PerformanceSubmit implements EmployeeSelectedListener {
         });
     }
 
-    public JPanel getMainPanel() {
-        return mainPanel;
+    public JButton getSubmitButton() {
+        return btnSubmit;
     }
 
     private String prepareInputsFailMessage(List<String> failMessages) {
