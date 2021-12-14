@@ -5,6 +5,7 @@ import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Insets;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
@@ -53,10 +54,10 @@ public class PerformanceTab {
         performanceSubmit.setPerformanceInput(performanceInput);
         c = new GridBagConstraints();
         c.gridy = 2;
-        c.weightx = 1.0;
+        c.weightx = 0.0;
         c.weighty = 0.0;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.anchor = GridBagConstraints.PAGE_END;
+        c.anchor = GridBagConstraints.LINE_END;
+        c.insets = new Insets(0, 0, 0, 25);
         panelInputs.add(performanceSubmit.getMainPanel(), c);
 
         performanceRequest = new PerformanceRequest();
