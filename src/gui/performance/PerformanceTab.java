@@ -21,6 +21,7 @@ public class PerformanceTab {
     private EmployeeCard employeeCard;
     private PerformanceInput performanceInput;
     private PerformanceSubmit performanceSubmit;
+    private PerformanceCancel performanceCancel;
     private PerformanceRequest performanceRequest;
 
     public PerformanceTab() {
@@ -36,6 +37,7 @@ public class PerformanceTab {
         c.gridy = 0;
         c.weightx = 1.0;
         c.weighty = 0.0;
+        c.gridwidth = 2;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.PAGE_START;
         panelInputs.add(employeeCard, c);
@@ -47,13 +49,27 @@ public class PerformanceTab {
         c.gridy = 1;
         c.weightx = 1.0;
         c.weighty = 0.5;
+        c.gridwidth = 2;
         c.fill = GridBagConstraints.BOTH;
         c.anchor = GridBagConstraints.PAGE_START;
         panelInputs.add(performanceInput.getPerformanceInputsPanel(), c);
 
+        performanceCancel = new PerformanceCancel();
+        performanceCancel.setPerformanceInput(performanceInput);
+        c = new GridBagConstraints();
+        c.gridy = 2;
+        c.gridx = 0;
+        c.weightx = 0.0;
+        c.weighty = 0.0;
+        c.anchor = GridBagConstraints.LINE_START;
+        // top, left, buttom, right
+        c.insets = new Insets(3, 31, 5, 0);
+        panelInputs.add(performanceCancel.getButtonCancel(), c);
+
         performanceSubmit.setPerformanceInput(performanceInput);
         c = new GridBagConstraints();
         c.gridy = 2;
+        c.gridx = 1;
         c.weightx = 0.0;
         c.weighty = 0.0;
         c.anchor = GridBagConstraints.LINE_END;

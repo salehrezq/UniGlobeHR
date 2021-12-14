@@ -226,7 +226,7 @@ public class PerformanceInput
         return boolTfAmountFilled;
     }
 
-    private void clearInputFields() {
+    protected void clearInputFields() {
         tfTime.setText(null);
         boolTfTimeFilled = false;
         // Setting comboStateOfPerformance selected index to zero
