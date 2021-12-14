@@ -80,7 +80,13 @@ public class MonthAttendanceDeductions implements EmployeeSelectedListener {
         panelControlls.add(tfYear);
         panelControlls.add(monthsList);
 
-        model = new DefaultTableModel(new String[]{"Day Name", "Day Num", "Type", "Deduction", "Desc EN", "Desc AR"}, 0);
+        model = new DefaultTableModel(new String[]{"Day Name", "Day Num", "Type", "Deduction", "Desc EN", "Desc AR"}, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                // Disable cells editing.
+                return false;
+            }
+        };
         table = new JTable(model);
         table.setFont(new Font("SansSerif", Font.BOLD, 14));
         table.setFillsViewportHeight(true);
