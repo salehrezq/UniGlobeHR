@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Locale;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
-import javax.swing.JPanel;
 import model.Employee;
 import model.Performance;
 
@@ -21,7 +20,10 @@ import model.Performance;
  *
  * @author Saleh
  */
-public class PerformanceSubmit implements EmployeeSelectedListener {
+public class PerformanceSubmit
+        implements
+        EmployeeSelectedListener,
+        DescriptionDisplayListener {
 
     private JButton btnSubmit;
     private PerformanceInput performanceInput;
@@ -79,6 +81,18 @@ public class PerformanceSubmit implements EmployeeSelectedListener {
 
         LocalDateTime dateTime = LocalDateTime.of(date, timeParsedFromString_12_to_24);
         return dateTime;
+    }
+
+    @Override
+    public void descriptionDisplayable() {
+        btnSubmit.setEnabled(false);
+    }
+
+    @Override
+    public void descriptionUnDisplayable() {
+        if (employee != null) {
+            btnSubmit.setEnabled(true);
+        }
     }
 
     private class ValidateWithMessages {

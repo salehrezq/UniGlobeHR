@@ -33,7 +33,8 @@ import model.PerformanceType;
 public class PerformanceInput
         implements
         EmployeeSelectedListener,
-        PerformanceSubmittedListener {
+        PerformanceSubmittedListener,
+        DescriptionDisplayListener {
 
     private JPanel mainPanel;
     private JPanel panelStoryInputs;
@@ -243,6 +244,24 @@ public class PerformanceInput
     @Override
     public void performanceSubmitted() {
         clearInputFields();
+    }
+
+    private void fieldsAbility(boolean ability) {
+        tfTime.setEnabled(ability);
+        comboStateOfPerformance.setEnabled(ability);
+        comboType.setEnabled(ability);
+        tfAmount.setEnabled(ability);
+    }
+
+    @Override
+    public void descriptionDisplayable() {
+        clearInputFields();
+        fieldsAbility(false);
+    }
+
+    @Override
+    public void descriptionUnDisplayable() {
+        fieldsAbility(true);
     }
 
     private class DateListenerImpli implements DateListener, DateDeselectedListener {

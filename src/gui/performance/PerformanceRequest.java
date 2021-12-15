@@ -10,12 +10,16 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
@@ -46,12 +50,14 @@ public class PerformanceRequest implements EmployeeSelectedListener {
     private YearMonth yearAndMonth;
     private JFormattedTextField tfYear;
     private JComboBox monthsList;
+    private JCheckBox checkDisplayDescription;
     private final String[] monthsNums;
-    private Color lateColor;
+    private List<DescriptionDisplayListener> descriptionDisplayListeners;
 
     public PerformanceRequest() {
         super();
 
+        descriptionDisplayListeners = new ArrayList<>();
         LocalDate today = LocalDate.now();
         yearAndMonth = YearMonth.of(today.getYear(), today.getMonthValue());
 
@@ -69,9 +75,13 @@ public class PerformanceRequest implements EmployeeSelectedListener {
         monthsList = new JComboBox<>(monthsNums);
         monthsList.setSelectedIndex(yearAndMonth.getMonthValue() - 1);
 
+        checkDisplayDescription = new JCheckBox("Display description");
+        checkDisplayDescription.addItemListener(new ChechBoxListener());
+
         panelControlls.add(btnRequestData);
         panelControlls.add(tfYear);
         panelControlls.add(monthsList);
+        panelControlls.add(checkDisplayDescription);
 
         model = new DefaultTableModel(new String[]{"DateTime", "State", "Type", "Amount", "Title"}, 0) {
             @Override
@@ -199,6 +209,59 @@ public class PerformanceRequest implements EmployeeSelectedListener {
             }
             return stateType;
         }
+    }
+
+    private class ChechBoxListener implements ItemListener {
+
+        // https://stackoverflow.com/q/70354055/6811102
+        // count is used to assist in checking when to display
+        // the confirmation dialog box.
+        int count = 0;
+
+        @Override
+        public void itemStateChanged(ItemEvent event) {
+
+            Object source = event.getSource();
+
+            if (source == checkDisplayDescription) {
+
+                if (event.getStateChange() == ItemEvent.SELECTED) {
+
+                    count += 1;
+                    if (count == 1) {
+                        int dialogResult = JOptionPane.showConfirmDialog(null,
+                                "To display descriptions; input fields\n"
+                                + "will be cleared and disabled, sure?",
+                                "Warning", JOptionPane.YES_OPTION);
+
+                        if (dialogResult == JOptionPane.YES_OPTION) {
+                            notifyDescriptionDisplayable();
+                            count += 1;
+                            checkDisplayDescription.setSelected(true);
+                        }
+                    }
+                } else if (event.getStateChange() == ItemEvent.DESELECTED && count == 0) {
+                    notifyDescriptionUnDisplayable();
+                }
+            }
+            count = 0;
+        }
+    }
+
+    public void addEmployeeSelectedListener(DescriptionDisplayListener ddl) {
+        this.descriptionDisplayListeners.add(ddl);
+    }
+
+    private void notifyDescriptionDisplayable() {
+        this.descriptionDisplayListeners.forEach((ddl) -> {
+            ddl.descriptionDisplayable();
+        });
+    }
+
+    private void notifyDescriptionUnDisplayable() {
+        this.descriptionDisplayListeners.forEach((ddl) -> {
+            ddl.descriptionUnDisplayable();
+        });
     }
 
     /**
