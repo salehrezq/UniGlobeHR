@@ -252,6 +252,7 @@ public class PerformanceInput
 
     private void fieldsAbility(boolean ability) {
         tfTime.setEnabled(ability);
+        datePicker.setEnabled(ability);
         comboStateOfPerformance.setEnabled(ability);
         comboType.setEnabled(ability);
         tfAmount.setEnabled(ability);

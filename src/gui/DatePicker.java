@@ -93,4 +93,8 @@ public class DatePicker {
         return this.date;
     }
 
+    public void setEnabled(boolean enabled) {
+        fDatePicker.getComponent(1).setEnabled(enabled);
+    }
+
 }
