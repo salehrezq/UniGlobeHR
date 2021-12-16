@@ -259,7 +259,7 @@ public class PerformanceInput
     }
 
     @Override
-    public void descriptionDisplayable() {
+    public void performanceDisplayable() {
         descriptionDisplayAbility = true;
         clearInputFields();
         tfTitle.setEditable(false);
@@ -268,7 +268,7 @@ public class PerformanceInput
     }
 
     @Override
-    public void descriptionUnDisplayable() {
+    public void performanceUnDisplayable() {
         descriptionDisplayAbility = false;
         tfTitle.setText(null);
         taDescription.setText(null);

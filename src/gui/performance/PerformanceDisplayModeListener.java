@@ -6,7 +6,7 @@ package gui.performance;
  */
 public interface PerformanceDisplayModeListener {
 
-    public void descriptionDisplayable();
+    public void performanceDisplayable();
 
-    public void descriptionUnDisplayable();
+    public void performanceUnDisplayable();
 }

@@ -268,14 +268,14 @@ public class PerformanceRequest implements EmployeeSelectedListener {
     private void notifyDescriptionDisplayable() {
         this.performanceDisplayModeListeners.forEach((pdml) -> {
             table.getSelectionModel().setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
-            pdml.descriptionDisplayable();
+            pdml.performanceDisplayable();
         });
     }
 
     private void notifyDescriptionUnDisplayable() {
         this.performanceDisplayModeListeners.forEach((ddl) -> {
             table.getSelectionModel().setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-            ddl.descriptionUnDisplayable();
+            ddl.performanceUnDisplayable();
         });
     }
 

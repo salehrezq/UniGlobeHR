@@ -84,12 +84,12 @@ public class PerformanceSubmit
     }
 
     @Override
-    public void descriptionDisplayable() {
+    public void performanceDisplayable() {
         btnSubmit.setEnabled(false);
     }
 
     @Override
-    public void descriptionUnDisplayable() {
+    public void performanceUnDisplayable() {
         if (employee != null) {
             btnSubmit.setEnabled(true);
         }
