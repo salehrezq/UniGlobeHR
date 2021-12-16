@@ -4,7 +4,7 @@ package gui.performance;
  *
  * @author Saleh
  */
-public interface DescriptionDisplayListener {
+public interface PerformanceDisplayModeListener {
 
     public void descriptionDisplayable();
 
