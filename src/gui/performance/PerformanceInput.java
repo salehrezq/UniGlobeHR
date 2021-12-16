@@ -36,7 +36,7 @@ public class PerformanceInput
         implements
         EmployeeSelectedListener,
         PerformanceSubmittedListener,
-        DescriptionDisplayListener,
+        PerformanceDisplayModeListener,
         RowClickedListener {
 
     private JPanel mainPanel;

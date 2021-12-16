@@ -55,13 +55,13 @@ public class PerformanceRequest implements EmployeeSelectedListener {
     private JComboBox monthsList;
     private JCheckBox checkDisplayDescription;
     private final String[] monthsNums;
-    private List<DescriptionDisplayListener> descriptionDisplayListeners;
+    private List<PerformanceDisplayModeListener> performanceDisplayModeListeners;
     private List<RowClickedListener> rowClickedListeners;
 
     public PerformanceRequest() {
         super();
 
-        descriptionDisplayListeners = new ArrayList<>();
+        performanceDisplayModeListeners = new ArrayList<>();
         rowClickedListeners = new ArrayList<>();
 
         LocalDate today = LocalDate.now();
@@ -261,19 +261,19 @@ public class PerformanceRequest implements EmployeeSelectedListener {
         }
     }
 
-    public void addEmployeeSelectedListener(DescriptionDisplayListener ddl) {
-        this.descriptionDisplayListeners.add(ddl);
+    public void addEmployeeSelectedListener(PerformanceDisplayModeListener pdml) {
+        this.performanceDisplayModeListeners.add(pdml);
     }
 
     private void notifyDescriptionDisplayable() {
-        this.descriptionDisplayListeners.forEach((ddl) -> {
+        this.performanceDisplayModeListeners.forEach((pdml) -> {
             table.getSelectionModel().setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
-            ddl.descriptionDisplayable();
+            pdml.descriptionDisplayable();
         });
     }
 
     private void notifyDescriptionUnDisplayable() {
-        this.descriptionDisplayListeners.forEach((ddl) -> {
+        this.performanceDisplayModeListeners.forEach((ddl) -> {
             table.getSelectionModel().setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
             ddl.descriptionUnDisplayable();
         });

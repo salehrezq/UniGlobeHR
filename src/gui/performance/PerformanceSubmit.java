@@ -23,7 +23,7 @@ import model.Performance;
 public class PerformanceSubmit
         implements
         EmployeeSelectedListener,
-        DescriptionDisplayListener {
+        PerformanceDisplayModeListener {
 
     private JButton btnSubmit;
     private PerformanceInput performanceInput;
