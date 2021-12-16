@@ -1,5 +1,6 @@
 package gui.performance;
 
+import datalink.CRUDPerformance;
 import datalink.CRUDPerformanceType;
 import gui.DateDeselectedListener;
 import gui.DateListener;
@@ -14,6 +15,7 @@ import java.awt.Insets;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -34,7 +36,8 @@ public class PerformanceInput
         implements
         EmployeeSelectedListener,
         PerformanceSubmittedListener,
-        DescriptionDisplayListener {
+        DescriptionDisplayListener,
+        RowClickedListener {
 
     private JPanel mainPanel;
     private JPanel panelStoryInputs;
@@ -58,6 +61,7 @@ public class PerformanceInput
     private boolean boolComboStateFilled;
     private boolean boolComboTypeFilled;
     private boolean boolTfAmountFilled;
+    private boolean descriptionDisplayAbility;
 
     public PerformanceInput() {
 
@@ -255,13 +259,41 @@ public class PerformanceInput
 
     @Override
     public void descriptionDisplayable() {
+        descriptionDisplayAbility = true;
         clearInputFields();
+        tfTitle.setEditable(false);
+        taDescription.setEditable(false);
         fieldsAbility(false);
     }
 
     @Override
     public void descriptionUnDisplayable() {
+        descriptionDisplayAbility = false;
+        tfTitle.setText(null);
+        taDescription.setText(null);
+        tfTitle.setEditable(true);
+        taDescription.setEditable(true);
         fieldsAbility(true);
+    }
+
+    @Override
+    public void rowClickedWithRecordId(int id) {
+
+        if (descriptionDisplayAbility) {
+
+            HashMap<String, String> titleWithDescription = CRUDPerformance.getTitleWithDescription(id);
+
+            String title = titleWithDescription.get("title");
+            String description = titleWithDescription.get("description");
+
+            tfTitle.setText(title);
+
+            if (description == null || description.isBlank()) {
+                taDescription.setText("No description available!");
+            } else {
+                taDescription.setText(description);
+            }
+        }
     }
 
     private class DateListenerImpli implements DateListener, DateDeselectedListener {

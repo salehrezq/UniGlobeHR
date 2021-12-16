@@ -18,6 +18,7 @@ import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.BorderFactory;
+import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
@@ -26,6 +27,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.event.ListSelectionEvent;
+import javax.swing.event.ListSelectionListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 import model.Employee;
@@ -53,11 +56,14 @@ public class PerformanceRequest implements EmployeeSelectedListener {
     private JCheckBox checkDisplayDescription;
     private final String[] monthsNums;
     private List<DescriptionDisplayListener> descriptionDisplayListeners;
+    private List<RowClickedListener> rowClickedListeners;
 
     public PerformanceRequest() {
         super();
 
         descriptionDisplayListeners = new ArrayList<>();
+        rowClickedListeners = new ArrayList<>();
+
         LocalDate today = LocalDate.now();
         yearAndMonth = YearMonth.of(today.getYear(), today.getMonthValue());
 
@@ -83,13 +89,14 @@ public class PerformanceRequest implements EmployeeSelectedListener {
         panelControlls.add(monthsList);
         panelControlls.add(checkDisplayDescription);
 
-        model = new DefaultTableModel(new String[]{"DateTime", "State", "Type", "Amount", "Title"}, 0) {
+        model = new DefaultTableModel(new String[]{"DateTime", "State", "Type", "Amount", "Title", "Performance Id"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 // Disable cells editing.
                 return false;
             }
         };
+
         table = new JTable(model);
         table.setFont(new Font("SansSerif", Font.BOLD, 14));
         table.setFillsViewportHeight(true);
@@ -98,7 +105,12 @@ public class PerformanceRequest implements EmployeeSelectedListener {
         table.getColumnModel().getColumn(2).setPreferredWidth(5);
         table.getColumnModel().getColumn(3).setPreferredWidth(50);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+        table.getSelectionModel().addListSelectionListener(new RowSelectionListener());
 
+        // Hide Description Id column; because its purpose is
+        // intended only to be used for click event of the row
+        // to be passed to other areas of the program.
+        table.getColumnModel().removeColumn(table.getColumnModel().getColumn(5));
         scrollTable = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
 
         panelGather = new JPanel(new GridBagLayout());
@@ -180,7 +192,7 @@ public class PerformanceRequest implements EmployeeSelectedListener {
                 return;
             }
 
-            Object[] modelRow = new Object[5];
+            Object[] modelRow = new Object[6];
 
             int size = performanceList.size();
             for (int i = 0; i < size; i++) {
@@ -190,6 +202,7 @@ public class PerformanceRequest implements EmployeeSelectedListener {
                 modelRow[2] = getTypeText(performance.getTypeId());
                 modelRow[3] = performance.getAmount();
                 modelRow[4] = performance.getTitle();
+                modelRow[5] = performance.getId();
                 model.addRow(modelRow);
             }
         }
@@ -254,14 +267,45 @@ public class PerformanceRequest implements EmployeeSelectedListener {
 
     private void notifyDescriptionDisplayable() {
         this.descriptionDisplayListeners.forEach((ddl) -> {
+            table.getSelectionModel().setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
             ddl.descriptionDisplayable();
         });
     }
 
     private void notifyDescriptionUnDisplayable() {
         this.descriptionDisplayListeners.forEach((ddl) -> {
+            table.getSelectionModel().setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
             ddl.descriptionUnDisplayable();
         });
+    }
+
+    public void addRowClickedListener(RowClickedListener rcl) {
+        this.rowClickedListeners.add(rcl);
+    }
+
+    private void notifyRowClickedListener(int performanceId) {
+        this.rowClickedListeners.forEach((rcl) -> {
+            rcl.rowClickedWithRecordId(performanceId);
+        });
+    }
+
+    private class RowSelectionListener implements ListSelectionListener {
+
+        @Override
+        public void valueChanged(ListSelectionEvent event) {
+
+            int viewRow = table.getSelectedRow();
+
+            if (!event.getValueIsAdjusting() && viewRow > -1) {
+
+                int performanceIdColumn = 5;
+                int modelRow = table.convertRowIndexToModel(viewRow);
+
+                Object performanceIdObject = table.getModel().getValueAt(modelRow, performanceIdColumn);
+                int performanceId = Integer.parseInt(performanceIdObject.toString());
+                notifyRowClickedListener(performanceId);
+            }
+        }
     }
 
     /**

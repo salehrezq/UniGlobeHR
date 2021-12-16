@@ -80,6 +80,7 @@ public class PerformanceTab {
         performanceRequest = new PerformanceRequest();
         performanceRequest.addEmployeeSelectedListener(performanceSubmit);
         performanceRequest.addEmployeeSelectedListener(performanceInput);
+        performanceRequest.addRowClickedListener(performanceInput);
         panelRequests.add(performanceRequest.getPanelTable(), BorderLayout.CENTER);
 
         splitPaneContainer = new JSplitPane(JSplitPane.VERTICAL_SPLIT);

@@ -8,6 +8,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -93,4 +94,25 @@ public class CRUDPerformance {
         return performanceList;
     }
 
+    public static HashMap<String, String> getTitleWithDescription(int id) {
+
+        HashMap<String, String> titleWithDescription = new HashMap();
+        try {
+            String sql = "SELECT `title`, `description` FROM `performance` WHERE id = ? LIMIT 1";
+            conn = Connect.getConnection();
+            PreparedStatement p = conn.prepareStatement(sql);
+            p.setInt(1, id);
+            ResultSet result = p.executeQuery();
+
+            while (result.next()) {
+                titleWithDescription.put("title", result.getString("title"));
+                titleWithDescription.put("description", result.getString("description"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDPerformance.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            Connect.cleanUp();
+        }
+        return titleWithDescription;
+    }
 }
