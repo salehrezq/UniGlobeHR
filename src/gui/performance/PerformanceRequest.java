@@ -10,8 +10,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.YearMonth;
@@ -20,7 +18,6 @@ import java.util.List;
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
-import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JOptionPane;
@@ -38,7 +35,10 @@ import model.Performance;
  *
  * @author Saleh
  */
-public class PerformanceRequest implements EmployeeSelectedListener {
+public class PerformanceRequest
+        implements
+        EmployeeSelectedListener,
+        PerformanceDisplayModeListener {
 
     private DefaultTableModel model;
     private JTable table;
@@ -53,15 +53,12 @@ public class PerformanceRequest implements EmployeeSelectedListener {
     private YearMonth yearAndMonth;
     private JFormattedTextField tfYear;
     private JComboBox monthsList;
-    private JCheckBox checkDisplayPerformanceMode;
     private final String[] monthsNums;
-    private List<PerformanceDisplayModeListener> performanceDisplayModeListeners;
     private List<RowClickedListener> rowClickedListeners;
 
     public PerformanceRequest() {
         super();
 
-        performanceDisplayModeListeners = new ArrayList<>();
         rowClickedListeners = new ArrayList<>();
 
         LocalDate today = LocalDate.now();
@@ -81,13 +78,9 @@ public class PerformanceRequest implements EmployeeSelectedListener {
         monthsList = new JComboBox<>(monthsNums);
         monthsList.setSelectedIndex(yearAndMonth.getMonthValue() - 1);
 
-        checkDisplayPerformanceMode = new JCheckBox("Display mode");
-        checkDisplayPerformanceMode.addItemListener(new ChechBoxListener());
-
         panelControlls.add(btnRequestData);
         panelControlls.add(tfYear);
         panelControlls.add(monthsList);
-        panelControlls.add(checkDisplayPerformanceMode);
 
         model = new DefaultTableModel(new String[]{"DateTime", "State", "Type", "Amount", "Title", "Performance Id"}, 0) {
             @Override
@@ -137,6 +130,10 @@ public class PerformanceRequest implements EmployeeSelectedListener {
         return this.panelGather;
     }
 
+    public JPanel getPanelControls() {
+        return this.panelControlls;
+    }
+
     public void setSelectedEmployeeId(int employeeId) {
         this.employeeId = employeeId;
     }
@@ -173,6 +170,16 @@ public class PerformanceRequest implements EmployeeSelectedListener {
         // cleare the model when no employee node selected.
         model.setRowCount(0);
         employeeId = -1;
+    }
+
+    @Override
+    public void performanceDisplayable() {
+        table.getSelectionModel().setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
+    }
+
+    @Override
+    public void performanceUnDisplayable() {
+        table.getSelectionModel().setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
     }
 
     private class ActionGetData implements ActionListener {
@@ -222,61 +229,6 @@ public class PerformanceRequest implements EmployeeSelectedListener {
             }
             return stateType;
         }
-    }
-
-    private class ChechBoxListener implements ItemListener {
-
-        // https://stackoverflow.com/q/70354055/6811102
-        // count is used to assist in checking when to display
-        // the confirmation dialog box.
-        int count = 0;
-
-        @Override
-        public void itemStateChanged(ItemEvent event) {
-
-            Object source = event.getSource();
-
-            if (source == checkDisplayPerformanceMode) {
-
-                if (event.getStateChange() == ItemEvent.SELECTED) {
-
-                    count += 1;
-                    if (count == 1) {
-                        int dialogResult = JOptionPane.showConfirmDialog(null,
-                                "To display descriptions; input fields\n"
-                                + "will be cleared and disabled, sure?",
-                                "Warning", JOptionPane.YES_OPTION);
-
-                        if (dialogResult == JOptionPane.YES_OPTION) {
-                            notifyDescriptionDisplayable();
-                            count += 1;
-                            checkDisplayPerformanceMode.setSelected(true);
-                        }
-                    }
-                } else if (event.getStateChange() == ItemEvent.DESELECTED && count == 0) {
-                    notifyDescriptionUnDisplayable();
-                }
-            }
-            count = 0;
-        }
-    }
-
-    public void addEmployeeSelectedListener(PerformanceDisplayModeListener pdml) {
-        this.performanceDisplayModeListeners.add(pdml);
-    }
-
-    private void notifyDescriptionDisplayable() {
-        this.performanceDisplayModeListeners.forEach((pdml) -> {
-            table.getSelectionModel().setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
-            pdml.performanceDisplayable();
-        });
-    }
-
-    private void notifyDescriptionUnDisplayable() {
-        this.performanceDisplayModeListeners.forEach((ddl) -> {
-            table.getSelectionModel().setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
-            ddl.performanceUnDisplayable();
-        });
     }
 
     public void addRowClickedListener(RowClickedListener rcl) {

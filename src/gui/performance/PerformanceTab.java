@@ -23,6 +23,7 @@ public class PerformanceTab {
     private PerformanceSubmit performanceSubmit;
     private PerformanceCancel performanceCancel;
     private PerformanceRequest performanceRequest;
+    private PerformanceDisplay performanceDisplay;
 
     public PerformanceTab() {
 
@@ -78,10 +79,13 @@ public class PerformanceTab {
         panelInputs.add(performanceSubmit.getSubmitButton(), c);
 
         performanceRequest = new PerformanceRequest();
-        performanceRequest.addEmployeeSelectedListener(performanceSubmit);
-        performanceRequest.addEmployeeSelectedListener(performanceInput);
         performanceRequest.addRowClickedListener(performanceInput);
         panelRequests.add(performanceRequest.getPanelTable(), BorderLayout.CENTER);
+
+        performanceDisplay = new PerformanceDisplay();
+        performanceDisplay.addPerformanceDisplayModeListener(performanceSubmit);
+        performanceDisplay.addPerformanceDisplayModeListener(performanceInput);
+        performanceRequest.getPanelControls().add(performanceDisplay.getCheckDisplayMode());
 
         splitPaneContainer = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         splitPaneContainer.setDividerSize(5);
