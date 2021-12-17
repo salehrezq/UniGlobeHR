@@ -9,7 +9,9 @@ import javax.swing.JOptionPane;
  *
  * @author Saleh
  */
-public class PerformanceCancel {
+public class PerformanceCancel
+        implements
+        PerformanceDisplayableListener {
 
     private JButton btnCancel;
     private PerformanceInput performanceInput;
@@ -26,6 +28,16 @@ public class PerformanceCancel {
 
     public JButton getButtonCancel() {
         return btnCancel;
+    }
+
+    @Override
+    public void performanceDisplayable() {
+        btnCancel.setEnabled(false);
+    }
+
+    @Override
+    public void performanceUnDisplayable() {
+        btnCancel.setEnabled(true);
     }
 
     class SubmitPerformance implements ActionListener {
