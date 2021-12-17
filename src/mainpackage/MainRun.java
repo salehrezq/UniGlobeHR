@@ -7,7 +7,6 @@ package mainpackage;
 
 import gui.Menu;
 import gui.Stage;
-import java.awt.Dimension;
 import javax.swing.JFrame;
 
 /**

@@ -5,7 +5,6 @@
  */
 package gui;
 
-import java.time.LocalDate;
 import model.Employee;
 
 /**
