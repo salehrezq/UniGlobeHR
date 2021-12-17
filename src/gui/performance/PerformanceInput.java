@@ -64,7 +64,7 @@ public class PerformanceInput
     private boolean boolComboStateFilled;
     private boolean boolComboTypeFilled;
     private boolean boolTfAmountFilled;
-    private boolean descriptionDisplayAbility;
+    private boolean boolPerformanceDisplayMode;
 
     public PerformanceInput() {
 
@@ -166,7 +166,9 @@ public class PerformanceInput
 
     @Override
     public void employeeSelected(Employee employee) {
-//        System.out.println(employee.getName());
+        if (boolPerformanceDisplayMode && employee != null) {
+            clearInputFields();
+        }
     }
 
     @Override
@@ -272,14 +274,14 @@ public class PerformanceInput
 
     @Override
     public void performanceDisplayable() {
-        descriptionDisplayAbility = true;
+        boolPerformanceDisplayMode = true;
         clearInputFields();
         setFieldsEditable(false);
     }
 
     @Override
     public void performanceUnDisplayable() {
-        descriptionDisplayAbility = false;
+        boolPerformanceDisplayMode = false;
         clearInputFields();
         setFieldsEditable(true);
     }
@@ -287,7 +289,7 @@ public class PerformanceInput
     @Override
     public void rowClickedWithRecordId(int id) {
 
-        if (descriptionDisplayAbility) {
+        if (boolPerformanceDisplayMode) {
 
             Performance performance = CRUDPerformance.getById(id);
 
