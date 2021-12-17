@@ -53,7 +53,7 @@ public class PerformanceRequest implements EmployeeSelectedListener {
     private YearMonth yearAndMonth;
     private JFormattedTextField tfYear;
     private JComboBox monthsList;
-    private JCheckBox checkDisplayDescription;
+    private JCheckBox checkDisplayPerformanceMode;
     private final String[] monthsNums;
     private List<PerformanceDisplayModeListener> performanceDisplayModeListeners;
     private List<RowClickedListener> rowClickedListeners;
@@ -81,13 +81,13 @@ public class PerformanceRequest implements EmployeeSelectedListener {
         monthsList = new JComboBox<>(monthsNums);
         monthsList.setSelectedIndex(yearAndMonth.getMonthValue() - 1);
 
-        checkDisplayDescription = new JCheckBox("Display description");
-        checkDisplayDescription.addItemListener(new ChechBoxListener());
+        checkDisplayPerformanceMode = new JCheckBox("Display mode");
+        checkDisplayPerformanceMode.addItemListener(new ChechBoxListener());
 
         panelControlls.add(btnRequestData);
         panelControlls.add(tfYear);
         panelControlls.add(monthsList);
-        panelControlls.add(checkDisplayDescription);
+        panelControlls.add(checkDisplayPerformanceMode);
 
         model = new DefaultTableModel(new String[]{"DateTime", "State", "Type", "Amount", "Title", "Performance Id"}, 0) {
             @Override
@@ -236,7 +236,7 @@ public class PerformanceRequest implements EmployeeSelectedListener {
 
             Object source = event.getSource();
 
-            if (source == checkDisplayDescription) {
+            if (source == checkDisplayPerformanceMode) {
 
                 if (event.getStateChange() == ItemEvent.SELECTED) {
 
@@ -250,7 +250,7 @@ public class PerformanceRequest implements EmployeeSelectedListener {
                         if (dialogResult == JOptionPane.YES_OPTION) {
                             notifyDescriptionDisplayable();
                             count += 1;
-                            checkDisplayDescription.setSelected(true);
+                            checkDisplayPerformanceMode.setSelected(true);
                         }
                     }
                 } else if (event.getStateChange() == ItemEvent.DESELECTED && count == 0) {

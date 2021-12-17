@@ -15,7 +15,8 @@ import java.awt.Insets;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.time.LocalDate;
-import java.util.HashMap;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -26,6 +27,7 @@ import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import model.Employee;
+import model.Performance;
 import model.PerformanceType;
 
 /**
@@ -56,6 +58,7 @@ public class PerformanceInput
     private JTextArea taDescription;
     private Color colorFieldRight;
     private Color colorFieldWrong;
+    private Color colorDisabled;
     private boolean boolTfTimeFilled;
     private boolean boolDateFilled;
     private boolean boolComboStateFilled;
@@ -71,6 +74,7 @@ public class PerformanceInput
 
         colorFieldRight = new Color(226, 252, 237);
         colorFieldWrong = new Color(254, 225, 214);
+        colorDisabled = new Color(105, 105, 105);
 
         lbTime = new JLabel("Time:");
         panelMetaInputs.add(lbTime);
@@ -234,6 +238,7 @@ public class PerformanceInput
     protected void clearInputFields() {
         tfTime.setText(null);
         boolTfTimeFilled = false;
+        datePicker.setTodayAsDefault();
         // Setting comboStateOfPerformance selected index to zero
         // invokes ItemListener methods which contains the code
         // to set the other linked combo box to zero
@@ -245,36 +250,38 @@ public class PerformanceInput
         taDescription.setText(null);
     }
 
+    private void setFieldsEditable(boolean editable) {
+
+        tfTime.setEditable(editable);
+        tfTime.setForeground(editable ? null : colorDisabled);
+        datePicker.setEnabled(editable);
+        comboStateOfPerformance.setEnabled(editable);
+        comboStateOfPerformance.setForeground(editable ? null : colorDisabled);
+        comboType.setEnabled(editable);
+        comboType.setForeground(editable ? null : colorDisabled);
+        tfAmount.setEditable(editable);
+        tfAmount.setForeground(editable ? null : colorDisabled);
+        tfTitle.setEditable(editable);
+        taDescription.setEditable(editable);
+    }
+
     @Override
     public void performanceSubmitted() {
         clearInputFields();
-    }
-
-    private void fieldsAbility(boolean ability) {
-        tfTime.setEnabled(ability);
-        datePicker.setEnabled(ability);
-        comboStateOfPerformance.setEnabled(ability);
-        comboType.setEnabled(ability);
-        tfAmount.setEnabled(ability);
     }
 
     @Override
     public void performanceDisplayable() {
         descriptionDisplayAbility = true;
         clearInputFields();
-        tfTitle.setEditable(false);
-        taDescription.setEditable(false);
-        fieldsAbility(false);
+        setFieldsEditable(false);
     }
 
     @Override
     public void performanceUnDisplayable() {
         descriptionDisplayAbility = false;
-        tfTitle.setText(null);
-        taDescription.setText(null);
-        tfTitle.setEditable(true);
-        taDescription.setEditable(true);
-        fieldsAbility(true);
+        clearInputFields();
+        setFieldsEditable(true);
     }
 
     @Override
@@ -282,13 +289,25 @@ public class PerformanceInput
 
         if (descriptionDisplayAbility) {
 
-            HashMap<String, String> titleWithDescription = CRUDPerformance.getTitleWithDescription(id);
+            Performance performance = CRUDPerformance.getById(id);
 
-            String title = titleWithDescription.get("title");
-            String description = titleWithDescription.get("description");
+            LocalDateTime ldt = performance.getDateTime();
 
-            tfTitle.setText(title);
+            String localTime12 = ldt.toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm a"));
 
+            tfTime.setText(localTime12);
+            datePicker.setDateValue(ldt.toLocalDate());
+
+            if (performance.getState()) {
+                comboStateOfPerformance.setSelectedIndex(1);
+            } else {
+                comboStateOfPerformance.setSelectedIndex(2);
+            }
+            comboType.getModel().setSelectedItem(CRUDPerformanceType.getById(performance.getTypeId()));
+            tfAmount.setText(String.valueOf(performance.getAmount()));
+            tfTitle.setText(performance.getTitle());
+            taDescription.setText(performance.getDescription());
+            String description = performance.getDescription();
             if (description == null || description.isBlank()) {
                 taDescription.setText("No description available!");
             } else {
