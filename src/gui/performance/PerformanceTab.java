@@ -6,6 +6,7 @@ import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import javax.swing.Box;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 
@@ -24,6 +25,7 @@ public class PerformanceTab {
     private PerformanceCancel performanceCancel;
     private PerformanceRequest performanceRequest;
     private PerformanceDisplay performanceDisplay;
+    private PerformanceEdit performanceEdit;
 
     public PerformanceTab() {
 
@@ -86,6 +88,10 @@ public class PerformanceTab {
         performanceDisplay.addPerformanceDisplayableListener(performanceSubmit);
         performanceDisplay.addPerformanceDisplayableListener(performanceInput);
         performanceRequest.getPanelControls().add(performanceDisplay.getCheckDisplayMode());
+
+        performanceEdit = new PerformanceEdit();
+        performanceRequest.getPanelControls().add(Box.createHorizontalStrut(30));
+        performanceRequest.getPanelControls().add(performanceEdit.getBtnEditMode());
 
         splitPaneContainer = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         splitPaneContainer.setDividerSize(5);
