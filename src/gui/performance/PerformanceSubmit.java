@@ -30,6 +30,7 @@ public class PerformanceSubmit
     private StringBuilder stringBuilder;
     private Employee employee;
     private List<PerformanceSubmittedListener> performanceSubmittedListeners;
+    private boolean boolPerformanceDisplayMode;
 
     public PerformanceSubmit() {
 
@@ -85,11 +86,13 @@ public class PerformanceSubmit
 
     @Override
     public void performanceDisplayable() {
+        boolPerformanceDisplayMode = true;
         btnSubmit.setEnabled(false);
     }
 
     @Override
     public void performanceUnDisplayable() {
+        boolPerformanceDisplayMode = false;
         if (employee != null) {
             btnSubmit.setEnabled(true);
         }
@@ -161,7 +164,9 @@ public class PerformanceSubmit
 
     @Override
     public void employeeSelected(Employee employee) {
-        btnSubmit.setEnabled(true);
+        if (!boolPerformanceDisplayMode) {
+            btnSubmit.setEnabled(true);
+        }
         this.employee = employee;
     }
 
