@@ -258,9 +258,7 @@ public class PerformanceInput
         tfTime.setForeground(editable ? null : colorDisabled);
         datePicker.setEnabled(editable);
         comboStateOfPerformance.setEnabled(editable);
-        comboStateOfPerformance.setForeground(editable ? null : colorDisabled);
         comboType.setEnabled(editable);
-        comboType.setForeground(editable ? null : colorDisabled);
         tfAmount.setEditable(editable);
         tfAmount.setForeground(editable ? null : colorDisabled);
         tfTitle.setEditable(editable);
