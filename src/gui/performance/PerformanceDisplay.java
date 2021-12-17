@@ -15,11 +15,11 @@ public class PerformanceDisplay {
 
     private PerformanceInput performanceInput;
     private JCheckBox checkDisplayMode;
-    private List<PerformanceDisplayModeListener> performanceDisplayModeListeners;
+    private List<PerformanceDisplayableListener> PerformanceDisplayableListeners;
 
     public PerformanceDisplay() {
 
-        performanceDisplayModeListeners = new ArrayList<>();
+        PerformanceDisplayableListeners = new ArrayList<>();
 
         checkDisplayMode = new JCheckBox("Display Mode");
         checkDisplayMode.addItemListener(new ChechBoxListener());
@@ -33,18 +33,18 @@ public class PerformanceDisplay {
         return checkDisplayMode;
     }
 
-    public void addPerformanceDisplayModeListener(PerformanceDisplayModeListener pdml) {
-        this.performanceDisplayModeListeners.add(pdml);
+    public void addPerformanceDisplayableListener(PerformanceDisplayableListener pdml) {
+        this.PerformanceDisplayableListeners.add(pdml);
     }
 
-    private void notifyDescriptionDisplayable() {
-        this.performanceDisplayModeListeners.forEach((pdml) -> {
+    private void notifyPerformanceDisplayable() {
+        this.PerformanceDisplayableListeners.forEach((pdml) -> {
             pdml.performanceDisplayable();
         });
     }
 
-    private void notifyDescriptionUnDisplayable() {
-        this.performanceDisplayModeListeners.forEach((ddl) -> {
+    private void notifyPerformanceUnDisplayable() {
+        this.PerformanceDisplayableListeners.forEach((ddl) -> {
             ddl.performanceUnDisplayable();
         });
     }
@@ -73,13 +73,13 @@ public class PerformanceDisplay {
                                 "Warning", JOptionPane.YES_OPTION);
 
                         if (dialogResult == JOptionPane.YES_OPTION) {
-                            notifyDescriptionDisplayable();
+                            notifyPerformanceDisplayable();
                             count += 1;
                             checkDisplayMode.setSelected(true);
                         }
                     }
                 } else if (event.getStateChange() == ItemEvent.DESELECTED && count == 0) {
-                    notifyDescriptionUnDisplayable();
+                    notifyPerformanceUnDisplayable();
                 }
             }
             count = 0;

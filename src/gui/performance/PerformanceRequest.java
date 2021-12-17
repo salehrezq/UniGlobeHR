@@ -38,7 +38,7 @@ import model.Performance;
 public class PerformanceRequest
         implements
         EmployeeSelectedListener,
-        PerformanceDisplayModeListener {
+        PerformanceDisplayableListener {
 
     private DefaultTableModel model;
     private JTable table;

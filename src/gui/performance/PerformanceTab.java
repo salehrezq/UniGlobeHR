@@ -83,8 +83,8 @@ public class PerformanceTab {
         panelRequests.add(performanceRequest.getPanelTable(), BorderLayout.CENTER);
 
         performanceDisplay = new PerformanceDisplay();
-        performanceDisplay.addPerformanceDisplayModeListener(performanceSubmit);
-        performanceDisplay.addPerformanceDisplayModeListener(performanceInput);
+        performanceDisplay.addPerformanceDisplayableListener(performanceSubmit);
+        performanceDisplay.addPerformanceDisplayableListener(performanceInput);
         performanceRequest.getPanelControls().add(performanceDisplay.getCheckDisplayMode());
 
         splitPaneContainer = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
