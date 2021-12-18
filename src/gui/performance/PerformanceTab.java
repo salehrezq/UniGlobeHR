@@ -91,6 +91,7 @@ public class PerformanceTab {
         performanceRequest.getPanelControls().add(performanceDisplay.getCheckDisplayMode());
 
         performanceEdit = new PerformanceEdit();
+        performanceDisplay.addPerformanceDisplayableListener(performanceEdit);
         performanceRequest.getPanelControls().add(Box.createHorizontalStrut(30));
         performanceRequest.getPanelControls().add(performanceEdit.getBtnEditMode());
 
