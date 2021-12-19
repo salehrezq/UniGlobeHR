@@ -54,12 +54,14 @@ public class PerformanceRequest
     private JFormattedTextField tfYear;
     private JComboBox monthsList;
     private final String[] monthsNums;
-    private List<RowSelectedListener> rowClickedListeners;
+    private List<RowSelectedListener> rowSelectedListeners;
+    private List<RowDeselectedListener> rowDeselectedListeners;
 
     public PerformanceRequest() {
         super();
 
-        rowClickedListeners = new ArrayList<>();
+        rowSelectedListeners = new ArrayList<>();
+        rowDeselectedListeners = new ArrayList<>();
 
         LocalDate today = LocalDate.now();
         yearAndMonth = YearMonth.of(today.getYear(), today.getMonthValue());
@@ -231,13 +233,23 @@ public class PerformanceRequest
         }
     }
 
-    public void addRowClickedListener(RowSelectedListener rcl) {
-        this.rowClickedListeners.add(rcl);
+    public void addRowSelectedListener(RowSelectedListener rcl) {
+        this.rowSelectedListeners.add(rcl);
     }
 
-    private void notifyRowClickedListener(int performanceId) {
-        this.rowClickedListeners.forEach((rcl) -> {
+    private void notifyRowSelectedListener(int performanceId) {
+        this.rowSelectedListeners.forEach((rcl) -> {
             rcl.rowSelectedWithRecordId(performanceId);
+        });
+    }
+
+    public void addRowDeselectedListenerListener(RowDeselectedListener rowDeselectedListener) {
+        this.rowDeselectedListeners.add(rowDeselectedListener);
+    }
+
+    private void notifyRowDeselection() {
+        this.rowDeselectedListeners.forEach((rowDeselectedListener) -> {
+            rowDeselectedListener.rowDeselection();
         });
     }
 
@@ -246,17 +258,26 @@ public class PerformanceRequest
         @Override
         public void valueChanged(ListSelectionEvent event) {
 
-            int viewRow = table.getSelectedRow();
+            if (!event.getValueIsAdjusting()) {
+                // Ensure single event invoke
+                DefaultListSelectionModel selectionModel = (DefaultListSelectionModel) event.getSource();
 
-            if (!event.getValueIsAdjusting() && viewRow > -1) {
+                if (selectionModel.isSelectionEmpty()) {
+                    // Table row deselection occurred
+                    notifyRowDeselection();
+                } else {
+                    int viewRow = table.getSelectedRow();
+                    if (viewRow > -1) {
+                        int performanceIdColumn = 5;
+                        int modelRow = table.convertRowIndexToModel(viewRow);
 
-                int performanceIdColumn = 5;
-                int modelRow = table.convertRowIndexToModel(viewRow);
-
-                Object performanceIdObject = table.getModel().getValueAt(modelRow, performanceIdColumn);
-                int performanceId = Integer.parseInt(performanceIdObject.toString());
-                notifyRowClickedListener(performanceId);
+                        Object performanceIdObject = table.getModel().getValueAt(modelRow, performanceIdColumn);
+                        int performanceId = Integer.parseInt(performanceIdObject.toString());
+                        notifyRowSelectedListener(performanceId);
+                    }
+                }
             }
+
         }
     }
 

@@ -6,4 +6,5 @@ package gui.performance;
  */
 public interface RowDeselectedListener {
 
+    public void rowDeselection();
 }

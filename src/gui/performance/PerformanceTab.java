@@ -81,7 +81,7 @@ public class PerformanceTab {
         panelInputs.add(performanceSubmit.getSubmitButton(), c);
 
         performanceRequest = new PerformanceRequest();
-        performanceRequest.addRowClickedListener(performanceInput);
+        performanceRequest.addRowSelectedListener(performanceInput);
         panelRequests.add(performanceRequest.getPanelTable(), BorderLayout.CENTER);
 
         performanceDisplay = new PerformanceDisplay();
@@ -93,6 +93,8 @@ public class PerformanceTab {
 
         performanceEdit = new PerformanceEdit();
         performanceEdit.addPerformanceEditableListener(performanceInput);
+        performanceRequest.addRowDeselectedListenerListener(performanceEdit);
+        performanceRequest.addRowSelectedListener(performanceEdit);
         performanceDisplay.addPerformanceDisplayableListener(performanceEdit);
         performanceRequest.getPanelControls().add(Box.createHorizontalStrut(30));
         performanceRequest.getPanelControls().add(performanceEdit.getBtnEditMode());

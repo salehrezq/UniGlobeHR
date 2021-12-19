@@ -10,15 +10,21 @@ import javax.swing.JButton;
  *
  * @author Saleh
  */
-public class PerformanceEdit implements PerformanceDisplayableListener {
+public class PerformanceEdit implements
+        PerformanceDisplayableListener,
+        RowSelectedListener,
+        RowDeselectedListener {
 
     private JButton btnEditMode;
     private List<PerformanceEditableListener> performanceEditableListeners;
+    private boolean boolRowIsSelected;
+    private boolean boolPerformanceDisplayable;
 
     public PerformanceEdit() {
 
         performanceEditableListeners = new ArrayList<>();
         btnEditMode = new JButton("Edit Mode");
+        btnEditMode.setEnabled(false);
         btnEditMode.addActionListener(new EditPerformance());
         btnEditMode.setEnabled(false);
     }
@@ -29,12 +35,26 @@ public class PerformanceEdit implements PerformanceDisplayableListener {
 
     @Override
     public void performanceDisplayable() {
+        boolPerformanceDisplayable = true;
         btnEditMode.setEnabled(true);
     }
 
     @Override
     public void performanceUnDisplayable() {
+        boolPerformanceDisplayable = false;
         btnEditMode.setEnabled(false);
+    }
+
+    @Override
+    public void rowSelectedWithRecordId(int id) {
+        System.out.println("PerformanceEdit react to row selection");
+        boolRowIsSelected = true;
+    }
+
+    @Override
+    public void rowDeselection() {
+        System.out.println("PerformanceEdit react to row deselection");
+        boolRowIsSelected = false;
     }
 
     class EditPerformance implements ActionListener {
