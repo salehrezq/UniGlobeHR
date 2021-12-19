@@ -4,7 +4,7 @@ package gui.performance;
  *
  * @author Saleh
  */
-public interface PerformanceEditableListener {
+public interface EditableListener {
 
-    public void performanceEditable();
+    public void editable();
 }

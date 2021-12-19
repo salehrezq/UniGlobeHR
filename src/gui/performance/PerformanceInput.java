@@ -40,7 +40,7 @@ public class PerformanceInput
         PerformanceSubmittedListener,
         PerformanceDisplayableListener,
         RowSelectedListener,
-        PerformanceEditableListener {
+        EditableListener {
 
     private JPanel mainPanel;
     private JPanel panelStoryInputs;
@@ -318,7 +318,7 @@ public class PerformanceInput
     }
 
     @Override
-    public void performanceEditable() {
+    public void editable() {
         System.out.println("Performance Inputs react to editable button");
     }
 

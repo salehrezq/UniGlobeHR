@@ -16,7 +16,7 @@ public class PerformanceEdit implements
         RowDeselectedListener {
 
     private JButton btnEditMode;
-    private List<PerformanceEditableListener> performanceEditableListeners;
+    private List<EditableListener> performanceEditableListeners;
     private boolean boolRowIsSelected;
     private boolean boolPerformanceDisplayable;
 
@@ -71,13 +71,13 @@ public class PerformanceEdit implements
         }
     }
 
-    public void addPerformanceEditableListener(PerformanceEditableListener peditableListener) {
+    public void addPerformanceEditableListener(EditableListener peditableListener) {
         this.performanceEditableListeners.add(peditableListener);
     }
 
     private void notifyPerformanceEditable() {
         this.performanceEditableListeners.forEach((peditableListener) -> {
-            peditableListener.performanceEditable();
+            peditableListener.editable();
         });
     }
 
