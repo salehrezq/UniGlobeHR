@@ -4,6 +4,7 @@ package gui.performance;
  *
  * @author Saleh
  */
-public interface CancelableListener {
+public interface CancelListener {
 
+    public void cancelled();
 }
