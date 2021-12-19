@@ -36,7 +36,10 @@ public class PerformanceEdit implements
     @Override
     public void performanceDisplayable() {
         boolPerformanceDisplayable = true;
-        btnEditMode.setEnabled(true);
+        if (boolRowIsSelected) {
+            btnEditMode.setEnabled(true);
+        }
+
     }
 
     @Override
@@ -47,14 +50,16 @@ public class PerformanceEdit implements
 
     @Override
     public void rowSelectedWithRecordId(int id) {
-        System.out.println("PerformanceEdit react to row selection");
         boolRowIsSelected = true;
+        if (boolPerformanceDisplayable) {
+            btnEditMode.setEnabled(true);
+        }
     }
 
     @Override
     public void rowDeselection() {
-        System.out.println("PerformanceEdit react to row deselection");
         boolRowIsSelected = false;
+        btnEditMode.setEnabled(false);
     }
 
     class EditPerformance implements ActionListener {
