@@ -319,7 +319,7 @@ public class PerformanceInput
 
     @Override
     public void editable() {
-        System.out.println("Performance Inputs react to editable button");
+        setFieldsEditable(true);
     }
 
     private class DateListenerImpli implements DateListener, DateDeselectedListener {
