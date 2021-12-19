@@ -39,7 +39,7 @@ public class PerformanceInput
         EmployeeSelectedListener,
         PerformanceSubmittedListener,
         PerformanceDisplayableListener,
-        RowClickedListener,
+        RowSelectedListener,
         PerformanceEditableListener {
 
     private JPanel mainPanel;
@@ -286,7 +286,7 @@ public class PerformanceInput
     }
 
     @Override
-    public void rowClickedWithRecordId(int id) {
+    public void rowSelectedRecordId(int id) {
 
         if (boolPerformanceDisplayMode) {
 

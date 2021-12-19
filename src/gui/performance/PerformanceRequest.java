@@ -54,7 +54,7 @@ public class PerformanceRequest
     private JFormattedTextField tfYear;
     private JComboBox monthsList;
     private final String[] monthsNums;
-    private List<RowClickedListener> rowClickedListeners;
+    private List<RowSelectedListener> rowClickedListeners;
 
     public PerformanceRequest() {
         super();
@@ -231,13 +231,13 @@ public class PerformanceRequest
         }
     }
 
-    public void addRowClickedListener(RowClickedListener rcl) {
+    public void addRowClickedListener(RowSelectedListener rcl) {
         this.rowClickedListeners.add(rcl);
     }
 
     private void notifyRowClickedListener(int performanceId) {
         this.rowClickedListeners.forEach((rcl) -> {
-            rcl.rowClickedWithRecordId(performanceId);
+            rcl.rowSelectedRecordId(performanceId);
         });
     }
 
