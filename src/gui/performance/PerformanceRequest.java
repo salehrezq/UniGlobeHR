@@ -179,7 +179,7 @@ public class PerformanceRequest
 
     @Override
     public void performanceUnDisplayable() {
-        table.getSelectionModel().setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
+        table.getSelectionModel().setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     }
 
     private class ActionGetData implements ActionListener {
