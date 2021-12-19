@@ -4,12 +4,12 @@ package gui.performance;
  *
  * @author Saleh
  */
-public interface RowClickedListener {
+public interface RowSelectedListener {
 
     /**
      * id is id of the record from the database.
      *
      * @param id
      */
-    public void rowClickedWithRecordId(int id);
+    public void rowSelectedRecordId(int id);
 }
