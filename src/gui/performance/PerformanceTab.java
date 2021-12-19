@@ -88,6 +88,7 @@ public class PerformanceTab {
         performanceDisplay.addPerformanceDisplayableListener(performanceSubmit);
         performanceDisplay.addPerformanceDisplayableListener(performanceInput);
         performanceDisplay.addPerformanceDisplayableListener(performanceCancel);
+        performanceDisplay.addPerformanceDisplayableListener(performanceRequest);
         performanceRequest.getPanelControls().add(performanceDisplay.getCheckDisplayMode());
 
         performanceEdit = new PerformanceEdit();
