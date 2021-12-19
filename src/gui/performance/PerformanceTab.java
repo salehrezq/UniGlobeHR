@@ -93,6 +93,7 @@ public class PerformanceTab {
 
         performanceEdit = new PerformanceEdit();
         performanceEdit.addPerformanceEditableListener(performanceInput);
+        performanceEdit.addPerformanceEditableListener(performanceCancel);
         performanceRequest.addRowDeselectedListenerListener(performanceEdit);
         performanceRequest.addRowSelectedListener(performanceEdit);
         performanceDisplay.addPerformanceDisplayableListener(performanceEdit);
