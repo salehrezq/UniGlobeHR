@@ -39,7 +39,8 @@ public class PerformanceInput
         EmployeeSelectedListener,
         PerformanceSubmittedListener,
         PerformanceDisplayableListener,
-        RowClickedListener {
+        RowClickedListener,
+        PerformanceEditableListener {
 
     private JPanel mainPanel;
     private JPanel panelStoryInputs;
@@ -314,6 +315,11 @@ public class PerformanceInput
                 taDescription.setText(description);
             }
         }
+    }
+
+    @Override
+    public void performanceEditable() {
+        System.out.println("Performance Inputs react to editable button");
     }
 
     private class DateListenerImpli implements DateListener, DateDeselectedListener {
