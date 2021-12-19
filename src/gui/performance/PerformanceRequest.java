@@ -237,7 +237,7 @@ public class PerformanceRequest
 
     private void notifyRowClickedListener(int performanceId) {
         this.rowClickedListeners.forEach((rcl) -> {
-            rcl.rowSelectedRecordId(performanceId);
+            rcl.rowSelectedWithRecordId(performanceId);
         });
     }
 

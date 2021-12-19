@@ -286,7 +286,7 @@ public class PerformanceInput
     }
 
     @Override
-    public void rowSelectedRecordId(int id) {
+    public void rowSelectedWithRecordId(int id) {
 
         if (boolPerformanceDisplayMode) {
 

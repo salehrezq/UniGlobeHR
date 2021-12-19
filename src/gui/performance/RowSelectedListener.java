@@ -11,5 +11,5 @@ public interface RowSelectedListener {
      *
      * @param id
      */
-    public void rowSelectedRecordId(int id);
+    public void rowSelectedWithRecordId(int id);
 }
