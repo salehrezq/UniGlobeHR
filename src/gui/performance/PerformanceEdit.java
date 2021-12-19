@@ -66,7 +66,7 @@ public class PerformanceEdit implements
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            System.out.println("Performance editable");
+            btnEditMode.setEnabled(false);
             notifyPerformanceEditable();
         }
     }
