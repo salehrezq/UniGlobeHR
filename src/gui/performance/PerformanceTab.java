@@ -58,7 +58,7 @@ public class PerformanceTab {
         panelInputs.add(performanceInput.getPerformanceInputsPanel(), c);
 
         performanceCancel = new PerformanceCancel();
-        performanceCancel.setPerformanceInput(performanceInput);
+        performanceCancel.addCancelListener(performanceInput);
         c = new GridBagConstraints();
         c.gridy = 2;
         c.gridx = 0;

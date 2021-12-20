@@ -40,7 +40,8 @@ public class PerformanceInput
         PerformanceSubmittedListener,
         PerformanceDisplayableListener,
         RowSelectedListener,
-        EditableListener {
+        EditableListener,
+        CancelListener {
 
     private JPanel mainPanel;
     private JPanel panelStoryInputs;
@@ -320,6 +321,13 @@ public class PerformanceInput
     @Override
     public void editable() {
         setFieldsEditable(true);
+    }
+
+    @Override
+    public void cancelled() {
+        if (boolPerformanceDisplayMode) {
+            setFieldsEditable(false);
+        }
     }
 
     private class DateListenerImpli implements DateListener, DateDeselectedListener {

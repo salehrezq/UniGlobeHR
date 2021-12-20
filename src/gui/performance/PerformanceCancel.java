@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -17,7 +16,6 @@ public class PerformanceCancel
         EditableListener {
 
     private JButton btnCancel;
-    private PerformanceInput performanceInput;
     private List<CancelListener> cancelledListeners;
 
     public PerformanceCancel() {
@@ -25,10 +23,6 @@ public class PerformanceCancel
         cancelledListeners = new ArrayList<>();
         btnCancel = new JButton("Cancel");
         btnCancel.addActionListener(new SubmitPerformance());
-    }
-
-    public void setPerformanceInput(PerformanceInput performanceInput) {
-        this.performanceInput = performanceInput;
     }
 
     public JButton getButtonCancel() {
@@ -64,16 +58,7 @@ public class PerformanceCancel
 
         @Override
         public void actionPerformed(ActionEvent e) {
-
             notifyCancelled();
-
-            int dialogResult = JOptionPane.showConfirmDialog(null,
-                    "You are about to clear all fields, sure?", "Warning", JOptionPane.YES_OPTION);
-
-            if (dialogResult == JOptionPane.YES_OPTION) {
-                performanceInput.clearInputFields();
-            }
         }
     }
-
 }
