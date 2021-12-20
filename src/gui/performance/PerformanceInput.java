@@ -67,6 +67,9 @@ public class PerformanceInput
     private boolean boolComboTypeFilled;
     private boolean boolTfAmountFilled;
     private boolean boolPerformanceDisplayMode;
+    private Performance performance;
+    private int performanceId;
+    private int performanceOldId;
 
     public PerformanceInput() {
 
@@ -289,33 +292,49 @@ public class PerformanceInput
     @Override
     public void rowSelectedWithRecordId(int id) {
 
+        performanceId = id;
+
         if (boolPerformanceDisplayMode) {
-
-            Performance performance = CRUDPerformance.getById(id);
-
-            LocalDateTime ldt = performance.getDateTime();
-
-            String localTime12 = ldt.toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm a"));
-
-            tfTime.setText(localTime12);
-            datePicker.setDateValue(ldt.toLocalDate());
-
-            if (performance.getState()) {
-                comboStateOfPerformance.setSelectedIndex(1);
-            } else {
-                comboStateOfPerformance.setSelectedIndex(2);
-            }
-            comboType.getModel().setSelectedItem(CRUDPerformanceType.getById(performance.getTypeId()));
-            tfAmount.setText(String.valueOf(performance.getAmount()));
-            tfTitle.setText(performance.getTitle());
-            taDescription.setText(performance.getDescription());
-            String description = performance.getDescription();
-            if (description == null || description.isBlank()) {
-                taDescription.setText("No description available!");
-            } else {
-                taDescription.setText(description);
-            }
+            setInputFieldsWithPerformance(id);
         }
+    }
+
+    public void setInputFieldsWithPerformance(int id) {
+
+        if (performance == null || performanceOldId != id) {
+            // If performance object is null, or
+            // if new Id is not the same as previous stored Id (performanceOldId)
+            // then make a new database request.
+            performance = CRUDPerformance.getById(id);
+        }
+        // else: otherwise use previously requested performance object
+        //
+        LocalDateTime ldt = performance.getDateTime();
+
+        String localTime12 = ldt.toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm a"));
+
+        tfTime.setText(localTime12);
+        datePicker.setDateValue(ldt.toLocalDate());
+
+        if (performance.getState()) {
+            comboStateOfPerformance.setSelectedIndex(1);
+        } else {
+            comboStateOfPerformance.setSelectedIndex(2);
+        }
+        comboType.getModel().setSelectedItem(CRUDPerformanceType.getById(performance.getTypeId()));
+        tfAmount.setText(String.valueOf(performance.getAmount()));
+        tfTitle.setText(performance.getTitle());
+        taDescription.setText(performance.getDescription());
+        String description = performance.getDescription();
+        if (description == null || description.isBlank()) {
+            taDescription.setText("No description available!");
+        } else {
+            taDescription.setText(description);
+        }
+
+        // Store id for future comparsions,
+        // you find comparsion at the top of this method
+        performanceOldId = performance.getId();
     }
 
     @Override
@@ -327,6 +346,7 @@ public class PerformanceInput
     public void cancelled() {
         if (boolPerformanceDisplayMode) {
             setFieldsEditable(false);
+            setInputFieldsWithPerformance(performanceId);
         }
     }
 
