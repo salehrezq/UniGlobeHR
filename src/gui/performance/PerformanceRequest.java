@@ -56,6 +56,8 @@ public class PerformanceRequest
     private final String[] monthsNums;
     private List<RowSelectedListener> rowSelectedListeners;
     private List<RowDeselectedListener> rowDeselectedListeners;
+    private boolean boolRowSelected;
+    private Integer performanceId;
 
     public PerformanceRequest() {
         super();
@@ -177,6 +179,15 @@ public class PerformanceRequest
     @Override
     public void performanceDisplayable() {
         table.getSelectionModel().setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
+
+        if (boolRowSelected && performanceId != null) {
+            // React to selected row once display mode set to on:
+            // In case if display mode button clicked
+            // and at the same time some row was already selected,
+            // then notify that a row is already selected
+            // to get benefit from it or react accordingly.
+            notifyRowSelectedListener(performanceId);
+        }
     }
 
     @Override
@@ -264,15 +275,17 @@ public class PerformanceRequest
 
                 if (selectionModel.isSelectionEmpty()) {
                     // Table row deselection occurred
+                    boolRowSelected = false;
                     notifyRowDeselection();
                 } else {
+                    boolRowSelected = true;
                     int viewRow = table.getSelectedRow();
                     if (viewRow > -1) {
                         int performanceIdColumn = 5;
                         int modelRow = table.convertRowIndexToModel(viewRow);
 
                         Object performanceIdObject = table.getModel().getValueAt(modelRow, performanceIdColumn);
-                        int performanceId = Integer.parseInt(performanceIdObject.toString());
+                        performanceId = Integer.parseInt(performanceIdObject.toString());
                         notifyRowSelectedListener(performanceId);
                     }
                 }
