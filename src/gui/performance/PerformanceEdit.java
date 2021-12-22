@@ -20,6 +20,7 @@ public class PerformanceEdit implements
     private List<EditableListener> performanceEditableListeners;
     private boolean boolRowIsSelected;
     private boolean boolPerformanceDisplayable;
+    private boolean boolEditMode;
 
     public PerformanceEdit() {
 
@@ -52,7 +53,7 @@ public class PerformanceEdit implements
     @Override
     public void rowSelectedWithRecordId(int id) {
         boolRowIsSelected = true;
-        if (boolPerformanceDisplayable) {
+        if (boolPerformanceDisplayable && !boolEditMode) {
             btnEditMode.setEnabled(true);
         }
     }
@@ -65,6 +66,7 @@ public class PerformanceEdit implements
 
     @Override
     public void cancelled() {
+        boolEditMode = false;
         if (boolRowIsSelected && boolPerformanceDisplayable) {
             btnEditMode.setEnabled(true);
         }
@@ -74,6 +76,7 @@ public class PerformanceEdit implements
 
         @Override
         public void actionPerformed(ActionEvent e) {
+            boolEditMode = true;
             btnEditMode.setEnabled(false);
             notifyPerformanceEditable();
         }
