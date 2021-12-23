@@ -4,6 +4,7 @@ import datalink.CRUDPerformance;
 import datalink.CRUDPerformanceType;
 import gui.EmployeeSelectedListener;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -26,7 +27,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumnModel;
 import javax.swing.text.MaskFormatter;
 import model.Employee;
 import model.Performance;
@@ -61,6 +64,10 @@ public class PerformanceRequest
     private boolean boolRowSelected;
     private Integer performanceId;
     private boolean boolEditMode;
+    private final String selectedRowKey = "selectedRow";
+    private Integer selectedModelRow;
+    private Integer oldSelectedModelRow;
+    private Color rowSelectionColor;
 
     public PerformanceRequest() {
         super();
@@ -98,6 +105,17 @@ public class PerformanceRequest
         };
 
         table = new JTable(model);
+
+        rowSelectionColor = new Color(184, 207, 229);
+        TableColumnModel columnModel = table.getColumnModel();
+        int columnsCount = columnModel.getColumnCount();
+
+        LockableTableRowCellRenderer cellRenderer = new LockableTableRowCellRenderer();
+
+        for (int column = 0; column < columnsCount; column++) {
+            columnModel.getColumn(column).setCellRenderer(cellRenderer);
+        }
+
         table.setFont(new Font("SansSerif", Font.BOLD, 14));
         table.setFillsViewportHeight(true);
         table.getColumnModel().getColumn(0).setPreferredWidth(20);
@@ -200,12 +218,54 @@ public class PerformanceRequest
 
     @Override
     public void editable() {
+        // Edit mode enabled
         boolEditMode = true;
+        // Save selected row for future use
+        oldSelectedModelRow = selectedModelRow;
+        // Disable row selection
+        table.setRowSelectionAllowed(false);
+        // Update table with selected row to be used to
+        // render the table with selected row locked
+        table.putClientProperty(selectedRowKey, selectedModelRow);
     }
 
     @Override
     public void cancelled() {
+        // Edit mode cancelled
         boolEditMode = false;
+        // Enable row selection
+        table.setRowSelectionAllowed(true);
+        // Update table to remove selection color
+        table.putClientProperty(selectedRowKey, null);
+        // Keep same selected row as selected, but not locked
+        table.setRowSelectionInterval(0, oldSelectedModelRow);
+    }
+
+    public class LockableTableRowCellRenderer extends DefaultTableCellRenderer {
+
+        @Override
+        public Component getTableCellRendererComponent(
+                JTable table,
+                Object value,
+                boolean isSelected,
+                boolean hasFocus,
+                int row,
+                int column) {
+            Component tableCellRendererComponent = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+
+            Integer renderedRow = table.convertRowIndexToModel(row);
+            Integer selectedRow = (Integer) table.getClientProperty(selectedRowKey);
+
+            if (selectedRow != null && renderedRow.equals(selectedRow)) {
+                setBackground(rowSelectionColor);
+                setForeground(table.getForeground());
+            } else if (!isSelected) {
+                setBackground(table.getBackground());
+                setForeground(table.getForeground());
+                setBorder(noFocusBorder);
+            }
+            return tableCellRendererComponent;
+        }
     }
 
     private class ActionGetData implements ActionListener {
@@ -295,9 +355,9 @@ public class PerformanceRequest
                     int viewRow = table.getSelectedRow();
                     if (viewRow > -1) {
                         int performanceIdColumn = 5;
-                        int modelRow = table.convertRowIndexToModel(viewRow);
+                        selectedModelRow = table.convertRowIndexToModel(viewRow);
 
-                        Object performanceIdObject = table.getModel().getValueAt(modelRow, performanceIdColumn);
+                        Object performanceIdObject = table.getModel().getValueAt(selectedModelRow, performanceIdColumn);
                         performanceId = Integer.parseInt(performanceIdObject.toString());
                         notifyRowSelectedListener(performanceId);
                     }
