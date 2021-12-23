@@ -38,7 +38,9 @@ import model.Performance;
 public class PerformanceRequest
         implements
         EmployeeSelectedListener,
-        PerformanceDisplayableListener {
+        PerformanceDisplayableListener,
+        EditableListener,
+        CancelListener {
 
     private DefaultTableModel model;
     private JTable table;
@@ -58,6 +60,7 @@ public class PerformanceRequest
     private List<RowDeselectedListener> rowDeselectedListeners;
     private boolean boolRowSelected;
     private Integer performanceId;
+    private boolean boolEditMode;
 
     public PerformanceRequest() {
         super();
@@ -195,6 +198,16 @@ public class PerformanceRequest
         table.getSelectionModel().setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     }
 
+    @Override
+    public void editable() {
+        boolEditMode = true;
+    }
+
+    @Override
+    public void cancelled() {
+        boolEditMode = false;
+    }
+
     private class ActionGetData implements ActionListener {
 
         @Override
@@ -269,7 +282,7 @@ public class PerformanceRequest
         @Override
         public void valueChanged(ListSelectionEvent event) {
 
-            if (!event.getValueIsAdjusting()) {
+            if (!event.getValueIsAdjusting() && !boolEditMode) {
                 // Ensure single event invoke
                 DefaultListSelectionModel selectionModel = (DefaultListSelectionModel) event.getSource();
 
@@ -290,7 +303,6 @@ public class PerformanceRequest
                     }
                 }
             }
-
         }
     }
 
