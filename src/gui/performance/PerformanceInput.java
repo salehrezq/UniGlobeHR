@@ -337,8 +337,24 @@ public class PerformanceInput
         performanceOldId = performance.getId();
     }
 
+    /**
+     * When on display mode and there is no content; JTextArea displays the
+     * message: "No description available!". No need for this message when the
+     * JTextArea is on edit mode JTextArea has to reflect the emptiness with no
+     * content at all.
+     */
+    private void removeTextAreaMessageForNoContentAvailable() {
+        if (performance != null) {
+            String description = performance.getDescription();
+            if (description == null || description.isBlank()) {
+                taDescription.setText(null);
+            }
+        }
+    }
+
     @Override
     public void editable() {
+        removeTextAreaMessageForNoContentAvailable();
         setFieldsEditable(true);
     }
 
