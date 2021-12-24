@@ -59,6 +59,7 @@ public class PerformanceTab {
 
         performanceCancel = new PerformanceCancel();
         performanceCancel.addCancelListener(performanceInput);
+        performanceCancel.addCancelListener(performanceSubmit);
         c = new GridBagConstraints();
         c.gridy = 2;
         c.gridx = 0;
@@ -98,6 +99,7 @@ public class PerformanceTab {
         performanceEdit.addPerformanceEditableListener(performanceInput);
         performanceEdit.addPerformanceEditableListener(performanceCancel);
         performanceEdit.addPerformanceEditableListener(performanceDisplay);
+        performanceEdit.addPerformanceEditableListener(performanceSubmit);
         performanceCancel.addCancelListener(performanceEdit);
         performanceRequest.addRowDeselectedListenerListener(performanceEdit);
         performanceRequest.addRowSelectedListener(performanceEdit);

@@ -23,7 +23,9 @@ import model.Performance;
 public class PerformanceSubmit
         implements
         EmployeeSelectedListener,
-        PerformanceDisplayableListener {
+        PerformanceDisplayableListener,
+        EditableListener,
+        CancelListener {
 
     private JButton btnSubmit;
     private PerformanceInput performanceInput;
@@ -95,6 +97,18 @@ public class PerformanceSubmit
         boolPerformanceDisplayMode = false;
         if (employee != null) {
             btnSubmit.setEnabled(true);
+        }
+    }
+
+    @Override
+    public void editable() {
+        btnSubmit.setEnabled(true);
+    }
+
+    @Override
+    public void cancelled() {
+        if (boolPerformanceDisplayMode) {
+            btnSubmit.setEnabled(false);
         }
     }
 
