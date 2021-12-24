@@ -218,6 +218,7 @@ public class PerformanceRequest
 
     @Override
     public void editable() {
+        btnRequestData.setEnabled(false);
         // Edit mode enabled
         boolEditMode = true;
         // Save selected row for future use
@@ -231,6 +232,7 @@ public class PerformanceRequest
 
     @Override
     public void cancelled() {
+        btnRequestData.setEnabled(true);
         // Edit mode cancelled
         boolEditMode = false;
         // Enable row selection
