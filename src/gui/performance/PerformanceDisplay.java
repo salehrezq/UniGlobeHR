@@ -11,7 +11,10 @@ import javax.swing.JOptionPane;
  *
  * @author Saleh
  */
-public class PerformanceDisplay {
+public class PerformanceDisplay
+        implements
+        EditableListener,
+        CancelListener {
 
     private PerformanceInput performanceInput;
     private JCheckBox checkDisplayMode;
@@ -47,6 +50,16 @@ public class PerformanceDisplay {
         this.PerformanceDisplayableListeners.forEach((ddl) -> {
             ddl.performanceUnDisplayable();
         });
+    }
+
+    @Override
+    public void editable() {
+        checkDisplayMode.setEnabled(false);
+    }
+
+    @Override
+    public void cancelled() {
+        checkDisplayMode.setEnabled(true);
     }
 
     private class ChechBoxListener implements ItemListener {
