@@ -64,6 +64,7 @@ public class PerformanceRequest
     private boolean boolRowSelected;
     private Integer performanceId;
     private boolean boolEditMode;
+    private boolean boolDisplayMode;
     private final String selectedRowKey = "selectedRow";
     private Integer selectedModelRow;
     private Integer oldSelectedModelRow;
@@ -199,6 +200,9 @@ public class PerformanceRequest
 
     @Override
     public void performanceDisplayable() {
+
+        boolDisplayMode = true;
+
         table.getSelectionModel().setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
 
         if (boolRowSelected && performanceId != null) {
@@ -213,6 +217,7 @@ public class PerformanceRequest
 
     @Override
     public void performanceUnDisplayable() {
+        boolDisplayMode = false;
         table.getSelectionModel().setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     }
 
@@ -232,15 +237,17 @@ public class PerformanceRequest
 
     @Override
     public void cancelled() {
-        btnRequestData.setEnabled(true);
-        // Edit mode cancelled
-        boolEditMode = false;
-        // Enable row selection
-        table.setRowSelectionAllowed(true);
-        // Update table to remove selection color
-        table.putClientProperty(selectedRowKey, null);
-        // Keep same selected row as selected, but not locked
-        table.setRowSelectionInterval(0, oldSelectedModelRow);
+        if (boolDisplayMode) {
+            btnRequestData.setEnabled(true);
+            // Edit mode cancelled
+            boolEditMode = false;
+            // Enable row selection
+            table.setRowSelectionAllowed(true);
+            // Update table to remove selection color
+            table.putClientProperty(selectedRowKey, null);
+            // Keep same selected row as selected, but not locked
+            table.setRowSelectionInterval(0, oldSelectedModelRow);
+        }
     }
 
     public class LockableTableRowCellRenderer extends DefaultTableCellRenderer {
