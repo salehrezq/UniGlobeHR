@@ -1,5 +1,6 @@
 package gui.performance;
 
+import datalink.CRUDPerformance;
 import javax.swing.JButton;
 import model.Performance;
 
@@ -24,9 +25,8 @@ public class CreateOperation implements Operation {
     }
 
     @Override
-    public Integer post(Performance performance) {
-        System.out.println("do create");
-        return 0;
+    public boolean post(Performance performance) {
+        return CRUDPerformance.create(performance);
     }
 
 }

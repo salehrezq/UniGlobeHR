@@ -1,6 +1,5 @@
 package gui.performance;
 
-import datalink.CRUDPerformance;
 import gui.EmployeeSelectedListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -22,17 +21,22 @@ import model.Performance;
  */
 public class PerformanceSubmit
         implements
+        Subject,
         EmployeeSelectedListener,
         PerformanceDisplayableListener,
         EditableListener,
-        CancelListener {
+        CancelListener,
+        RowSelectedListener,
+        RowDeselectedListener {
 
+    private Operation operation;
     private JButton btnSubmit;
     private PerformanceInput performanceInput;
     private StringBuilder stringBuilder;
     private Employee employee;
     private List<PerformanceSubmittedListener> performanceSubmittedListeners;
-    private boolean boolPerformanceDisplayMode;
+    private boolean boolPerformanceDisplayMode, boolEditMode;
+    private Integer performanceId;
 
     public PerformanceSubmit() {
 
@@ -42,6 +46,9 @@ public class PerformanceSubmit
         btnSubmit.addActionListener(new SubmitPerformance());
         stringBuilder = new StringBuilder(145);
 
+        operation = new CreateOperation();
+        operation.switchOperationFor(this);
+        operation.updateGUI();
     }
 
     public void setPerformanceInput(PerformanceInput performanceInput) {
@@ -96,20 +103,53 @@ public class PerformanceSubmit
     public void performanceUnDisplayable() {
         boolPerformanceDisplayMode = false;
         if (employee != null) {
+            operation = new CreateOperation();
+            operation.switchOperationFor(this);
+            operation.updateGUI();
             btnSubmit.setEnabled(true);
         }
     }
 
     @Override
     public void editable() {
+        boolEditMode = true;
+        operation = new UpdateOperation();
+        operation.switchOperationFor(this);
+        operation.updateGUI();
         btnSubmit.setEnabled(true);
     }
 
     @Override
     public void cancelled() {
         if (boolPerformanceDisplayMode) {
+            boolEditMode = false;
             btnSubmit.setEnabled(false);
         }
+    }
+
+    @Override
+    public JButton getOperationButton() {
+        return this.btnSubmit;
+    }
+
+    @Override
+    public void setOperation(Operation operation) {
+        this.operation = operation;
+    }
+
+    @Override
+    public Operation getOperation() {
+        return this.operation;
+    }
+
+    @Override
+    public void rowSelectedWithRecordId(int id) {
+        performanceId = id;
+    }
+
+    @Override
+    public void rowDeselection() {
+        performanceId = null;
     }
 
     private class ValidateWithMessages {
@@ -204,7 +244,7 @@ public class PerformanceSubmit
             boolean areAllInputsFilled = validateWithMessages.booleans.stream().allMatch(Boolean::booleanValue);
 
             if (areAllInputsFilled) {
-                // employee_id, date_time, type_id, state, amount, title, description
+
                 Performance performance = new Performance();
                 performance.setEmployeeId(employee.getId());
                 performance.setDateTime(getDateTimeCombined());
@@ -214,7 +254,12 @@ public class PerformanceSubmit
                 performance.setTitle(performanceInput.getTitle());
                 performance.setDescription(performanceInput.getDescription());
 
-                boolean submitted = CRUDPerformance.create(performance);
+                if (boolEditMode) {
+                    performance.setId(performanceId);
+                }
+                // Create|Update
+                boolean submitted = operation.post(performance);
+
                 if (submitted) {
                     notifyPerformanceSubmitted();
                 }

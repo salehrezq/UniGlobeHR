@@ -120,4 +120,40 @@ public class CRUDPerformance {
         }
         return performance;
     }
+
+    public static boolean update(Performance performance) {
+
+        int update = 0;
+
+        try {
+            String sql = "UPDATE `performance` "
+                    + "SET "
+                    + "`date_time`= ?, "
+                    + "`state` = ?, "
+                    + "`type_id` = ?, "
+                    + "`amount` = ?, "
+                    + "`title` = ?, "
+                    + "`description` = ? "
+                    + "WHERE id = ?";
+            conn = Connect.getConnection();
+            PreparedStatement p = conn.prepareStatement(sql);
+
+            p.setObject(1, performance.getDateTime());
+            p.setBoolean(2, performance.getState());
+            p.setInt(3, performance.getTypeId());
+            p.setDouble(4, performance.getAmount());
+            p.setString(5, performance.getTitle());
+            p.setString(6, performance.getDescription());
+            p.setInt(7, performance.getId());
+
+            update = p.executeUpdate();
+            conn.commit();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDPerformance.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            Connect.cleanUp();
+        }
+        return update > 0;
+    }
 }

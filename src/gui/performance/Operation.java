@@ -12,5 +12,5 @@ public interface Operation {
 
     public void updateGUI();
 
-    public Integer post(Performance performance);
+    public boolean post(Performance performance);
 }
