@@ -16,11 +16,7 @@ public class CreateOperation implements Operation {
     @Override
     public void switchOperationFor(Subject subject) {
         this.subject = subject;
-    }
-
-    @Override
-    public void updateGUI() {
-        btnCreate = subject.getOperationButton();
+        btnCreate = this.subject.getOperationButton();
         btnCreate.setText("Create");
     }
 

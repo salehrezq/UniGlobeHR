@@ -48,7 +48,6 @@ public class PerformanceSubmit
 
         operation = new CreateOperation();
         operation.switchOperationFor(this);
-        operation.updateGUI();
     }
 
     public void setPerformanceInput(PerformanceInput performanceInput) {
@@ -105,7 +104,6 @@ public class PerformanceSubmit
         if (employee != null) {
             operation = new CreateOperation();
             operation.switchOperationFor(this);
-            operation.updateGUI();
             btnSubmit.setEnabled(true);
         }
     }
@@ -115,7 +113,6 @@ public class PerformanceSubmit
         boolEditMode = true;
         operation = new UpdateOperation();
         operation.switchOperationFor(this);
-        operation.updateGUI();
         btnSubmit.setEnabled(true);
     }
 

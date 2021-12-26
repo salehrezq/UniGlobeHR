@@ -16,11 +16,7 @@ public class UpdateOperation implements Operation {
     @Override
     public void switchOperationFor(Subject subject) {
         this.subject = subject;
-    }
-
-    @Override
-    public void updateGUI() {
-        btnUpdate = subject.getOperationButton();
+        btnUpdate = this.subject.getOperationButton();
         btnUpdate.setText("Update");
     }
 
