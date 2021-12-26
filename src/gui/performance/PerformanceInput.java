@@ -20,6 +20,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -66,7 +67,7 @@ public class PerformanceInput
     private boolean boolComboStateFilled;
     private boolean boolComboTypeFilled;
     private boolean boolTfAmountFilled;
-    private boolean boolPerformanceDisplayMode;
+    private boolean boolPerformanceDisplayMode, boolEditMode;
     private Performance performance;
     private int performanceId;
     private int performanceOldId;
@@ -285,6 +286,7 @@ public class PerformanceInput
     @Override
     public void performanceUnDisplayable() {
         boolPerformanceDisplayMode = false;
+        boolEditMode = false;
         clearInputFields();
         setFieldsEditable(true);
     }
@@ -354,6 +356,7 @@ public class PerformanceInput
 
     @Override
     public void editable() {
+        boolEditMode = true;
         removeTextAreaMessageForNoContentAvailable();
         setFieldsEditable(true);
     }
@@ -361,8 +364,20 @@ public class PerformanceInput
     @Override
     public void cancelled() {
         if (boolPerformanceDisplayMode) {
+            // Display mode, and posibly edit mode
+            boolEditMode = false;
             setFieldsEditable(false);
             setInputFieldsWithPerformance(performanceId);
+        } else if (!boolPerformanceDisplayMode) {
+            // Create mode
+            int dialogResult = JOptionPane.showConfirmDialog(null,
+                    "This will clear content from all input fields\n"
+                    + "Are you sure?",
+                    "Warning", JOptionPane.YES_OPTION);
+
+            if (dialogResult == JOptionPane.YES_OPTION) {
+                this.clearInputFields();
+            }
         }
     }
 
