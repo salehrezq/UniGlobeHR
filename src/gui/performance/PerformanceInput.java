@@ -67,7 +67,7 @@ public class PerformanceInput
     private boolean boolComboStateFilled;
     private boolean boolComboTypeFilled;
     private boolean boolTfAmountFilled;
-    private boolean boolPerformanceDisplayMode, boolEditMode, boolSubmitted;
+    private boolean boolPerformanceDisplayMode, boolEditMode, boolCreated, boolUpdated;
     private Performance performance;
     private int performanceId;
     private int performanceOldId;
@@ -273,14 +273,16 @@ public class PerformanceInput
 
     @Override
     public void created() {
-        boolSubmitted = true;
+        boolCreated = true;
         clearInputFields();
     }
 
     @Override
     public void updated() {
+        boolUpdated = true;
         if (boolPerformanceDisplayMode) {
             setFieldsEditable(false);
+            setInputFieldsWithPerformance(performanceId);
         }
     }
 
@@ -311,12 +313,12 @@ public class PerformanceInput
 
     public void setInputFieldsWithPerformance(int id) {
 
-        if (performance == null || performanceOldId != id || boolSubmitted) {
+        if (performance == null || performanceOldId != id || boolUpdated) {
             // If performance object is null, or
             // if new Id is not the same as previous stored Id (performanceOldId), or
             // if database entity update submitted
             // then make a new database request.
-            boolSubmitted = false; // reset submission flag
+            boolUpdated = false; // reset submission flag
             performance = CRUDPerformance.getById(id);
         }
         // else: otherwise use previously requested performance object

@@ -264,6 +264,15 @@ public class PerformanceRequest
     public void updated() {
         restoreRowSelection();
         btnRequestData.setEnabled(true);
+
+        Performance performance = CRUDPerformance.getById(performanceId);
+
+        table.getModel().setValueAt(performance.getDateTime(), oldSelectedModelRow, 0);
+        table.getModel().setValueAt(performanceState(performance.getState()), oldSelectedModelRow, 1);
+        table.getModel().setValueAt(getTypeText(performance.getTypeId()), oldSelectedModelRow, 2);
+        table.getModel().setValueAt(performance.getAmount(), oldSelectedModelRow, 3);
+        table.getModel().setValueAt(performance.getTitle(), oldSelectedModelRow, 4);
+        table.getModel().setValueAt(performanceId, oldSelectedModelRow, 5);
     }
 
     public class LockableTableRowCellRenderer extends DefaultTableCellRenderer {
@@ -324,22 +333,22 @@ public class PerformanceRequest
                 model.addRow(modelRow);
             }
         }
+    }
 
-        private String getTypeText(int typeID) {
-            return CRUDPerformanceType.getById(typeID).getType();
+    private String performanceState(boolean state) {
+
+        String stateType = "Undefined";
+
+        if (state) {
+            stateType = "Positive";
+        } else {
+            stateType = "Negative";
         }
+        return stateType;
+    }
 
-        private String performanceState(boolean state) {
-
-            String stateType = "Undefined";
-
-            if (state) {
-                stateType = "Positive";
-            } else {
-                stateType = "Negative";
-            }
-            return stateType;
-        }
+    private String getTypeText(int typeID) {
+        return CRUDPerformanceType.getById(typeID).getType();
     }
 
     public void addRowSelectedListener(RowSelectedListener rcl) {
