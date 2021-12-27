@@ -6,5 +6,7 @@ package gui.performance;
  */
 public interface PerformanceSubmittedListener {
 
-    public void performanceSubmitted();
+    public void created();
+
+    public void updated();
 }

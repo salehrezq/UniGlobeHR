@@ -60,7 +60,7 @@ public class PerformanceSubmit
 
     private void notifyPerformanceSubmitted() {
         this.performanceSubmittedListeners.forEach((pfsl) -> {
-            pfsl.performanceSubmitted();
+            pfsl.created();
         });
     }
 

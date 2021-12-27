@@ -272,9 +272,14 @@ public class PerformanceInput
     }
 
     @Override
-    public void performanceSubmitted() {
+    public void created() {
         boolSubmitted = true;
         clearInputFields();
+    }
+
+    @Override
+    public void updated() {
+
     }
 
     @Override
