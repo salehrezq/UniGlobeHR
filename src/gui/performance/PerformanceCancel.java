@@ -18,7 +18,7 @@ public class PerformanceCancel
 
     private JButton btnCancel;
     private List<CancelListener> cancelledListeners;
-    private boolean booleditMode;
+    private boolean booleditMode, boolDisplayable;
 
     public PerformanceCancel() {
 
@@ -34,11 +34,13 @@ public class PerformanceCancel
 
     @Override
     public void performanceDisplayable() {
+        boolDisplayable = true;
         btnCancel.setEnabled(false);
     }
 
     @Override
     public void performanceUnDisplayable() {
+        boolDisplayable = false;
         btnCancel.setEnabled(true);
     }
 
@@ -75,7 +77,7 @@ public class PerformanceCancel
         @Override
         public void actionPerformed(ActionEvent e) {
             notifyCancelled();
-            if (booleditMode) {
+            if (booleditMode && boolDisplayable) {
                 btnCancel.setEnabled(false);
                 booleditMode = false;
             }
