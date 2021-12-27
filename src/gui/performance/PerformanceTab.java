@@ -60,6 +60,7 @@ public class PerformanceTab {
         performanceCancel = new PerformanceCancel();
         performanceCancel.addCancelListener(performanceInput);
         performanceCancel.addCancelListener(performanceSubmit);
+        performanceSubmit.addPerformanceSubmittedListener(performanceCancel);
         c = new GridBagConstraints();
         c.gridy = 2;
         c.gridx = 0;
@@ -84,6 +85,7 @@ public class PerformanceTab {
         performanceRequest = new PerformanceRequest();
         performanceRequest.addRowSelectedListener(performanceSubmit);
         performanceRequest.addRowDeselectedListenerListener(performanceSubmit);
+        performanceSubmit.addPerformanceSubmittedListener(performanceRequest);
         performanceRequest.addRowSelectedListener(performanceInput);
         performanceCancel.addCancelListener(performanceRequest);
         panelRequests.add(performanceRequest.getPanelTable(), BorderLayout.CENTER);
@@ -94,6 +96,7 @@ public class PerformanceTab {
         performanceDisplay.addPerformanceDisplayableListener(performanceInput);
         performanceDisplay.addPerformanceDisplayableListener(performanceCancel);
         performanceDisplay.addPerformanceDisplayableListener(performanceRequest);
+        performanceSubmit.addPerformanceSubmittedListener(performanceDisplay);
         performanceRequest.getPanelControls().add(performanceDisplay.getCheckDisplayMode());
 
         performanceEdit = new PerformanceEdit();
@@ -102,6 +105,7 @@ public class PerformanceTab {
         performanceEdit.addPerformanceEditableListener(performanceCancel);
         performanceEdit.addPerformanceEditableListener(performanceDisplay);
         performanceEdit.addPerformanceEditableListener(performanceSubmit);
+        performanceSubmit.addPerformanceSubmittedListener(performanceEdit);
         performanceCancel.addCancelListener(performanceEdit);
         performanceRequest.addRowDeselectedListenerListener(performanceEdit);
         performanceRequest.addRowSelectedListener(performanceEdit);

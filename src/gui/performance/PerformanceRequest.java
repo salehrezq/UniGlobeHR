@@ -43,7 +43,8 @@ public class PerformanceRequest
         EmployeeSelectedListener,
         PerformanceDisplayableListener,
         EditableListener,
-        CancelListener {
+        CancelListener,
+        PerformanceSubmittedListener {
 
     private DefaultTableModel model;
     private JTable table;
@@ -235,8 +236,7 @@ public class PerformanceRequest
         table.putClientProperty(selectedRowKey, selectedModelRow);
     }
 
-    @Override
-    public void cancelled() {
+    private void restoreRowSelection() {
         if (boolDisplayMode) {
             btnRequestData.setEnabled(true);
             // Edit mode cancelled
@@ -248,6 +248,22 @@ public class PerformanceRequest
             // Keep same selected row as selected, but not locked
             table.setRowSelectionInterval(0, oldSelectedModelRow);
         }
+    }
+
+    @Override
+    public void cancelled() {
+        restoreRowSelection();
+    }
+
+    @Override
+    public void created() {
+        //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void updated() {
+        restoreRowSelection();
+        btnRequestData.setEnabled(true);
     }
 
     public class LockableTableRowCellRenderer extends DefaultTableCellRenderer {

@@ -13,7 +13,8 @@ import javax.swing.JButton;
 public class PerformanceCancel
         implements
         PerformanceDisplayableListener,
-        EditableListener {
+        EditableListener,
+        PerformanceSubmittedListener {
 
     private JButton btnCancel;
     private List<CancelListener> cancelledListeners;
@@ -55,6 +56,18 @@ public class PerformanceCancel
         this.cancelledListeners.forEach((canceller) -> {
             canceller.cancelled();
         });
+    }
+
+    @Override
+    public void created() {
+        //   throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void updated() {
+        if (booleditMode) {
+            btnCancel.setEnabled(false);
+        }
     }
 
     class SubmitPerformance implements ActionListener {

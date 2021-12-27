@@ -273,6 +273,7 @@ public class PerformanceSubmit
                         informMessage = "Performance created successfully.";
                     } else if (getOperation() instanceof UpdateOperation) {
                         notifyUpdated();
+                        btnSubmit.setEnabled(false);
                         informMessage = "Performance updated successfully.";
                     }
                     JOptionPane.showConfirmDialog(null,

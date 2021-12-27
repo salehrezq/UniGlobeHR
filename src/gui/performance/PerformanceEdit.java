@@ -14,7 +14,8 @@ public class PerformanceEdit implements
         PerformanceDisplayableListener,
         RowSelectedListener,
         RowDeselectedListener,
-        CancelListener {
+        CancelListener,
+        PerformanceSubmittedListener {
 
     private JButton btnEditMode;
     private List<EditableListener> performanceEditableListeners;
@@ -68,6 +69,19 @@ public class PerformanceEdit implements
     public void cancelled() {
         boolEditMode = false;
         if (boolRowIsSelected && boolPerformanceDisplayable) {
+            btnEditMode.setEnabled(true);
+        }
+    }
+
+    @Override
+    public void created() {
+        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void updated() {
+        if (boolPerformanceDisplayable && boolEditMode) {
+            boolEditMode = false;
             btnEditMode.setEnabled(true);
         }
     }

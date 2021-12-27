@@ -14,7 +14,8 @@ import javax.swing.JOptionPane;
 public class PerformanceDisplay
         implements
         EditableListener,
-        CancelListener {
+        CancelListener,
+        PerformanceSubmittedListener {
 
     private PerformanceInput performanceInput;
     private JCheckBox checkDisplayMode;
@@ -59,6 +60,16 @@ public class PerformanceDisplay
 
     @Override
     public void cancelled() {
+        checkDisplayMode.setEnabled(true);
+    }
+
+    @Override
+    public void created() {
+        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void updated() {
         checkDisplayMode.setEnabled(true);
     }
 
