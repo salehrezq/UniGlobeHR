@@ -58,9 +58,15 @@ public class PerformanceSubmit
         this.performanceSubmittedListeners.add(pfsl);
     }
 
-    private void notifyPerformanceSubmitted() {
+    private void notifyCreated() {
         this.performanceSubmittedListeners.forEach((pfsl) -> {
             pfsl.created();
+        });
+    }
+
+    private void notifyUpdated() {
+        this.performanceSubmittedListeners.forEach((pfsl) -> {
+            pfsl.updated();
         });
     }
 
@@ -258,13 +264,15 @@ public class PerformanceSubmit
                 boolean submitted = operation.post(performance);
 
                 if (submitted) {
-                    notifyPerformanceSubmitted();
+                    notifyCreated();
 
                     String informMessage = null;
 
                     if (getOperation() instanceof CreateOperation) {
+                        notifyCreated();
                         informMessage = "Performance created successfully.";
                     } else if (getOperation() instanceof UpdateOperation) {
+                        notifyUpdated();
                         informMessage = "Performance updated successfully.";
                     }
                     JOptionPane.showConfirmDialog(null,
