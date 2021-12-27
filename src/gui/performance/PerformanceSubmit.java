@@ -259,6 +259,17 @@ public class PerformanceSubmit
 
                 if (submitted) {
                     notifyPerformanceSubmitted();
+
+                    String informMessage = null;
+
+                    if (getOperation() instanceof CreateOperation) {
+                        informMessage = "Performance created successfully.";
+                    } else if (getOperation() instanceof UpdateOperation) {
+                        informMessage = "Performance updated successfully.";
+                    }
+                    JOptionPane.showConfirmDialog(null,
+                            informMessage,
+                            "Info", JOptionPane.PLAIN_MESSAGE);
                 }
             } else {
                 JOptionPane.showConfirmDialog(null,
