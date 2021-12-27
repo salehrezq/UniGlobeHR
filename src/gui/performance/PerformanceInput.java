@@ -279,7 +279,9 @@ public class PerformanceInput
 
     @Override
     public void updated() {
-
+        if (boolPerformanceDisplayMode) {
+            setFieldsEditable(false);
+        }
     }
 
     @Override
