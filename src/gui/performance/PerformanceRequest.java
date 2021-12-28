@@ -9,6 +9,7 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
@@ -21,12 +22,17 @@ import javax.swing.DefaultListSelectionModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
+import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.SwingUtilities;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
@@ -70,6 +76,8 @@ public class PerformanceRequest
     private Integer selectedModelRow;
     private Integer oldSelectedModelRow;
     private Color rowSelectionColor;
+    private final JPopupMenu popupMenu;
+    private final JMenuItem menuItemDelete;
 
     public PerformanceRequest() {
         super();
@@ -105,6 +113,12 @@ public class PerformanceRequest
                 return false;
             }
         };
+
+        popupMenu = new JPopupMenu();
+        popupMenu.addPopupMenuListener(new SelectRowOnMouseRightClick());
+        menuItemDelete = new JMenuItem("Delete record");
+        menuItemDelete.addActionListener(new MenuItemAction());
+        popupMenu.add(menuItemDelete);
 
         table = new JTable(model);
 
@@ -202,6 +216,7 @@ public class PerformanceRequest
     @Override
     public void performanceDisplayable() {
 
+        table.setComponentPopupMenu(popupMenu);
         boolDisplayMode = true;
 
         table.getSelectionModel().setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
@@ -218,6 +233,7 @@ public class PerformanceRequest
 
     @Override
     public void performanceUnDisplayable() {
+        table.setComponentPopupMenu(null);
         boolDisplayMode = false;
         table.getSelectionModel().setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION);
     }
@@ -395,6 +411,54 @@ public class PerformanceRequest
                         performanceId = Integer.parseInt(performanceIdObject.toString());
                         notifyRowSelectedListener(performanceId);
                     }
+                }
+            }
+        }
+    }
+
+    private class SelectRowOnMouseRightClick implements PopupMenuListener {
+
+        @Override
+        public void popupMenuWillBecomeVisible(PopupMenuEvent e) {
+            SwingUtilities.invokeLater(() -> {
+                int rowAtPoint = table.rowAtPoint(SwingUtilities.convertPoint(popupMenu, new Point(0, 0), table));
+                if (rowAtPoint > -1) {
+                    table.setRowSelectionInterval(rowAtPoint, rowAtPoint);
+                }
+            });
+        }
+
+        @Override
+        public void popupMenuWillBecomeInvisible(PopupMenuEvent e) {
+            // throw new UnsupportedOperationException
+        }
+
+        @Override
+        public void popupMenuCanceled(PopupMenuEvent e) {
+            //throw new UnsupportedOperationException
+        }
+    }
+
+    private class MenuItemAction implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+
+            int confirm = JOptionPane.showConfirmDialog(null,
+                    "Are you sure to delete the selected performance record?",
+                    "Confirm", JOptionPane.YES_OPTION);
+
+            if (confirm == JOptionPane.YES_OPTION) {
+                if (CRUDPerformance.delete(performanceId)) {
+                    model.removeRow(selectedModelRow);
+                    JOptionPane.showConfirmDialog(null,
+                            "Performance deleted successfully",
+                            "Info", JOptionPane.PLAIN_MESSAGE);
+                } else {
+                    JOptionPane.showConfirmDialog(null,
+                            "Performance record was not found\n"
+                            + "It might be deleted beforehand.",
+                            "Info", JOptionPane.PLAIN_MESSAGE);
                 }
             }
         }
