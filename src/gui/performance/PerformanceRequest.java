@@ -250,6 +250,8 @@ public class PerformanceRequest
         // Update table with selected row to be used to
         // render the table with selected row locked
         table.putClientProperty(selectedRowKey, selectedModelRow);
+        // Remove popupMenu
+        table.setComponentPopupMenu(null);
     }
 
     private void restoreRowSelection() {
@@ -263,6 +265,8 @@ public class PerformanceRequest
             table.putClientProperty(selectedRowKey, null);
             // Keep same selected row as selected, but not locked
             table.setRowSelectionInterval(0, oldSelectedModelRow);
+            // Enable/set popupMenu
+            table.setComponentPopupMenu(popupMenu);
         }
     }
 
