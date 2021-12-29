@@ -86,6 +86,7 @@ public class PerformanceTab {
         performanceRequest.addRowSelectedListener(performanceSubmit);
         performanceRequest.addRowDeselectedListenerListener(performanceSubmit);
         performanceSubmit.addPerformanceSubmittedListener(performanceRequest);
+        performanceRequest.addDeleteListener(performanceInput);
         performanceRequest.addRowSelectedListener(performanceInput);
         performanceCancel.addCancelListener(performanceRequest);
         panelRequests.add(performanceRequest.getPanelTable(), BorderLayout.CENTER);

@@ -42,7 +42,8 @@ public class PerformanceInput
         PerformanceDisplayableListener,
         RowSelectedListener,
         EditableListener,
-        CancelListener {
+        CancelListener,
+        DeleteListener {
 
     private JPanel mainPanel;
     private JPanel panelStoryInputs;
@@ -391,6 +392,11 @@ public class PerformanceInput
                 this.clearInputFields();
             }
         }
+    }
+
+    @Override
+    public void deleted() {
+        clearInputFields();
     }
 
     private class DateListenerImpli implements DateListener, DateDeselectedListener {

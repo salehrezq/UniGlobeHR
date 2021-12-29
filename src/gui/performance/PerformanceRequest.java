@@ -68,6 +68,7 @@ public class PerformanceRequest
     private final String[] monthsNums;
     private List<RowSelectedListener> rowSelectedListeners;
     private List<RowDeselectedListener> rowDeselectedListeners;
+    private List<DeleteListener> deleteListeners;
     private boolean boolRowSelected;
     private Integer performanceId;
     private boolean boolEditMode;
@@ -84,6 +85,7 @@ public class PerformanceRequest
 
         rowSelectedListeners = new ArrayList<>();
         rowDeselectedListeners = new ArrayList<>();
+        deleteListeners = new ArrayList<>();
 
         LocalDate today = LocalDate.now();
         yearAndMonth = YearMonth.of(today.getYear(), today.getMonthValue());
@@ -391,6 +393,16 @@ public class PerformanceRequest
         });
     }
 
+    public void addDeleteListener(DeleteListener deleteListener) {
+        this.deleteListeners.add(deleteListener);
+    }
+
+    private void notifyDeleted() {
+        this.deleteListeners.forEach((deleteListener) -> {
+            deleteListener.deleted();
+        });
+    }
+
     private class RowSelectionListener implements ListSelectionListener {
 
         @Override
@@ -455,6 +467,9 @@ public class PerformanceRequest
             if (confirm == JOptionPane.YES_OPTION) {
                 if (CRUDPerformance.delete(performanceId)) {
                     model.removeRow(selectedModelRow);
+
+                    notifyDeleted();
+
                     JOptionPane.showConfirmDialog(null,
                             "Performance deleted successfully",
                             "Info", JOptionPane.PLAIN_MESSAGE);
