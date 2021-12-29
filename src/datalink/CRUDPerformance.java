@@ -162,7 +162,7 @@ public class CRUDPerformance {
         int delete = 0;
 
         try {
-            String sql = "DELETE FROM `performance` WHERE id = ? LIMIT 1";
+            String sql = "DELETE FROM `performance` WHERE `id` = ? LIMIT 1";
             conn = Connect.getConnection();
             PreparedStatement p = conn.prepareStatement(sql);
 
