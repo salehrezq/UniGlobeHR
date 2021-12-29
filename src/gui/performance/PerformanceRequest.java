@@ -218,7 +218,9 @@ public class PerformanceRequest
     @Override
     public void performanceDisplayable() {
 
-        table.setComponentPopupMenu(popupMenu);
+        if (selectedModelRow != null) {
+            table.setComponentPopupMenu(popupMenu);
+        }
         boolDisplayMode = true;
 
         table.getSelectionModel().setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
@@ -415,6 +417,8 @@ public class PerformanceRequest
                 if (selectionModel.isSelectionEmpty()) {
                     // Table row deselection occurred
                     boolRowSelected = false;
+                    performanceId = null;
+                    table.setComponentPopupMenu(null);
                     notifyRowDeselection();
                 } else {
                     boolRowSelected = true;
@@ -426,6 +430,9 @@ public class PerformanceRequest
                         Object performanceIdObject = table.getModel().getValueAt(selectedModelRow, performanceIdColumn);
                         performanceId = Integer.parseInt(performanceIdObject.toString());
                         notifyRowSelectedListener(performanceId);
+                        if (boolDisplayMode) {
+                            table.setComponentPopupMenu(popupMenu);
+                        }
                     }
                 }
             }
