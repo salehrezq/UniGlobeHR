@@ -272,6 +272,7 @@ public class PerformanceSubmit
                         notifyCreated();
                         informMessage = "Performance created successfully.";
                     } else if (getOperation() instanceof UpdateOperation) {
+                        boolEditMode = false;
                         notifyUpdated();
                         btnSubmit.setEnabled(false);
                         informMessage = "Performance updated successfully.";
