@@ -165,6 +165,8 @@ public class PerformanceInput
         c.weightx = 1.0;
         c.weighty = 1.0;
         mainPanel.add(panelStoryInputs, c);
+
+        setFieldsEditable(false);
     }
 
     public JPanel getPerformanceInputsPanel() {
@@ -173,6 +175,9 @@ public class PerformanceInput
 
     @Override
     public void employeeSelected(Employee employee) {
+        if (!boolPerformanceDisplayMode) {
+            setFieldsEditable(true);
+        }
         if (boolPerformanceDisplayMode && employee != null) {
             clearInputFields();
         }
@@ -180,7 +185,7 @@ public class PerformanceInput
 
     @Override
     public void employeeDeselected() {
-        //   throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        setFieldsEditable(false);
     }
 
     public String getTime() {
