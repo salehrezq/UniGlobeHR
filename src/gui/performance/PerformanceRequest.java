@@ -218,7 +218,7 @@ public class PerformanceRequest
     @Override
     public void performanceDisplayable() {
 
-        if (selectedModelRow != null) {
+        if (boolRowSelected) {
             table.setComponentPopupMenu(popupMenu);
         }
         boolDisplayMode = true;
@@ -270,7 +270,9 @@ public class PerformanceRequest
             // Keep same selected row as selected, but not locked
             table.setRowSelectionInterval(0, oldSelectedModelRow);
             // Enable/set popupMenu
-            table.setComponentPopupMenu(popupMenu);
+            if (boolRowSelected) {
+                table.setComponentPopupMenu(popupMenu);
+            }
         }
     }
 
