@@ -1,5 +1,6 @@
 package gui.performance;
 
+import crud.UpdateListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class PerformanceDisplay
         implements
         EditableListener,
         CancelListener,
-        PerformanceSubmittedListener {
+        UpdateListener {
 
     private PerformanceInput performanceInput;
     private JCheckBox checkDisplayMode;
@@ -61,11 +62,6 @@ public class PerformanceDisplay
     @Override
     public void cancelled() {
         checkDisplayMode.setEnabled(true);
-    }
-
-    @Override
-    public void created() {
-        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

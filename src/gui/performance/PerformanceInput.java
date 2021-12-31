@@ -1,6 +1,8 @@
 package gui.performance;
 
+import crud.CreateListener;
 import crud.DeleteListener;
+import crud.UpdateListener;
 import datalink.CRUDPerformance;
 import datalink.CRUDPerformanceType;
 import gui.DateDeselectedListener;
@@ -39,7 +41,8 @@ import model.PerformanceType;
 public class PerformanceInput
         implements
         EmployeeSelectedListener,
-        PerformanceSubmittedListener,
+        CreateListener,
+        UpdateListener,
         PerformanceDisplayableListener,
         RowSelectedListener,
         EditableListener,

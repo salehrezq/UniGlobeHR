@@ -49,7 +49,8 @@ public class PerformanceTab {
 
         performanceSubmit = new PerformanceSubmit();
         performanceInput = new PerformanceInput();
-        performanceSubmit.addPerformanceSubmittedListener(performanceInput);
+        performanceSubmit.addPerformanceCreatedListener(performanceInput);
+        performanceSubmit.addPerformanceUpdatedListener(performanceInput);
         c = new GridBagConstraints();
         c.gridy = 1;
         c.weightx = 1.0;
@@ -62,7 +63,7 @@ public class PerformanceTab {
         performanceCancel = new PerformanceCancel();
         performanceCancel.addCancelListener(performanceInput);
         performanceCancel.addCancelListener(performanceSubmit);
-        performanceSubmit.addPerformanceSubmittedListener(performanceCancel);
+        performanceSubmit.addPerformanceUpdatedListener(performanceCancel);
         c = new GridBagConstraints();
         c.gridy = 2;
         c.gridx = 0;
@@ -90,8 +91,8 @@ public class PerformanceTab {
 
         performanceRecords.addRowSelectedListener(performanceSubmit);
         performanceRecords.addRowDeselectedListenerListener(performanceSubmit);
-        performanceSubmit.addPerformanceSubmittedListener(performanceRequest);
-        performanceSubmit.addPerformanceSubmittedListener(performanceRecords);
+        performanceSubmit.addPerformanceUpdatedListener(performanceRequest);
+        performanceSubmit.addPerformanceUpdatedListener(performanceRecords);
         performanceRecords.addDeleteListener(performanceInput);
         performanceRecords.addRowSelectedListener(performanceInput);
         performanceCancel.addCancelListener(performanceRequest);
@@ -106,7 +107,7 @@ public class PerformanceTab {
         performanceDisplay.addPerformanceDisplayableListener(performanceCancel);
         performanceDisplay.addPerformanceDisplayableListener(performanceRequest);
         performanceDisplay.addPerformanceDisplayableListener(performanceRecords);
-        performanceSubmit.addPerformanceSubmittedListener(performanceDisplay);
+        performanceSubmit.addPerformanceUpdatedListener(performanceDisplay);
         performanceRequest.getPanelControls().add(performanceDisplay.getCheckDisplayMode());
 
         performanceEdit = new PerformanceEdit();
@@ -116,7 +117,7 @@ public class PerformanceTab {
         performanceEdit.addPerformanceEditableListener(performanceCancel);
         performanceEdit.addPerformanceEditableListener(performanceDisplay);
         performanceEdit.addPerformanceEditableListener(performanceSubmit);
-        performanceSubmit.addPerformanceSubmittedListener(performanceEdit);
+        performanceSubmit.addPerformanceUpdatedListener(performanceEdit);
         performanceCancel.addCancelListener(performanceEdit);
         performanceRecords.addRowDeselectedListenerListener(performanceEdit);
         performanceRecords.addRowSelectedListener(performanceEdit);

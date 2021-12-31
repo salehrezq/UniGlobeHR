@@ -1,5 +1,7 @@
 package gui.performance;
 
+import crud.CreateListener;
+import crud.UpdateListener;
 import gui.EmployeeSelectedListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -34,13 +36,16 @@ public class PerformanceSubmit
     private PerformanceInput performanceInput;
     private StringBuilder stringBuilder;
     private Employee employee;
-    private List<PerformanceSubmittedListener> performanceSubmittedListeners;
+    private List<CreateListener> createListeners;
+    private List<UpdateListener> updateListeners;
     private boolean boolPerformanceDisplayMode, boolEditMode;
     private Integer performanceId;
 
     public PerformanceSubmit() {
 
-        performanceSubmittedListeners = new ArrayList<>();
+        createListeners = new ArrayList<>();
+        updateListeners = new ArrayList<>();
+
         btnSubmit = new JButton("Submit");
         btnSubmit.setEnabled(false);
         btnSubmit.addActionListener(new SubmitPerformance());
@@ -54,19 +59,23 @@ public class PerformanceSubmit
         this.performanceInput = performanceInput;
     }
 
-    public void addPerformanceSubmittedListener(PerformanceSubmittedListener pfsl) {
-        this.performanceSubmittedListeners.add(pfsl);
-    }
-
-    private void notifyCreated() {
-        this.performanceSubmittedListeners.forEach((pfsl) -> {
-            pfsl.created();
-        });
+    public void addPerformanceUpdatedListener(UpdateListener updateListener) {
+        this.updateListeners.add(updateListener);
     }
 
     private void notifyUpdated() {
-        this.performanceSubmittedListeners.forEach((pfsl) -> {
-            pfsl.updated();
+        this.updateListeners.forEach((updateListener) -> {
+            updateListener.updated();
+        });
+    }
+
+    public void addPerformanceCreatedListener(CreateListener createListener) {
+        this.createListeners.add(createListener);
+    }
+
+    private void notifyCreated() {
+        this.createListeners.forEach((createListener) -> {
+            createListener.created();
         });
     }
 

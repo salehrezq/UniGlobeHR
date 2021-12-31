@@ -2,6 +2,7 @@ package gui.performance;
 
 import crud.DeleteListener;
 import crud.ReadListener;
+import crud.UpdateListener;
 import datalink.CRUDPerformance;
 import datalink.CRUDPerformanceType;
 import gui.EmployeeSelectedListener;
@@ -42,7 +43,7 @@ public class PerformanceRecords
         PerformanceDisplayableListener,
         EditableListener,
         CancelListener,
-        PerformanceSubmittedListener,
+        UpdateListener,
         ReadListener<Performance> {
 
     private DefaultTableModel model;
@@ -193,11 +194,6 @@ public class PerformanceRecords
     @Override
     public void cancelled() {
         restoreRowSelection();
-    }
-
-    @Override
-    public void created() {
-        //  throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

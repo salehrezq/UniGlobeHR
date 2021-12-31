@@ -1,5 +1,6 @@
 package gui.performance;
 
+import crud.UpdateListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -15,7 +16,7 @@ public class PerformanceEdit implements
         RowSelectedListener,
         RowDeselectedListener,
         CancelListener,
-        PerformanceSubmittedListener {
+        UpdateListener {
 
     private JButton btnEditMode;
     private List<EditableListener> performanceEditableListeners;
@@ -71,11 +72,6 @@ public class PerformanceEdit implements
         if (boolRowIsSelected && boolPerformanceDisplayable) {
             btnEditMode.setEnabled(true);
         }
-    }
-
-    @Override
-    public void created() {
-        // throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

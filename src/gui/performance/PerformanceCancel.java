@@ -1,5 +1,6 @@
 package gui.performance;
 
+import crud.UpdateListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -14,7 +15,7 @@ public class PerformanceCancel
         implements
         PerformanceDisplayableListener,
         EditableListener,
-        PerformanceSubmittedListener {
+        UpdateListener {
 
     private JButton btnCancel;
     private List<CancelListener> cancelledListeners;
@@ -58,11 +59,6 @@ public class PerformanceCancel
         this.cancelledListeners.forEach((canceller) -> {
             canceller.cancelled();
         });
-    }
-
-    @Override
-    public void created() {
-        //   throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
