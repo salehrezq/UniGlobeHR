@@ -4,9 +4,9 @@ package gui.performance;
  *
  * @author Saleh
  */
-public interface PerformanceDisplayableListener {
+public interface DisplayableListener {
 
-    public void performanceDisplayable();
+    public void displayable();
 
-    public void performanceUnDisplayable();
+    public void unDisplayable();
 }

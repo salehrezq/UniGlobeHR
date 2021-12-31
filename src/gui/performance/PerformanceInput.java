@@ -43,7 +43,7 @@ public class PerformanceInput
         EmployeeSelectedListener,
         CreateListener,
         UpdateListener,
-        PerformanceDisplayableListener,
+        DisplayableListener,
         RowSelectedListener,
         EditableListener,
         CancelListener,
@@ -297,14 +297,14 @@ public class PerformanceInput
     }
 
     @Override
-    public void performanceDisplayable() {
+    public void displayable() {
         boolPerformanceDisplayMode = true;
         clearInputFields();
         setFieldsEditable(false);
     }
 
     @Override
-    public void performanceUnDisplayable() {
+    public void unDisplayable() {
         boolPerformanceDisplayMode = false;
         boolEditMode = false;
         clearInputFields();

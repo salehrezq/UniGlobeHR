@@ -12,7 +12,7 @@ import javax.swing.JButton;
  * @author Saleh
  */
 public class PerformanceEdit implements
-        PerformanceDisplayableListener,
+        DisplayableListener,
         RowSelectedListener,
         RowDeselectedListener,
         CancelListener,
@@ -38,7 +38,7 @@ public class PerformanceEdit implements
     }
 
     @Override
-    public void performanceDisplayable() {
+    public void displayable() {
         boolPerformanceDisplayable = true;
         if (boolRowIsSelected) {
             btnEditMode.setEnabled(true);
@@ -47,7 +47,7 @@ public class PerformanceEdit implements
     }
 
     @Override
-    public void performanceUnDisplayable() {
+    public void unDisplayable() {
         boolPerformanceDisplayable = false;
         btnEditMode.setEnabled(false);
     }

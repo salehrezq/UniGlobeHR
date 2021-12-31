@@ -13,7 +13,7 @@ import javax.swing.JButton;
  */
 public class PerformanceCancel
         implements
-        PerformanceDisplayableListener,
+        DisplayableListener,
         EditableListener,
         UpdateListener {
 
@@ -34,13 +34,13 @@ public class PerformanceCancel
     }
 
     @Override
-    public void performanceDisplayable() {
+    public void displayable() {
         boolDisplayable = true;
         btnCancel.setEnabled(false);
     }
 
     @Override
-    public void performanceUnDisplayable() {
+    public void unDisplayable() {
         boolDisplayable = false;
         btnCancel.setEnabled(true);
     }

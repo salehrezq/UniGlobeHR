@@ -25,7 +25,7 @@ public class PerformanceSubmit
         implements
         Subject,
         EmployeeSelectedListener,
-        PerformanceDisplayableListener,
+        DisplayableListener,
         EditableListener,
         CancelListener,
         RowSelectedListener,
@@ -108,13 +108,13 @@ public class PerformanceSubmit
     }
 
     @Override
-    public void performanceDisplayable() {
+    public void displayable() {
         boolPerformanceDisplayMode = true;
         btnSubmit.setEnabled(false);
     }
 
     @Override
-    public void performanceUnDisplayable() {
+    public void unDisplayable() {
         boolPerformanceDisplayMode = false;
         if (employee != null) {
             operation = new CreateOperation();

@@ -28,7 +28,7 @@ import model.Performance;
 public class PerformanceRequest
         implements
         EmployeeSelectedListener,
-        PerformanceDisplayableListener,
+        DisplayableListener,
         EditableListener,
         CancelListener,
         UpdateListener {
@@ -111,12 +111,12 @@ public class PerformanceRequest
     }
 
     @Override
-    public void performanceDisplayable() {
+    public void displayable() {
         boolDisplayMode = true;
     }
 
     @Override
-    public void performanceUnDisplayable() {
+    public void unDisplayable() {
         boolDisplayMode = false;
     }
 

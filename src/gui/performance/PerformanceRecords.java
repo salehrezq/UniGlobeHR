@@ -40,7 +40,7 @@ import model.Performance;
 public class PerformanceRecords
         implements
         EmployeeSelectedListener,
-        PerformanceDisplayableListener,
+        DisplayableListener,
         EditableListener,
         CancelListener,
         UpdateListener,
@@ -133,7 +133,7 @@ public class PerformanceRecords
     }
 
     @Override
-    public void performanceDisplayable() {
+    public void displayable() {
 
         if (boolRowSelected) {
             table.setComponentPopupMenu(popupMenu);
@@ -153,7 +153,7 @@ public class PerformanceRecords
     }
 
     @Override
-    public void performanceUnDisplayable() {
+    public void unDisplayable() {
         table.setComponentPopupMenu(null);
         boolDisplayMode = false;
         table.getSelectionModel().setSelectionMode(DefaultListSelectionModel.MULTIPLE_INTERVAL_SELECTION);

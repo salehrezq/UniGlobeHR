@@ -20,7 +20,7 @@ public class PerformanceDisplay
 
     private PerformanceInput performanceInput;
     private JCheckBox checkDisplayMode;
-    private List<PerformanceDisplayableListener> PerformanceDisplayableListeners;
+    private List<DisplayableListener> PerformanceDisplayableListeners;
 
     public PerformanceDisplay() {
 
@@ -38,19 +38,19 @@ public class PerformanceDisplay
         return checkDisplayMode;
     }
 
-    public void addPerformanceDisplayableListener(PerformanceDisplayableListener pdml) {
+    public void addPerformanceDisplayableListener(DisplayableListener pdml) {
         this.PerformanceDisplayableListeners.add(pdml);
     }
 
     private void notifyPerformanceDisplayable() {
         this.PerformanceDisplayableListeners.forEach((pdml) -> {
-            pdml.performanceDisplayable();
+            pdml.displayable();
         });
     }
 
     private void notifyPerformanceUnDisplayable() {
         this.PerformanceDisplayableListeners.forEach((ddl) -> {
-            ddl.performanceUnDisplayable();
+            ddl.unDisplayable();
         });
     }
 
