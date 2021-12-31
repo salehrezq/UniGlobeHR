@@ -1,5 +1,6 @@
 package gui.performance;
 
+import crud.ReadListener;
 import datalink.CRUDPerformance;
 import gui.EmployeeSelectedListener;
 import java.awt.Dimension;

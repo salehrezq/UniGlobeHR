@@ -1,4 +1,4 @@
-package gui.performance;
+package crud;
 
 /**
  *
