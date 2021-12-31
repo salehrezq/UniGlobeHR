@@ -18,12 +18,14 @@ public class PerformanceTab {
 
     JSplitPane splitPaneContainer;
     private JPanel panelInputs;
-    private JPanel panelRequests;
+//    private JPanel panelRequests;
     private EmployeeCard employeeCard;
     private PerformanceInput performanceInput;
     private PerformanceSubmit performanceSubmit;
     private PerformanceCancel performanceCancel;
+    private final JPanel panelReuestRecords;
     private PerformanceRequest performanceRequest;
+    private PerformanceRecords performanceRecords;
     private PerformanceDisplay performanceDisplay;
     private PerformanceEdit performanceEdit;
 
@@ -33,7 +35,7 @@ public class PerformanceTab {
 
         panelInputs = new JPanel(new GridBagLayout());
         panelInputs.setPreferredSize(new Dimension(400, 100));
-        panelRequests = new JPanel(new BorderLayout());
+        panelReuestRecords = new JPanel(new BorderLayout());
 
         employeeCard = new EmployeeCard();
         c = new GridBagConstraints();
@@ -83,13 +85,19 @@ public class PerformanceTab {
         panelInputs.add(performanceSubmit.getSubmitButton(), c);
 
         performanceRequest = new PerformanceRequest();
-        performanceRequest.addRowSelectedListener(performanceSubmit);
-        performanceRequest.addRowDeselectedListenerListener(performanceSubmit);
+        performanceRecords = new PerformanceRecords();
+        performanceRequest.addReadListener(performanceRecords);
+
+        performanceRecords.addRowSelectedListener(performanceSubmit);
+        performanceRecords.addRowDeselectedListenerListener(performanceSubmit);
         performanceSubmit.addPerformanceSubmittedListener(performanceRequest);
-        performanceRequest.addDeleteListener(performanceInput);
-        performanceRequest.addRowSelectedListener(performanceInput);
+        performanceSubmit.addPerformanceSubmittedListener(performanceRecords);
+        performanceRecords.addDeleteListener(performanceInput);
+        performanceRecords.addRowSelectedListener(performanceInput);
         performanceCancel.addCancelListener(performanceRequest);
-        panelRequests.add(performanceRequest.getPanelTable(), BorderLayout.CENTER);
+        performanceCancel.addCancelListener(performanceRecords);
+        panelReuestRecords.add(performanceRequest.getPanelControls(), BorderLayout.PAGE_START);
+        panelReuestRecords.add(performanceRecords.getPanelTable(), BorderLayout.CENTER);
 
         performanceDisplay = new PerformanceDisplay();
         performanceCancel.addCancelListener(performanceDisplay);
@@ -97,19 +105,21 @@ public class PerformanceTab {
         performanceDisplay.addPerformanceDisplayableListener(performanceInput);
         performanceDisplay.addPerformanceDisplayableListener(performanceCancel);
         performanceDisplay.addPerformanceDisplayableListener(performanceRequest);
+        performanceDisplay.addPerformanceDisplayableListener(performanceRecords);
         performanceSubmit.addPerformanceSubmittedListener(performanceDisplay);
         performanceRequest.getPanelControls().add(performanceDisplay.getCheckDisplayMode());
 
         performanceEdit = new PerformanceEdit();
         performanceEdit.addPerformanceEditableListener(performanceRequest);
+        performanceEdit.addPerformanceEditableListener(performanceRecords);
         performanceEdit.addPerformanceEditableListener(performanceInput);
         performanceEdit.addPerformanceEditableListener(performanceCancel);
         performanceEdit.addPerformanceEditableListener(performanceDisplay);
         performanceEdit.addPerformanceEditableListener(performanceSubmit);
         performanceSubmit.addPerformanceSubmittedListener(performanceEdit);
         performanceCancel.addCancelListener(performanceEdit);
-        performanceRequest.addRowDeselectedListenerListener(performanceEdit);
-        performanceRequest.addRowSelectedListener(performanceEdit);
+        performanceRecords.addRowDeselectedListenerListener(performanceEdit);
+        performanceRecords.addRowSelectedListener(performanceEdit);
         performanceDisplay.addPerformanceDisplayableListener(performanceEdit);
         performanceRequest.getPanelControls().add(Box.createHorizontalStrut(30));
         performanceRequest.getPanelControls().add(performanceEdit.getBtnEditMode());
@@ -117,7 +127,7 @@ public class PerformanceTab {
         splitPaneContainer = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
         splitPaneContainer.setDividerSize(5);
         splitPaneContainer.setTopComponent(panelInputs);
-        splitPaneContainer.setBottomComponent(panelRequests);
+        splitPaneContainer.setBottomComponent(panelReuestRecords);
         splitPaneContainer.setDividerLocation(250);
     }
 
@@ -135,6 +145,10 @@ public class PerformanceTab {
 
     public PerformanceRequest getPerformanceRequest() {
         return performanceRequest;
+    }
+
+    public PerformanceRecords getPerformanceRecords() {
+        return performanceRecords;
     }
 
     public PerformanceInput getPerformanceInput() {
