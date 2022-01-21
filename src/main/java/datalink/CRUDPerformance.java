@@ -37,7 +37,7 @@ public class CRUDPerformance {
             p.setObject(2, performance.getDateTime());
             p.setInt(3, performance.getTypeId());
             p.setBoolean(4, performance.getState());
-            p.setDouble(5, performance.getAmount());
+            p.setBigDecimal(5, performance.getAmount());
             p.setString(6, performance.getTitle());
             p.setString(7, performance.getDescription());
             insert = p.executeUpdate();
@@ -79,7 +79,7 @@ public class CRUDPerformance {
                 performance.setEmployeeId(result.getInt("employee_id"));
                 performance.setState(result.getBoolean("state"));
                 performance.setTypeId(result.getInt("type_id"));
-                performance.setAmount(result.getDouble("amount"));
+                performance.setAmount(result.getBigDecimal("amount"));
                 performance.setTitle(result.getString("title"));
                 performance.setDescription(result.getString("description"));
                 performance.setDateTime(result.getObject("date_time", LocalDateTime.class));
@@ -109,7 +109,7 @@ public class CRUDPerformance {
                 performance.setDateTime(result.getObject("date_time", LocalDateTime.class));
                 performance.setState(result.getBoolean("state"));
                 performance.setTypeId(result.getInt("type_id"));
-                performance.setAmount(result.getDouble("amount"));
+                performance.setAmount(result.getBigDecimal("amount"));
                 performance.setTitle(result.getString("title"));
                 performance.setDescription(result.getString("description"));
             }
@@ -141,7 +141,7 @@ public class CRUDPerformance {
             p.setObject(1, performance.getDateTime());
             p.setBoolean(2, performance.getState());
             p.setInt(3, performance.getTypeId());
-            p.setDouble(4, performance.getAmount());
+            p.setBigDecimal(4, performance.getAmount());
             p.setString(5, performance.getTitle());
             p.setString(6, performance.getDescription());
             p.setInt(7, performance.getId());

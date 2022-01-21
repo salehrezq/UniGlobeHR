@@ -17,6 +17,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
@@ -217,8 +218,8 @@ public class PerformanceInput
         return this.selectedPerformanceType;
     }
 
-    public double getAmount() {
-        return Double.parseDouble(tfAmount.getText());
+    public BigDecimal getAmount() {
+        return new BigDecimal(tfAmount.getText());
     }
 
     public String getTitle() {

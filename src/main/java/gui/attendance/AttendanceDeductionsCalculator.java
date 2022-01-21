@@ -255,8 +255,8 @@ public class AttendanceDeductionsCalculator {
             attendanceDeduction.setDescriptionAR(deduction.singleDescriptionAR());
             attendanceDeduction.setDescriptionEN(deduction.singleDescriptionEN());
             attendanceDeduction.setDate(absentRecord.getDate());
-            double daySalary = getDaySalary(absentRecord.getEmployeeId());
-            double salaryDeuction = getDeduction(deduction, daySalary);
+            BigDecimal daySalary = getDaySalary(absentRecord.getEmployeeId());
+            BigDecimal salaryDeuction = getDeduction(deduction, daySalary);
             attendanceDeduction.setDeduction(rounding(salaryDeuction));
         }
         return attendanceDeduction;
@@ -273,41 +273,42 @@ public class AttendanceDeductionsCalculator {
             attendanceDeduction.setDescriptionEN("late in arabic");
             attendanceDeduction.setMinutesLate(lateRecord.getMinutes_late());
             attendanceDeduction.setDate(late.getDate());
-            double daySalary = getDaySalary(lateRecord.getEmployeeId());
-            double salaryDeuction = 5.5;//getDeduction(deduction, daySalary);
+            BigDecimal daySalary = getDaySalary(lateRecord.getEmployeeId());
+            BigDecimal salaryDeuction = new BigDecimal("5.5"); //getDeduction(deduction, daySalary);
             attendanceDeduction.setDeduction(rounding(salaryDeuction));
         }
         return attendanceDeduction;
     }
 
-    private static double getDaySalary(int id) {
+    private static BigDecimal getDaySalary(int id) {
         Employee employee = CRUDEmployee.getById(id);
-        double salary = employee.getSalary();
-        double daySalary = salary / 30;
+        BigDecimal salary = employee.getSalary();
+//        BigDecimal daySalary = salary / 30;
+        BigDecimal daySalary = salary.divide(new BigDecimal("30"), 3, RoundingMode.HALF_UP);
         return daySalary;
     }
 
-    private static double getDeduction(Deduction deduction, double daySalary) {
-        double salaryDeduction = 0;
+    private static BigDecimal getDeduction(Deduction deduction, BigDecimal daySalary) {
+        BigDecimal salaryDeduction = BigDecimal.ZERO;
         switch (deduction) {
             case SINGLE:
                 salaryDeduction = daySalary;
                 break;
             case DOUBLE:
             case DOUBLE_FRIDAY_OMITTED:
-                salaryDeduction = daySalary * 2;
+                salaryDeduction = daySalary.multiply(new BigDecimal("2"));
                 break;
             default:
-                salaryDeduction = 0;
+                salaryDeduction = BigDecimal.ZERO;
                 break;
         }
         return salaryDeduction;
     }
 
-    private static double rounding(double salaryDeuction) {
-        BigDecimal dec = new BigDecimal(salaryDeuction);
+    private static BigDecimal rounding(BigDecimal salaryDeuction) {
+        BigDecimal dec = salaryDeuction;
         BigDecimal roundedDecimal = dec.setScale(3, RoundingMode.HALF_UP);
-        return roundedDecimal.doubleValue();
+        return roundedDecimal;
     }
 
 }

@@ -1,5 +1,6 @@
 package model;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 /**
@@ -14,7 +15,7 @@ public class Performance {
     private String title;
     private String description;
     private int typeId;
-    private double amount;
+    private BigDecimal amount;
     private Boolean state;
 
     public int getId() {
@@ -65,11 +66,11 @@ public class Performance {
         this.typeId = typeId;
     }
 
-    public double getAmount() {
+    public BigDecimal getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(BigDecimal amount) {
         this.amount = amount;
     }
 

@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
@@ -16,7 +17,7 @@ public class Employee {
     private int id;
     private String name;
     private LocalDate enrolledDate;
-    private double salary;
+    private BigDecimal salary;
     private boolean active;
 
     public int getId() {
@@ -43,11 +44,11 @@ public class Employee {
         this.enrolledDate = enrolledDate;
     }
 
-    public double getSalary() {
+    public BigDecimal getSalary() {
         return salary;
     }
 
-    public void setSalary(double salary) {
+    public void setSalary(BigDecimal salary) {
         this.salary = salary;
     }
 

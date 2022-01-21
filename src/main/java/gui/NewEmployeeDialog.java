@@ -12,6 +12,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.text.NumberFormat;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -205,7 +206,7 @@ public class NewEmployeeDialog extends JDialog
             employee.setEnrolledDate(getEnrollmentDate());
 
             String salaryString = tfSalary.getValue().toString();
-            double salary = Double.valueOf(salaryString);
+            BigDecimal salary = new BigDecimal(salaryString);
 
             employee.setSalary(salary);
             employee.setActive(getEmployeeIsActive());

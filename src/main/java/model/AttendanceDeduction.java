@@ -5,6 +5,7 @@
  */
 package model;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 
 /**
@@ -18,7 +19,7 @@ public class AttendanceDeduction {
     private int attendanceId;
     private String descriptionAR;
     private String descriptionEN;
-    private double deduction;
+    private BigDecimal deduction;
     private Type type;
     private int minutesLate;
 
@@ -74,11 +75,11 @@ public class AttendanceDeduction {
         this.descriptionEN = descriptionEN;
     }
 
-    public double getDeduction() {
+    public BigDecimal getDeduction() {
         return deduction;
     }
 
-    public void setDeduction(double deduction) {
+    public void setDeduction(BigDecimal deduction) {
         this.deduction = deduction;
     }
 

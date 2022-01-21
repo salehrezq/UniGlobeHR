@@ -34,7 +34,7 @@ public class CRUDEmployee {
 
             p.setString(1, employee.getName());
             p.setObject(2, employee.getEnrolledDate());
-            p.setDouble(3, employee.getSalary());
+            p.setBigDecimal(3, employee.getSalary());
             p.setBoolean(4, employee.isActive());
             insert = p.executeUpdate();
             conn.commit();
@@ -63,7 +63,7 @@ public class CRUDEmployee {
                 employee.setId(result.getInt("id"));
                 employee.setName(result.getString("name"));
                 employee.setEnrolledDate(result.getDate("enrolled_date").toLocalDate());
-                employee.setSalary(result.getDouble("salary"));
+                employee.setSalary(result.getBigDecimal("salary"));
                 employee.setActive(result.getBoolean("active"));
                 employees.add(employee);
             }
@@ -92,7 +92,7 @@ public class CRUDEmployee {
                 employee.setId(result.getInt("id"));
                 employee.setName(result.getString("name"));
                 employee.setEnrolledDate(result.getDate("enrolled_date").toLocalDate());
-                employee.setSalary(result.getDouble("salary"));
+                employee.setSalary(result.getBigDecimal("salary"));
                 employee.setActive(result.getBoolean("active"));
             }
         } catch (SQLException ex) {
