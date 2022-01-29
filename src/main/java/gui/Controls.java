@@ -49,4 +49,8 @@ public class Controls extends JPanel {
         return performanceTab;
     }
 
+    public SalaryTab getSalaryTab() {
+        return salaryTab;
+    }
+
 }

@@ -7,6 +7,7 @@ package gui;
 
 import gui.attendance.AttendanceTab;
 import gui.performance.PerformanceTab;
+import gui.salary.SalaryTab;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.JPanel;
@@ -45,6 +46,12 @@ public class Stage extends JPanel {
         treeEmployees.addEmployeeSelectedListener(performanceTab.getPerformanceSubmit());
         treeEmployees.addEmployeeSelectedListener(performanceTab.getPerformanceRequest());
         treeEmployees.addEmployeeSelectedListener(performanceTab.getPerformanceRecords());
+
+        // Salary tab
+        SalaryTab salaryTab = controls.getSalaryTab();
+        treeEmployees.addEmployeeSelectedListener(salaryTab.getEmployeeCard());
+        treeEmployees.addEmployeeSelectedListener(salaryTab.getSalaryDetail());
+
         // Add the scroll panes to a split pane.
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
         splitPane.setDividerSize(5);

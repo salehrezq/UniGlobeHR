@@ -1,5 +1,6 @@
 package gui.salary;
 
+import gui.EmployeeSelectedListener;
 import gui.TwoColumnsLabelsAndFields;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -7,12 +8,13 @@ import java.awt.Insets;
 import javax.swing.JComponent;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import model.Employee;
 
 /**
  *
  * @author Saleh
  */
-public class SalaryDetail {
+public class SalaryDetail implements EmployeeSelectedListener {
 
     private final JPanel container, panelSalaryComponents;
     private final JTextField tfMonthelySalary, tfAdvances, tfAttendanceDeductions, tfPerformanceGain, tfEffectiveSalary;
@@ -52,4 +54,15 @@ public class SalaryDetail {
     public JPanel getContainer() {
         return container;
     }
+
+    @Override
+    public void employeeSelected(Employee employee) {
+        tfMonthelySalary.setText(employee.getSalary().toPlainString());
+    }
+
+    @Override
+    public void employeeDeselected() {
+
+    }
+
 }

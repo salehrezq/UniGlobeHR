@@ -58,4 +58,13 @@ public class SalaryTab {
     public JPanel getContainer() {
         return container;
     }
+
+    public EmployeeCard getEmployeeCard() {
+        return employeeCard;
+    }
+
+    public SalaryDetail getSalaryDetail() {
+        return salaryDetail;
+    }
+
 }
