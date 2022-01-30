@@ -6,8 +6,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import model.Employee;
 
 /**
@@ -17,7 +17,8 @@ import model.Employee;
 public class SalaryDetail implements EmployeeSelectedListener {
 
     private final JPanel container, panelSalaryComponents;
-    private final JTextField tfMonthelySalary, tfAdvances, tfAttendanceDeductions, tfPerformanceGain, tfEffectiveSalary;
+    private final JLabel lbMonthelySalary, lbAdvances, lbAttendanceDeductions, lbPerformanceGain, lbEffectiveSalary;
+    private final String labelInitial = "0.0                   ";
 
     public SalaryDetail() {
 
@@ -25,11 +26,11 @@ public class SalaryDetail implements EmployeeSelectedListener {
         GridBagConstraints c;
 
         JComponent[] components = {
-            tfMonthelySalary = new JTextField(8),
-            tfAdvances = new JTextField(8),
-            tfAttendanceDeductions = new JTextField(8),
-            tfPerformanceGain = new JTextField(8),
-            tfEffectiveSalary = new JTextField(8),};
+            lbMonthelySalary = new JLabel(labelInitial),
+            lbAdvances = new JLabel(labelInitial),
+            lbAttendanceDeductions = new JLabel(labelInitial),
+            lbPerformanceGain = new JLabel(labelInitial),
+            lbEffectiveSalary = new JLabel(labelInitial),};
 
         String[] labels = {
             "Salary",
@@ -57,7 +58,7 @@ public class SalaryDetail implements EmployeeSelectedListener {
 
     @Override
     public void employeeSelected(Employee employee) {
-        tfMonthelySalary.setText(employee.getSalary().toPlainString());
+        lbMonthelySalary.setText(employee.getSalary().toPlainString());
     }
 
     @Override
