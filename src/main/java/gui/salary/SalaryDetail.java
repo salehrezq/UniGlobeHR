@@ -1,5 +1,6 @@
 package gui.salary;
 
+import gui.DatePicker;
 import gui.EmployeeSelectedListener;
 import gui.TwoColumnsLabelsAndFields;
 import java.awt.GridBagConstraints;
@@ -16,14 +17,27 @@ import model.Employee;
  */
 public class SalaryDetail implements EmployeeSelectedListener {
 
-    private final JPanel container, panelSalaryComponents;
+    private final JPanel container, panelSalaryComponents, panelDatePicker;
     private final JLabel lbMonthelySalary, lbAdvances, lbAttendanceDeductions, lbPerformanceGain, lbEffectiveSalary;
     private final String labelInitial = "0.0                   ";
+    private DatePicker datePicker;
 
     public SalaryDetail() {
 
         container = new JPanel(new GridBagLayout());
         GridBagConstraints c;
+
+        panelDatePicker = new JPanel();
+        datePicker = new DatePicker();
+        datePicker.setTodayAsDefault();
+        panelDatePicker.add(datePicker.getDatePicker());
+        c = new GridBagConstraints();
+        c.gridy = 0;
+        c.weightx = 1.0;
+        c.weighty = 0.0;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.PAGE_START;
+        container.add(panelDatePicker, c);
 
         JComponent[] components = {
             lbMonthelySalary = new JLabel(labelInitial),
@@ -42,7 +56,7 @@ public class SalaryDetail implements EmployeeSelectedListener {
 
         panelSalaryComponents = (JPanel) TwoColumnsLabelsAndFields.getTwoColumnLayout(labels, components);
         c = new GridBagConstraints();
-        c.gridy = 0;
+        c.gridy = 1;
         c.weightx = 1.0;
         c.weighty = 0.0;
         // top, lef, bottom, right
