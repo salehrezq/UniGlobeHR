@@ -1,6 +1,5 @@
 package gui.salaryadvance;
 
-import gui.performance.*;
 import gui.EmployeeCard;
 import java.awt.BorderLayout;
 import java.awt.Dimension;

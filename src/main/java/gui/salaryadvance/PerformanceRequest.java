@@ -1,6 +1,5 @@
 package gui.salaryadvance;
 
-import gui.performance.*;
 import crud.ReadListener;
 import crud.UpdateListener;
 import datalink.CRUDPerformance;

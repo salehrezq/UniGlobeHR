@@ -1,6 +1,5 @@
 package gui.salaryadvance;
 
-import gui.performance.*;
 import crud.UpdateListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;

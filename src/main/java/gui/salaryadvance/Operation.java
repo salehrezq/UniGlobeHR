@@ -1,6 +1,5 @@
 package gui.salaryadvance;
 
-import gui.performance.*;
 import model.Performance;
 
 /**

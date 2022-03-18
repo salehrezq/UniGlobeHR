@@ -1,7 +1,5 @@
 package gui.salaryadvance;
 
-import gui.performance.*;
-
 /**
  *
  * @author Saleh

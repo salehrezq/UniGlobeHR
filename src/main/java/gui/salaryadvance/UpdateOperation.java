@@ -1,6 +1,5 @@
 package gui.salaryadvance;
 
-import gui.performance.*;
 import datalink.CRUDPerformance;
 import javax.swing.JButton;
 import model.Performance;
