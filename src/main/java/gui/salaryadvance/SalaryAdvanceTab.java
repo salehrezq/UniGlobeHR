@@ -14,7 +14,7 @@ import javax.swing.JSplitPane;
  *
  * @author Saleh
  */
-public class PerformanceTab {
+public class SalaryAdvanceTab {
 
     JSplitPane splitPaneContainer;
     private JPanel panelInputs;
@@ -29,7 +29,7 @@ public class PerformanceTab {
     private PerformanceDisplay performanceDisplay;
     private PerformanceEdit performanceEdit;
 
-    public PerformanceTab() {
+    public SalaryAdvanceTab() {
 
         GridBagConstraints c;
 
@@ -132,7 +132,7 @@ public class PerformanceTab {
         splitPaneContainer.setDividerLocation(250);
     }
 
-    public JSplitPane performanceTab() {
+    public JSplitPane salaryAdvanceTab() {
         return splitPaneContainer;
     }
 
