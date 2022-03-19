@@ -8,6 +8,7 @@ package gui;
 import gui.attendance.AttendanceTab;
 import gui.performance.PerformanceTab;
 import gui.salary.SalaryTab;
+import gui.salaryadvance.SalaryAdvanceTab;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import javax.swing.JPanel;
@@ -46,6 +47,14 @@ public class Stage extends JPanel {
         treeEmployees.addEmployeeSelectedListener(performanceTab.getPerformanceSubmit());
         treeEmployees.addEmployeeSelectedListener(performanceTab.getPerformanceRequest());
         treeEmployees.addEmployeeSelectedListener(performanceTab.getPerformanceRecords());
+
+        // Salary Advance tab panel
+        SalaryAdvanceTab salaryAdvanceTab = controls.getSalaryAdvanceTab();
+        treeEmployees.addEmployeeSelectedListener(salaryAdvanceTab.getEmployeeCard());
+        treeEmployees.addEmployeeSelectedListener(salaryAdvanceTab.getPerformanceInput());
+        treeEmployees.addEmployeeSelectedListener(salaryAdvanceTab.getPerformanceSubmit());
+        treeEmployees.addEmployeeSelectedListener(salaryAdvanceTab.getPerformanceRequest());
+        treeEmployees.addEmployeeSelectedListener(salaryAdvanceTab.getPerformanceRecords());
 
         // Salary tab
         SalaryTab salaryTab = controls.getSalaryTab();
