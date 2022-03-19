@@ -33,7 +33,7 @@ public class PerformanceSubmit
 
     private Operation operation;
     private JButton btnSubmit;
-    private PerformanceInput performanceInput;
+    private SalaryAdvanceInput performanceInput;
     private StringBuilder stringBuilder;
     private Employee employee;
     private List<CreateListener> createListeners;
@@ -55,7 +55,7 @@ public class PerformanceSubmit
         operation.switchOperationFor(this);
     }
 
-    public void setPerformanceInput(PerformanceInput performanceInput) {
+    public void setPerformanceInput(SalaryAdvanceInput performanceInput) {
         this.performanceInput = performanceInput;
     }
 

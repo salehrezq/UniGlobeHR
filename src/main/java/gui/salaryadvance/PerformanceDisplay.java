@@ -18,7 +18,7 @@ public class PerformanceDisplay
         CancelListener,
         UpdateListener {
 
-    private PerformanceInput performanceInput;
+    private SalaryAdvanceInput performanceInput;
     private JCheckBox checkDisplayMode;
     private List<DisplayableListener> PerformanceDisplayableListeners;
 
@@ -30,7 +30,7 @@ public class PerformanceDisplay
         checkDisplayMode.addItemListener(new ChechBoxListener());
     }
 
-    public void setPerformanceInput(PerformanceInput performanceInput) {
+    public void setPerformanceInput(SalaryAdvanceInput performanceInput) {
         this.performanceInput = performanceInput;
     }
 

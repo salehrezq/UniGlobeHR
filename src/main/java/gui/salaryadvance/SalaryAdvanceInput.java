@@ -39,7 +39,7 @@ import model.PerformanceType;
  *
  * @author Saleh
  */
-public class PerformanceInput
+public class SalaryAdvanceInput
         implements
         EmployeeSelectedListener,
         CreateListener,
@@ -78,7 +78,7 @@ public class PerformanceInput
     private int performanceId;
     private int performanceOldId;
 
-    public PerformanceInput() {
+    public SalaryAdvanceInput() {
 
         panelMetaInputs = new JPanel();
 
