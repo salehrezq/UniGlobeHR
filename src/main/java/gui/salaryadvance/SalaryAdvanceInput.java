@@ -57,7 +57,6 @@ public class SalaryAdvanceInput
     private JPanel mainPanel;
     private JPanel panelStoryInputs;
     private JPanel panelMetaInputs;
-    private JLabel lbTime;
     private YearMonth yearAndMonth;
     private JFormattedTextField tfYear;
     private DatePicker datePicker;
@@ -92,9 +91,6 @@ public class SalaryAdvanceInput
         colorFieldRight = new Color(226, 252, 237);
         colorFieldWrong = new Color(254, 225, 214);
         colorDisabled = new Color(105, 105, 105);
-
-        lbTime = new JLabel("Time:");
-        panelMetaInputs.add(lbTime);
 
         DocumentRegex docRegx = new DocumentRegex();
 
