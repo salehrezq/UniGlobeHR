@@ -59,6 +59,8 @@ public class SalaryAdvanceInput
     private JPanel panelMetaInputs;
     private YearMonth yearAndMonth;
     private JFormattedTextField tfYear;
+    private JComboBox monthsList;
+    private final String[] monthsNums;
     private DatePicker datePicker;
     private JComboBox comboStateOfPerformance;
     private JComboBox comboType;
@@ -100,6 +102,13 @@ public class SalaryAdvanceInput
         tfYear = new JFormattedTextField(getMaskFormatter());
         tfYear.setPreferredSize(new Dimension(40, 20));
         panelMetaInputs.add(tfYear);
+
+        monthsNums = new String[]{"Jan [1]", "Feb [2]", "Mar [3]", "Apr [4]", "May [5]",
+            "Jun [6]", "Jul [7]", "Aug [8]", "Sep [9]", "Oct [10]", "Nov [11]", "Dec [12]"};
+
+        monthsList = new JComboBox<>(monthsNums);
+        monthsList.setSelectedIndex(yearAndMonth.getMonthValue() - 1);
+        panelMetaInputs.add(monthsList);
 
         datePicker = new DatePicker();
         datePicker.setTodayAsDefault();
