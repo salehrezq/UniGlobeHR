@@ -2,13 +2,11 @@ package gui.salaryadvance;
 
 import gui.EmployeeCard;
 import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 import javax.swing.Box;
 import javax.swing.JPanel;
-import javax.swing.JSplitPane;
 
 /**
  *
@@ -16,9 +14,7 @@ import javax.swing.JSplitPane;
  */
 public class SalaryAdvanceTab {
 
-    JSplitPane splitPaneContainer;
-    private JPanel panelInputs;
-//    private JPanel panelRequests;
+    private JPanel panelContainer, panelInputs;
     private EmployeeCard employeeCard;
     private SalaryAdvanceInput performanceInput;
     private PerformanceSubmit performanceSubmit;
@@ -34,7 +30,6 @@ public class SalaryAdvanceTab {
         GridBagConstraints c;
 
         panelInputs = new JPanel(new GridBagLayout());
-        panelInputs.setPreferredSize(new Dimension(400, 100));
         panelReuestRecords = new JPanel(new BorderLayout());
 
         employeeCard = new EmployeeCard();
@@ -125,15 +120,13 @@ public class SalaryAdvanceTab {
         performanceRequest.getPanelControls().add(Box.createHorizontalStrut(30));
         performanceRequest.getPanelControls().add(performanceEdit.getBtnEditMode());
 
-        splitPaneContainer = new JSplitPane(JSplitPane.VERTICAL_SPLIT);
-        splitPaneContainer.setDividerSize(5);
-        splitPaneContainer.setTopComponent(panelInputs);
-        splitPaneContainer.setBottomComponent(panelReuestRecords);
-        splitPaneContainer.setDividerLocation(250);
+        panelContainer = new JPanel(new BorderLayout());
+        panelContainer.add(panelInputs, BorderLayout.PAGE_START);
+        panelContainer.add(panelReuestRecords, BorderLayout.CENTER);
     }
 
-    public JSplitPane salaryAdvanceTab() {
-        return splitPaneContainer;
+    public JPanel salaryAdvanceTab() {
+        return panelContainer;
     }
 
     public EmployeeCard getEmployeeCard() {

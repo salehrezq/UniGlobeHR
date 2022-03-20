@@ -142,6 +142,7 @@ public class SalaryAdvanceInput
         c.fill = GridBagConstraints.BOTH;
         c.insets = new Insets(5, 30, 5, 30);
         c.weightx = 1.0;
+        c.weighty = 1.0;
         mainPanel.add(panelMetaInputs, c);
 
         setFieldsEditable(false);
