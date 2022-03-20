@@ -46,7 +46,7 @@ public class PerformanceSubmit
         createListeners = new ArrayList<>();
         updateListeners = new ArrayList<>();
 
-        btnSubmit = new JButton("Submit");
+        btnSubmit = new JButton();
         btnSubmit.setEnabled(false);
         btnSubmit.addActionListener(new SubmitPerformance());
         stringBuilder = new StringBuilder(145);
