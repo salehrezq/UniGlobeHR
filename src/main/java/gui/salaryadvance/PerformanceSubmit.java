@@ -97,7 +97,7 @@ public class PerformanceSubmit
     private LocalDateTime getDateTimeCombined() {
 
         LocalDate date = performanceInput.getDate();
-        String time = performanceInput.getTime().toLowerCase();
+        String time = performanceInput.getYear().toLowerCase();
 
         // Formate time from "01:15 pm" to "13:15"
         DateTimeFormatter parseStringTime = DateTimeFormatter.ofPattern("hh:mm a", Locale.UK);

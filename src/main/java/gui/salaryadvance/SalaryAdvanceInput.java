@@ -18,11 +18,14 @@ import java.awt.Insets;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import javax.swing.JComboBox;
+import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -31,6 +34,7 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.text.MaskFormatter;
 import model.Employee;
 import model.Performance;
 import model.PerformanceType;
@@ -54,7 +58,8 @@ public class SalaryAdvanceInput
     private JPanel panelStoryInputs;
     private JPanel panelMetaInputs;
     private JLabel lbTime;
-    private JTextField tfTime;
+    private YearMonth yearAndMonth;
+    private JFormattedTextField tfYear;
     private DatePicker datePicker;
     private JComboBox comboStateOfPerformance;
     private JComboBox comboType;
@@ -93,12 +98,12 @@ public class SalaryAdvanceInput
 
         DocumentRegex docRegx = new DocumentRegex();
 
-        tfTime = new JTextField();
-        tfTime.setFont(new Font("SansSerif", Font.BOLD, 12));
-        tfTime.setBackground(colorFieldRight);
-        tfTime.getDocument().addDocumentListener(docRegx);
-        tfTime.setPreferredSize(new Dimension(60, 27));
-        panelMetaInputs.add(tfTime);
+        LocalDate today = LocalDate.now();
+        yearAndMonth = YearMonth.of(today.getYear(), today.getMonthValue());
+
+        tfYear = new JFormattedTextField(getMaskFormatter());
+        tfYear.setPreferredSize(new Dimension(40, 20));
+        panelMetaInputs.add(tfYear);
 
         datePicker = new DatePicker();
         datePicker.setTodayAsDefault();
@@ -193,8 +198,8 @@ public class SalaryAdvanceInput
         setFieldsEditable(false);
     }
 
-    public String getTime() {
-        return tfTime.getText();
+    public String getYear() {
+        return tfYear.getText();
     }
 
     public LocalDate getDate() {
@@ -255,7 +260,7 @@ public class SalaryAdvanceInput
     }
 
     protected void clearInputFields() {
-        tfTime.setText(null);
+        tfYear.setText(String.valueOf(yearAndMonth.getYear()));
         boolTfTimeFilled = false;
         datePicker.setTodayAsDefault();
         // Setting comboStateOfPerformance selected index to zero
@@ -271,8 +276,8 @@ public class SalaryAdvanceInput
 
     private void setFieldsEditable(boolean editable) {
 
-        tfTime.setEditable(editable);
-        tfTime.setForeground(editable ? null : colorDisabled);
+        tfYear.setEditable(editable);
+        tfYear.setForeground(editable ? null : colorDisabled);
         datePicker.setEnabled(editable);
         comboStateOfPerformance.setEnabled(editable);
         comboType.setEnabled(editable);
@@ -338,7 +343,7 @@ public class SalaryAdvanceInput
 
         String localTime12 = ldt.toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm a"));
 
-        tfTime.setText(localTime12);
+        tfYear.setText(localTime12);
         datePicker.setDateValue(ldt.toLocalDate());
 
         if (performance.getState()) {
@@ -426,18 +431,17 @@ public class SalaryAdvanceInput
 
         private void doWork() {
 
-            if (tfTime.getText().isEmpty()) {
-                tfTime.setBackground(colorFieldRight);
-            } else {
-                if (tfTime.getText().matches("^(0[1-9]|1[0-2]):([0-5][0-9]) ((a|p)m|(A|P)M)$")) {
-                    tfTime.setBackground(colorFieldRight);
-                    boolTfTimeFilled = true;
-                } else {
-                    tfTime.setBackground(colorFieldWrong);
-                    boolTfTimeFilled = false;
-                }
-            }
-
+//            if (tfTime.getText().isEmpty()) {
+//                tfTime.setBackground(colorFieldRight);
+//            } else {
+//                if (tfTime.getText().matches("^(0[1-9]|1[0-2]):([0-5][0-9]) ((a|p)m|(A|P)M)$")) {
+//                    tfTime.setBackground(colorFieldRight);
+//                    boolTfTimeFilled = true;
+//                } else {
+//                    tfTime.setBackground(colorFieldWrong);
+//                    boolTfTimeFilled = false;
+//                }
+//            }
             if (tfAmount.getText().isEmpty()) {
                 tfAmount.setBackground(colorFieldRight);
             } else {
@@ -515,5 +519,25 @@ public class SalaryAdvanceInput
                 }
             }
         }
+    }
+
+    /**
+     * This method returns MaskFormatter that enforces 4 digits The # character
+     * represent digit, and four of them (####) means the allowed number of
+     * digits.
+     *
+     * The current year is used as a place holder.
+     *
+     * @return MaskFormatter
+     */
+    private MaskFormatter getMaskFormatter() {
+        MaskFormatter mask = null;
+        try {
+            mask = new MaskFormatter("####");
+            mask.setPlaceholder(String.valueOf(yearAndMonth.getYear()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return mask;
     }
 }
