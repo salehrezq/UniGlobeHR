@@ -4,7 +4,6 @@ import crud.CreateListener;
 import crud.DeleteListener;
 import crud.UpdateListener;
 import datalink.CRUDPerformance;
-import datalink.CRUDPerformanceType;
 import gui.DateDeselectedListener;
 import gui.DateListener;
 import gui.DatePicker;
@@ -23,7 +22,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
+import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
@@ -32,6 +31,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.MaskFormatter;
@@ -56,7 +56,7 @@ public class SalaryAdvanceInput
 
     private JPanel mainPanel;
     private JPanel panelStoryInputs;
-    private JPanel panelMetaInputs;
+    private JPanel panelMetaInputs, panelYearMonthInputs, panelDateOfTake;
     private YearMonth yearAndMonth;
     private JFormattedTextField tfYear;
     private JComboBox monthsList;
@@ -93,19 +93,30 @@ public class SalaryAdvanceInput
 
         DocumentRegex docRegx = new DocumentRegex();
 
+        Border borderYearMonthOfAdvance = BorderFactory.createTitledBorder("Year/Month of advance");
+
+        panelYearMonthInputs = new JPanel();
+        panelYearMonthInputs.setBorder(borderYearMonthOfAdvance);
+
         LocalDate today = LocalDate.now();
         yearAndMonth = YearMonth.of(today.getYear(), today.getMonthValue());
 
         tfYear = new JFormattedTextField(getMaskFormatter());
         tfYear.setPreferredSize(new Dimension(40, 20));
-        panelMetaInputs.add(tfYear);
+        panelYearMonthInputs.add(tfYear);
 
         monthsNums = new String[]{"Jan [1]", "Feb [2]", "Mar [3]", "Apr [4]", "May [5]",
             "Jun [6]", "Jul [7]", "Aug [8]", "Sep [9]", "Oct [10]", "Nov [11]", "Dec [12]"};
 
         monthsList = new JComboBox<>(monthsNums);
         monthsList.setSelectedIndex(yearAndMonth.getMonthValue() - 1);
-        panelMetaInputs.add(monthsList);
+        panelYearMonthInputs.add(monthsList);
+
+        panelMetaInputs.add(panelYearMonthInputs);
+
+        Border borderDateOfTake = BorderFactory.createTitledBorder("Date of take");
+        panelDateOfTake = new JPanel();
+        panelDateOfTake.setBorder(borderDateOfTake);
 
         datePicker = new DatePicker();
         datePicker.setTodayAsDefault();
@@ -113,7 +124,8 @@ public class SalaryAdvanceInput
         DateListenerImpli dateListenerImpli = new DateListenerImpli();
         datePicker.addDateListener(dateListenerImpli);
         datePicker.addDateDeselectedListener(dateListenerImpli);
-        panelMetaInputs.add(datePicker.getDatePicker());
+        panelDateOfTake.add(datePicker.getDatePicker());
+        panelMetaInputs.add(panelDateOfTake);
 
         ItemChangeListener comboBoxListener = new ItemChangeListener();
 
