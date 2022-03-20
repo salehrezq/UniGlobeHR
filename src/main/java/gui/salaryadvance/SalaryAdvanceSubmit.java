@@ -21,7 +21,7 @@ import model.Performance;
  *
  * @author Saleh
  */
-public class PerformanceSubmit
+public class SalaryAdvanceSubmit
         implements
         Subject,
         EmployeeSelectedListener,
@@ -41,7 +41,7 @@ public class PerformanceSubmit
     private boolean boolPerformanceDisplayMode, boolEditMode;
     private Integer performanceId;
 
-    public PerformanceSubmit() {
+    public SalaryAdvanceSubmit() {
 
         createListeners = new ArrayList<>();
         updateListeners = new ArrayList<>();
