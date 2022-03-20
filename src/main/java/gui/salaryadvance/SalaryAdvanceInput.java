@@ -62,9 +62,6 @@ public class SalaryAdvanceInput
     private JComboBox monthsList;
     private final String[] monthsNums;
     private DatePicker datePicker;
-    private JComboBox comboStateOfPerformance;
-    private JComboBox comboType;
-    List<PerformanceType> performanceTypes;
     private PerformanceType selectedPerformanceType;
     private JLabel lbAmount;
     private JTextField tfAmount;
@@ -119,17 +116,8 @@ public class SalaryAdvanceInput
         panelMetaInputs.add(datePicker.getDatePicker());
 
         ItemChangeListener comboBoxListener = new ItemChangeListener();
-        comboStateOfPerformance = new JComboBox<>(new String[]{"Select...", "Positive", "Negative"});
-        comboStateOfPerformance.addItemListener(comboBoxListener);
-        comboStateOfPerformance.setSelectedIndex(0);
-        panelMetaInputs.add(comboStateOfPerformance);
 
-        comboType = new JComboBox<>();
-        comboType.addItemListener(comboBoxListener);
-        comboType.setPreferredSize(new Dimension(145, 25));
-        panelMetaInputs.add(comboType);
-
-        lbAmount = new JLabel("Amount+:");
+        lbAmount = new JLabel("Amount:");
         panelMetaInputs.add(lbAmount);
 
         tfAmount = new JTextField();
@@ -211,19 +199,6 @@ public class SalaryAdvanceInput
         return datePicker.getDate();
     }
 
-    public boolean getStateOfPerformance() {
-
-        String stateName = (String) comboStateOfPerformance.getSelectedItem();
-        Boolean state = null;
-
-        if (stateName.equals("Positive")) {
-            state = Boolean.TRUE;
-        } else if (stateName.equals("Negative")) {
-            state = Boolean.FALSE;
-        }
-        return state;
-    }
-
     public PerformanceType getPerformanceType() {
         return this.selectedPerformanceType;
     }
@@ -272,7 +247,6 @@ public class SalaryAdvanceInput
         // invokes ItemListener methods which contains the code
         // to set the other linked combo box to zero
         // and also the boolean values to false.
-        comboStateOfPerformance.setSelectedIndex(0);
         tfAmount.setText(null);
         boolTfAmountFilled = false;
         tfTitle.setText(null);
@@ -284,8 +258,6 @@ public class SalaryAdvanceInput
         tfYear.setEditable(editable);
         tfYear.setForeground(editable ? null : colorDisabled);
         datePicker.setEnabled(editable);
-        comboStateOfPerformance.setEnabled(editable);
-        comboType.setEnabled(editable);
         tfAmount.setEditable(editable);
         tfAmount.setForeground(editable ? null : colorDisabled);
         tfTitle.setEditable(editable);
@@ -351,12 +323,6 @@ public class SalaryAdvanceInput
         tfYear.setText(localTime12);
         datePicker.setDateValue(ldt.toLocalDate());
 
-        if (performance.getState()) {
-            comboStateOfPerformance.setSelectedIndex(1);
-        } else {
-            comboStateOfPerformance.setSelectedIndex(2);
-        }
-        comboType.getModel().setSelectedItem(CRUDPerformanceType.getById(performance.getTypeId()));
         tfAmount.setText(String.valueOf(performance.getAmount()));
         tfTitle.setText(performance.getTitle());
         taDescription.setText(performance.getDescription());
@@ -478,51 +444,11 @@ public class SalaryAdvanceInput
 
     }
 
-    private void populateComboTypes(boolean state) {
-        performanceTypes = CRUDPerformanceType.getByState(state);
-        comboType.removeAllItems();
-        comboType.addItem(new PerformanceType(0, "Select...", null));
-
-        performanceTypes.stream().forEach(pType -> {
-            comboType.addItem(new PerformanceType(pType.getId(), pType.getType(), pType.getState()));
-        });
-        boolComboStateFilled = true;
-    }
-
     class ItemChangeListener implements ItemListener {
 
         @Override
         public void itemStateChanged(ItemEvent event) {
-            Object source = event.getSource();
-            if (source == comboStateOfPerformance) {
-                if (event.getStateChange() == ItemEvent.SELECTED) {
-                    if (event.getItem().equals("Negative")) {
-                        populateComboTypes(false);
-                    } else if (event.getItem().equals("Positive")) {
-                        populateComboTypes(true);
-                    } else if (comboStateOfPerformance.getSelectedIndex() == 0) {
-                        // If the index is zero, then it is the label
-                        // that tells the user to select from the dropdown.
-                        // so the value is not yet selected to an effective value.
-                        comboType.removeAllItems();
-                        boolComboStateFilled = false;
-                        boolComboTypeFilled = false;
-                    }
-                }
-            } else if (source == comboType) {
-                if (event.getStateChange() == ItemEvent.SELECTED) {
-                    if (comboType.getSelectedIndex() == 0) {
-                        // If the index is zero, then it is the label
-                        // that tells the user to select from the dropdown.
-                        // so the value is not yet selected to an effective value.
-                        boolComboTypeFilled = false;
-                        selectedPerformanceType = null;
-                    } else {
-                        selectedPerformanceType = (PerformanceType) event.getItem();
-                        boolComboTypeFilled = true;
-                    }
-                }
-            }
+
         }
     }
 

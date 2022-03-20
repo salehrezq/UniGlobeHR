@@ -261,7 +261,6 @@ public class PerformanceSubmit
                 performance.setEmployeeId(employee.getId());
                 performance.setDateTime(getDateTimeCombined());
                 performance.setTypeId(performanceInput.getPerformanceType().getId());
-                performance.setState(performanceInput.getStateOfPerformance());
                 performance.setAmount(performanceInput.getAmount());
                 performance.setTitle(performanceInput.getTitle());
                 performance.setDescription(performanceInput.getDescription());
