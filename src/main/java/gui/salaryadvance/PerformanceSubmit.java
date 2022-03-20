@@ -211,20 +211,6 @@ public class PerformanceSubmit
             messages.add("Amount: input either incorrect or empty");
         }
 
-        String title = performanceInput.getTitle();
-        boolean isTitleBlanck = title.isBlank();
-        int titleLength = title.length();
-
-        if (isTitleBlanck) {
-            booleans.add(false);
-            messages.add("Title: empty input");
-        } else if (!isTitleBlanck && titleLength < 10) {
-            booleans.add(false);
-            messages.add("Title: minimum 10 charachters required");
-        } else if (!isTitleBlanck && titleLength >= 10) {
-            booleans.add(true);
-        }
-
         return new ValidateWithMessages(booleans, messages);
     }
 
@@ -262,8 +248,6 @@ public class PerformanceSubmit
                 performance.setDateTime(getDateTimeCombined());
                 performance.setTypeId(performanceInput.getPerformanceType().getId());
                 performance.setAmount(performanceInput.getAmount());
-                performance.setTitle(performanceInput.getTitle());
-                performance.setDescription(performanceInput.getDescription());
 
                 if (boolEditMode) {
                     performance.setId(performanceId);

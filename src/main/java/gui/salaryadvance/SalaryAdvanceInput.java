@@ -28,8 +28,6 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
 import javax.swing.event.DocumentEvent;
@@ -55,7 +53,6 @@ public class SalaryAdvanceInput
         DeleteListener {
 
     private JPanel mainPanel;
-    private JPanel panelStoryInputs;
     private JPanel panelMetaInputs, panelYearMonthInputs, panelDateOfTake;
     private YearMonth yearAndMonth;
     private JFormattedTextField tfYear;
@@ -65,9 +62,6 @@ public class SalaryAdvanceInput
     private PerformanceType selectedPerformanceType;
     private JLabel lbAmount;
     private JTextField tfAmount;
-    private JTextField tfTitle;
-    private JScrollPane scrollableTextArea;
-    private JTextArea taDescription;
     private Color colorFieldRight;
     private Color colorFieldWrong;
     private Color colorDisabled;
@@ -139,27 +133,6 @@ public class SalaryAdvanceInput
         tfAmount.setPreferredSize(new Dimension(95, 27));
         panelMetaInputs.add(tfAmount);
 
-        panelStoryInputs = new JPanel(new GridBagLayout());
-        c = new GridBagConstraints();
-        tfTitle = new JTextField();
-        c.anchor = GridBagConstraints.PAGE_START;
-        c.gridx = 0;
-        c.gridy = 0;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.weightx = 1.0;
-        panelStoryInputs.add(tfTitle, c);
-
-        c = new GridBagConstraints();
-        taDescription = new JTextArea();
-        scrollableTextArea = new JScrollPane(taDescription);
-        c.anchor = GridBagConstraints.CENTER;
-        c.gridx = 0;
-        c.gridy = 1;
-        c.fill = GridBagConstraints.BOTH;
-        c.weightx = 1.0;
-        c.weighty = 1.0;
-        panelStoryInputs.add(scrollableTextArea, c);
-
         mainPanel = new JPanel(new GridBagLayout());
 
         c = new GridBagConstraints();
@@ -170,16 +143,6 @@ public class SalaryAdvanceInput
         c.insets = new Insets(5, 30, 5, 30);
         c.weightx = 1.0;
         mainPanel.add(panelMetaInputs, c);
-
-        c = new GridBagConstraints();
-        c.anchor = GridBagConstraints.CENTER;
-        c.gridx = 0;
-        c.gridy = 1;
-        c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(5, 30, 5, 30);
-        c.weightx = 1.0;
-        c.weighty = 1.0;
-        mainPanel.add(panelStoryInputs, c);
 
         setFieldsEditable(false);
     }
@@ -219,18 +182,6 @@ public class SalaryAdvanceInput
         return new BigDecimal(tfAmount.getText());
     }
 
-    public String getTitle() {
-        return tfTitle.getText();
-    }
-
-    public String getDescription() {
-        if (taDescription.getText().isBlank()) {
-            // Useful for database empty entry to be null.
-            return null;
-        }
-        return taDescription.getText();
-    }
-
     public boolean getBoolTfTimeFilled() {
         return boolTfTimeFilled;
     }
@@ -261,8 +212,6 @@ public class SalaryAdvanceInput
         // and also the boolean values to false.
         tfAmount.setText(null);
         boolTfAmountFilled = false;
-        tfTitle.setText(null);
-        taDescription.setText(null);
     }
 
     private void setFieldsEditable(boolean editable) {
@@ -272,8 +221,6 @@ public class SalaryAdvanceInput
         datePicker.setEnabled(editable);
         tfAmount.setEditable(editable);
         tfAmount.setForeground(editable ? null : colorDisabled);
-        tfTitle.setEditable(editable);
-        taDescription.setEditable(editable);
     }
 
     @Override
@@ -336,39 +283,16 @@ public class SalaryAdvanceInput
         datePicker.setDateValue(ldt.toLocalDate());
 
         tfAmount.setText(String.valueOf(performance.getAmount()));
-        tfTitle.setText(performance.getTitle());
-        taDescription.setText(performance.getDescription());
         String description = performance.getDescription();
-        if (description == null || description.isBlank()) {
-            taDescription.setText("No description available!");
-        } else {
-            taDescription.setText(description);
-        }
 
         // Store id for future comparsions,
         // you find comparsion at the top of this method
         performanceOldId = performance.getId();
     }
 
-    /**
-     * When on display mode and there is no content; JTextArea displays the
-     * message: "No description available!". No need for this message when the
-     * JTextArea is on edit mode JTextArea has to reflect the emptiness with no
-     * content at all.
-     */
-    private void removeTextAreaMessageForNoContentAvailable() {
-        if (performance != null) {
-            String description = performance.getDescription();
-            if (description == null || description.isBlank()) {
-                taDescription.setText(null);
-            }
-        }
-    }
-
     @Override
     public void editable() {
         boolEditMode = true;
-        removeTextAreaMessageForNoContentAvailable();
         setFieldsEditable(true);
     }
 
