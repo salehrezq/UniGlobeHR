@@ -5,13 +5,11 @@ import crud.UpdateListener;
 import gui.EmployeeSelectedListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
+import java.time.Month;
+import java.time.Year;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import model.Employee;
@@ -94,17 +92,15 @@ public class SalaryAdvanceSubmit
         return this.stringBuilder.toString();
     }
 
-    private LocalDateTime getDateTimeCombined() {
+    private YearMonth getYearMonthSubjectOfAdvance() {
 
-        LocalDate date = salaryAdvanceInput.getDateAdvanceTaken();
-        String time = salaryAdvanceInput.getYear().toLowerCase();
+        Year year = Year.parse(salaryAdvanceInput.getSubjectYear());
+        Month month = Month.of(salaryAdvanceInput.getSubjectMonth());
 
-        // Formate time from "01:15 pm" to "13:15"
-        DateTimeFormatter parseStringTime = DateTimeFormatter.ofPattern("hh:mm a", Locale.UK);
-        LocalTime timeParsedFromString_12_to_24 = LocalTime.parse(time, parseStringTime);
+        YearMonth yearMonthSubjectOfAdvance = YearMonth.of(Integer.parseInt(year.toString()), month);
 
-        LocalDateTime dateTime = LocalDateTime.of(date, timeParsedFromString_12_to_24);
-        return dateTime;
+        System.out.println(yearMonthSubjectOfAdvance);
+        return yearMonthSubjectOfAdvance;
     }
 
     @Override
@@ -180,29 +176,11 @@ public class SalaryAdvanceSubmit
         List<String> messages = new ArrayList<>();
         List<Boolean> booleans = new ArrayList<>();
 
-        if (salaryAdvanceInput.getBoolTfTimeFilled()) {
-            booleans.add(true);
-        } else {
-            booleans.add(false);
-            messages.add("Time: input either incorrect or empty");
-        }
         if (salaryAdvanceInput.getBoolDateFilled()) {
             booleans.add(true);
         } else {
             booleans.add(false);
             messages.add("Date: empty input");
-        }
-        if (salaryAdvanceInput.getBoolComboState()) {
-            booleans.add(true);
-        } else {
-            booleans.add(false);
-            messages.add("State: not selected");
-        }
-        if (salaryAdvanceInput.getBoolComboType()) {
-            booleans.add(true);
-        } else {
-            booleans.add(false);
-            messages.add("Type: not selected");
         }
         if (salaryAdvanceInput.getBoolTfAmountFilled()) {
             booleans.add(true);
@@ -245,6 +223,7 @@ public class SalaryAdvanceSubmit
 
                 SalaryAdvance salaryAdvance = new SalaryAdvance();
                 salaryAdvance.setEmployeeId(employee.getId());
+                salaryAdvance.setYearMonthSubject(getYearMonthSubjectOfAdvance());
                 salaryAdvance.setDateTaken(salaryAdvanceInput.getDateAdvanceTaken());
                 salaryAdvance.setAmount(salaryAdvanceInput.getAmount());
 

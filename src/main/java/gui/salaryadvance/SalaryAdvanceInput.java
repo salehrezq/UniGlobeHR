@@ -55,7 +55,7 @@ public class SalaryAdvanceInput
     private JPanel mainPanel;
     private JPanel panelMetaInputs, panelYearMonthInputs, panelDateOfTake;
     private YearMonth yearAndMonth;
-    private JFormattedTextField tfYear;
+    private JFormattedTextField tfYearSubject;
     private JComboBox monthsList;
     private final String[] monthsNums;
     private DatePicker dateAdvanceTaken;
@@ -65,10 +65,7 @@ public class SalaryAdvanceInput
     private Color colorFieldRight;
     private Color colorFieldWrong;
     private Color colorDisabled;
-    private boolean boolTfTimeFilled;
     private boolean boolDateFilled;
-    private boolean boolComboStateFilled;
-    private boolean boolComboTypeFilled;
     private boolean boolTfAmountFilled;
     private boolean boolPerformanceDisplayMode, boolEditMode, boolCreated, boolUpdated;
     private Performance performance;
@@ -95,9 +92,9 @@ public class SalaryAdvanceInput
         LocalDate today = LocalDate.now();
         yearAndMonth = YearMonth.of(today.getYear(), today.getMonthValue());
 
-        tfYear = new JFormattedTextField(getMaskFormatter());
-        tfYear.setPreferredSize(new Dimension(40, 20));
-        panelYearMonthInputs.add(tfYear);
+        tfYearSubject = new JFormattedTextField(getMaskFormatter());
+        tfYearSubject.setPreferredSize(new Dimension(40, 20));
+        panelYearMonthInputs.add(tfYearSubject);
 
         monthsNums = new String[]{"Jan [1]", "Feb [2]", "Mar [3]", "Apr [4]", "May [5]",
             "Jun [6]", "Jul [7]", "Aug [8]", "Sep [9]", "Oct [10]", "Nov [11]", "Dec [12]"};
@@ -167,8 +164,14 @@ public class SalaryAdvanceInput
         setFieldsEditable(false);
     }
 
-    public String getYear() {
-        return tfYear.getText();
+    /**
+     * Year of which the salary advance will take effect. That is the year that
+     * advance will be deducted from.
+     *
+     * @return String represent the year field input
+     */
+    public String getSubjectYear() {
+        return tfYearSubject.getText();
     }
 
     public LocalDate getDateAdvanceTaken() {
@@ -183,20 +186,8 @@ public class SalaryAdvanceInput
         return new BigDecimal(tfAmount.getText());
     }
 
-    public boolean getBoolTfTimeFilled() {
-        return boolTfTimeFilled;
-    }
-
     public boolean getBoolDateFilled() {
         return boolDateFilled;
-    }
-
-    public boolean getBoolComboState() {
-        return boolComboStateFilled;
-    }
-
-    public boolean getBoolComboType() {
-        return boolComboTypeFilled;
     }
 
     public boolean getBoolTfAmountFilled() {
@@ -204,8 +195,8 @@ public class SalaryAdvanceInput
     }
 
     protected void clearInputFields() {
-        tfYear.setText(String.valueOf(yearAndMonth.getYear()));
-        boolTfTimeFilled = false;
+        tfYearSubject.setText(String.valueOf(yearAndMonth.getYear()));
+
         dateAdvanceTaken.setTodayAsDefault();
         // Setting comboStateOfPerformance selected index to zero
         // invokes ItemListener methods which contains the code
@@ -217,8 +208,8 @@ public class SalaryAdvanceInput
 
     private void setFieldsEditable(boolean editable) {
 
-        tfYear.setEditable(editable);
-        tfYear.setForeground(editable ? null : colorDisabled);
+        tfYearSubject.setEditable(editable);
+        tfYearSubject.setForeground(editable ? null : colorDisabled);
         monthsList.setEnabled(editable);
         dateAdvanceTaken.setEnabled(editable);
         tfAmount.setEditable(editable);
@@ -281,7 +272,7 @@ public class SalaryAdvanceInput
 
         String localTime12 = ldt.toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm a"));
 
-        tfYear.setText(localTime12);
+        tfYearSubject.setText(localTime12);
         dateAdvanceTaken.setDateValue(ldt.toLocalDate());
 
         tfAmount.setText(String.valueOf(performance.getAmount()));
@@ -321,6 +312,16 @@ public class SalaryAdvanceInput
     @Override
     public void deleted() {
         clearInputFields();
+    }
+
+    /**
+     * Month of which the salary advance will take effect. That is the month
+     * that advance will be deducted from.
+     *
+     * @return int represent the month
+     */
+    public int getSubjectMonth() {
+        return monthsList.getSelectedIndex() + 1;
     }
 
     private class DateListenerImpli implements DateListener, DateDeselectedListener {
