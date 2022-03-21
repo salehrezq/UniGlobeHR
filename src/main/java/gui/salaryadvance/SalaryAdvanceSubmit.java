@@ -240,12 +240,12 @@ public class SalaryAdvanceSubmit
 
                     if (getOperation() instanceof CreateOperation) {
                         notifyCreated();
-                        informMessage = "Performance created successfully.";
+                        informMessage = "Salary advance created successfully.";
                     } else if (getOperation() instanceof UpdateOperation) {
                         boolEditMode = false;
                         notifyUpdated();
                         btnSubmit.setEnabled(false);
-                        informMessage = "Performance updated successfully.";
+                        informMessage = "Salary advance updated successfully.";
                     }
                     JOptionPane.showConfirmDialog(null,
                             informMessage,
