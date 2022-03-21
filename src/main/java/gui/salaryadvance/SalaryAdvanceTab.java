@@ -69,7 +69,7 @@ public class SalaryAdvanceTab {
         c.insets = new Insets(3, 31, 5, 0);
         panelInputs.add(performanceCancel.getButtonCancel(), c);
 
-        performanceSubmit.setPerformanceInput(performanceInput);
+        performanceSubmit.setSalaryAdvanceInput(performanceInput);
         c = new GridBagConstraints();
         c.gridy = 2;
         c.gridx = 1;

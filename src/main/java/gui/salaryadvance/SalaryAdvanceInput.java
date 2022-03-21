@@ -58,7 +58,7 @@ public class SalaryAdvanceInput
     private JFormattedTextField tfYear;
     private JComboBox monthsList;
     private final String[] monthsNums;
-    private DatePicker dateAdvanceTake;
+    private DatePicker dateAdvanceTaken;
     private PerformanceType selectedPerformanceType;
     private JLabel lbAmount;
     private JTextField tfAmount;
@@ -112,13 +112,13 @@ public class SalaryAdvanceInput
         panelDateOfTake = new JPanel();
         panelDateOfTake.setBorder(borderDateOfTake);
 
-        dateAdvanceTake = new DatePicker();
-        dateAdvanceTake.setTodayAsDefault();
+        dateAdvanceTaken = new DatePicker();
+        dateAdvanceTaken.setTodayAsDefault();
         boolDateFilled = true;
         DateListenerImpli dateListenerImpli = new DateListenerImpli();
-        dateAdvanceTake.addDateListener(dateListenerImpli);
-        dateAdvanceTake.addDateDeselectedListener(dateListenerImpli);
-        panelDateOfTake.add(dateAdvanceTake.getDatePicker());
+        dateAdvanceTaken.addDateListener(dateListenerImpli);
+        dateAdvanceTaken.addDateDeselectedListener(dateListenerImpli);
+        panelDateOfTake.add(dateAdvanceTaken.getDatePicker());
         panelMetaInputs.add(panelDateOfTake);
 
         ItemChangeListener comboBoxListener = new ItemChangeListener();
@@ -171,8 +171,8 @@ public class SalaryAdvanceInput
         return tfYear.getText();
     }
 
-    public LocalDate getDate() {
-        return dateAdvanceTake.getDate();
+    public LocalDate getDateAdvanceTaken() {
+        return dateAdvanceTaken.getDate();
     }
 
     public PerformanceType getPerformanceType() {
@@ -206,7 +206,7 @@ public class SalaryAdvanceInput
     protected void clearInputFields() {
         tfYear.setText(String.valueOf(yearAndMonth.getYear()));
         boolTfTimeFilled = false;
-        dateAdvanceTake.setTodayAsDefault();
+        dateAdvanceTaken.setTodayAsDefault();
         // Setting comboStateOfPerformance selected index to zero
         // invokes ItemListener methods which contains the code
         // to set the other linked combo box to zero
@@ -220,7 +220,7 @@ public class SalaryAdvanceInput
         tfYear.setEditable(editable);
         tfYear.setForeground(editable ? null : colorDisabled);
         monthsList.setEnabled(editable);
-        dateAdvanceTake.setEnabled(editable);
+        dateAdvanceTaken.setEnabled(editable);
         tfAmount.setEditable(editable);
         tfAmount.setForeground(editable ? null : colorDisabled);
     }
@@ -282,7 +282,7 @@ public class SalaryAdvanceInput
         String localTime12 = ldt.toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm a"));
 
         tfYear.setText(localTime12);
-        dateAdvanceTake.setDateValue(ldt.toLocalDate());
+        dateAdvanceTaken.setDateValue(ldt.toLocalDate());
 
         tfAmount.setText(String.valueOf(performance.getAmount()));
         String description = performance.getDescription();

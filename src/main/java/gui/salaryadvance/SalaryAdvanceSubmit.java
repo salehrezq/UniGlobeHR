@@ -15,7 +15,7 @@ import java.util.Locale;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import model.Employee;
-import model.Performance;
+import model.SalaryAdvance;
 
 /**
  *
@@ -33,7 +33,7 @@ public class SalaryAdvanceSubmit
 
     private Operation operation;
     private JButton btnSubmit;
-    private SalaryAdvanceInput performanceInput;
+    private SalaryAdvanceInput salaryAdvanceInput;
     private StringBuilder stringBuilder;
     private Employee employee;
     private List<CreateListener> createListeners;
@@ -55,8 +55,8 @@ public class SalaryAdvanceSubmit
         operation.switchOperationFor(this);
     }
 
-    public void setPerformanceInput(SalaryAdvanceInput performanceInput) {
-        this.performanceInput = performanceInput;
+    public void setSalaryAdvanceInput(SalaryAdvanceInput salaryAdvanceInput) {
+        this.salaryAdvanceInput = salaryAdvanceInput;
     }
 
     public void addPerformanceUpdatedListener(UpdateListener updateListener) {
@@ -96,8 +96,8 @@ public class SalaryAdvanceSubmit
 
     private LocalDateTime getDateTimeCombined() {
 
-        LocalDate date = performanceInput.getDate();
-        String time = performanceInput.getYear().toLowerCase();
+        LocalDate date = salaryAdvanceInput.getDateAdvanceTaken();
+        String time = salaryAdvanceInput.getYear().toLowerCase();
 
         // Formate time from "01:15 pm" to "13:15"
         DateTimeFormatter parseStringTime = DateTimeFormatter.ofPattern("hh:mm a", Locale.UK);
@@ -180,31 +180,31 @@ public class SalaryAdvanceSubmit
         List<String> messages = new ArrayList<>();
         List<Boolean> booleans = new ArrayList<>();
 
-        if (performanceInput.getBoolTfTimeFilled()) {
+        if (salaryAdvanceInput.getBoolTfTimeFilled()) {
             booleans.add(true);
         } else {
             booleans.add(false);
             messages.add("Time: input either incorrect or empty");
         }
-        if (performanceInput.getBoolDateFilled()) {
+        if (salaryAdvanceInput.getBoolDateFilled()) {
             booleans.add(true);
         } else {
             booleans.add(false);
             messages.add("Date: empty input");
         }
-        if (performanceInput.getBoolComboState()) {
+        if (salaryAdvanceInput.getBoolComboState()) {
             booleans.add(true);
         } else {
             booleans.add(false);
             messages.add("State: not selected");
         }
-        if (performanceInput.getBoolComboType()) {
+        if (salaryAdvanceInput.getBoolComboType()) {
             booleans.add(true);
         } else {
             booleans.add(false);
             messages.add("Type: not selected");
         }
-        if (performanceInput.getBoolTfAmountFilled()) {
+        if (salaryAdvanceInput.getBoolTfAmountFilled()) {
             booleans.add(true);
         } else {
             booleans.add(false);
@@ -243,17 +243,16 @@ public class SalaryAdvanceSubmit
 
             if (areAllInputsFilled) {
 
-                Performance performance = new Performance();
-                performance.setEmployeeId(employee.getId());
-                performance.setDateTime(getDateTimeCombined());
-                performance.setTypeId(performanceInput.getPerformanceType().getId());
-                performance.setAmount(performanceInput.getAmount());
+                SalaryAdvance salaryAdvance = new SalaryAdvance();
+                salaryAdvance.setEmployeeId(employee.getId());
+                salaryAdvance.setDateTaken(salaryAdvanceInput.getDateAdvanceTaken());
+                salaryAdvance.setAmount(salaryAdvanceInput.getAmount());
 
                 if (boolEditMode) {
-                    performance.setId(performanceId);
+                    salaryAdvance.setId(performanceId);
                 }
                 // Create|Update
-                boolean submitted = operation.post(performance);
+                boolean submitted = operation.post(salaryAdvance);
 
                 if (submitted) {
                     notifyCreated();

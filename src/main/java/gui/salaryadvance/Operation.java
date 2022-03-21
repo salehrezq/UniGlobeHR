@@ -1,6 +1,6 @@
 package gui.salaryadvance;
 
-import model.Performance;
+import model.SalaryAdvance;
 
 /**
  *
@@ -10,5 +10,5 @@ public interface Operation {
 
     public void switchOperationFor(Subject subject);
 
-    public boolean post(Performance performance);
+    public boolean post(SalaryAdvance salaryAdvance);
 }

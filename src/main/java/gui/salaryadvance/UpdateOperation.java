@@ -1,8 +1,8 @@
 package gui.salaryadvance;
 
-import datalink.CRUDPerformance;
+import datalink.CRUDSalaryAdvance;
 import javax.swing.JButton;
-import model.Performance;
+import model.SalaryAdvance;
 
 /**
  *
@@ -21,8 +21,8 @@ public class UpdateOperation implements Operation {
     }
 
     @Override
-    public boolean post(Performance performance) {
-        return CRUDPerformance.update(performance);
+    public boolean post(SalaryAdvance performance) {
+        return CRUDSalaryAdvance.update(performance);
     }
 
 }
