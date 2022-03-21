@@ -20,7 +20,7 @@ public class SalaryAdvanceTab {
     private SalaryAdvanceSubmit performanceSubmit;
     private PerformanceCancel performanceCancel;
     private final JPanel panelReuestRecords;
-    private PerformanceRequest performanceRequest;
+    private SalaryAdvanceRequest performanceRequest;
     private PerformanceRecords performanceRecords;
     private PerformanceDisplay performanceDisplay;
     private PerformanceEdit performanceEdit;
@@ -80,7 +80,7 @@ public class SalaryAdvanceTab {
         c.insets = new Insets(3, 0, 5, 31);
         panelInputs.add(performanceSubmit.getSubmitButton(), c);
 
-        performanceRequest = new PerformanceRequest();
+        performanceRequest = new SalaryAdvanceRequest();
         performanceRecords = new PerformanceRecords();
         performanceRequest.addReadListener(performanceRecords);
 
@@ -137,7 +137,7 @@ public class SalaryAdvanceTab {
         return performanceSubmit;
     }
 
-    public PerformanceRequest getPerformanceRequest() {
+    public SalaryAdvanceRequest getPerformanceRequest() {
         return performanceRequest;
     }
 

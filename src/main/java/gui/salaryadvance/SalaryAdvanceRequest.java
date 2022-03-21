@@ -25,7 +25,7 @@ import model.Performance;
  *
  * @author Saleh
  */
-public class PerformanceRequest
+public class SalaryAdvanceRequest
         implements
         EmployeeSelectedListener,
         DisplayableListener,
@@ -45,7 +45,7 @@ public class PerformanceRequest
     private boolean boolDisplayMode;
     private List<ReadListener> readListeners;
 
-    public PerformanceRequest() {
+    public SalaryAdvanceRequest() {
         super();
 
         readListeners = new ArrayList<>();
