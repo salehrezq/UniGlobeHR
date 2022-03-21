@@ -37,7 +37,7 @@ import model.Performance;
  *
  * @author Saleh
  */
-public class PerformanceRecords
+public class SalaryAdvanceRecords
         implements
         EmployeeSelectedListener,
         DisplayableListener,
@@ -65,7 +65,7 @@ public class PerformanceRecords
     private final JPopupMenu popupMenu;
     private final JMenuItem menuItemDelete;
 
-    public PerformanceRecords() {
+    public SalaryAdvanceRecords() {
         super();
 
         rowSelectedListeners = new ArrayList<>();
