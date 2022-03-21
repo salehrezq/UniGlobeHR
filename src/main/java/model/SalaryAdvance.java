@@ -2,7 +2,6 @@ package model;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.YearMonth;
 
 /**
  *
@@ -12,7 +11,7 @@ public class SalaryAdvance {
 
     private int id;
     private int employeeId;
-    private YearMonth yearMonthSubject;
+    private LocalDate yearMonthSubject;
     private LocalDate dateTaken;
     private BigDecimal amount;
 
@@ -32,11 +31,11 @@ public class SalaryAdvance {
         this.employeeId = employeeId;
     }
 
-    public YearMonth getYearMonthSubject() {
+    public LocalDate getYearMonthSubject() {
         return yearMonthSubject;
     }
 
-    public void setYearMonthSubject(YearMonth yearMonthSubject) {
+    public void setYearMonthSubject(LocalDate yearMonthSubject) {
         this.yearMonthSubject = yearMonthSubject;
     }
 

@@ -5,9 +5,9 @@ import crud.UpdateListener;
 import gui.EmployeeSelectedListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
-import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
@@ -92,12 +92,12 @@ public class SalaryAdvanceSubmit
         return this.stringBuilder.toString();
     }
 
-    private YearMonth getYearMonthSubjectOfAdvance() {
+    private LocalDate getYearMonthSubjectOfAdvance() {
 
         Year year = Year.parse(salaryAdvanceInput.getSubjectYear());
         Month month = Month.of(salaryAdvanceInput.getSubjectMonth());
 
-        YearMonth yearMonthSubjectOfAdvance = YearMonth.of(Integer.parseInt(year.toString()), month);
+        LocalDate yearMonthSubjectOfAdvance = LocalDate.of(Integer.parseInt(year.toString()), month, 1);
 
         System.out.println(yearMonthSubjectOfAdvance);
         return yearMonthSubjectOfAdvance;
