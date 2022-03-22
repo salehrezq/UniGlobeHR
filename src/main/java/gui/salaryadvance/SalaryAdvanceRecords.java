@@ -57,7 +57,7 @@ public class SalaryAdvanceRecords
     private List<RowDeselectedListener> rowDeselectedListeners;
     private List<DeleteListener> deleteListeners;
     private boolean boolRowSelected;
-    private Integer performanceId;
+    private Integer salaryAdvanceId;
     private boolean boolEditMode;
     private boolean boolDisplayMode;
     private final String selectedRowKey = "selectedRow";
@@ -144,13 +144,13 @@ public class SalaryAdvanceRecords
 
         table.getSelectionModel().setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
 
-        if (boolRowSelected && performanceId != null) {
+        if (boolRowSelected && salaryAdvanceId != null) {
             // React to selected row once display mode set to on:
             // In case if display mode button clicked
             // and at the same time some row was already selected,
             // then notify that a row is already selected
             // to get benefit from it or react accordingly.
-            notifyRowSelectedListener(performanceId);
+            notifyRowSelectedListener(salaryAdvanceId);
         }
     }
 
@@ -202,14 +202,14 @@ public class SalaryAdvanceRecords
     public void updated() {
         restoreRowSelection();
 
-        Performance performance = CRUDPerformance.getById(performanceId);
+        Performance performance = CRUDPerformance.getById(salaryAdvanceId);
 
         table.getModel().setValueAt(performance.getDateTime(), oldSelectedModelRow, 0);
         table.getModel().setValueAt(performanceState(performance.getState()), oldSelectedModelRow, 1);
         table.getModel().setValueAt(getTypeText(performance.getTypeId()), oldSelectedModelRow, 2);
         table.getModel().setValueAt(performance.getAmount(), oldSelectedModelRow, 3);
         table.getModel().setValueAt(performance.getTitle(), oldSelectedModelRow, 4);
-        table.getModel().setValueAt(performanceId, oldSelectedModelRow, 5);
+        table.getModel().setValueAt(salaryAdvanceId, oldSelectedModelRow, 5);
     }
 
     @Override
@@ -331,19 +331,19 @@ public class SalaryAdvanceRecords
                 if (selectionModel.isSelectionEmpty()) {
                     // Table row deselection occurred
                     boolRowSelected = false;
-                    performanceId = null;
+                    salaryAdvanceId = null;
                     table.setComponentPopupMenu(null);
                     notifyRowDeselection();
                 } else {
                     boolRowSelected = true;
                     int viewRow = table.getSelectedRow();
                     if (viewRow > -1) {
-                        int performanceIdColumn = 5;
+                        int salaryAdvanceIdColumn = 3;
                         selectedModelRow = table.convertRowIndexToModel(viewRow);
 
-                        Object performanceIdObject = table.getModel().getValueAt(selectedModelRow, performanceIdColumn);
-                        performanceId = Integer.parseInt(performanceIdObject.toString());
-                        notifyRowSelectedListener(performanceId);
+                        Object salaryAdvanceIdObject = table.getModel().getValueAt(selectedModelRow, salaryAdvanceIdColumn);
+                        salaryAdvanceId = Integer.parseInt(salaryAdvanceIdObject.toString());
+                        notifyRowSelectedListener(salaryAdvanceId);
                         if (boolDisplayMode) {
                             table.setComponentPopupMenu(popupMenu);
                         }
@@ -386,7 +386,7 @@ public class SalaryAdvanceRecords
                     "Confirm", JOptionPane.YES_OPTION);
 
             if (confirm == JOptionPane.YES_OPTION) {
-                if (CRUDPerformance.delete(performanceId)) {
+                if (CRUDPerformance.delete(salaryAdvanceId)) {
                     model.removeRow(selectedModelRow);
 
                     notifyDeleted();
