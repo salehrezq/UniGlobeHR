@@ -2,7 +2,7 @@ package gui.salaryadvance;
 
 import crud.ReadListener;
 import crud.UpdateListener;
-import datalink.CRUDPerformance;
+import datalink.CRUDSalaryAdvance;
 import gui.EmployeeSelectedListener;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
@@ -95,7 +95,7 @@ public class SalaryAdvanceRequest
         YearMonth ym = YearMonth.of(year, month);
         setYearAndMonth(ym);
 
-        records = CRUDPerformance.getPerformanceRecordByEmployeeByMonth(employeeId, ym);
+        records = CRUDSalaryAdvance.getSalaryAdvancesRecordByEmployeeByMonth(employeeId, ym);
 
         return records;
     }

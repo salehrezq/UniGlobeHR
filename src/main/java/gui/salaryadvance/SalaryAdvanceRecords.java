@@ -13,6 +13,7 @@ import java.awt.GridBagConstraints;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListSelectionModel;
@@ -32,6 +33,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import model.Employee;
 import model.Performance;
+import model.SalaryAdvance;
 
 /**
  *
@@ -44,7 +46,7 @@ public class SalaryAdvanceRecords
         EditableListener,
         CancelListener,
         UpdateListener,
-        ReadListener<Performance> {
+        ReadListener<SalaryAdvance> {
 
     private DefaultTableModel model;
     private JTable table;
@@ -74,7 +76,7 @@ public class SalaryAdvanceRecords
 
         panelTable = new JPanel();
 
-        model = new DefaultTableModel(new String[]{"DateTime", "State", "Type", "Amount", "Title", "Performance Id"}, 0) {
+        model = new DefaultTableModel(new String[]{"Subject month year", "Date taken", "Amount", "SalaryAdvance Id"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 // Disable cells editing.
@@ -112,7 +114,7 @@ public class SalaryAdvanceRecords
         // Hide Description Id column; because its purpose is
         // intended only to be used for click event of the row
         // to be passed to other areas of the program.
-        table.getColumnModel().removeColumn(table.getColumnModel().getColumn(5));
+        table.getColumnModel().removeColumn(table.getColumnModel().getColumn(3));
         scrollTable = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     }
 
@@ -211,7 +213,7 @@ public class SalaryAdvanceRecords
     }
 
     @Override
-    public void read(List<Performance> performancesRecords) {
+    public void read(List<SalaryAdvance> performancesRecords) {
         // Clear the model every time, to append fresh results
         // and not accumulate on previous results
         model.setRowCount(0);
@@ -227,15 +229,21 @@ public class SalaryAdvanceRecords
 
         int size = performancesRecords.size();
         for (int i = 0; i < size; i++) {
-            Performance performance = performancesRecords.get(i);
-            modelRow[0] = performance.getDateTime();
-            modelRow[1] = performanceState(performance.getState());
-            modelRow[2] = getTypeText(performance.getTypeId());
-            modelRow[3] = performance.getAmount();
-            modelRow[4] = performance.getTitle();
-            modelRow[5] = performance.getId();
+            SalaryAdvance salaryAdvance = performancesRecords.get(i);
+            modelRow[0] = displayMonthAndYear(salaryAdvance.getYearMonthSubject());
+            modelRow[1] = salaryAdvance.getDateTaken();
+            modelRow[2] = salaryAdvance.getAmount();
+            modelRow[3] = salaryAdvance.getId();
             model.addRow(modelRow);
         }
+    }
+
+    private String displayMonthAndYear(LocalDate yearMonthSubject) {
+
+        String year = String.valueOf(yearMonthSubject.getYear());
+        String month = yearMonthSubject.getMonth().name();
+
+        return month + " " + year;
     }
 
     public class LockableTableRowCellRenderer extends DefaultTableCellRenderer {
