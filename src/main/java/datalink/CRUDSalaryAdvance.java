@@ -46,6 +46,32 @@ public class CRUDSalaryAdvance {
         return insert > 0;
     }
 
+    public static SalaryAdvance getById(int id) {
+
+        SalaryAdvance salaryAdvance = null;
+        try {
+            String sql = "SELECT * FROM `salary_advances` WHERE id = ? LIMIT 1";
+            conn = Connect.getConnection();
+            PreparedStatement p = conn.prepareStatement(sql);
+            p.setInt(1, id);
+            ResultSet result = p.executeQuery();
+
+            while (result.next()) {
+                salaryAdvance = new SalaryAdvance();
+                salaryAdvance.setId(id);
+                salaryAdvance.setEmployeeId(result.getInt("employee_id"));
+                salaryAdvance.setYearMonthSubject(result.getObject("subject_year_month", LocalDate.class));
+                salaryAdvance.setDateTaken(result.getObject("date_taken", LocalDate.class));
+                salaryAdvance.setAmount(result.getBigDecimal("amount"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDSalaryAdvance.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            Connect.cleanUp();
+        }
+        return salaryAdvance;
+    }
+
     public static List getSalaryAdvancesRecordByEmployeeByMonth(int employeeID, YearMonth ym) {
 
         List<SalaryAdvance> salaryAdvancesList = new ArrayList<>();

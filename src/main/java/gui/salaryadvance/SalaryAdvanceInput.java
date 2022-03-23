@@ -3,7 +3,7 @@ package gui.salaryadvance;
 import crud.CreateListener;
 import crud.DeleteListener;
 import crud.UpdateListener;
-import datalink.CRUDPerformance;
+import datalink.CRUDSalaryAdvance;
 import gui.DateDeselectedListener;
 import gui.DateListener;
 import gui.DatePicker;
@@ -19,9 +19,9 @@ import java.awt.event.ItemListener;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.time.Month;
+import java.time.Year;
 import java.time.YearMonth;
-import java.time.format.DateTimeFormatter;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -34,8 +34,8 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.MaskFormatter;
 import model.Employee;
-import model.Performance;
 import model.PerformanceType;
+import model.SalaryAdvance;
 
 /**
  *
@@ -68,9 +68,9 @@ public class SalaryAdvanceInput
     private boolean boolDateFilled;
     private boolean boolTfAmountFilled;
     private boolean boolPerformanceDisplayMode, boolEditMode, boolCreated, boolUpdated;
-    private Performance performance;
+    private SalaryAdvance salaryAdvance;
     private int performanceId;
-    private int performanceOldId;
+    private int salaryAdvanceOldId;
 
     public SalaryAdvanceInput() {
 
@@ -258,29 +258,29 @@ public class SalaryAdvanceInput
 
     public void setInputFieldsWithPerformance(int id) {
 
-        if (performance == null || performanceOldId != id || boolUpdated) {
-            // If performance object is null, or
-            // if new Id is not the same as previous stored Id (performanceOldId), or
+        if (salaryAdvance == null || salaryAdvanceOldId != id || boolUpdated) {
+            // If salaryAdvance object is null, or
+            // if new Id is not the same as previous stored Id (salaryAdvanceOldId), or
             // if database entity update submitted
             // then make a new database request.
             boolUpdated = false; // reset submission flag
-            performance = CRUDPerformance.getById(id);
+            salaryAdvance = CRUDSalaryAdvance.getById(id);
         }
-        // else: otherwise use previously requested performance object
+        // else: otherwise use previously requested salaryAdvance object
         //
-        LocalDateTime ldt = performance.getDateTime();
 
-        String localTime12 = ldt.toLocalTime().format(DateTimeFormatter.ofPattern("hh:mm a"));
+        LocalDate yearMonthSubject = salaryAdvance.getYearMonthSubject();
+        java.time.Year year = Year.from(yearMonthSubject);
+        Month month = Month.from(yearMonthSubject);
 
-        tfYearSubject.setText(localTime12);
-        dateAdvanceTaken.setDateValue(ldt.toLocalDate());
-
-        tfAmount.setText(String.valueOf(performance.getAmount()));
-        String description = performance.getDescription();
+        tfYearSubject.setText(year.toString());
+        monthsList.setSelectedIndex(month.getValue() - 1);
+        dateAdvanceTaken.setDateValue(salaryAdvance.getDateTaken());
+        tfAmount.setText(String.valueOf(salaryAdvance.getAmount()));
 
         // Store id for future comparsions,
         // you find comparsion at the top of this method
-        performanceOldId = performance.getId();
+        salaryAdvanceOldId = salaryAdvance.getId();
     }
 
     @Override
