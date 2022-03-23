@@ -5,6 +5,7 @@ import crud.ReadListener;
 import crud.UpdateListener;
 import datalink.CRUDPerformance;
 import datalink.CRUDPerformanceType;
+import datalink.CRUDSalaryAdvance;
 import gui.EmployeeSelectedListener;
 import java.awt.Color;
 import java.awt.Component;
@@ -32,7 +33,6 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import model.Employee;
-import model.Performance;
 import model.SalaryAdvance;
 
 /**
@@ -202,14 +202,12 @@ public class SalaryAdvanceRecords
     public void updated() {
         restoreRowSelection();
 
-        Performance performance = CRUDPerformance.getById(salaryAdvanceId);
+        SalaryAdvance salaryAdvance = CRUDSalaryAdvance.getById(salaryAdvanceId);
 
-        table.getModel().setValueAt(performance.getDateTime(), oldSelectedModelRow, 0);
-        table.getModel().setValueAt(performanceState(performance.getState()), oldSelectedModelRow, 1);
-        table.getModel().setValueAt(getTypeText(performance.getTypeId()), oldSelectedModelRow, 2);
-        table.getModel().setValueAt(performance.getAmount(), oldSelectedModelRow, 3);
-        table.getModel().setValueAt(performance.getTitle(), oldSelectedModelRow, 4);
-        table.getModel().setValueAt(salaryAdvanceId, oldSelectedModelRow, 5);
+        table.getModel().setValueAt(displayMonthAndYear(salaryAdvance.getYearMonthSubject()), oldSelectedModelRow, 0);
+        table.getModel().setValueAt(salaryAdvance.getDateTaken(), oldSelectedModelRow, 1);
+        table.getModel().setValueAt(salaryAdvance.getAmount(), oldSelectedModelRow, 2);
+        table.getModel().setValueAt(salaryAdvanceId, oldSelectedModelRow, 3);
     }
 
     @Override
