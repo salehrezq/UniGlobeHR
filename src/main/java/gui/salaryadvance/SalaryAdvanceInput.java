@@ -196,12 +196,8 @@ public class SalaryAdvanceInput
 
     protected void clearInputFields() {
         tfYearSubject.setText(String.valueOf(yearAndMonth.getYear()));
-
+        monthsList.setSelectedIndex(yearAndMonth.getMonthValue() -1);
         dateAdvanceTaken.setTodayAsDefault();
-        // Setting comboStateOfPerformance selected index to zero
-        // invokes ItemListener methods which contains the code
-        // to set the other linked combo box to zero
-        // and also the boolean values to false.
         tfAmount.setText(null);
         boolTfAmountFilled = false;
     }
