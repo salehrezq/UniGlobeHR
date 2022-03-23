@@ -120,8 +120,8 @@ public class CRUDSalaryAdvance {
                     + "SET "
                     + "`subject_year_month`= ?, "
                     + "`date_taken` = ?, "
-                    + "`amount` = ?, "
-                    + "WHERE id = ?";
+                    + "`amount` = ? "
+                    + "WHERE `id` = ?";
             conn = Connect.getConnection();
             PreparedStatement p = conn.prepareStatement(sql);
 
