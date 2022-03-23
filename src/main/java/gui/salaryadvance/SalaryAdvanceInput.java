@@ -196,7 +196,7 @@ public class SalaryAdvanceInput
 
     protected void clearInputFields() {
         tfYearSubject.setText(String.valueOf(yearAndMonth.getYear()));
-        monthsList.setSelectedIndex(yearAndMonth.getMonthValue() -1);
+        monthsList.setSelectedIndex(yearAndMonth.getMonthValue() - 1);
         dateAdvanceTaken.setTodayAsDefault();
         tfAmount.setText(null);
         boolTfAmountFilled = false;
