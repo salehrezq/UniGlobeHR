@@ -215,7 +215,6 @@ public class SalaryAdvanceInput
     @Override
     public void created() {
         boolCreated = true;
-        clearInputFields();
     }
 
     @Override
