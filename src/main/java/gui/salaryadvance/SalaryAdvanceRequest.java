@@ -123,11 +123,15 @@ public class SalaryAdvanceRequest
     @Override
     public void editable() {
         btnRequestData.setEnabled(false);
+        tfYear.setEnabled(false);
+        monthsList.setEnabled(false);
     }
 
     private void restoreRowSelection() {
         if (boolDisplayMode) {
             btnRequestData.setEnabled(true);
+            tfYear.setEnabled(true);
+            monthsList.setEnabled(true);
         }
     }
 
@@ -140,6 +144,8 @@ public class SalaryAdvanceRequest
     public void updated() {
         restoreRowSelection();
         btnRequestData.setEnabled(true);
+        tfYear.setEnabled(true);
+        monthsList.setEnabled(true);
     }
 
     public void addReadListener(ReadListener readListener) {
