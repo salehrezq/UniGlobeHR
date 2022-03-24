@@ -14,7 +14,6 @@ import java.awt.GridBagConstraints;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.DefaultListSelectionModel;
@@ -76,7 +75,7 @@ public class SalaryAdvanceRecords
 
         panelTable = new JPanel();
 
-        model = new DefaultTableModel(new String[]{"Subject month year", "Date taken", "Amount", "SalaryAdvance Id"}, 0) {
+        model = new DefaultTableModel(new String[]{"Date taken", "Amount", "SalaryAdvance Id"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 // Disable cells editing.
@@ -107,14 +106,13 @@ public class SalaryAdvanceRecords
         table.getColumnModel().getColumn(0).setPreferredWidth(20);
         table.getColumnModel().getColumn(1).setPreferredWidth(5);
         table.getColumnModel().getColumn(2).setPreferredWidth(5);
-        table.getColumnModel().getColumn(3).setPreferredWidth(50);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         table.getSelectionModel().addListSelectionListener(new RowSelectionListener());
 
         // Hide Description Id column; because its purpose is
         // intended only to be used for click event of the row
         // to be passed to other areas of the program.
-        table.getColumnModel().removeColumn(table.getColumnModel().getColumn(3));
+        table.getColumnModel().removeColumn(table.getColumnModel().getColumn(2));
         scrollTable = new JScrollPane(table, JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED, JScrollPane.HORIZONTAL_SCROLLBAR_AS_NEEDED);
     }
 
@@ -204,10 +202,9 @@ public class SalaryAdvanceRecords
 
         SalaryAdvance salaryAdvance = CRUDSalaryAdvance.getById(salaryAdvanceId);
 
-        table.getModel().setValueAt(displayMonthAndYear(salaryAdvance.getYearMonthSubject()), oldSelectedModelRow, 0);
-        table.getModel().setValueAt(salaryAdvance.getDateTaken(), oldSelectedModelRow, 1);
-        table.getModel().setValueAt(salaryAdvance.getAmount(), oldSelectedModelRow, 2);
-        table.getModel().setValueAt(salaryAdvanceId, oldSelectedModelRow, 3);
+        table.getModel().setValueAt(salaryAdvance.getDateTaken(), oldSelectedModelRow, 0);
+        table.getModel().setValueAt(salaryAdvance.getAmount(), oldSelectedModelRow, 1);
+        table.getModel().setValueAt(salaryAdvanceId, oldSelectedModelRow, 2);
     }
 
     @Override
@@ -228,20 +225,11 @@ public class SalaryAdvanceRecords
         int size = performancesRecords.size();
         for (int i = 0; i < size; i++) {
             SalaryAdvance salaryAdvance = performancesRecords.get(i);
-            modelRow[0] = displayMonthAndYear(salaryAdvance.getYearMonthSubject());
-            modelRow[1] = salaryAdvance.getDateTaken();
-            modelRow[2] = salaryAdvance.getAmount();
-            modelRow[3] = salaryAdvance.getId();
+            modelRow[0] = salaryAdvance.getDateTaken();
+            modelRow[1] = salaryAdvance.getAmount();
+            modelRow[2] = salaryAdvance.getId();
             model.addRow(modelRow);
         }
-    }
-
-    private String displayMonthAndYear(LocalDate yearMonthSubject) {
-
-        String year = String.valueOf(yearMonthSubject.getYear());
-        String month = yearMonthSubject.getMonth().name();
-
-        return month + " " + year;
     }
 
     public class LockableTableRowCellRenderer extends DefaultTableCellRenderer {
@@ -336,7 +324,7 @@ public class SalaryAdvanceRecords
                     boolRowSelected = true;
                     int viewRow = table.getSelectedRow();
                     if (viewRow > -1) {
-                        int salaryAdvanceIdColumn = 3;
+                        int salaryAdvanceIdColumn = 2;
                         selectedModelRow = table.convertRowIndexToModel(viewRow);
 
                         Object salaryAdvanceIdObject = table.getModel().getValueAt(selectedModelRow, salaryAdvanceIdColumn);
