@@ -69,7 +69,7 @@ public class SalaryAdvanceInput
     private boolean boolTfAmountFilled;
     private boolean boolPerformanceDisplayMode, boolEditMode, boolCreated, boolUpdated;
     private SalaryAdvance salaryAdvance;
-    private int performanceId;
+    private int salaryAdvanceId;
     private int salaryAdvanceOldId;
 
     public SalaryAdvanceInput() {
@@ -222,7 +222,7 @@ public class SalaryAdvanceInput
         boolUpdated = true;
         if (boolPerformanceDisplayMode) {
             setFieldsEditable(false);
-            setInputFieldsWithPerformance(performanceId);
+            setInputFieldsWithSalaryAdvance(salaryAdvanceId);
         }
     }
 
@@ -244,14 +244,14 @@ public class SalaryAdvanceInput
     @Override
     public void rowSelectedWithRecordId(int id) {
 
-        performanceId = id;
+        salaryAdvanceId = id;
 
         if (boolPerformanceDisplayMode) {
-            setInputFieldsWithPerformance(id);
+            setInputFieldsWithSalaryAdvance(id);
         }
     }
 
-    public void setInputFieldsWithPerformance(int id) {
+    public void setInputFieldsWithSalaryAdvance(int id) {
 
         if (salaryAdvance == null || salaryAdvanceOldId != id || boolUpdated) {
             // If salaryAdvance object is null, or
@@ -290,7 +290,7 @@ public class SalaryAdvanceInput
             // Display mode, and posibly edit mode
             boolEditMode = false;
             setFieldsEditable(false);
-            setInputFieldsWithPerformance(performanceId);
+            setInputFieldsWithSalaryAdvance(salaryAdvanceId);
         } else if (!boolPerformanceDisplayMode) {
             // Create mode
             int dialogResult = JOptionPane.showConfirmDialog(null,
