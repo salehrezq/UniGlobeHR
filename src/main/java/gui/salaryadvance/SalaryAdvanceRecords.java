@@ -103,9 +103,9 @@ public class SalaryAdvanceRecords
 
         table.setFont(new Font("SansSerif", Font.BOLD, 14));
         table.setFillsViewportHeight(true);
-        table.getColumnModel().getColumn(0).setPreferredWidth(20);
-        table.getColumnModel().getColumn(1).setPreferredWidth(5);
-        table.getColumnModel().getColumn(2).setPreferredWidth(5);
+        table.getColumnModel().getColumn(0).setPreferredWidth(1);
+        table.getColumnModel().getColumn(1).setPreferredWidth(1);
+        table.getColumnModel().getColumn(2).setPreferredWidth(1);
         table.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
         table.getSelectionModel().addListSelectionListener(new RowSelectionListener());
 
