@@ -93,13 +93,11 @@ public class SalaryAdvanceSubmit
     }
 
     private LocalDate getYearMonthSubjectOfAdvance() {
-
         Year year = Year.parse(salaryAdvanceInput.getSubjectYear());
         Month month = Month.of(salaryAdvanceInput.getSubjectMonth());
 
         LocalDate yearMonthSubjectOfAdvance = LocalDate.of(Integer.parseInt(year.toString()), month, 1);
 
-        System.out.println(yearMonthSubjectOfAdvance);
         return yearMonthSubjectOfAdvance;
     }
 
