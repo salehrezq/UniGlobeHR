@@ -141,4 +141,26 @@ public class CRUDSalaryAdvance {
         return update > 0;
     }
 
+    public static boolean delete(Integer id) {
+
+        int delete = 0;
+
+        try {
+            String sql = "DELETE FROM `salary_advances` WHERE `id` = ? LIMIT 1";
+            conn = Connect.getConnection();
+            PreparedStatement p = conn.prepareStatement(sql);
+
+            p.setInt(1, id);
+
+            delete = p.executeUpdate();
+            conn.commit();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDSalaryAdvance.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            Connect.cleanUp();
+        }
+        return delete > 0;
+    }
+
 }

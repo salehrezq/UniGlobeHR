@@ -3,7 +3,6 @@ package gui.salaryadvance;
 import crud.DeleteListener;
 import crud.ReadListener;
 import crud.UpdateListener;
-import datalink.CRUDPerformance;
 import datalink.CRUDPerformanceType;
 import datalink.CRUDSalaryAdvance;
 import gui.EmployeeSelectedListener;
@@ -385,7 +384,7 @@ public class SalaryAdvanceRecords
                     "Confirm", JOptionPane.YES_OPTION);
 
             if (confirm == JOptionPane.YES_OPTION) {
-                if (CRUDPerformance.delete(salaryAdvanceId)) {
+                if (CRUDSalaryAdvance.delete(salaryAdvanceId)) {
                     model.removeRow(selectedModelRow);
 
                     notifyDeleted();
