@@ -11,7 +11,7 @@ import javax.swing.JButton;
  *
  * @author Saleh
  */
-public class PerformanceCancel
+public class SalaryAdvanceCancel
         implements
         DisplayableListener,
         EditableListener,
@@ -21,7 +21,7 @@ public class PerformanceCancel
     private List<CancelListener> cancelledListeners;
     private boolean booleditMode, boolDisplayable;
 
-    public PerformanceCancel() {
+    public SalaryAdvanceCancel() {
 
         cancelledListeners = new ArrayList<>();
         btnCancel = new JButton("Cancel");

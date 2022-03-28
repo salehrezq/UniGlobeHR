@@ -18,7 +18,7 @@ public class SalaryAdvanceTab {
     private EmployeeCard employeeCard;
     private SalaryAdvanceInput performanceInput;
     private SalaryAdvanceSubmit performanceSubmit;
-    private PerformanceCancel performanceCancel;
+    private SalaryAdvanceCancel performanceCancel;
     private final JPanel panelReuestRecords;
     private SalaryAdvanceRequest performanceRequest;
     private SalaryAdvanceRecords performanceRecords;
@@ -55,7 +55,7 @@ public class SalaryAdvanceTab {
         c.anchor = GridBagConstraints.PAGE_START;
         panelInputs.add(performanceInput.getPerformanceInputsPanel(), c);
 
-        performanceCancel = new PerformanceCancel();
+        performanceCancel = new SalaryAdvanceCancel();
         performanceCancel.addCancelListener(performanceInput);
         performanceCancel.addCancelListener(performanceSubmit);
         performanceSubmit.addPerformanceUpdatedListener(performanceCancel);
