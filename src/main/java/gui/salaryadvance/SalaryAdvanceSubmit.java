@@ -36,8 +36,8 @@ public class SalaryAdvanceSubmit
     private Employee employee;
     private List<CreateListener> createListeners;
     private List<UpdateListener> updateListeners;
-    private boolean boolPerformanceDisplayMode, boolEditMode;
-    private Integer performanceId;
+    private boolean boolSalaryAdvanceDisplayMode, boolEditMode;
+    private Integer salaryAdvanceId;
 
     public SalaryAdvanceSubmit() {
 
@@ -46,7 +46,7 @@ public class SalaryAdvanceSubmit
 
         btnSubmit = new JButton();
         btnSubmit.setEnabled(false);
-        btnSubmit.addActionListener(new SubmitPerformance());
+        btnSubmit.addActionListener(new SubmitSalaryAdvance());
         stringBuilder = new StringBuilder(145);
 
         operation = new CreateOperation();
@@ -57,7 +57,7 @@ public class SalaryAdvanceSubmit
         this.salaryAdvanceInput = salaryAdvanceInput;
     }
 
-    public void addPerformanceUpdatedListener(UpdateListener updateListener) {
+    public void addSalaryAdvanceUpdatedListener(UpdateListener updateListener) {
         this.updateListeners.add(updateListener);
     }
 
@@ -67,7 +67,7 @@ public class SalaryAdvanceSubmit
         });
     }
 
-    public void addPerformanceCreatedListener(CreateListener createListener) {
+    public void addSalaryAdvanceCreatedListener(CreateListener createListener) {
         this.createListeners.add(createListener);
     }
 
@@ -103,13 +103,13 @@ public class SalaryAdvanceSubmit
 
     @Override
     public void displayable() {
-        boolPerformanceDisplayMode = true;
+        boolSalaryAdvanceDisplayMode = true;
         btnSubmit.setEnabled(false);
     }
 
     @Override
     public void unDisplayable() {
-        boolPerformanceDisplayMode = false;
+        boolSalaryAdvanceDisplayMode = false;
         if (employee != null) {
             operation = new CreateOperation();
             operation.switchOperationFor(this);
@@ -127,7 +127,7 @@ public class SalaryAdvanceSubmit
 
     @Override
     public void cancelled() {
-        if (boolPerformanceDisplayMode) {
+        if (boolSalaryAdvanceDisplayMode) {
             boolEditMode = false;
             btnSubmit.setEnabled(false);
         }
@@ -150,12 +150,12 @@ public class SalaryAdvanceSubmit
 
     @Override
     public void rowSelectedWithRecordId(int id) {
-        performanceId = id;
+        salaryAdvanceId = id;
     }
 
     @Override
     public void rowDeselection() {
-        performanceId = null;
+        salaryAdvanceId = null;
     }
 
     private class ValidateWithMessages {
@@ -169,7 +169,7 @@ public class SalaryAdvanceSubmit
         }
     }
 
-    private ValidateWithMessages validatePerformanceInputs() {
+    private ValidateWithMessages validateSalaryAdvanceInputs() {
 
         List<String> messages = new ArrayList<>();
         List<Boolean> booleans = new ArrayList<>();
@@ -192,7 +192,7 @@ public class SalaryAdvanceSubmit
 
     @Override
     public void employeeSelected(Employee employee) {
-        if (!boolPerformanceDisplayMode) {
+        if (!boolSalaryAdvanceDisplayMode) {
             btnSubmit.setEnabled(true);
         }
         this.employee = employee;
@@ -204,12 +204,12 @@ public class SalaryAdvanceSubmit
         this.employee = null;
     }
 
-    class SubmitPerformance implements ActionListener {
+    class SubmitSalaryAdvance implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            ValidateWithMessages validateWithMessages = validatePerformanceInputs();
+            ValidateWithMessages validateWithMessages = validateSalaryAdvanceInputs();
 
             // Check if List of boolean values are all true or one value at least is false
             // Important note: If booleans.size() is zero;
@@ -226,7 +226,7 @@ public class SalaryAdvanceSubmit
                 salaryAdvance.setAmount(salaryAdvanceInput.getAmount());
 
                 if (boolEditMode) {
-                    salaryAdvance.setId(performanceId);
+                    salaryAdvance.setId(salaryAdvanceId);
                 }
                 // Create|Update
                 boolean submitted = operation.post(salaryAdvance);

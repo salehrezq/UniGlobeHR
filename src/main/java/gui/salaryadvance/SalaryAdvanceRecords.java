@@ -3,7 +3,6 @@ package gui.salaryadvance;
 import crud.DeleteListener;
 import crud.ReadListener;
 import crud.UpdateListener;
-import datalink.CRUDPerformanceType;
 import datalink.CRUDSalaryAdvance;
 import gui.EmployeeSelectedListener;
 import java.awt.Color;
@@ -220,12 +219,12 @@ public class SalaryAdvanceRecords
     }
 
     @Override
-    public void read(List<SalaryAdvance> performancesRecords) {
+    public void read(List<SalaryAdvance> salaryaAvanceRecords) {
         // Clear the model every time, to append fresh results
         // and not accumulate on previous results
         model.setRowCount(0);
 
-        if (performancesRecords == null) {
+        if (salaryaAvanceRecords == null) {
             JOptionPane.showConfirmDialog(panelTable,
                     "Select Employee", "",
                     JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
@@ -234,9 +233,9 @@ public class SalaryAdvanceRecords
 
         Object[] modelRow = new Object[6];
 
-        int size = performancesRecords.size();
+        int size = salaryaAvanceRecords.size();
         for (int i = 0; i < size; i++) {
-            SalaryAdvance salaryAdvance = performancesRecords.get(i);
+            SalaryAdvance salaryAdvance = salaryaAvanceRecords.get(i);
             modelRow[0] = salaryAdvance.getDateTaken();
             modelRow[1] = salaryAdvance.getAmount();
             modelRow[2] = salaryAdvance.getId();
@@ -271,29 +270,13 @@ public class SalaryAdvanceRecords
         }
     }
 
-    private String performanceState(boolean state) {
-
-        String stateType = "Undefined";
-
-        if (state) {
-            stateType = "Positive";
-        } else {
-            stateType = "Negative";
-        }
-        return stateType;
-    }
-
-    private String getTypeText(int typeID) {
-        return CRUDPerformanceType.getById(typeID).getType();
-    }
-
     public void addRowSelectedListener(RowSelectedListener rcl) {
         this.rowSelectedListeners.add(rcl);
     }
 
-    private void notifyRowSelectedListener(int performanceId) {
+    private void notifyRowSelectedListener(int salaryadvanceId) {
         this.rowSelectedListeners.forEach((rcl) -> {
-            rcl.rowSelectedWithRecordId(performanceId);
+            rcl.rowSelectedWithRecordId(salaryadvanceId);
         });
     }
 
@@ -380,7 +363,7 @@ public class SalaryAdvanceRecords
         public void actionPerformed(ActionEvent e) {
 
             int confirm = JOptionPane.showConfirmDialog(null,
-                    "Are you sure to delete the selected performance record?",
+                    "Are you sure to delete the selected Salary advance record?",
                     "Confirm", JOptionPane.YES_OPTION);
 
             if (confirm == JOptionPane.YES_OPTION) {
@@ -390,11 +373,11 @@ public class SalaryAdvanceRecords
                     notifyDeleted();
 
                     JOptionPane.showConfirmDialog(null,
-                            "Performance deleted successfully",
+                            "Salary advance deleted successfully",
                             "Info", JOptionPane.PLAIN_MESSAGE);
                 } else {
                     JOptionPane.showConfirmDialog(null,
-                            "Performance record was not found\n"
+                            "Salary advance record was not found\n"
                             + "It might be deleted beforehand.",
                             "Info", JOptionPane.PLAIN_MESSAGE);
                 }

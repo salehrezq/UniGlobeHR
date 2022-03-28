@@ -18,39 +18,39 @@ public class SalaryAdvanceDisplay
         CancelListener,
         UpdateListener {
 
-    private SalaryAdvanceInput performanceInput;
+    private SalaryAdvanceInput salaryAdvanceInput;
     private JCheckBox checkDisplayMode;
-    private List<DisplayableListener> PerformanceDisplayableListeners;
+    private List<DisplayableListener> salaryAdvanceDisplayableListeners;
 
     public SalaryAdvanceDisplay() {
 
-        PerformanceDisplayableListeners = new ArrayList<>();
+        salaryAdvanceDisplayableListeners = new ArrayList<>();
 
         checkDisplayMode = new JCheckBox("Display Mode");
         checkDisplayMode.addItemListener(new ChechBoxListener());
     }
 
-    public void setPerformanceInput(SalaryAdvanceInput performanceInput) {
-        this.performanceInput = performanceInput;
+    public void setSalaryAdvanceInput(SalaryAdvanceInput salaryAdvanceInput) {
+        this.salaryAdvanceInput = salaryAdvanceInput;
     }
 
     public JCheckBox getCheckDisplayMode() {
         return checkDisplayMode;
     }
 
-    public void addPerformanceDisplayableListener(DisplayableListener pdml) {
-        this.PerformanceDisplayableListeners.add(pdml);
+    public void addSalaryAdvanceDisplayableListener(DisplayableListener sadl) {
+        this.salaryAdvanceDisplayableListeners.add(sadl);
     }
 
-    private void notifyPerformanceDisplayable() {
-        this.PerformanceDisplayableListeners.forEach((pdml) -> {
-            pdml.displayable();
+    private void notifySalaryAdvanceDisplayable() {
+        this.salaryAdvanceDisplayableListeners.forEach((sadl) -> {
+            sadl.displayable();
         });
     }
 
-    private void notifyPerformanceUnDisplayable() {
-        this.PerformanceDisplayableListeners.forEach((ddl) -> {
-            ddl.unDisplayable();
+    private void notifySalaryAdvanceUnDisplayable() {
+        this.salaryAdvanceDisplayableListeners.forEach((sadl) -> {
+            sadl.unDisplayable();
         });
     }
 
@@ -93,13 +93,13 @@ public class SalaryAdvanceDisplay
                                 "Warning", JOptionPane.YES_OPTION);
 
                         if (dialogResult == JOptionPane.YES_OPTION) {
-                            notifyPerformanceDisplayable();
+                            notifySalaryAdvanceDisplayable();
                             count += 1;
                             checkDisplayMode.setSelected(true);
                         }
                     }
                 } else if (event.getStateChange() == ItemEvent.DESELECTED && count == 0) {
-                    notifyPerformanceUnDisplayable();
+                    notifySalaryAdvanceUnDisplayable();
                 }
             }
             count = 0;

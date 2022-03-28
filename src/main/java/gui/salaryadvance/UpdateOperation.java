@@ -21,8 +21,8 @@ public class UpdateOperation implements Operation {
     }
 
     @Override
-    public boolean post(SalaryAdvance performance) {
-        return CRUDSalaryAdvance.update(performance);
+    public boolean post(SalaryAdvance salaryAdvance) {
+        return CRUDSalaryAdvance.update(salaryAdvance);
     }
 
 }

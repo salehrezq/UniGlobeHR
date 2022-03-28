@@ -19,7 +19,7 @@ import javax.swing.JFormattedTextField;
 import javax.swing.JPanel;
 import javax.swing.text.MaskFormatter;
 import model.Employee;
-import model.Performance;
+import model.SalaryAdvance;
 
 /**
  *
@@ -84,7 +84,7 @@ public class SalaryAdvanceRequest
         this.yearAndMonth = ym;
     }
 
-    public List<Performance> getTata() {
+    public List<SalaryAdvance> getTata() {
 
         if (employeeId < 1) {
             return null;
@@ -152,7 +152,7 @@ public class SalaryAdvanceRequest
         this.readListeners.add(readListener);
     }
 
-    private void notifyRead(List<Performance> records) {
+    private void notifyRead(List<SalaryAdvance> records) {
         this.readListeners.forEach((readListener) -> {
             readListener.read(records);
         });

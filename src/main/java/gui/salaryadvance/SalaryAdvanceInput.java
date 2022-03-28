@@ -34,7 +34,6 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.MaskFormatter;
 import model.Employee;
-import model.PerformanceType;
 import model.SalaryAdvance;
 
 /**
@@ -59,7 +58,6 @@ public class SalaryAdvanceInput
     private JComboBox monthsList;
     private final String[] monthsNums;
     private DatePicker dateAdvanceTaken;
-    private PerformanceType selectedPerformanceType;
     private JLabel lbAmount;
     private JTextField tfAmount;
     private Color colorFieldRight;
@@ -67,7 +65,7 @@ public class SalaryAdvanceInput
     private Color colorDisabled;
     private boolean boolDateFilled;
     private boolean boolTfAmountFilled;
-    private boolean boolPerformanceDisplayMode, boolEditMode, boolCreated, boolUpdated;
+    private boolean boolSalaryAdvanceDisplayMode, boolEditMode, boolCreated, boolUpdated;
     private SalaryAdvance salaryAdvance;
     private int salaryAdvanceId;
     private int salaryAdvanceOldId;
@@ -145,16 +143,16 @@ public class SalaryAdvanceInput
         setFieldsEditable(false);
     }
 
-    public JPanel getPerformanceInputsPanel() {
+    public JPanel getSalaryAdvanceInputsPanel() {
         return mainPanel;
     }
 
     @Override
     public void employeeSelected(Employee employee) {
-        if (!boolPerformanceDisplayMode) {
+        if (!boolSalaryAdvanceDisplayMode) {
             setFieldsEditable(true);
         }
-        if (boolPerformanceDisplayMode && employee != null) {
+        if (boolSalaryAdvanceDisplayMode && employee != null) {
             clearInputFields();
         }
     }
@@ -176,10 +174,6 @@ public class SalaryAdvanceInput
 
     public LocalDate getDateAdvanceTaken() {
         return dateAdvanceTaken.getDate();
-    }
-
-    public PerformanceType getPerformanceType() {
-        return this.selectedPerformanceType;
     }
 
     public BigDecimal getAmount() {
@@ -220,7 +214,7 @@ public class SalaryAdvanceInput
     @Override
     public void updated() {
         boolUpdated = true;
-        if (boolPerformanceDisplayMode) {
+        if (boolSalaryAdvanceDisplayMode) {
             setFieldsEditable(false);
             setInputFieldsWithSalaryAdvance(salaryAdvanceId);
         }
@@ -228,14 +222,14 @@ public class SalaryAdvanceInput
 
     @Override
     public void displayable() {
-        boolPerformanceDisplayMode = true;
+        boolSalaryAdvanceDisplayMode = true;
         clearInputFields();
         setFieldsEditable(false);
     }
 
     @Override
     public void unDisplayable() {
-        boolPerformanceDisplayMode = false;
+        boolSalaryAdvanceDisplayMode = false;
         boolEditMode = false;
         clearInputFields();
         setFieldsEditable(true);
@@ -246,7 +240,7 @@ public class SalaryAdvanceInput
 
         salaryAdvanceId = id;
 
-        if (boolPerformanceDisplayMode) {
+        if (boolSalaryAdvanceDisplayMode) {
             setInputFieldsWithSalaryAdvance(id);
         }
     }
@@ -286,12 +280,12 @@ public class SalaryAdvanceInput
 
     @Override
     public void cancelled() {
-        if (boolPerformanceDisplayMode) {
+        if (boolSalaryAdvanceDisplayMode) {
             // Display mode, and posibly edit mode
             boolEditMode = false;
             setFieldsEditable(false);
             setInputFieldsWithSalaryAdvance(salaryAdvanceId);
-        } else if (!boolPerformanceDisplayMode) {
+        } else if (!boolSalaryAdvanceDisplayMode) {
             // Create mode
             int dialogResult = JOptionPane.showConfirmDialog(null,
                     "This will clear content from all input fields\n"
