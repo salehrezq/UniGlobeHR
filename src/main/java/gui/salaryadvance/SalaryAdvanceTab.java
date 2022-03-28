@@ -23,7 +23,7 @@ public class SalaryAdvanceTab {
     private SalaryAdvanceRequest performanceRequest;
     private SalaryAdvanceRecords performanceRecords;
     private SalaryAdvanceDisplay performanceDisplay;
-    private PerformanceEdit performanceEdit;
+    private SalaryAdvanceEdit performanceEdit;
 
     public SalaryAdvanceTab() {
 
@@ -105,7 +105,7 @@ public class SalaryAdvanceTab {
         performanceSubmit.addPerformanceUpdatedListener(performanceDisplay);
         performanceRequest.getPanelControls().add(performanceDisplay.getCheckDisplayMode());
 
-        performanceEdit = new PerformanceEdit();
+        performanceEdit = new SalaryAdvanceEdit();
         performanceEdit.addPerformanceEditableListener(performanceRequest);
         performanceEdit.addPerformanceEditableListener(performanceRecords);
         performanceEdit.addPerformanceEditableListener(performanceInput);

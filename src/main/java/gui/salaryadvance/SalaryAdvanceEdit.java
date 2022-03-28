@@ -11,7 +11,7 @@ import javax.swing.JButton;
  *
  * @author Saleh
  */
-public class PerformanceEdit implements
+public class SalaryAdvanceEdit implements
         DisplayableListener,
         RowSelectedListener,
         RowDeselectedListener,
@@ -24,7 +24,7 @@ public class PerformanceEdit implements
     private boolean boolPerformanceDisplayable;
     private boolean boolEditMode;
 
-    public PerformanceEdit() {
+    public SalaryAdvanceEdit() {
 
         performanceEditableListeners = new ArrayList<>();
         btnEditMode = new JButton("Edit Mode");
