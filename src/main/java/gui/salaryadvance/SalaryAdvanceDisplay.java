@@ -12,7 +12,7 @@ import javax.swing.JOptionPane;
  *
  * @author Saleh
  */
-public class PerformanceDisplay
+public class SalaryAdvanceDisplay
         implements
         EditableListener,
         CancelListener,
@@ -22,7 +22,7 @@ public class PerformanceDisplay
     private JCheckBox checkDisplayMode;
     private List<DisplayableListener> PerformanceDisplayableListeners;
 
-    public PerformanceDisplay() {
+    public SalaryAdvanceDisplay() {
 
         PerformanceDisplayableListeners = new ArrayList<>();
 

@@ -22,7 +22,7 @@ public class SalaryAdvanceTab {
     private final JPanel panelReuestRecords;
     private SalaryAdvanceRequest performanceRequest;
     private SalaryAdvanceRecords performanceRecords;
-    private PerformanceDisplay performanceDisplay;
+    private SalaryAdvanceDisplay performanceDisplay;
     private PerformanceEdit performanceEdit;
 
     public SalaryAdvanceTab() {
@@ -95,7 +95,7 @@ public class SalaryAdvanceTab {
         panelReuestRecords.add(performanceRequest.getPanelControls(), BorderLayout.PAGE_START);
         panelReuestRecords.add(performanceRecords.getPanelTable(), BorderLayout.CENTER);
 
-        performanceDisplay = new PerformanceDisplay();
+        performanceDisplay = new SalaryAdvanceDisplay();
         performanceCancel.addCancelListener(performanceDisplay);
         performanceDisplay.addPerformanceDisplayableListener(performanceSubmit);
         performanceDisplay.addPerformanceDisplayableListener(performanceInput);
