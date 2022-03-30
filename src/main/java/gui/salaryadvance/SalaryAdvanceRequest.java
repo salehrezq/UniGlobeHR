@@ -1,6 +1,7 @@
 package gui.salaryadvance;
 
 import crud.ReadListener;
+import crud.UpdateICRPListener;
 import crud.UpdateListener;
 import datalink.CRUDSalaryAdvance;
 import gui.EmployeeSelectedListener;
@@ -31,7 +32,8 @@ public class SalaryAdvanceRequest
         DisplayableListener,
         EditableListener,
         CancelListener,
-        UpdateListener {
+        UpdateListener,
+        UpdateICRPListener {
 
     private JPanel panelControlls;
     private JButton btnRequestData;
@@ -146,6 +148,11 @@ public class SalaryAdvanceRequest
         btnRequestData.setEnabled(true);
         tfYear.setEnabled(true);
         monthsList.setEnabled(true);
+    }
+
+    @Override
+    public void updatedICRP() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public void addReadListener(ReadListener readListener) {

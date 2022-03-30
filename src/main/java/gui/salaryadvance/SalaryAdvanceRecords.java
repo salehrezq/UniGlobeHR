@@ -2,6 +2,7 @@ package gui.salaryadvance;
 
 import crud.DeleteListener;
 import crud.ReadListener;
+import crud.UpdateICRPListener;
 import crud.UpdateListener;
 import datalink.CRUDSalaryAdvance;
 import gui.EmployeeSelectedListener;
@@ -43,6 +44,7 @@ public class SalaryAdvanceRecords
         EditableListener,
         CancelListener,
         UpdateListener,
+        UpdateICRPListener,
         ReadListener<SalaryAdvance> {
 
     private DefaultTableModel model;
@@ -207,6 +209,11 @@ public class SalaryAdvanceRecords
         table.getModel().setValueAt(salaryAdvance.getDateTaken(), oldSelectedModelRow, 0);
         table.getModel().setValueAt(salaryAdvance.getAmount(), oldSelectedModelRow, 1);
         table.getModel().setValueAt(salaryAdvanceId, oldSelectedModelRow, 2);
+    }
+
+    @Override
+    public void updatedICRP() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

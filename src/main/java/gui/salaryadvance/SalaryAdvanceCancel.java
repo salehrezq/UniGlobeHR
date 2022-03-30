@@ -1,5 +1,6 @@
 package gui.salaryadvance;
 
+import crud.UpdateICRPListener;
 import crud.UpdateListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,7 +16,8 @@ public class SalaryAdvanceCancel
         implements
         DisplayableListener,
         EditableListener,
-        UpdateListener {
+        UpdateListener,
+        UpdateICRPListener {
 
     private JButton btnCancel;
     private List<CancelListener> cancelledListeners;
@@ -66,6 +68,11 @@ public class SalaryAdvanceCancel
         if (booleditMode) {
             btnCancel.setEnabled(false);
         }
+    }
+
+    @Override
+    public void updatedICRP() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     class SubmitSalaryAdvance implements ActionListener {

@@ -1,5 +1,6 @@
 package gui.salaryadvance;
 
+import crud.UpdateICRPListener;
 import crud.UpdateListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,7 +17,8 @@ public class SalaryAdvanceEdit implements
         RowSelectedListener,
         RowDeselectedListener,
         CancelListener,
-        UpdateListener {
+        UpdateListener,
+        UpdateICRPListener {
 
     private JButton btnEditMode;
     private List<EditableListener> salaryAdvanceEditableListeners;
@@ -80,6 +82,11 @@ public class SalaryAdvanceEdit implements
             boolEditMode = false;
             btnEditMode.setEnabled(true);
         }
+    }
+
+    @Override
+    public void updatedICRP() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     class EditSalaryAdvance implements ActionListener {

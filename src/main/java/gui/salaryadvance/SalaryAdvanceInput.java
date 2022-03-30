@@ -2,6 +2,7 @@ package gui.salaryadvance;
 
 import crud.CreateListener;
 import crud.DeleteListener;
+import crud.UpdateICRPListener;
 import crud.UpdateListener;
 import datalink.CRUDSalaryAdvance;
 import gui.DateDeselectedListener;
@@ -45,6 +46,7 @@ public class SalaryAdvanceInput
         EmployeeSelectedListener,
         CreateListener,
         UpdateListener,
+        UpdateICRPListener,
         DisplayableListener,
         RowSelectedListener,
         EditableListener,
@@ -218,6 +220,11 @@ public class SalaryAdvanceInput
             setFieldsEditable(false);
             setInputFieldsWithSalaryAdvance(salaryAdvanceId);
         }
+    }
+
+    @Override
+    public void updatedICRP() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

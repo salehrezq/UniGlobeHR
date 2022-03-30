@@ -1,5 +1,6 @@
 package gui.salaryadvance;
 
+import crud.UpdateICRPListener;
 import crud.UpdateListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
@@ -16,7 +17,8 @@ public class SalaryAdvanceDisplay
         implements
         EditableListener,
         CancelListener,
-        UpdateListener {
+        UpdateListener,
+        UpdateICRPListener {
 
     private SalaryAdvanceInput salaryAdvanceInput;
     private JCheckBox checkDisplayMode;
@@ -67,6 +69,11 @@ public class SalaryAdvanceDisplay
     @Override
     public void updated() {
         checkDisplayMode.setEnabled(true);
+    }
+
+    @Override
+    public void updatedICRP() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     private class ChechBoxListener implements ItemListener {
