@@ -45,6 +45,7 @@ public class SalaryAdvanceSubmit
 
         createListeners = new ArrayList<>();
         updateListeners = new ArrayList<>();
+        updateICRPListeners = new ArrayList<>();
 
         btnSubmit = new JButton();
         btnSubmit.setEnabled(false);
