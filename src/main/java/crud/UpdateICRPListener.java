@@ -14,7 +14,7 @@ public interface UpdateICRPListener {
 
     /**
      * Update which Include Current Request Parameters; which may require
-     * different measurements.
+     * different measurements other than or including usual update measurements.
      */
     public void updatedICRP();
 }
