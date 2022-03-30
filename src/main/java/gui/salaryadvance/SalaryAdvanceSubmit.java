@@ -1,6 +1,7 @@
 package gui.salaryadvance;
 
 import crud.CreateListener;
+import crud.UpdateICRPListener;
 import crud.UpdateListener;
 import gui.EmployeeSelectedListener;
 import java.awt.event.ActionEvent;
@@ -36,6 +37,7 @@ public class SalaryAdvanceSubmit
     private Employee employee;
     private List<CreateListener> createListeners;
     private List<UpdateListener> updateListeners;
+    private List<UpdateICRPListener> updateICRPListeners;
     private boolean boolSalaryAdvanceDisplayMode, boolEditMode;
     private Integer salaryAdvanceId;
 
@@ -74,6 +76,16 @@ public class SalaryAdvanceSubmit
     private void notifyCreated() {
         this.createListeners.forEach((createListener) -> {
             createListener.created();
+        });
+    }
+
+    public void addUpdateICRPListener(UpdateICRPListener updateicrpl) {
+        this.updateICRPListeners.add(updateicrpl);
+    }
+
+    private void notifyUpdatedICRP() {
+        this.updateICRPListeners.forEach((updateicrpl) -> {
+            updateicrpl.updatedICRP();
         });
     }
 
