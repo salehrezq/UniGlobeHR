@@ -204,18 +204,9 @@ public class SalaryAdvanceRecords
 
         SalaryAdvance salaryAdvance = CRUDSalaryAdvance.getById(salaryAdvanceId);
 
-        // Compare the advance subject date between old and updated record
-        if (!(salaryAdvance.getYearMonthSubject().isEqual(salaryAdvanceBeforeUpdate.getYearMonthSubject()))) {
-            // If subject_year_month has been changed (different value) then the
-            // record should not appear against the same requested subject_year_month
-            // attributes, because they are no longer relevant after the change
-            model.removeRow(selectedModelRow);
-        } else {
-            // If other attributes changed: amount, date_taken; it is logical to keep it.
-            table.getModel().setValueAt(salaryAdvance.getDateTaken(), oldSelectedModelRow, 0);
-            table.getModel().setValueAt(salaryAdvance.getAmount(), oldSelectedModelRow, 1);
-            table.getModel().setValueAt(salaryAdvanceId, oldSelectedModelRow, 2);
-        }
+        table.getModel().setValueAt(salaryAdvance.getDateTaken(), oldSelectedModelRow, 0);
+        table.getModel().setValueAt(salaryAdvance.getAmount(), oldSelectedModelRow, 1);
+        table.getModel().setValueAt(salaryAdvanceId, oldSelectedModelRow, 2);
     }
 
     @Override
