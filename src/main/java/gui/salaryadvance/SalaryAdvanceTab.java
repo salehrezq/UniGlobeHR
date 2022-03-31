@@ -46,6 +46,7 @@ public class SalaryAdvanceTab {
         SalaryAdvanceInput = new SalaryAdvanceInput();
         salaryAdvanceSubmit.addSalaryAdvanceCreatedListener(SalaryAdvanceInput);
         salaryAdvanceSubmit.addSalaryAdvanceUpdatedListener(SalaryAdvanceInput);
+        salaryAdvanceSubmit.addSalaryAdvanceUpdatedICRPListener(SalaryAdvanceInput);
         c = new GridBagConstraints();
         c.gridy = 1;
         c.weightx = 1.0;
@@ -59,6 +60,7 @@ public class SalaryAdvanceTab {
         salaryAdvanceCancel.addCancelListener(SalaryAdvanceInput);
         salaryAdvanceCancel.addCancelListener(salaryAdvanceSubmit);
         salaryAdvanceSubmit.addSalaryAdvanceUpdatedListener(salaryAdvanceCancel);
+        salaryAdvanceSubmit.addSalaryAdvanceUpdatedICRPListener(salaryAdvanceCancel);
         c = new GridBagConstraints();
         c.gridy = 2;
         c.gridx = 0;
@@ -87,7 +89,9 @@ public class SalaryAdvanceTab {
         salaryAdvanceRecords.addRowSelectedListener(salaryAdvanceSubmit);
         salaryAdvanceRecords.addRowDeselectedListenerListener(salaryAdvanceSubmit);
         salaryAdvanceSubmit.addSalaryAdvanceUpdatedListener(salaryAdvanceRequest);
+        salaryAdvanceSubmit.addSalaryAdvanceUpdatedICRPListener(salaryAdvanceRequest);
         salaryAdvanceSubmit.addSalaryAdvanceUpdatedListener(salaryAdvanceRecords);
+        salaryAdvanceSubmit.addSalaryAdvanceUpdatedICRPListener(salaryAdvanceRecords);
         salaryAdvanceRecords.addDeleteListener(SalaryAdvanceInput);
         salaryAdvanceRecords.addRowSelectedListener(SalaryAdvanceInput);
         salaryAdvanceCancel.addCancelListener(salaryAdvanceRequest);
@@ -103,6 +107,7 @@ public class SalaryAdvanceTab {
         salaryAdvanceDisplay.addSalaryAdvanceDisplayableListener(salaryAdvanceRequest);
         salaryAdvanceDisplay.addSalaryAdvanceDisplayableListener(salaryAdvanceRecords);
         salaryAdvanceSubmit.addSalaryAdvanceUpdatedListener(salaryAdvanceDisplay);
+        salaryAdvanceSubmit.addSalaryAdvanceUpdatedICRPListener(salaryAdvanceDisplay);
         salaryAdvanceRequest.getPanelControls().add(salaryAdvanceDisplay.getCheckDisplayMode());
 
         salaryAdvanceEdit = new SalaryAdvanceEdit();
@@ -113,6 +118,7 @@ public class SalaryAdvanceTab {
         salaryAdvanceEdit.addSalaryAdvanceEditableListener(salaryAdvanceDisplay);
         salaryAdvanceEdit.addSalaryAdvanceEditableListener(salaryAdvanceSubmit);
         salaryAdvanceSubmit.addSalaryAdvanceUpdatedListener(salaryAdvanceEdit);
+        salaryAdvanceSubmit.addSalaryAdvanceUpdatedICRPListener(salaryAdvanceEdit);
         salaryAdvanceCancel.addCancelListener(salaryAdvanceEdit);
         salaryAdvanceRecords.addRowDeselectedListenerListener(salaryAdvanceEdit);
         salaryAdvanceRecords.addRowSelectedListener(salaryAdvanceEdit);
