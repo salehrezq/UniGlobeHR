@@ -60,16 +60,6 @@ public class SalaryAdvanceSubmit
         this.salaryAdvanceInput = salaryAdvanceInput;
     }
 
-    public void addSalaryAdvanceUpdatedListener(UpdateListener updateListener) {
-        this.updateListeners.add(updateListener);
-    }
-
-    private void notifyUpdated() {
-        this.updateListeners.forEach((updateListener) -> {
-            updateListener.updated();
-        });
-    }
-
     public void addSalaryAdvanceCreatedListener(CreateListener createListener) {
         this.createListeners.add(createListener);
     }
@@ -80,7 +70,17 @@ public class SalaryAdvanceSubmit
         });
     }
 
-    public void addUpdateICRPListener(UpdateICRPListener updateicrpl) {
+    public void addSalaryAdvanceUpdatedListener(UpdateListener updateListener) {
+        this.updateListeners.add(updateListener);
+    }
+
+    private void notifyUpdated() {
+        this.updateListeners.forEach((updateListener) -> {
+            updateListener.updated();
+        });
+    }
+
+    public void addSalaryAdvanceUpdatedICRPListener(UpdateICRPListener updateicrpl) {
         this.updateICRPListeners.add(updateicrpl);
     }
 
