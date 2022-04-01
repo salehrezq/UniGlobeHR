@@ -3,6 +3,7 @@ package gui.salaryadvance;
 import crud.CreateListener;
 import crud.UpdateICRPListener;
 import crud.UpdateListener;
+import datalink.CRUDSalaryAdvance;
 import gui.EmployeeSelectedListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -40,6 +41,7 @@ public class SalaryAdvanceSubmit
     private List<UpdateICRPListener> updateICRPListeners;
     private boolean boolSalaryAdvanceDisplayMode, boolEditMode;
     private Integer salaryAdvanceId;
+    private SalaryAdvance salaryAdvanceBeforeUpdate;
 
     public SalaryAdvanceSubmit() {
 
@@ -132,6 +134,9 @@ public class SalaryAdvanceSubmit
 
     @Override
     public void editable() {
+        // Save copy of current record before update
+        // for comparsion with the new updated record
+        salaryAdvanceBeforeUpdate = CRUDSalaryAdvance.getById(salaryAdvanceId);
         boolEditMode = true;
         operation = new UpdateOperation();
         operation.switchOperationFor(this);
@@ -254,9 +259,20 @@ public class SalaryAdvanceSubmit
                         informMessage = "Salary advance created successfully.";
                     } else if (getOperation() instanceof UpdateOperation) {
                         boolEditMode = false;
-                        notifyUpdated();
+
                         btnSubmit.setEnabled(false);
                         informMessage = "Salary advance updated successfully.";
+
+                        // Compare the advance subject date between old and updated record
+                        if (salaryAdvance.getYearMonthSubject()
+                                .isEqual(salaryAdvanceBeforeUpdate.getYearMonthSubject())) {
+                            notifyUpdated();
+                        } else {
+                            // If subject_year_month has been changed (different value) then the
+                            // record should not appear against the same requested subject_year_month
+                            // attributes, because they are no longer relevant after the change
+                            notifyUpdatedICRP();
+                        }
                     }
                     JOptionPane.showConfirmDialog(null,
                             informMessage,
