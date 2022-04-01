@@ -213,7 +213,14 @@ public class SalaryAdvanceRecords
 
     @Override
     public void updatedICRP() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        // Edit mode is off
+        boolEditMode = false;
+        // Update table to remove selection color
+        table.putClientProperty(selectedRowKey, null);
+        // Enable row selection
+        table.setRowSelectionAllowed(true);
+        // Remove the row from the view
+        model.removeRow(selectedModelRow);
     }
 
     @Override

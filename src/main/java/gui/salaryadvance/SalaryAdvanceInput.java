@@ -224,7 +224,10 @@ public class SalaryAdvanceInput
 
     @Override
     public void updatedICRP() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolUpdated = true;
+        if (boolSalaryAdvanceDisplayMode) {
+            setFieldsEditable(false);
+        }
     }
 
     @Override

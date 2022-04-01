@@ -86,7 +86,9 @@ public class SalaryAdvanceEdit implements
 
     @Override
     public void updatedICRP() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        boolRowIsSelected = false;
+        boolEditMode = false;
+        btnEditMode.setEnabled(false);
     }
 
     class EditSalaryAdvance implements ActionListener {

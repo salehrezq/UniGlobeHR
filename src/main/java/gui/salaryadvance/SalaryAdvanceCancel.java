@@ -72,7 +72,9 @@ public class SalaryAdvanceCancel
 
     @Override
     public void updatedICRP() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if (booleditMode) {
+            btnCancel.setEnabled(false);
+        }
     }
 
     class SubmitSalaryAdvance implements ActionListener {

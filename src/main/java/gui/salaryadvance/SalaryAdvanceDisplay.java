@@ -73,7 +73,7 @@ public class SalaryAdvanceDisplay
 
     @Override
     public void updatedICRP() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        checkDisplayMode.setEnabled(true);
     }
 
     private class ChechBoxListener implements ItemListener {

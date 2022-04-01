@@ -152,7 +152,9 @@ public class SalaryAdvanceRequest
 
     @Override
     public void updatedICRP() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        btnRequestData.setEnabled(true);
+        tfYear.setEnabled(true);
+        monthsList.setEnabled(true);
     }
 
     public void addReadListener(ReadListener readListener) {
