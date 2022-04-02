@@ -37,7 +37,7 @@ import model.SalaryAdvance;
  *
  * @author Saleh
  */
-public class SalaryAdvanceRecords
+public class SalaryRecords
         implements
         EmployeeSelectedListener,
         DisplayableListener,
@@ -67,7 +67,7 @@ public class SalaryAdvanceRecords
     private final JMenuItem menuItemDelete;
     private SalaryAdvance salaryAdvanceBeforeUpdate;
 
-    public SalaryAdvanceRecords() {
+    public SalaryRecords() {
         super();
 
         rowSelectedListeners = new ArrayList<>();

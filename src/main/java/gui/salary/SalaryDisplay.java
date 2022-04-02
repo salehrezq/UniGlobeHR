@@ -13,18 +13,18 @@ import javax.swing.JOptionPane;
  *
  * @author Saleh
  */
-public class SalaryAdvanceDisplay
+public class SalaryDisplay
         implements
         EditableListener,
         CancelListener,
         UpdateListener,
         UpdateICRPListener {
 
-    private SalaryAdvanceInput salaryAdvanceInput;
+    private SalaryInput salaryAdvanceInput;
     private JCheckBox checkDisplayMode;
     private List<DisplayableListener> salaryAdvanceDisplayableListeners;
 
-    public SalaryAdvanceDisplay() {
+    public SalaryDisplay() {
 
         salaryAdvanceDisplayableListeners = new ArrayList<>();
 
@@ -32,7 +32,7 @@ public class SalaryAdvanceDisplay
         checkDisplayMode.addItemListener(new ChechBoxListener());
     }
 
-    public void setSalaryAdvanceInput(SalaryAdvanceInput salaryAdvanceInput) {
+    public void setSalaryAdvanceInput(SalaryInput salaryAdvanceInput) {
         this.salaryAdvanceInput = salaryAdvanceInput;
     }
 

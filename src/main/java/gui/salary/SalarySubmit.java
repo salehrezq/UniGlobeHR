@@ -21,7 +21,7 @@ import model.SalaryAdvance;
  *
  * @author Saleh
  */
-public class SalaryAdvanceSubmit
+public class SalarySubmit
         implements
         Subject,
         EmployeeSelectedListener,
@@ -33,7 +33,7 @@ public class SalaryAdvanceSubmit
 
     private Operation operation;
     private JButton btnSubmit;
-    private SalaryAdvanceInput salaryAdvanceInput;
+    private SalaryInput salaryAdvanceInput;
     private StringBuilder stringBuilder;
     private Employee employee;
     private List<CreateListener> createListeners;
@@ -43,7 +43,7 @@ public class SalaryAdvanceSubmit
     private Integer salaryAdvanceId;
     private SalaryAdvance salaryAdvanceBeforeUpdate;
 
-    public SalaryAdvanceSubmit() {
+    public SalarySubmit() {
 
         createListeners = new ArrayList<>();
         updateListeners = new ArrayList<>();
@@ -58,7 +58,7 @@ public class SalaryAdvanceSubmit
         operation.switchOperationFor(this);
     }
 
-    public void setSalaryAdvanceInput(SalaryAdvanceInput salaryAdvanceInput) {
+    public void setSalaryAdvanceInput(SalaryInput salaryAdvanceInput) {
         this.salaryAdvanceInput = salaryAdvanceInput;
     }
 

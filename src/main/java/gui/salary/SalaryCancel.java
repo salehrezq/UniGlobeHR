@@ -12,7 +12,7 @@ import javax.swing.JButton;
  *
  * @author Saleh
  */
-public class SalaryAdvanceCancel
+public class SalaryCancel
         implements
         DisplayableListener,
         EditableListener,
@@ -23,7 +23,7 @@ public class SalaryAdvanceCancel
     private List<CancelListener> cancelledListeners;
     private boolean booleditMode, boolDisplayable;
 
-    public SalaryAdvanceCancel() {
+    public SalaryCancel() {
 
         cancelledListeners = new ArrayList<>();
         btnCancel = new JButton("Cancel");

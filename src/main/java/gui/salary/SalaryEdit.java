@@ -12,7 +12,7 @@ import javax.swing.JButton;
  *
  * @author Saleh
  */
-public class SalaryAdvanceEdit implements
+public class SalaryEdit implements
         DisplayableListener,
         RowSelectedListener,
         RowDeselectedListener,
@@ -26,7 +26,7 @@ public class SalaryAdvanceEdit implements
     private boolean boolSalaryAdvanceDisplayable;
     private boolean boolEditMode;
 
-    public SalaryAdvanceEdit() {
+    public SalaryEdit() {
 
         salaryAdvanceEditableListeners = new ArrayList<>();
         btnEditMode = new JButton("Edit Mode");

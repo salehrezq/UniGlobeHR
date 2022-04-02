@@ -26,7 +26,7 @@ import model.SalaryAdvance;
  *
  * @author Saleh
  */
-public class SalaryAdvanceRequest
+public class SalaryRequest
         implements
         EmployeeSelectedListener,
         DisplayableListener,
@@ -47,7 +47,7 @@ public class SalaryAdvanceRequest
     private boolean boolDisplayMode;
     private List<ReadListener> readListeners;
 
-    public SalaryAdvanceRequest() {
+    public SalaryRequest() {
         super();
 
         readListeners = new ArrayList<>();

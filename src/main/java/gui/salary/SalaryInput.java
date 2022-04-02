@@ -41,7 +41,7 @@ import model.SalaryAdvance;
  *
  * @author Saleh
  */
-public class SalaryAdvanceInput
+public class SalaryInput
         implements
         EmployeeSelectedListener,
         CreateListener,
@@ -72,7 +72,7 @@ public class SalaryAdvanceInput
     private int salaryAdvanceId;
     private int salaryAdvanceOldId;
 
-    public SalaryAdvanceInput() {
+    public SalaryInput() {
 
         panelMetaInputs = new JPanel();
 
