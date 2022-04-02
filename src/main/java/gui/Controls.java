@@ -7,7 +7,6 @@ package gui;
 
 import gui.attendance.AttendanceTab;
 import gui.performance.PerformanceTab;
-import gui.salary.SalaryTab;
 import gui.salaryadvance.SalaryAdvanceTab;
 import java.awt.GridLayout;
 import javax.swing.JPanel;
@@ -23,7 +22,6 @@ public class Controls extends JPanel {
     private AttendanceTab attendanceTab;
     private PerformanceTab performanceTab;
     private SalaryAdvanceTab salaryAdvanceTab;
-    private SalaryTab salaryTab;
 
     public Controls() {
         super();
@@ -40,9 +38,6 @@ public class Controls extends JPanel {
         salaryAdvanceTab = new SalaryAdvanceTab();
         tabs.add(salaryAdvanceTab.salaryAdvanceTab(), "Salary Advance");
 
-        salaryTab = new SalaryTab();
-        tabs.add(salaryTab.getContainer(), "Salary");
-
         this.add(tabs);
     }
 
@@ -56,10 +51,6 @@ public class Controls extends JPanel {
 
     public SalaryAdvanceTab getSalaryAdvanceTab() {
         return salaryAdvanceTab;
-    }
-
-    public SalaryTab getSalaryTab() {
-        return salaryTab;
     }
 
 }
