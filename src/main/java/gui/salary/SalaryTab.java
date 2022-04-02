@@ -131,7 +131,7 @@ public class SalaryTab {
         panelContainer.add(panelReuestRecords, BorderLayout.CENTER);
     }
 
-    public JPanel salaryAdvanceTab() {
+    public JPanel getSalaryTab() {
         return panelContainer;
     }
 
