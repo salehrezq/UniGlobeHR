@@ -1,4 +1,4 @@
-package gui.salaryadvance;
+package gui.salary;
 
 import crud.DeleteListener;
 import crud.ReadListener;

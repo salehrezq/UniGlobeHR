@@ -1,4 +1,4 @@
-package gui.salaryadvance;
+package gui.salary;
 
 import datalink.CRUDSalaryAdvance;
 import javax.swing.JButton;
