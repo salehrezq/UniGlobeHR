@@ -16,6 +16,7 @@ public class SalaryTab {
 
     private JPanel panelContainer, panelInputs;
     private EmployeeCard employeeCard;
+    private Payables payables;
     private SalaryInput SalaryAdvanceInput;
     private SalarySubmit salaryAdvanceSubmit;
     private SalaryCancel salaryAdvanceCancel;
@@ -42,13 +43,25 @@ public class SalaryTab {
         c.anchor = GridBagConstraints.PAGE_START;
         panelInputs.add(employeeCard, c);
 
+        JPanel panelHolder = new JPanel();
+        payables = new Payables();
+        panelHolder.add(payables.getContainer());
+        c = new GridBagConstraints();
+        c.gridy = 1;
+        c.weightx = 1.0;
+        c.weighty = 0.0;
+        c.gridwidth = 2;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.PAGE_START;
+        panelInputs.add(panelHolder, c);
+
         salaryAdvanceSubmit = new SalarySubmit();
         SalaryAdvanceInput = new SalaryInput();
         salaryAdvanceSubmit.addSalaryAdvanceCreatedListener(SalaryAdvanceInput);
         salaryAdvanceSubmit.addSalaryAdvanceUpdatedListener(SalaryAdvanceInput);
         salaryAdvanceSubmit.addSalaryAdvanceUpdatedICRPListener(SalaryAdvanceInput);
         c = new GridBagConstraints();
-        c.gridy = 1;
+        c.gridy = 2;
         c.weightx = 1.0;
         c.weighty = 0.5;
         c.gridwidth = 2;
@@ -62,7 +75,7 @@ public class SalaryTab {
         salaryAdvanceSubmit.addSalaryAdvanceUpdatedListener(salaryAdvanceCancel);
         salaryAdvanceSubmit.addSalaryAdvanceUpdatedICRPListener(salaryAdvanceCancel);
         c = new GridBagConstraints();
-        c.gridy = 2;
+        c.gridy = 3;
         c.gridx = 0;
         c.weightx = 0.0;
         c.weighty = 0.0;
@@ -73,7 +86,7 @@ public class SalaryTab {
 
         salaryAdvanceSubmit.setSalaryAdvanceInput(SalaryAdvanceInput);
         c = new GridBagConstraints();
-        c.gridy = 2;
+        c.gridy = 3;
         c.gridx = 1;
         c.weightx = 0.0;
         c.weighty = 0.0;
