@@ -152,6 +152,10 @@ public class SalaryTab {
         return employeeCard;
     }
 
+    public Payables getPayables() {
+        return payables;
+    }
+
     public SalarySubmit getSalaryAdvanceSubmit() {
         return salaryAdvanceSubmit;
     }
