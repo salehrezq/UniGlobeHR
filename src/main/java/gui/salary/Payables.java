@@ -42,7 +42,7 @@ public class Payables implements EmployeeSelectedListener {
             "Performance Gain",};
 
         for (JComponent component : components) {
-            ((JTextField) component).setEnabled(false);
+            ((JTextField) component).setEditable(false);
         }
 
         panelSalaryComponents = (JPanel) TwoColumnsLabelsAndFields.getTwoColumnLayout(labels, components);
