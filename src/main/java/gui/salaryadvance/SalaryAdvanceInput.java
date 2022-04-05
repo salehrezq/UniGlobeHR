@@ -199,9 +199,7 @@ public class SalaryAdvanceInput
     }
 
     private void setFieldsEditable(boolean editable) {
-
         tfYearSubject.setEditable(editable);
-        tfYearSubject.setForeground(editable ? null : colorDisabled);
         monthsList.setEnabled(editable);
         dateAdvanceTaken.setEnabled(editable);
         tfAmount.setEditable(editable);
