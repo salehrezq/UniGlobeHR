@@ -14,9 +14,10 @@ import javax.swing.JPanel;
  */
 public class SalaryTab {
 
-    private JPanel panelContainer, panelInputs;
+    private JPanel panelContainer, panelInputs, panelComputeBtn;
     private EmployeeCard employeeCard;
     private Payables payables;
+    private Compute compute;
     private SalaryInput SalaryAdvanceInput;
     private SalarySubmit salaryAdvanceSubmit;
     private SalaryCancel salaryAdvanceCancel;
@@ -55,13 +56,26 @@ public class SalaryTab {
         c.anchor = GridBagConstraints.PAGE_START;
         panelInputs.add(panelHolder, c);
 
+        panelComputeBtn = new JPanel();
+        compute = new Compute();
+        panelComputeBtn.add(Box.createHorizontalStrut(125));
+        panelComputeBtn.add(compute.getBtnCompute());
+        c = new GridBagConstraints();
+        c.gridy = 2;
+        c.weightx = 1.0;
+        c.weighty = 0.0;
+        c.gridwidth = 2;
+        c.fill = GridBagConstraints.HORIZONTAL;
+        c.anchor = GridBagConstraints.PAGE_START;
+        panelInputs.add(panelComputeBtn, c);
+
         salaryAdvanceSubmit = new SalarySubmit();
         SalaryAdvanceInput = new SalaryInput();
         salaryAdvanceSubmit.addSalaryAdvanceCreatedListener(SalaryAdvanceInput);
         salaryAdvanceSubmit.addSalaryAdvanceUpdatedListener(SalaryAdvanceInput);
         salaryAdvanceSubmit.addSalaryAdvanceUpdatedICRPListener(SalaryAdvanceInput);
         c = new GridBagConstraints();
-        c.gridy = 2;
+        c.gridy = 3;
         c.weightx = 1.0;
         c.weighty = 0.5;
         c.gridwidth = 2;
@@ -75,7 +89,7 @@ public class SalaryTab {
         salaryAdvanceSubmit.addSalaryAdvanceUpdatedListener(salaryAdvanceCancel);
         salaryAdvanceSubmit.addSalaryAdvanceUpdatedICRPListener(salaryAdvanceCancel);
         c = new GridBagConstraints();
-        c.gridy = 3;
+        c.gridy = 4;
         c.gridx = 0;
         c.weightx = 0.0;
         c.weighty = 0.0;
@@ -86,7 +100,7 @@ public class SalaryTab {
 
         salaryAdvanceSubmit.setSalaryAdvanceInput(SalaryAdvanceInput);
         c = new GridBagConstraints();
-        c.gridy = 3;
+        c.gridy = 4;
         c.gridx = 1;
         c.weightx = 0.0;
         c.weighty = 0.0;
