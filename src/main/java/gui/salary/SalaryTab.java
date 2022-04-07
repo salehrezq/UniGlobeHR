@@ -18,14 +18,14 @@ public class SalaryTab {
     private EmployeeCard employeeCard;
     private Payables payables;
     private Compute compute;
-    private SalaryInput SalaryAdvanceInput;
-    private SalarySubmit salaryAdvanceSubmit;
-    private SalaryCancel salaryAdvanceCancel;
+    private SalaryInput SalaryInput;
+    private SalarySubmit salarySubmit;
+    private SalaryCancel salaryCancel;
     private final JPanel panelReuestRecords;
-    private SalaryRequest salaryAdvanceRequest;
-    private SalaryRecords salaryAdvanceRecords;
-    private SalaryDisplay salaryAdvanceDisplay;
-    private SalaryEdit salaryAdvanceEdit;
+    private SalaryRequest salaryRequest;
+    private SalaryRecords salaryRecords;
+    private SalaryDisplay salaryDisplay;
+    private SalaryEdit salaryEdit;
 
     public SalaryTab() {
 
@@ -69,11 +69,11 @@ public class SalaryTab {
         c.anchor = GridBagConstraints.PAGE_START;
         panelInputs.add(panelComputeBtn, c);
 
-        salaryAdvanceSubmit = new SalarySubmit();
-        SalaryAdvanceInput = new SalaryInput();
-        salaryAdvanceSubmit.addSalaryAdvanceCreatedListener(SalaryAdvanceInput);
-        salaryAdvanceSubmit.addSalaryAdvanceUpdatedListener(SalaryAdvanceInput);
-        salaryAdvanceSubmit.addSalaryAdvanceUpdatedICRPListener(SalaryAdvanceInput);
+        salarySubmit = new SalarySubmit();
+        SalaryInput = new SalaryInput();
+        salarySubmit.addSalaryAdvanceCreatedListener(SalaryInput);
+        salarySubmit.addSalaryAdvanceUpdatedListener(SalaryInput);
+        salarySubmit.addSalaryAdvanceUpdatedICRPListener(SalaryInput);
         c = new GridBagConstraints();
         c.gridy = 3;
         c.weightx = 1.0;
@@ -81,13 +81,13 @@ public class SalaryTab {
         c.gridwidth = 2;
         c.fill = GridBagConstraints.BOTH;
         c.anchor = GridBagConstraints.PAGE_START;
-        panelInputs.add(SalaryAdvanceInput.getSalaryAdvanceInputsPanel(), c);
+        panelInputs.add(SalaryInput.getSalaryAdvanceInputsPanel(), c);
 
-        salaryAdvanceCancel = new SalaryCancel();
-        salaryAdvanceCancel.addCancelListener(SalaryAdvanceInput);
-        salaryAdvanceCancel.addCancelListener(salaryAdvanceSubmit);
-        salaryAdvanceSubmit.addSalaryAdvanceUpdatedListener(salaryAdvanceCancel);
-        salaryAdvanceSubmit.addSalaryAdvanceUpdatedICRPListener(salaryAdvanceCancel);
+        salaryCancel = new SalaryCancel();
+        salaryCancel.addCancelListener(SalaryInput);
+        salaryCancel.addCancelListener(salarySubmit);
+        salarySubmit.addSalaryAdvanceUpdatedListener(salaryCancel);
+        salarySubmit.addSalaryAdvanceUpdatedICRPListener(salaryCancel);
         c = new GridBagConstraints();
         c.gridy = 4;
         c.gridx = 0;
@@ -96,9 +96,9 @@ public class SalaryTab {
         c.anchor = GridBagConstraints.LINE_START;
         // top, left, buttom, right
         c.insets = new Insets(3, 31, 5, 0);
-        panelInputs.add(salaryAdvanceCancel.getButtonCancel(), c);
+        panelInputs.add(salaryCancel.getButtonCancel(), c);
 
-        salaryAdvanceSubmit.setSalaryAdvanceInput(SalaryAdvanceInput);
+        salarySubmit.setSalaryAdvanceInput(SalaryInput);
         c = new GridBagConstraints();
         c.gridy = 4;
         c.gridx = 1;
@@ -107,51 +107,51 @@ public class SalaryTab {
         c.anchor = GridBagConstraints.LINE_END;
         // top, left, buttom, right
         c.insets = new Insets(3, 0, 5, 31);
-        panelInputs.add(salaryAdvanceSubmit.getSubmitButton(), c);
+        panelInputs.add(salarySubmit.getSubmitButton(), c);
 
-        salaryAdvanceRequest = new SalaryRequest();
-        salaryAdvanceRecords = new SalaryRecords();
-        salaryAdvanceRequest.addReadListener(salaryAdvanceRecords);
+        salaryRequest = new SalaryRequest();
+        salaryRecords = new SalaryRecords();
+        salaryRequest.addReadListener(salaryRecords);
 
-        salaryAdvanceRecords.addRowSelectedListener(salaryAdvanceSubmit);
-        salaryAdvanceRecords.addRowDeselectedListenerListener(salaryAdvanceSubmit);
-        salaryAdvanceSubmit.addSalaryAdvanceUpdatedListener(salaryAdvanceRequest);
-        salaryAdvanceSubmit.addSalaryAdvanceUpdatedICRPListener(salaryAdvanceRequest);
-        salaryAdvanceSubmit.addSalaryAdvanceUpdatedListener(salaryAdvanceRecords);
-        salaryAdvanceSubmit.addSalaryAdvanceUpdatedICRPListener(salaryAdvanceRecords);
-        salaryAdvanceRecords.addDeleteListener(SalaryAdvanceInput);
-        salaryAdvanceRecords.addRowSelectedListener(SalaryAdvanceInput);
-        salaryAdvanceCancel.addCancelListener(salaryAdvanceRequest);
-        salaryAdvanceCancel.addCancelListener(salaryAdvanceRecords);
-        panelReuestRecords.add(salaryAdvanceRequest.getPanelControls(), BorderLayout.PAGE_START);
-        panelReuestRecords.add(salaryAdvanceRecords.getPanelTable(), BorderLayout.CENTER);
+        salaryRecords.addRowSelectedListener(salarySubmit);
+        salaryRecords.addRowDeselectedListenerListener(salarySubmit);
+        salarySubmit.addSalaryAdvanceUpdatedListener(salaryRequest);
+        salarySubmit.addSalaryAdvanceUpdatedICRPListener(salaryRequest);
+        salarySubmit.addSalaryAdvanceUpdatedListener(salaryRecords);
+        salarySubmit.addSalaryAdvanceUpdatedICRPListener(salaryRecords);
+        salaryRecords.addDeleteListener(SalaryInput);
+        salaryRecords.addRowSelectedListener(SalaryInput);
+        salaryCancel.addCancelListener(salaryRequest);
+        salaryCancel.addCancelListener(salaryRecords);
+        panelReuestRecords.add(salaryRequest.getPanelControls(), BorderLayout.PAGE_START);
+        panelReuestRecords.add(salaryRecords.getPanelTable(), BorderLayout.CENTER);
 
-        salaryAdvanceDisplay = new SalaryDisplay();
-        salaryAdvanceCancel.addCancelListener(salaryAdvanceDisplay);
-        salaryAdvanceDisplay.addSalaryAdvanceDisplayableListener(salaryAdvanceSubmit);
-        salaryAdvanceDisplay.addSalaryAdvanceDisplayableListener(SalaryAdvanceInput);
-        salaryAdvanceDisplay.addSalaryAdvanceDisplayableListener(salaryAdvanceCancel);
-        salaryAdvanceDisplay.addSalaryAdvanceDisplayableListener(salaryAdvanceRequest);
-        salaryAdvanceDisplay.addSalaryAdvanceDisplayableListener(salaryAdvanceRecords);
-        salaryAdvanceSubmit.addSalaryAdvanceUpdatedListener(salaryAdvanceDisplay);
-        salaryAdvanceSubmit.addSalaryAdvanceUpdatedICRPListener(salaryAdvanceDisplay);
-        salaryAdvanceRequest.getPanelControls().add(salaryAdvanceDisplay.getCheckDisplayMode());
+        salaryDisplay = new SalaryDisplay();
+        salaryCancel.addCancelListener(salaryDisplay);
+        salaryDisplay.addSalaryAdvanceDisplayableListener(salarySubmit);
+        salaryDisplay.addSalaryAdvanceDisplayableListener(SalaryInput);
+        salaryDisplay.addSalaryAdvanceDisplayableListener(salaryCancel);
+        salaryDisplay.addSalaryAdvanceDisplayableListener(salaryRequest);
+        salaryDisplay.addSalaryAdvanceDisplayableListener(salaryRecords);
+        salarySubmit.addSalaryAdvanceUpdatedListener(salaryDisplay);
+        salarySubmit.addSalaryAdvanceUpdatedICRPListener(salaryDisplay);
+        salaryRequest.getPanelControls().add(salaryDisplay.getCheckDisplayMode());
 
-        salaryAdvanceEdit = new SalaryEdit();
-        salaryAdvanceEdit.addSalaryAdvanceEditableListener(salaryAdvanceRequest);
-        salaryAdvanceEdit.addSalaryAdvanceEditableListener(salaryAdvanceRecords);
-        salaryAdvanceEdit.addSalaryAdvanceEditableListener(SalaryAdvanceInput);
-        salaryAdvanceEdit.addSalaryAdvanceEditableListener(salaryAdvanceCancel);
-        salaryAdvanceEdit.addSalaryAdvanceEditableListener(salaryAdvanceDisplay);
-        salaryAdvanceEdit.addSalaryAdvanceEditableListener(salaryAdvanceSubmit);
-        salaryAdvanceSubmit.addSalaryAdvanceUpdatedListener(salaryAdvanceEdit);
-        salaryAdvanceSubmit.addSalaryAdvanceUpdatedICRPListener(salaryAdvanceEdit);
-        salaryAdvanceCancel.addCancelListener(salaryAdvanceEdit);
-        salaryAdvanceRecords.addRowDeselectedListenerListener(salaryAdvanceEdit);
-        salaryAdvanceRecords.addRowSelectedListener(salaryAdvanceEdit);
-        salaryAdvanceDisplay.addSalaryAdvanceDisplayableListener(salaryAdvanceEdit);
-        salaryAdvanceRequest.getPanelControls().add(Box.createHorizontalStrut(30));
-        salaryAdvanceRequest.getPanelControls().add(salaryAdvanceEdit.getBtnEditMode());
+        salaryEdit = new SalaryEdit();
+        salaryEdit.addSalaryAdvanceEditableListener(salaryRequest);
+        salaryEdit.addSalaryAdvanceEditableListener(salaryRecords);
+        salaryEdit.addSalaryAdvanceEditableListener(SalaryInput);
+        salaryEdit.addSalaryAdvanceEditableListener(salaryCancel);
+        salaryEdit.addSalaryAdvanceEditableListener(salaryDisplay);
+        salaryEdit.addSalaryAdvanceEditableListener(salarySubmit);
+        salarySubmit.addSalaryAdvanceUpdatedListener(salaryEdit);
+        salarySubmit.addSalaryAdvanceUpdatedICRPListener(salaryEdit);
+        salaryCancel.addCancelListener(salaryEdit);
+        salaryRecords.addRowDeselectedListenerListener(salaryEdit);
+        salaryRecords.addRowSelectedListener(salaryEdit);
+        salaryDisplay.addSalaryAdvanceDisplayableListener(salaryEdit);
+        salaryRequest.getPanelControls().add(Box.createHorizontalStrut(30));
+        salaryRequest.getPanelControls().add(salaryEdit.getBtnEditMode());
 
         panelContainer = new JPanel(new BorderLayout());
         panelContainer.add(panelInputs, BorderLayout.PAGE_START);
@@ -170,20 +170,20 @@ public class SalaryTab {
         return payables;
     }
 
-    public SalarySubmit getSalaryAdvanceSubmit() {
-        return salaryAdvanceSubmit;
+    public SalarySubmit getSalarySubmit() {
+        return salarySubmit;
     }
 
-    public SalaryRequest getSalaryAdvanceRequest() {
-        return salaryAdvanceRequest;
+    public SalaryRequest getSalaryRequest() {
+        return salaryRequest;
     }
 
-    public SalaryRecords getSalaryAdvanceRecords() {
-        return salaryAdvanceRecords;
+    public SalaryRecords getSalaryRecords() {
+        return salaryRecords;
     }
 
-    public SalaryInput getSalaryAdvanceInput() {
-        return SalaryAdvanceInput;
+    public SalaryInput getSalaryInput() {
+        return SalaryInput;
     }
 
 }
