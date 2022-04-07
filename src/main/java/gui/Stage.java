@@ -59,6 +59,7 @@ public class Stage extends JPanel {
         // Salary tab panel
         SalaryTab salaryTab = controls.getSalaryTab();
         treeEmployees.addEmployeeSelectedListener(salaryTab.getPayables());
+        treeEmployees.addEmployeeSelectedListener(salaryTab.getSalaryInput());
 
         // Add the scroll panes to a split pane.
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
