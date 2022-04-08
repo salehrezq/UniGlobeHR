@@ -27,7 +27,7 @@ public class SalaryCancel
 
         cancelledListeners = new ArrayList<>();
         btnCancel = new JButton("Cancel");
-        btnCancel.addActionListener(new SubmitSalaryAdvance());
+        btnCancel.addActionListener(new SubmitSalary());
 
     }
 
@@ -77,7 +77,7 @@ public class SalaryCancel
         }
     }
 
-    class SubmitSalaryAdvance implements ActionListener {
+    class SubmitSalary implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {

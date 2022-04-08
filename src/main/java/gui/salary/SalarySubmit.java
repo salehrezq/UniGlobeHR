@@ -3,7 +3,7 @@ package gui.salary;
 import crud.CreateListener;
 import crud.UpdateICRPListener;
 import crud.UpdateListener;
-import datalink.CRUDSalaryAdvance;
+import datalink.CRUDSalary;
 import gui.EmployeeSelectedListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,7 +15,7 @@ import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import model.Employee;
-import model.SalaryAdvance;
+import model.Salary;
 
 /**
  *
@@ -33,15 +33,15 @@ public class SalarySubmit
 
     private Operation operation;
     private JButton btnSubmit;
-    private SalaryInput salaryAdvanceInput;
+    private SalaryInput salaryInput;
     private StringBuilder stringBuilder;
     private Employee employee;
     private List<CreateListener> createListeners;
     private List<UpdateListener> updateListeners;
     private List<UpdateICRPListener> updateICRPListeners;
-    private boolean boolSalaryAdvanceDisplayMode, boolEditMode;
-    private Integer salaryAdvanceId;
-    private SalaryAdvance salaryAdvanceBeforeUpdate;
+    private boolean boolSalaryDisplayMode, boolEditMode;
+    private Integer salaryId;
+    private Salary salaryBeforeUpdate;
 
     public SalarySubmit() {
 
@@ -51,18 +51,18 @@ public class SalarySubmit
 
         btnSubmit = new JButton();
         btnSubmit.setEnabled(false);
-        btnSubmit.addActionListener(new SubmitSalaryAdvance());
+        btnSubmit.addActionListener(new SubmitSalary());
         stringBuilder = new StringBuilder(145);
 
         operation = new CreateOperation();
         operation.switchOperationFor(this);
     }
 
-    public void setSalaryAdvanceInput(SalaryInput salaryAdvanceInput) {
-        this.salaryAdvanceInput = salaryAdvanceInput;
+    public void setSalaryInput(SalaryInput salaryInput) {
+        this.salaryInput = salaryInput;
     }
 
-    public void addSalaryAdvanceCreatedListener(CreateListener createListener) {
+    public void addSalaryCreatedListener(CreateListener createListener) {
         this.createListeners.add(createListener);
     }
 
@@ -72,7 +72,7 @@ public class SalarySubmit
         });
     }
 
-    public void addSalaryAdvanceUpdatedListener(UpdateListener updateListener) {
+    public void addSalaryUpdatedListener(UpdateListener updateListener) {
         this.updateListeners.add(updateListener);
     }
 
@@ -82,7 +82,7 @@ public class SalarySubmit
         });
     }
 
-    public void addSalaryAdvanceUpdatedICRPListener(UpdateICRPListener updateicrpl) {
+    public void addSalaryUpdatedICRPListener(UpdateICRPListener updateicrpl) {
         this.updateICRPListeners.add(updateicrpl);
     }
 
@@ -107,24 +107,24 @@ public class SalarySubmit
         return this.stringBuilder.toString();
     }
 
-    private LocalDate getYearMonthSubjectOfAdvance() {
-        Year year = Year.parse(salaryAdvanceInput.getSubjectYear());
-        Month month = Month.of(salaryAdvanceInput.getSubjectMonth());
+    private LocalDate getYearMonthSubjectOfSalary() {
+        Year year = Year.parse(salaryInput.getSubjectYear());
+        Month month = Month.of(salaryInput.getSubjectMonth());
 
-        LocalDate yearMonthSubjectOfAdvance = LocalDate.of(Integer.parseInt(year.toString()), month, 1);
+        LocalDate yearMonthSubjectOfSalary = LocalDate.of(Integer.parseInt(year.toString()), month, 1);
 
-        return yearMonthSubjectOfAdvance;
+        return yearMonthSubjectOfSalary;
     }
 
     @Override
     public void displayable() {
-        boolSalaryAdvanceDisplayMode = true;
+        boolSalaryDisplayMode = true;
         btnSubmit.setEnabled(false);
     }
 
     @Override
     public void unDisplayable() {
-        boolSalaryAdvanceDisplayMode = false;
+        boolSalaryDisplayMode = false;
         if (employee != null) {
             operation = new CreateOperation();
             operation.switchOperationFor(this);
@@ -136,7 +136,7 @@ public class SalarySubmit
     public void editable() {
         // Save copy of current record before update
         // for comparsion with the new updated record
-        salaryAdvanceBeforeUpdate = CRUDSalaryAdvance.getById(salaryAdvanceId);
+        salaryBeforeUpdate = CRUDSalary.getById(salaryId);
         boolEditMode = true;
         operation = new UpdateOperation();
         operation.switchOperationFor(this);
@@ -145,7 +145,7 @@ public class SalarySubmit
 
     @Override
     public void cancelled() {
-        if (boolSalaryAdvanceDisplayMode) {
+        if (boolSalaryDisplayMode) {
             boolEditMode = false;
             btnSubmit.setEnabled(false);
         }
@@ -168,12 +168,12 @@ public class SalarySubmit
 
     @Override
     public void rowSelectedWithRecordId(int id) {
-        salaryAdvanceId = id;
+        salaryId = id;
     }
 
     @Override
     public void rowDeselection() {
-        salaryAdvanceId = null;
+        salaryId = null;
     }
 
     private class ValidateWithMessages {
@@ -187,18 +187,18 @@ public class SalarySubmit
         }
     }
 
-    private ValidateWithMessages validateSalaryAdvanceInputs() {
+    private ValidateWithMessages validateSalaryInputs() {
 
         List<String> messages = new ArrayList<>();
         List<Boolean> booleans = new ArrayList<>();
 
-        if (salaryAdvanceInput.getBoolDateFilled()) {
+        if (salaryInput.getBoolDateFilled()) {
             booleans.add(true);
         } else {
             booleans.add(false);
             messages.add("Date: empty input");
         }
-        if (salaryAdvanceInput.getBoolTfAmountFilled()) {
+        if (salaryInput.getBoolTfPayableFilled()) {
             booleans.add(true);
         } else {
             booleans.add(false);
@@ -210,7 +210,7 @@ public class SalarySubmit
 
     @Override
     public void employeeSelected(Employee employee) {
-        if (!boolSalaryAdvanceDisplayMode) {
+        if (!boolSalaryDisplayMode) {
             btnSubmit.setEnabled(true);
         }
         this.employee = employee;
@@ -222,12 +222,12 @@ public class SalarySubmit
         this.employee = null;
     }
 
-    class SubmitSalaryAdvance implements ActionListener {
+    class SubmitSalary implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            ValidateWithMessages validateWithMessages = validateSalaryAdvanceInputs();
+            ValidateWithMessages validateWithMessages = validateSalaryInputs();
 
             // Check if List of boolean values are all true or one value at least is false
             // Important note: If booleans.size() is zero;
@@ -237,17 +237,17 @@ public class SalarySubmit
 
             if (areAllInputsFilled) {
 
-                SalaryAdvance salaryAdvance = new SalaryAdvance();
-                salaryAdvance.setEmployeeId(employee.getId());
-                salaryAdvance.setYearMonthSubject(getYearMonthSubjectOfAdvance());
-                salaryAdvance.setDateTaken(salaryAdvanceInput.getDateAdvanceTaken());
-                salaryAdvance.setAmount(salaryAdvanceInput.getAmount());
+                Salary salary = new Salary();
+                salary.setEmployeeId(employee.getId());
+                salary.setDateSubject(getYearMonthSubjectOfSalary());
+                salary.setDateGiven(salaryInput.getDateSalaryGiven());
+                salary.setPayable(salaryInput.getPayable());
 
                 if (boolEditMode) {
-                    salaryAdvance.setId(salaryAdvanceId);
+                    salary.setId(salaryId);
                 }
                 // Create|Update
-                boolean submitted = operation.post(salaryAdvance);
+                boolean submitted = operation.post(salary);
 
                 if (submitted) {
                     notifyCreated();
@@ -256,16 +256,16 @@ public class SalarySubmit
 
                     if (getOperation() instanceof CreateOperation) {
                         notifyCreated();
-                        informMessage = "Salary advance created successfully.";
+                        informMessage = "Salary created successfully.";
                     } else if (getOperation() instanceof UpdateOperation) {
                         boolEditMode = false;
 
                         btnSubmit.setEnabled(false);
-                        informMessage = "Salary advance updated successfully.";
+                        informMessage = "Salary updated successfully.";
 
-                        // Compare the advance subject date between old and updated record
-                        if (salaryAdvance.getYearMonthSubject()
-                                .isEqual(salaryAdvanceBeforeUpdate.getYearMonthSubject())) {
+                        // Compare the salary subject date between old and updated record
+                        if (salary.getDateSubject()
+                                .isEqual(salaryBeforeUpdate.getDateSubject())) {
                             notifyUpdated();
                         } else {
                             // If subject_year_month has been changed (different value) then the

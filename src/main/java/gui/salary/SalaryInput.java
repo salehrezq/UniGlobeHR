@@ -4,7 +4,7 @@ import crud.CreateListener;
 import crud.DeleteListener;
 import crud.UpdateICRPListener;
 import crud.UpdateListener;
-import datalink.CRUDSalaryAdvance;
+import datalink.CRUDSalary;
 import gui.DateDeselectedListener;
 import gui.DateListener;
 import gui.DatePicker;
@@ -35,7 +35,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.MaskFormatter;
 import model.Employee;
-import model.SalaryAdvance;
+import model.Salary;
 
 /**
  *
@@ -56,21 +56,21 @@ public class SalaryInput
     private JPanel mainPanel;
     private JPanel panelMetaInputs, panelYearMonthInputs, panelDateOfTake;
     private YearMonth yearAndMonth;
-    private JFormattedTextField tfYearSubject;
+    private JFormattedTextField tfDateSubject;
     private JComboBox monthsList;
     private final String[] monthsNums;
-    private DatePicker dateAdvanceTaken;
+    private DatePicker dateSalaryGiven;
     private JLabel lbAmount;
-    private JTextField tfAmount;
+    private JTextField tfPayable;
     private Color colorFieldRight;
     private Color colorFieldWrong;
     private Color colorDisabled;
     private boolean boolDateFilled;
-    private boolean boolTfAmountFilled;
-    private boolean boolSalaryAdvanceDisplayMode, boolEditMode, boolCreated, boolUpdated;
-    private SalaryAdvance salaryAdvance;
-    private int salaryAdvanceId;
-    private int salaryAdvanceOldId;
+    private boolean boolTfPayableFilled;
+    private boolean boolSalaryDisplayMode, boolEditMode, boolCreated, boolUpdated;
+    private Salary salary;
+    private int salaryId;
+    private int salaryOldId;
 
     public SalaryInput() {
 
@@ -84,17 +84,17 @@ public class SalaryInput
 
         DocumentRegex docRegx = new DocumentRegex();
 
-        Border borderYearMonthOfAdvance = BorderFactory.createTitledBorder("Year/Month of advance");
+        Border borderDateOfSalary = BorderFactory.createTitledBorder("Date of salary");
 
         panelYearMonthInputs = new JPanel();
-        panelYearMonthInputs.setBorder(borderYearMonthOfAdvance);
+        panelYearMonthInputs.setBorder(borderDateOfSalary);
 
         LocalDate today = LocalDate.now();
         yearAndMonth = YearMonth.of(today.getYear(), today.getMonthValue());
 
-        tfYearSubject = new JFormattedTextField(getMaskFormatter());
-        tfYearSubject.setPreferredSize(new Dimension(40, 20));
-        panelYearMonthInputs.add(tfYearSubject);
+        tfDateSubject = new JFormattedTextField(getMaskFormatter());
+        tfDateSubject.setPreferredSize(new Dimension(40, 20));
+        panelYearMonthInputs.add(tfDateSubject);
 
         monthsNums = new String[]{"Jan [1]", "Feb [2]", "Mar [3]", "Apr [4]", "May [5]",
             "Jun [6]", "Jul [7]", "Aug [8]", "Sep [9]", "Oct [10]", "Nov [11]", "Dec [12]"};
@@ -109,13 +109,13 @@ public class SalaryInput
         panelDateOfTake = new JPanel();
         panelDateOfTake.setBorder(borderDateOfTake);
 
-        dateAdvanceTaken = new DatePicker();
-        dateAdvanceTaken.setTodayAsDefault();
+        dateSalaryGiven = new DatePicker();
+        dateSalaryGiven.setTodayAsDefault();
         boolDateFilled = true;
         DateListenerImpli dateListenerImpli = new DateListenerImpli();
-        dateAdvanceTaken.addDateListener(dateListenerImpli);
-        dateAdvanceTaken.addDateDeselectedListener(dateListenerImpli);
-        panelDateOfTake.add(dateAdvanceTaken.getDatePicker());
+        dateSalaryGiven.addDateListener(dateListenerImpli);
+        dateSalaryGiven.addDateDeselectedListener(dateListenerImpli);
+        panelDateOfTake.add(dateSalaryGiven.getDatePicker());
         panelMetaInputs.add(panelDateOfTake);
 
         ItemChangeListener comboBoxListener = new ItemChangeListener();
@@ -123,12 +123,12 @@ public class SalaryInput
         lbAmount = new JLabel("Amount:");
         panelMetaInputs.add(lbAmount);
 
-        tfAmount = new JTextField();
-        tfAmount.setFont(new Font("SansSerif", Font.BOLD, 12));
-        tfAmount.setBackground(colorFieldRight);
-        tfAmount.getDocument().addDocumentListener(docRegx);
-        tfAmount.setPreferredSize(new Dimension(95, 27));
-        panelMetaInputs.add(tfAmount);
+        tfPayable = new JTextField();
+        tfPayable.setFont(new Font("SansSerif", Font.BOLD, 12));
+        tfPayable.setBackground(colorFieldRight);
+        tfPayable.getDocument().addDocumentListener(docRegx);
+        tfPayable.setPreferredSize(new Dimension(95, 27));
+        panelMetaInputs.add(tfPayable);
 
         mainPanel = new JPanel(new GridBagLayout());
 
@@ -145,16 +145,16 @@ public class SalaryInput
         setFieldsEditable(false);
     }
 
-    public JPanel getSalaryAdvanceInputsPanel() {
+    public JPanel getSalaryInputsPanel() {
         return mainPanel;
     }
 
     @Override
     public void employeeSelected(Employee employee) {
-        if (!boolSalaryAdvanceDisplayMode) {
+        if (!boolSalaryDisplayMode) {
             setFieldsEditable(true);
         }
-        if (boolSalaryAdvanceDisplayMode && employee != null) {
+        if (boolSalaryDisplayMode && employee != null) {
             clearInputFields();
         }
     }
@@ -165,45 +165,44 @@ public class SalaryInput
     }
 
     /**
-     * Year of which the salary advance will take effect. That is the year that
-     * advance will be deducted from.
+     * Year of which the salary will take effect.
      *
      * @return String represent the year field input
      */
     public String getSubjectYear() {
-        return tfYearSubject.getText();
+        return tfDateSubject.getText();
     }
 
-    public LocalDate getDateAdvanceTaken() {
-        return dateAdvanceTaken.getDate();
+    public LocalDate getDateSalaryGiven() {
+        return dateSalaryGiven.getDate();
     }
 
-    public BigDecimal getAmount() {
-        return new BigDecimal(tfAmount.getText());
+    public BigDecimal getPayable() {
+        return new BigDecimal(tfPayable.getText());
     }
 
     public boolean getBoolDateFilled() {
         return boolDateFilled;
     }
 
-    public boolean getBoolTfAmountFilled() {
-        return boolTfAmountFilled;
+    public boolean getBoolTfPayableFilled() {
+        return boolTfPayableFilled;
     }
 
     protected void clearInputFields() {
-        tfYearSubject.setText(String.valueOf(yearAndMonth.getYear()));
+        tfDateSubject.setText(String.valueOf(yearAndMonth.getYear()));
         monthsList.setSelectedIndex(yearAndMonth.getMonthValue() - 1);
-        dateAdvanceTaken.setTodayAsDefault();
-        tfAmount.setText(null);
-        boolTfAmountFilled = false;
+        dateSalaryGiven.setTodayAsDefault();
+        tfPayable.setText(null);
+        boolTfPayableFilled = false;
     }
 
     private void setFieldsEditable(boolean editable) {
-        tfYearSubject.setEditable(editable);
+        tfDateSubject.setEditable(editable);
         monthsList.setEnabled(editable);
-        dateAdvanceTaken.setEnabled(editable);
-        tfAmount.setEditable(editable);
-        tfAmount.setForeground(editable ? null : colorDisabled);
+        dateSalaryGiven.setEnabled(editable);
+        tfPayable.setEditable(editable);
+        tfPayable.setForeground(editable ? null : colorDisabled);
     }
 
     @Override
@@ -214,30 +213,30 @@ public class SalaryInput
     @Override
     public void updated() {
         boolUpdated = true;
-        if (boolSalaryAdvanceDisplayMode) {
+        if (boolSalaryDisplayMode) {
             setFieldsEditable(false);
-            setInputFieldsWithSalaryAdvance(salaryAdvanceId);
+            setInputFieldsWithSalary(salaryId);
         }
     }
 
     @Override
     public void updatedICRP() {
         boolUpdated = true;
-        if (boolSalaryAdvanceDisplayMode) {
+        if (boolSalaryDisplayMode) {
             setFieldsEditable(false);
         }
     }
 
     @Override
     public void displayable() {
-        boolSalaryAdvanceDisplayMode = true;
+        boolSalaryDisplayMode = true;
         clearInputFields();
         setFieldsEditable(false);
     }
 
     @Override
     public void unDisplayable() {
-        boolSalaryAdvanceDisplayMode = false;
+        boolSalaryDisplayMode = false;
         boolEditMode = false;
         clearInputFields();
         setFieldsEditable(true);
@@ -246,38 +245,38 @@ public class SalaryInput
     @Override
     public void rowSelectedWithRecordId(int id) {
 
-        salaryAdvanceId = id;
+        salaryId = id;
 
-        if (boolSalaryAdvanceDisplayMode) {
-            setInputFieldsWithSalaryAdvance(id);
+        if (boolSalaryDisplayMode) {
+            setInputFieldsWithSalary(id);
         }
     }
 
-    public void setInputFieldsWithSalaryAdvance(int id) {
+    public void setInputFieldsWithSalary(int id) {
 
-        if (salaryAdvance == null || salaryAdvanceOldId != id || boolUpdated) {
-            // If salaryAdvance object is null, or
-            // if new Id is not the same as previous stored Id (salaryAdvanceOldId), or
+        if (salary == null || salaryOldId != id || boolUpdated) {
+            // If salary object is null, or
+            // if new Id is not the same as previous stored Id (salaryOldId), or
             // if database entity update submitted
             // then make a new database request.
             boolUpdated = false; // reset submission flag
-            salaryAdvance = CRUDSalaryAdvance.getById(id);
+            salary = CRUDSalary.getById(id);
         }
-        // else: otherwise use previously requested salaryAdvance object
+        // else: otherwise use previously requested salary object
         //
 
-        LocalDate yearMonthSubject = salaryAdvance.getYearMonthSubject();
-        java.time.Year year = Year.from(yearMonthSubject);
-        Month month = Month.from(yearMonthSubject);
+        LocalDate dateSubject = salary.getDateSubject();
+        java.time.Year year = Year.from(dateSubject);
+        Month month = Month.from(dateSubject);
 
-        tfYearSubject.setText(year.toString());
+        tfDateSubject.setText(year.toString());
         monthsList.setSelectedIndex(month.getValue() - 1);
-        dateAdvanceTaken.setDateValue(salaryAdvance.getDateTaken());
-        tfAmount.setText(String.valueOf(salaryAdvance.getAmount()));
+        dateSalaryGiven.setDateValue(salary.getDateGiven());
+        tfPayable.setText(String.valueOf(salary.getPayable()));
 
         // Store id for future comparsions,
         // you find comparsion at the top of this method
-        salaryAdvanceOldId = salaryAdvance.getId();
+        salaryOldId = salary.getId();
     }
 
     @Override
@@ -288,12 +287,12 @@ public class SalaryInput
 
     @Override
     public void cancelled() {
-        if (boolSalaryAdvanceDisplayMode) {
+        if (boolSalaryDisplayMode) {
             // Display mode, and posibly edit mode
             boolEditMode = false;
             setFieldsEditable(false);
-            setInputFieldsWithSalaryAdvance(salaryAdvanceId);
-        } else if (!boolSalaryAdvanceDisplayMode) {
+            setInputFieldsWithSalary(salaryId);
+        } else if (!boolSalaryDisplayMode) {
             // Create mode
             int dialogResult = JOptionPane.showConfirmDialog(null,
                     "This will clear content from all input fields\n"
@@ -312,8 +311,7 @@ public class SalaryInput
     }
 
     /**
-     * Month of which the salary advance will take effect. That is the month
-     * that advance will be deducted from.
+     * Month of which the salary will take effect.
      *
      * @return int represent the month
      */
@@ -349,16 +347,16 @@ public class SalaryInput
 //                    boolTfTimeFilled = false;
 //                }
 //            }
-            if (tfAmount.getText().isEmpty()) {
-                tfAmount.setBackground(colorFieldRight);
+            if (tfPayable.getText().isEmpty()) {
+                tfPayable.setBackground(colorFieldRight);
             } else {
                 // Regex match DECIMAL(12,3)
-                if (tfAmount.getText().matches("^\\d{0,9}(?:(?<=\\d)\\.(?=\\d)\\d{0,3})?$")) {
-                    tfAmount.setBackground(colorFieldRight);
-                    boolTfAmountFilled = true;
+                if (tfPayable.getText().matches("^\\d{0,9}(?:(?<=\\d)\\.(?=\\d)\\d{0,3})?$")) {
+                    tfPayable.setBackground(colorFieldRight);
+                    boolTfPayableFilled = true;
                 } else {
-                    tfAmount.setBackground(colorFieldWrong);
-                    boolTfAmountFilled = false;
+                    tfPayable.setBackground(colorFieldWrong);
+                    boolTfPayableFilled = false;
                 }
             }
         }

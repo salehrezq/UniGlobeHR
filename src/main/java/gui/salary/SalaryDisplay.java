@@ -20,38 +20,38 @@ public class SalaryDisplay
         UpdateListener,
         UpdateICRPListener {
 
-    private SalaryInput salaryAdvanceInput;
+    private SalaryInput salaryInput;
     private JCheckBox checkDisplayMode;
-    private List<DisplayableListener> salaryAdvanceDisplayableListeners;
+    private List<DisplayableListener> salaryDisplayableListeners;
 
     public SalaryDisplay() {
 
-        salaryAdvanceDisplayableListeners = new ArrayList<>();
+        salaryDisplayableListeners = new ArrayList<>();
 
         checkDisplayMode = new JCheckBox("Display Mode");
         checkDisplayMode.addItemListener(new ChechBoxListener());
     }
 
-    public void setSalaryAdvanceInput(SalaryInput salaryAdvanceInput) {
-        this.salaryAdvanceInput = salaryAdvanceInput;
+    public void setSalaryInput(SalaryInput salaryInput) {
+        this.salaryInput = salaryInput;
     }
 
     public JCheckBox getCheckDisplayMode() {
         return checkDisplayMode;
     }
 
-    public void addSalaryAdvanceDisplayableListener(DisplayableListener sadl) {
-        this.salaryAdvanceDisplayableListeners.add(sadl);
+    public void addSalaryDisplayableListener(DisplayableListener sadl) {
+        this.salaryDisplayableListeners.add(sadl);
     }
 
-    private void notifySalaryAdvanceDisplayable() {
-        this.salaryAdvanceDisplayableListeners.forEach((sadl) -> {
+    private void notifySalaryDisplayable() {
+        this.salaryDisplayableListeners.forEach((sadl) -> {
             sadl.displayable();
         });
     }
 
-    private void notifySalaryAdvanceUnDisplayable() {
-        this.salaryAdvanceDisplayableListeners.forEach((sadl) -> {
+    private void notifySalaryUnDisplayable() {
+        this.salaryDisplayableListeners.forEach((sadl) -> {
             sadl.unDisplayable();
         });
     }
@@ -100,13 +100,13 @@ public class SalaryDisplay
                                 "Warning", JOptionPane.YES_OPTION);
 
                         if (dialogResult == JOptionPane.YES_OPTION) {
-                            notifySalaryAdvanceDisplayable();
+                            notifySalaryDisplayable();
                             count += 1;
                             checkDisplayMode.setSelected(true);
                         }
                     }
                 } else if (event.getStateChange() == ItemEvent.DESELECTED && count == 0) {
-                    notifySalaryAdvanceUnDisplayable();
+                    notifySalaryUnDisplayable();
                 }
             }
             count = 0;

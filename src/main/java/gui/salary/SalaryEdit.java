@@ -21,17 +21,17 @@ public class SalaryEdit implements
         UpdateICRPListener {
 
     private JButton btnEditMode;
-    private List<EditableListener> salaryAdvanceEditableListeners;
+    private List<EditableListener> salaryEditableListeners;
     private boolean boolRowIsSelected;
-    private boolean boolSalaryAdvanceDisplayable;
+    private boolean boolSalaryDisplayable;
     private boolean boolEditMode;
 
     public SalaryEdit() {
 
-        salaryAdvanceEditableListeners = new ArrayList<>();
+        salaryEditableListeners = new ArrayList<>();
         btnEditMode = new JButton("Edit Mode");
         btnEditMode.setEnabled(false);
-        btnEditMode.addActionListener(new EditSalaryAdvance());
+        btnEditMode.addActionListener(new EditSalary());
         btnEditMode.setEnabled(false);
     }
 
@@ -41,7 +41,7 @@ public class SalaryEdit implements
 
     @Override
     public void displayable() {
-        boolSalaryAdvanceDisplayable = true;
+        boolSalaryDisplayable = true;
         if (boolRowIsSelected) {
             btnEditMode.setEnabled(true);
         }
@@ -50,14 +50,14 @@ public class SalaryEdit implements
 
     @Override
     public void unDisplayable() {
-        boolSalaryAdvanceDisplayable = false;
+        boolSalaryDisplayable = false;
         btnEditMode.setEnabled(false);
     }
 
     @Override
     public void rowSelectedWithRecordId(int id) {
         boolRowIsSelected = true;
-        if (boolSalaryAdvanceDisplayable && !boolEditMode) {
+        if (boolSalaryDisplayable && !boolEditMode) {
             btnEditMode.setEnabled(true);
         }
     }
@@ -71,14 +71,14 @@ public class SalaryEdit implements
     @Override
     public void cancelled() {
         boolEditMode = false;
-        if (boolRowIsSelected && boolSalaryAdvanceDisplayable) {
+        if (boolRowIsSelected && boolSalaryDisplayable) {
             btnEditMode.setEnabled(true);
         }
     }
 
     @Override
     public void updated() {
-        if (boolSalaryAdvanceDisplayable && boolEditMode) {
+        if (boolSalaryDisplayable && boolEditMode) {
             boolEditMode = false;
             btnEditMode.setEnabled(true);
         }
@@ -91,22 +91,22 @@ public class SalaryEdit implements
         btnEditMode.setEnabled(false);
     }
 
-    class EditSalaryAdvance implements ActionListener {
+    class EditSalary implements ActionListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
             boolEditMode = true;
             btnEditMode.setEnabled(false);
-            notifySalaryAdvanceEditable();
+            notifySalaryEditable();
         }
     }
 
-    public void addSalaryAdvanceEditableListener(EditableListener peditableListener) {
-        this.salaryAdvanceEditableListeners.add(peditableListener);
+    public void addSalaryEditableListener(EditableListener peditableListener) {
+        this.salaryEditableListeners.add(peditableListener);
     }
 
-    private void notifySalaryAdvanceEditable() {
-        this.salaryAdvanceEditableListeners.forEach((peditableListener) -> {
+    private void notifySalaryEditable() {
+        this.salaryEditableListeners.forEach((peditableListener) -> {
             peditableListener.editable();
         });
     }

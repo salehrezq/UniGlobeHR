@@ -2,7 +2,6 @@ package datalink;
 
 import java.sql.Connection;
 import model.Salary;
-import model.SalaryAdvance;
 
 /**
  *

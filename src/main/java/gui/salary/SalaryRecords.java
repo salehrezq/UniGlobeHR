@@ -4,7 +4,7 @@ import crud.DeleteListener;
 import crud.ReadListener;
 import crud.UpdateICRPListener;
 import crud.UpdateListener;
-import datalink.CRUDSalaryAdvance;
+import datalink.CRUDSalary;
 import gui.EmployeeSelectedListener;
 import java.awt.Color;
 import java.awt.Component;
@@ -31,7 +31,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
 import model.Employee;
-import model.SalaryAdvance;
+import model.Salary;
 
 /**
  *
@@ -45,7 +45,7 @@ public class SalaryRecords
         CancelListener,
         UpdateListener,
         UpdateICRPListener,
-        ReadListener<SalaryAdvance> {
+        ReadListener<Salary> {
 
     private DefaultTableModel model;
     private JTable table;
@@ -56,7 +56,7 @@ public class SalaryRecords
     private List<RowDeselectedListener> rowDeselectedListeners;
     private List<DeleteListener> deleteListeners;
     private boolean boolRowSelected;
-    private Integer salaryAdvanceId;
+    private Integer salaryId;
     private boolean boolEditMode;
     private boolean boolDisplayMode;
     private final String selectedRowKey = "selectedRow";
@@ -65,7 +65,7 @@ public class SalaryRecords
     private final Color rowSelectionColor;
     private final JPopupMenu popupMenu;
     private final JMenuItem menuItemDelete;
-    private SalaryAdvance salaryAdvanceBeforeUpdate;
+    private Salary salaryBeforeUpdate;
 
     public SalaryRecords() {
         super();
@@ -143,13 +143,13 @@ public class SalaryRecords
 
         table.getSelectionModel().setSelectionMode(DefaultListSelectionModel.SINGLE_SELECTION);
 
-        if (boolRowSelected && salaryAdvanceId != null) {
+        if (boolRowSelected && salaryId != null) {
             // React to selected row once display mode set to on:
             // In case if display mode button clicked
             // and at the same time some row was already selected,
             // then notify that a row is already selected
             // to get benefit from it or react accordingly.
-            notifyRowSelectedListener(salaryAdvanceId);
+            notifyRowSelectedListener(salaryId);
         }
     }
 
@@ -164,7 +164,7 @@ public class SalaryRecords
     public void editable() {
         // Save copy of current record before update
         // for comparsion with the new updated record
-        salaryAdvanceBeforeUpdate = CRUDSalaryAdvance.getById(salaryAdvanceId);
+        salaryBeforeUpdate = CRUDSalary.getById(salaryId);
         // Edit mode enabled
         boolEditMode = true;
         // Save selected row for future use
@@ -204,11 +204,11 @@ public class SalaryRecords
     public void updated() {
         restoreRowSelection();
 
-        SalaryAdvance salaryAdvance = CRUDSalaryAdvance.getById(salaryAdvanceId);
+        Salary salary = CRUDSalary.getById(salaryId);
 
-        table.getModel().setValueAt(salaryAdvance.getDateTaken(), oldSelectedModelRow, 0);
-        table.getModel().setValueAt(salaryAdvance.getAmount(), oldSelectedModelRow, 1);
-        table.getModel().setValueAt(salaryAdvanceId, oldSelectedModelRow, 2);
+        table.getModel().setValueAt(salary.getDateGiven(), oldSelectedModelRow, 0);
+        table.getModel().setValueAt(salary.getPayable(), oldSelectedModelRow, 1);
+        table.getModel().setValueAt(salaryId, oldSelectedModelRow, 2);
     }
 
     @Override
@@ -224,7 +224,7 @@ public class SalaryRecords
     }
 
     @Override
-    public void read(List<SalaryAdvance> salaryaAvanceRecords) {
+    public void read(List<Salary> salaryaAvanceRecords) {
         // Clear the model every time, to append fresh results
         // and not accumulate on previous results
         model.setRowCount(0);
@@ -240,10 +240,10 @@ public class SalaryRecords
 
         int size = salaryaAvanceRecords.size();
         for (int i = 0; i < size; i++) {
-            SalaryAdvance salaryAdvance = salaryaAvanceRecords.get(i);
-            modelRow[0] = salaryAdvance.getDateTaken();
-            modelRow[1] = salaryAdvance.getAmount();
-            modelRow[2] = salaryAdvance.getId();
+            Salary salary = salaryaAvanceRecords.get(i);
+            modelRow[0] = salary.getDateGiven();
+            modelRow[1] = salary.getPayable();
+            modelRow[2] = salary.getId();
             model.addRow(modelRow);
         }
     }
@@ -279,9 +279,9 @@ public class SalaryRecords
         this.rowSelectedListeners.add(rcl);
     }
 
-    private void notifyRowSelectedListener(int salaryadvanceId) {
+    private void notifyRowSelectedListener(int salaryId) {
         this.rowSelectedListeners.forEach((rcl) -> {
-            rcl.rowSelectedWithRecordId(salaryadvanceId);
+            rcl.rowSelectedWithRecordId(salaryId);
         });
     }
 
@@ -317,19 +317,19 @@ public class SalaryRecords
                 if (selectionModel.isSelectionEmpty()) {
                     // Table row deselection occurred
                     boolRowSelected = false;
-                    salaryAdvanceId = null;
+                    salaryId = null;
                     table.setComponentPopupMenu(null);
                     notifyRowDeselection();
                 } else {
                     boolRowSelected = true;
                     int viewRow = table.getSelectedRow();
                     if (viewRow > -1) {
-                        int salaryAdvanceIdColumn = 2;
+                        int salaryIdColumn = 2;
                         selectedModelRow = table.convertRowIndexToModel(viewRow);
 
-                        Object salaryAdvanceIdObject = table.getModel().getValueAt(selectedModelRow, salaryAdvanceIdColumn);
-                        salaryAdvanceId = Integer.parseInt(salaryAdvanceIdObject.toString());
-                        notifyRowSelectedListener(salaryAdvanceId);
+                        Object salaryIdObject = table.getModel().getValueAt(selectedModelRow, salaryIdColumn);
+                        salaryId = Integer.parseInt(salaryIdObject.toString());
+                        notifyRowSelectedListener(salaryId);
                         if (boolDisplayMode) {
                             table.setComponentPopupMenu(popupMenu);
                         }
@@ -368,21 +368,21 @@ public class SalaryRecords
         public void actionPerformed(ActionEvent e) {
 
             int confirm = JOptionPane.showConfirmDialog(null,
-                    "Are you sure to delete the selected Salary advance record?",
+                    "Are you sure to delete the selected Salary record?",
                     "Confirm", JOptionPane.YES_OPTION);
 
             if (confirm == JOptionPane.YES_OPTION) {
-                if (CRUDSalaryAdvance.delete(salaryAdvanceId)) {
+                if (CRUDSalary.delete(salaryId)) {
                     model.removeRow(selectedModelRow);
 
                     notifyDeleted();
 
                     JOptionPane.showConfirmDialog(null,
-                            "Salary advance deleted successfully",
+                            "Salary deleted successfully",
                             "Info", JOptionPane.PLAIN_MESSAGE);
                 } else {
                     JOptionPane.showConfirmDialog(null,
-                            "Salary advance record was not found\n"
+                            "Salary record was not found\n"
                             + "It might be deleted beforehand.",
                             "Info", JOptionPane.PLAIN_MESSAGE);
                 }
