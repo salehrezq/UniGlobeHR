@@ -51,7 +51,7 @@ public class Compute
         List<AttendanceDeduction> attendanceDeductionsList
                 = AttendanceDeductionsCalculator
                         .getAbsentsAndLatesDeductions(listOfAbsentAndLateDays, ym);
-        
+
         BigDecimal result
                 = attendanceDeductionsList.stream()
                         .map(AttendanceDeduction::getDeduction)
@@ -80,7 +80,7 @@ public class Compute
                         JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            
+
             int year = salaryInput.getSubjectYear();
             Month month = Month.of(salaryInput.getSubjectMonth());
             YearMonth ym = YearMonth.of(year, month);
