@@ -9,7 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.Month;
-import java.time.Year;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
@@ -108,10 +107,10 @@ public class SalarySubmit
     }
 
     private LocalDate getYearMonthSubjectOfSalary() {
-        Year year = Year.parse(salaryInput.getSubjectYear());
+        int year = salaryInput.getSubjectYear();
         Month month = Month.of(salaryInput.getSubjectMonth());
 
-        LocalDate yearMonthSubjectOfSalary = LocalDate.of(Integer.parseInt(year.toString()), month, 1);
+        LocalDate yearMonthSubjectOfSalary = LocalDate.of(year, month, 1);
 
         return yearMonthSubjectOfSalary;
     }

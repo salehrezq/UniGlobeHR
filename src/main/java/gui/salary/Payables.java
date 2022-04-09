@@ -21,7 +21,7 @@ import model.Employee;
 public class Payables implements EmployeeSelectedListener {
 
     private final JPanel container, panelSalaryComponents;
-    private final JTextField lbMonthelySalary, lbAdvances, lbAttendanceDeductions, lbPerformanceGain;
+    private JTextField lbMonthelySalary, lbAdvances, lbAttendanceDeductions, lbPerformanceGain;
     private final String labelInitial = "0.0";
 
     public Payables() {
@@ -68,7 +68,11 @@ public class Payables implements EmployeeSelectedListener {
 
     @Override
     public void employeeDeselected() {
+        throw new UnsupportedOperationException("Payables employeeDeselected");
+    }
 
+    public void setTfAttendanceDeductions(String deductionsValue) {
+        this.lbAttendanceDeductions.setText(deductionsValue);
     }
 
 }

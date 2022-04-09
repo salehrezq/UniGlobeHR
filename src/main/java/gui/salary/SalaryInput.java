@@ -169,8 +169,8 @@ public class SalaryInput
      *
      * @return String represent the year field input
      */
-    public String getSubjectYear() {
-        return tfDateSubject.getText();
+    public int getSubjectYear() {
+        return Integer.parseInt(tfDateSubject.getText());
     }
 
     public LocalDate getDateSalaryGiven() {

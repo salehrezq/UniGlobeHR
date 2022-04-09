@@ -58,6 +58,7 @@ public class SalaryTab {
 
         panelComputeBtn = new JPanel();
         compute = new Compute();
+        compute.setPayables(payables);
         panelComputeBtn.add(Box.createHorizontalStrut(125));
         panelComputeBtn.add(compute.getBtnCompute());
         c = new GridBagConstraints();
@@ -71,6 +72,7 @@ public class SalaryTab {
 
         salarySubmit = new SalarySubmit();
         SalaryInput = new SalaryInput();
+        compute.setSalaryInput(SalaryInput);
         salarySubmit.addSalaryCreatedListener(SalaryInput);
         salarySubmit.addSalaryUpdatedListener(SalaryInput);
         salarySubmit.addSalaryUpdatedICRPListener(SalaryInput);
@@ -168,6 +170,10 @@ public class SalaryTab {
 
     public Payables getPayables() {
         return payables;
+    }
+
+    public Compute getCompute() {
+        return this.compute;
     }
 
     public SalarySubmit getSalarySubmit() {
