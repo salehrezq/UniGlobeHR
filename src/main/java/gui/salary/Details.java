@@ -21,7 +21,7 @@ import model.Employee;
 public class Details implements EmployeeSelectedListener {
 
     private final JPanel container, panelSalaryComponents;
-    private JTextField lbMonthelySalary, lbAdvances, lbAttendanceDeductions, lbPerformanceGain;
+    private JTextField tfMonthelySalary, tfAdvances, tfAttendanceDeductions, tfPerformanceGain;
     private final String labelInitial = "0.0";
 
     public Details() {
@@ -30,10 +30,10 @@ public class Details implements EmployeeSelectedListener {
         GridBagConstraints c;
 
         JComponent[] components = {
-            lbMonthelySalary = new JTextField(10),
-            lbAdvances = new JTextField(10),
-            lbAttendanceDeductions = new JTextField(10),
-            lbPerformanceGain = new JTextField(10)};
+            tfMonthelySalary = new JTextField(10),
+            tfAdvances = new JTextField(10),
+            tfAttendanceDeductions = new JTextField(10),
+            tfPerformanceGain = new JTextField(10)};
 
         String[] labels = {
             "Agreed Salary",
@@ -63,7 +63,7 @@ public class Details implements EmployeeSelectedListener {
 
     @Override
     public void employeeSelected(Employee employee) {
-        lbMonthelySalary.setText(employee.getSalary().toPlainString());
+        tfMonthelySalary.setText(employee.getSalary().toPlainString());
     }
 
     @Override
@@ -72,7 +72,7 @@ public class Details implements EmployeeSelectedListener {
     }
 
     public void setTfAttendanceDeductions(String deductionsValue) {
-        this.lbAttendanceDeductions.setText(deductionsValue);
+        this.tfAttendanceDeductions.setText(deductionsValue);
     }
 
 }
