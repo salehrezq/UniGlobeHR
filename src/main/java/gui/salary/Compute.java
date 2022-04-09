@@ -26,7 +26,7 @@ public class Compute
     private JButton btnCompute;
     private Employee employee;
     private SalaryInput salaryInput;
-    private Payables payables;
+    private Details payables;
 
     public Compute() {
 
@@ -42,7 +42,7 @@ public class Compute
         this.salaryInput = salaryInput;
     }
 
-    public void setPayables(Payables payables) {
+    public void setPayables(Details payables) {
         this.payables = payables;
     }
 

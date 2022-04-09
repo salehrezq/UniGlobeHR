@@ -16,7 +16,7 @@ public class SalaryTab {
 
     private JPanel panelContainer, panelInputs, panelComputeBtn;
     private EmployeeCard employeeCard;
-    private Payables payables;
+    private Details payables;
     private Compute compute;
     private SalaryInput SalaryInput;
     private SalarySubmit salarySubmit;
@@ -45,7 +45,7 @@ public class SalaryTab {
         panelInputs.add(employeeCard, c);
 
         JPanel panelHolder = new JPanel();
-        payables = new Payables();
+        payables = new Details();
         panelHolder.add(payables.getContainer());
         c = new GridBagConstraints();
         c.gridy = 1;
@@ -168,7 +168,7 @@ public class SalaryTab {
         return employeeCard;
     }
 
-    public Payables getPayables() {
+    public Details getPayables() {
         return payables;
     }
 

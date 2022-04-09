@@ -18,13 +18,13 @@ import model.Employee;
  *
  * @author Saleh
  */
-public class Payables implements EmployeeSelectedListener {
+public class Details implements EmployeeSelectedListener {
 
     private final JPanel container, panelSalaryComponents;
     private JTextField lbMonthelySalary, lbAdvances, lbAttendanceDeductions, lbPerformanceGain;
     private final String labelInitial = "0.0";
 
-    public Payables() {
+    public Details() {
 
         container = new JPanel(new GridBagLayout());
         GridBagConstraints c;
