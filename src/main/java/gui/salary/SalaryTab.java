@@ -16,7 +16,7 @@ public class SalaryTab {
 
     private JPanel panelContainer, panelInputs, panelComputeBtn;
     private EmployeeCard employeeCard;
-    private Details payables;
+    private Details details;
     private Compute compute;
     private SalaryInput SalaryInput;
     private SalarySubmit salarySubmit;
@@ -45,8 +45,8 @@ public class SalaryTab {
         panelInputs.add(employeeCard, c);
 
         JPanel panelHolder = new JPanel();
-        payables = new Details();
-        panelHolder.add(payables.getContainer());
+        details = new Details();
+        panelHolder.add(details.getContainer());
         c = new GridBagConstraints();
         c.gridy = 1;
         c.weightx = 1.0;
@@ -58,7 +58,7 @@ public class SalaryTab {
 
         panelComputeBtn = new JPanel();
         compute = new Compute();
-        compute.setPayables(payables);
+        compute.setDetails(details);
         panelComputeBtn.add(Box.createHorizontalStrut(125));
         panelComputeBtn.add(compute.getBtnCompute());
         c = new GridBagConstraints();
@@ -168,8 +168,8 @@ public class SalaryTab {
         return employeeCard;
     }
 
-    public Details getPayables() {
-        return payables;
+    public Details getDetails() {
+        return details;
     }
 
     public Compute getCompute() {

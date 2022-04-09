@@ -58,7 +58,7 @@ public class Stage extends JPanel {
 
         // Salary tab panel
         SalaryTab salaryTab = controls.getSalaryTab();
-        treeEmployees.addEmployeeSelectedListener(salaryTab.getPayables());
+        treeEmployees.addEmployeeSelectedListener(salaryTab.getDetails());
         treeEmployees.addEmployeeSelectedListener(salaryTab.getSalaryInput());
         treeEmployees.addEmployeeSelectedListener(salaryTab.getCompute());
 
