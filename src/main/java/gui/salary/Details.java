@@ -22,7 +22,7 @@ public class Details implements EmployeeSelectedListener {
 
     private final JPanel container, panelSalaryComponents;
     private JTextField tfMonthelySalary, tfAdvances, tfAttendanceDeductions, tfPerformanceGain;
-    private final String labelInitial = "0.0";
+    private final String tfInitialValue = "0";
 
     public Details() {
 
@@ -64,11 +64,15 @@ public class Details implements EmployeeSelectedListener {
     @Override
     public void employeeSelected(Employee employee) {
         tfMonthelySalary.setText(employee.getSalary().toPlainString());
+        tfAttendanceDeductions.setText(tfInitialValue);
     }
 
     @Override
     public void employeeDeselected() {
-        throw new UnsupportedOperationException("Payables employeeDeselected");
+        tfMonthelySalary.setText(tfInitialValue);
+        tfAdvances.setText(tfInitialValue);
+        tfAttendanceDeductions.setText(tfInitialValue);
+        tfPerformanceGain.setText(tfInitialValue);
     }
 
     public void setTfAttendanceDeductions(String deductionsValue) {
