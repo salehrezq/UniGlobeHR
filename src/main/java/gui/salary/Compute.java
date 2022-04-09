@@ -26,7 +26,7 @@ public class Compute
     private JButton btnCompute;
     private Employee employee;
     private SalaryInput salaryInput;
-    private Details payables;
+    private Details details;
 
     public Compute() {
 
@@ -42,8 +42,8 @@ public class Compute
         this.salaryInput = salaryInput;
     }
 
-    public void setPayables(Details payables) {
-        this.payables = payables;
+    public void setDetails(Details details) {
+        this.details = details;
     }
 
     public static BigDecimal getAttendanceDeductionsByEmployeeOfMonth(int employeeId, YearMonth ym) {
