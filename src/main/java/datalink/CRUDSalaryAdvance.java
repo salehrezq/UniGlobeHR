@@ -1,5 +1,6 @@
 package datalink;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -109,6 +110,39 @@ public class CRUDSalaryAdvance {
             Connect.cleanUp();
         }
         return salaryAdvancesList;
+    }
+
+    public static BigDecimal getSalaryAdvancesRecordByEmployeeByMonthAggregated(int employeeID, YearMonth ym) {
+
+        BigDecimal salaryAdvancesAggregated = null;
+
+        try {
+            LocalDate firstOfThisMonth = ym.atDay(1);
+            LocalDate firstOfNextMonth = ym.plusMonths(1).atDay(1);
+
+            String sql = "SELECT SUM(amount) as advances_sum FROM `salary_advances`"
+                    + " WHERE `employee_id` = ? AND `subject_year_month` >= ? AND `subject_year_month` < ?";
+
+            conn = Connect.getConnection();
+            PreparedStatement p = conn.prepareStatement(sql);
+
+            p.setInt(1, employeeID);
+            p.setObject(2, firstOfThisMonth);
+            p.setObject(3, firstOfNextMonth);
+
+            ResultSet result = p.executeQuery();
+            boolean isRecordAvailable = result.isBeforeFirst();
+
+            if (isRecordAvailable) {
+                result.next();
+                salaryAdvancesAggregated = result.getBigDecimal("advances_sum");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDSalaryAdvance.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            Connect.cleanUp();
+        }
+        return (salaryAdvancesAggregated == null) ? BigDecimal.ZERO : salaryAdvancesAggregated;
     }
 
     public static boolean update(SalaryAdvance salaryAdvance) {

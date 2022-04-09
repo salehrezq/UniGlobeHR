@@ -21,7 +21,7 @@ import model.Employee;
 public class Details implements EmployeeSelectedListener {
 
     private final JPanel container, panelSalaryComponents;
-    private JTextField tfMonthelySalary, tfAdvances, tfAttendanceDeductions, tfPerformanceGain;
+    private JTextField tfMonthelySalary, tfSalaryAdvances, tfAttendanceDeductions, tfPerformanceGain;
     private final String tfInitialValue = "0";
 
     public Details() {
@@ -31,7 +31,7 @@ public class Details implements EmployeeSelectedListener {
 
         JComponent[] components = {
             tfMonthelySalary = new JTextField(10),
-            tfAdvances = new JTextField(10),
+            tfSalaryAdvances = new JTextField(10),
             tfAttendanceDeductions = new JTextField(10),
             tfPerformanceGain = new JTextField(10)};
 
@@ -70,9 +70,13 @@ public class Details implements EmployeeSelectedListener {
     @Override
     public void employeeDeselected() {
         tfMonthelySalary.setText(tfInitialValue);
-        tfAdvances.setText(tfInitialValue);
+        tfSalaryAdvances.setText(tfInitialValue);
         tfAttendanceDeductions.setText(tfInitialValue);
         tfPerformanceGain.setText(tfInitialValue);
+    }
+
+    public void setTfSalaryAdvances(String salaryAdvances) {
+        this.tfSalaryAdvances.setText(salaryAdvances);
     }
 
     public void setTfAttendanceDeductions(String deductionsValue) {

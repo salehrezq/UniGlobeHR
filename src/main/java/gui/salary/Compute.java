@@ -1,6 +1,7 @@
 package gui.salary;
 
 import datalink.CRUDAttendance;
+import datalink.CRUDSalaryAdvance;
 import gui.EmployeeSelectedListener;
 import gui.attendance.AttendanceDeductionsCalculator;
 import java.awt.event.ActionEvent;
@@ -86,7 +87,11 @@ public class Compute
             YearMonth ym = YearMonth.of(year, month);
             BigDecimal attendanceDeductions = getAttendanceDeductionsByEmployeeOfMonth(employee.getId(), ym);
 
-            payables.setTfAttendanceDeductions(attendanceDeductions.toPlainString());
+            details.setTfAttendanceDeductions(attendanceDeductions.toPlainString());
+
+            BigDecimal salaryAdvancesAggregated
+                    = CRUDSalaryAdvance.getSalaryAdvancesRecordByEmployeeByMonthAggregated(employee.getId(), ym);
+            details.setTfSalaryAdvances(salaryAdvancesAggregated.toPlainString());
         }
     }
 
