@@ -102,12 +102,13 @@ public class CRUDPerformance {
             LocalDate firstOfThisMonth = ym.atDay(1);
             LocalDate firstOfNextMonth = ym.plusMonths(1).atDay(1);
 
-            String sql = "SELECT SUM(case when `state` = 1 then amount else 0 END) "
-                    + "-SUM(case when `state` = 0 then amount else 0 END) "
+            String sql = "SELECT SUM(case when state = 1 then amount ELSE - amount END) "
                     + "AS `performance_gain` "
                     + "FROM `performance` "
                     + "WHERE `employee_id` = ? "
-                    + "AND `date_time` >= ? AND `date_time` < ?";
+                    + "AND state IN (1, 0) "
+                    + "AND `date_time` >= ? "
+                    + "AND `date_time` < ?";
 
             conn = Connect.getConnection();
             PreparedStatement p = conn.prepareStatement(sql);
