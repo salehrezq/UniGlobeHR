@@ -42,7 +42,7 @@ public class Details implements EmployeeSelectedListener {
             "Agreed Salary",
             "Salary Advances deducted",
             "Attendance deductions",
-            "Performance Gain",};
+            "Performance gain",};
 
         for (JComponent component : componentsRefrence) {
             JTextField tf = (JTextField) component;
