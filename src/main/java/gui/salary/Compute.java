@@ -1,6 +1,7 @@
 package gui.salary;
 
 import datalink.CRUDAttendance;
+import datalink.CRUDPerformance;
 import datalink.CRUDSalaryAdvance;
 import gui.EmployeeSelectedListener;
 import gui.attendance.AttendanceDeductionsCalculator;
@@ -92,6 +93,10 @@ public class Compute
             BigDecimal salaryAdvancesAggregated
                     = CRUDSalaryAdvance.getSalaryAdvancesRecordByEmployeeByMonthAggregated(employee.getId(), ym);
             details.setTfSalaryAdvances(salaryAdvancesAggregated.toPlainString());
+
+            BigDecimal performanceGain = CRUDPerformance.getPerformanceRecordByEmployeeByMonthAggregated(employee.getId(), ym);
+            details.setTfPerformanceGain(performanceGain.toPlainString());
+
         }
     }
 

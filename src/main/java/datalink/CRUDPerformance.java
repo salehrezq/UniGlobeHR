@@ -1,5 +1,6 @@
 package datalink;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -91,6 +92,43 @@ public class CRUDPerformance {
             Connect.cleanUp();
         }
         return performanceList;
+    }
+
+    public static BigDecimal getPerformanceRecordByEmployeeByMonthAggregated(int employeeID, YearMonth ym) {
+
+        BigDecimal performanceGain = null;
+
+        try {
+            LocalDate firstOfThisMonth = ym.atDay(1);
+            LocalDate firstOfNextMonth = ym.plusMonths(1).atDay(1);
+
+            String sql = "SELECT SUM(case when `state` = 1 then amount else 0 END) "
+                    + "-SUM(case when `state` = 0 then amount else 0 END) "
+                    + "AS `performance_gain` "
+                    + "FROM `performance` "
+                    + "WHERE `employee_id` = ? "
+                    + "AND `date_time` >= ? AND `date_time` < ?";
+
+            conn = Connect.getConnection();
+            PreparedStatement p = conn.prepareStatement(sql);
+
+            p.setInt(1, employeeID);
+            p.setObject(2, firstOfThisMonth);
+            p.setObject(3, firstOfNextMonth);
+
+            ResultSet result = p.executeQuery();
+            boolean isRecordAvailable = result.isBeforeFirst();
+
+            if (isRecordAvailable) {
+                result.next();
+                performanceGain = result.getBigDecimal("performance_gain");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDPerformance.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            Connect.cleanUp();
+        }
+        return (performanceGain == null) ? BigDecimal.ZERO : performanceGain;
     }
 
     public static Performance getById(int id) {

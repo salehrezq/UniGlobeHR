@@ -69,7 +69,9 @@ public class Details implements EmployeeSelectedListener {
     @Override
     public void employeeSelected(Employee employee) {
         tfMonthelySalary.setText(employee.getSalary().toPlainString());
+        tfSalaryAdvances.setText(tfInitialValue);
         tfAttendanceDeductions.setText(tfInitialValue);
+        tfPerformanceGain.setText(tfInitialValue);
     }
 
     @Override
@@ -85,6 +87,10 @@ public class Details implements EmployeeSelectedListener {
 
     public void setTfAttendanceDeductions(String deductionsValue) {
         this.tfAttendanceDeductions.setText(deductionsValue);
+    }
+
+    public void setTfPerformanceGain(String performanceGain) {
+        this.tfPerformanceGain.setText(performanceGain);
     }
 
 }
