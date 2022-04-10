@@ -177,6 +177,10 @@ public class SalaryInput
         return dateSalaryGiven.getDate();
     }
 
+    public void setTfPayable(String payable) {
+        tfPayable.setText(payable);
+    }
+
     public BigDecimal getPayable() {
         return new BigDecimal(tfPayable.getText());
     }

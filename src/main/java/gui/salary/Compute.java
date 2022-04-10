@@ -97,6 +97,13 @@ public class Compute
             BigDecimal performanceGain = CRUDPerformance.getPerformanceRecordByEmployeeByMonthAggregated(employee.getId(), ym);
             details.setTfPerformanceGain(performanceGain.toPlainString());
 
+            BigDecimal payable = employee.getSalary()
+                    .subtract(salaryAdvancesAggregated)
+                    .subtract(attendanceDeductions)
+                    .add(performanceGain);
+
+            salaryInput.setTfPayable(payable.toPlainString());
+
         }
     }
 
