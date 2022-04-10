@@ -124,9 +124,8 @@ public class SalaryInput
         panelMetaInputs.add(lbAmount);
 
         tfPayable = new JTextField();
+        tfPayable.setEditable(false);
         tfPayable.setFont(new Font("SansSerif", Font.BOLD, 12));
-        tfPayable.setBackground(colorFieldRight);
-        tfPayable.getDocument().addDocumentListener(docRegx);
         tfPayable.setPreferredSize(new Dimension(95, 27));
         panelMetaInputs.add(tfPayable);
 
@@ -205,7 +204,6 @@ public class SalaryInput
         tfDateSubject.setEditable(editable);
         monthsList.setEnabled(editable);
         dateSalaryGiven.setEnabled(editable);
-        tfPayable.setEditable(editable);
         tfPayable.setForeground(editable ? null : colorDisabled);
     }
 
