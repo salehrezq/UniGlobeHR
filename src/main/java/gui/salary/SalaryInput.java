@@ -120,7 +120,7 @@ public class SalaryInput
 
         ItemChangeListener comboBoxListener = new ItemChangeListener();
 
-        lbAmount = new JLabel("Amount:");
+        lbAmount = new JLabel("Payable:");
         panelMetaInputs.add(lbAmount);
 
         tfPayable = new JTextField();
