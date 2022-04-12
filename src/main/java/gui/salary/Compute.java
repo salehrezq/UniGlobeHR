@@ -35,6 +35,7 @@ public class Compute
     public Compute() {
 
         btnCompute = new JButton("Compute");
+        btnCompute.setEnabled(false);
         btnCompute.addActionListener(new ComputePayables());
 
         computeListeners = new ArrayList<>();
@@ -69,11 +70,13 @@ public class Compute
     @Override
     public void employeeSelected(Employee employee) {
         this.employee = employee;
+        btnCompute.setEnabled(true);
     }
 
     @Override
     public void employeeDeselected() {
         this.employee = null;
+        btnCompute.setEnabled(false);
     }
 
     class ComputePayables implements ActionListener {
