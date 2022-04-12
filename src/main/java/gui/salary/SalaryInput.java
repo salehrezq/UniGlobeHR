@@ -150,6 +150,7 @@ public class SalaryInput
 
     @Override
     public void employeeSelected(Employee employee) {
+        tfPayable.setText(null);
         if (!boolSalaryDisplayMode) {
             setFieldsEditable(true);
         }
@@ -161,6 +162,7 @@ public class SalaryInput
     @Override
     public void employeeDeselected() {
         setFieldsEditable(false);
+        tfPayable.setText(null);
     }
 
     /**
