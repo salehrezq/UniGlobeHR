@@ -61,6 +61,7 @@ public class Stage extends JPanel {
         treeEmployees.addEmployeeSelectedListener(salaryTab.getDetails());
         treeEmployees.addEmployeeSelectedListener(salaryTab.getSalaryInput());
         treeEmployees.addEmployeeSelectedListener(salaryTab.getCompute());
+        treeEmployees.addEmployeeSelectedListener(salaryTab.getSalarySubmit());
 
         // Add the scroll panes to a split pane.
         JSplitPane splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT);
