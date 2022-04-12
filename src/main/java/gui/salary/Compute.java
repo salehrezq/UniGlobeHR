@@ -10,6 +10,7 @@ import java.awt.event.ActionListener;
 import java.math.BigDecimal;
 import java.time.Month;
 import java.time.YearMonth;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
@@ -29,11 +30,14 @@ public class Compute
     private Employee employee;
     private SalaryInput salaryInput;
     private Details details;
+    private List<ComputeListener> computeListeners;
 
     public Compute() {
 
         btnCompute = new JButton("Compute");
         btnCompute.addActionListener(new ComputePayables());
+
+        computeListeners = new ArrayList<>();
     }
 
     public JButton getBtnCompute() {
@@ -104,7 +108,18 @@ public class Compute
 
             salaryInput.setTfPayable(payable.toPlainString());
 
+            notifyComputed();
         }
+    }
+
+    public void addComputeListener(ComputeListener cl) {
+        this.computeListeners.add(cl);
+    }
+
+    private void notifyComputed() {
+        this.computeListeners.forEach((cl) -> {
+            cl.computed();
+        });
     }
 
 }

@@ -28,7 +28,8 @@ public class SalarySubmit
         EditableListener,
         CancelListener,
         RowSelectedListener,
-        RowDeselectedListener {
+        RowDeselectedListener,
+        ComputeListener {
 
     private Operation operation;
     private JButton btnSubmit;
@@ -173,6 +174,11 @@ public class SalarySubmit
     @Override
     public void rowDeselection() {
         salaryId = null;
+    }
+
+    @Override
+    public void computed() {
+        btnSubmit.setEnabled(true);
     }
 
     private class ValidateWithMessages {

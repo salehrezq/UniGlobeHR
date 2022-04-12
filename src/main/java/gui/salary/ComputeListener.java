@@ -6,4 +6,5 @@ package gui.salary;
  */
 public interface ComputeListener {
 
+    public void computed();
 }

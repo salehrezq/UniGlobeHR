@@ -72,6 +72,7 @@ public class SalaryTab {
 
         salarySubmit = new SalarySubmit();
         SalaryInput = new SalaryInput();
+        compute.addComputeListener(salarySubmit);
         compute.setSalaryInput(SalaryInput);
         salarySubmit.addSalaryCreatedListener(SalaryInput);
         salarySubmit.addSalaryUpdatedListener(SalaryInput);
