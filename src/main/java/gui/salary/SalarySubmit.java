@@ -215,8 +215,9 @@ public class SalarySubmit
 
     @Override
     public void employeeSelected(Employee employee) {
+        btnSubmit.setEnabled(false);
         if (!boolSalaryDisplayMode) {
-            btnSubmit.setEnabled(true);
+//            btnSubmit.setEnabled(true);
         }
         this.employee = employee;
     }
