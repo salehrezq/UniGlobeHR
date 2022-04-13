@@ -64,7 +64,6 @@ public class SalaryInput
     private Color colorFieldWrong;
     private Color colorDisabled;
     private boolean boolDateFilled;
-    private boolean boolTfPayableFilled;
     private boolean boolSalaryDisplayMode, boolEditMode, boolCreated, boolUpdated;
     private Salary salary;
     private int salaryId;
@@ -186,16 +185,11 @@ public class SalaryInput
         return boolDateFilled;
     }
 
-    public boolean getBoolTfPayableFilled() {
-        return boolTfPayableFilled;
-    }
-
     protected void clearInputFields() {
         tfDateSubject.setText(String.valueOf(yearAndMonth.getYear()));
         monthsList.setSelectedIndex(yearAndMonth.getMonthValue() - 1);
         dateSalaryGiven.setTodayAsDefault();
         tfPayable.setText(null);
-        boolTfPayableFilled = false;
     }
 
     private void setFieldsEditable(boolean editable) {

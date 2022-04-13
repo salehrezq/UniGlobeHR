@@ -203,13 +203,6 @@ public class SalarySubmit
             booleans.add(false);
             messages.add("Date: empty input");
         }
-        if (salaryInput.getBoolTfPayableFilled()) {
-            booleans.add(true);
-        } else {
-            booleans.add(false);
-            messages.add("Payable: input either incorrect or empty");
-        }
-
         return new ValidateWithMessages(booleans, messages);
     }
 
