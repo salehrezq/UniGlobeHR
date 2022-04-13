@@ -31,8 +31,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
-import javax.swing.event.DocumentEvent;
-import javax.swing.event.DocumentListener;
 import javax.swing.text.MaskFormatter;
 import model.Employee;
 import model.Salary;
@@ -81,8 +79,6 @@ public class SalaryInput
         colorFieldRight = new Color(226, 252, 237);
         colorFieldWrong = new Color(254, 225, 214);
         colorDisabled = new Color(105, 105, 105);
-
-        DocumentRegex docRegx = new DocumentRegex();
 
         Border borderDateOfSalary = BorderFactory.createTitledBorder("Date of salary");
 
@@ -334,52 +330,6 @@ public class SalaryInput
         public void dateDeselected() {
             boolDateFilled = false;
         }
-    }
-
-    class DocumentRegex implements DocumentListener {
-
-        private void doWork() {
-
-//            if (tfTime.getText().isEmpty()) {
-//                tfTime.setBackground(colorFieldRight);
-//            } else {
-//                if (tfTime.getText().matches("^(0[1-9]|1[0-2]):([0-5][0-9]) ((a|p)m|(A|P)M)$")) {
-//                    tfTime.setBackground(colorFieldRight);
-//                    boolTfTimeFilled = true;
-//                } else {
-//                    tfTime.setBackground(colorFieldWrong);
-//                    boolTfTimeFilled = false;
-//                }
-//            }
-            if (tfPayable.getText().isEmpty()) {
-                tfPayable.setBackground(colorFieldRight);
-            } else {
-                // Regex match DECIMAL(12,3)
-                if (tfPayable.getText().matches("^\\d{0,9}(?:(?<=\\d)\\.(?=\\d)\\d{0,3})?$")) {
-                    tfPayable.setBackground(colorFieldRight);
-                    boolTfPayableFilled = true;
-                } else {
-                    tfPayable.setBackground(colorFieldWrong);
-                    boolTfPayableFilled = false;
-                }
-            }
-        }
-
-        @Override
-        public void insertUpdate(DocumentEvent e) {
-            doWork();
-        }
-
-        @Override
-        public void removeUpdate(DocumentEvent e) {
-            doWork();
-        }
-
-        @Override
-        public void changedUpdate(DocumentEvent e) {
-            doWork();
-        }
-
     }
 
     class ItemChangeListener implements ItemListener {
