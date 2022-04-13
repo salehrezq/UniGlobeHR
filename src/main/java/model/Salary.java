@@ -11,7 +11,7 @@ public class Salary {
 
     private int id;
     private int employeeId;
-    private LocalDate dateSubject;
+    private LocalDate yearMonthSubject;
     private LocalDate dateGiven;
     private BigDecimal agreedSalary;
     private BigDecimal payable;
@@ -32,12 +32,12 @@ public class Salary {
         this.employeeId = employeeId;
     }
 
-    public LocalDate getDateSubject() {
-        return dateSubject;
+    public LocalDate getYearMonthSubject() {
+        return yearMonthSubject;
     }
 
-    public void setDateSubject(LocalDate dateSubject) {
-        this.dateSubject = dateSubject;
+    public void setYearMonthSubject(LocalDate yms) {
+        this.yearMonthSubject = yms;
     }
 
     public LocalDate getDateGiven() {

@@ -207,7 +207,7 @@ public class SalarySubmit
             booleans.add(true);
         } else {
             booleans.add(false);
-            messages.add("Amount: input either incorrect or empty");
+            messages.add("Payable: input either incorrect or empty");
         }
 
         return new ValidateWithMessages(booleans, messages);
@@ -245,7 +245,8 @@ public class SalarySubmit
 
                 Salary salary = new Salary();
                 salary.setEmployeeId(employee.getId());
-                salary.setDateSubject(getYearMonthSubjectOfSalary());
+                salary.setAgreedSalary(employee.getSalary());
+                salary.setYearMonthSubject(getYearMonthSubjectOfSalary());
                 salary.setDateGiven(salaryInput.getDateSalaryGiven());
                 salary.setPayable(salaryInput.getPayable());
 
@@ -270,8 +271,8 @@ public class SalarySubmit
                         informMessage = "Salary updated successfully.";
 
                         // Compare the salary subject date between old and updated record
-                        if (salary.getDateSubject()
-                                .isEqual(salaryBeforeUpdate.getDateSubject())) {
+                        if (salary.getYearMonthSubject()
+                                .isEqual(salaryBeforeUpdate.getYearMonthSubject())) {
                             notifyUpdated();
                         } else {
                             // If subject_year_month has been changed (different value) then the

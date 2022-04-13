@@ -269,9 +269,9 @@ public class SalaryInput
         // else: otherwise use previously requested salary object
         //
 
-        LocalDate dateSubject = salary.getDateSubject();
-        java.time.Year year = Year.from(dateSubject);
-        Month month = Month.from(dateSubject);
+        LocalDate yearMonthSubject = salary.getYearMonthSubject();
+        java.time.Year year = Year.from(yearMonthSubject);
+        Month month = Month.from(yearMonthSubject);
 
         tfDateSubject.setText(year.toString());
         monthsList.setSelectedIndex(month.getValue() - 1);
