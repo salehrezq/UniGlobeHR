@@ -128,7 +128,7 @@ public class SalarySubmit
         if (employee != null) {
             operation = new CreateOperation();
             operation.switchOperationFor(this);
-            btnSubmit.setEnabled(true);
+            // btnSubmit.setEnabled(true);
         }
     }
 
