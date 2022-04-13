@@ -202,6 +202,7 @@ public class SalaryInput
     @Override
     public void created() {
         boolCreated = true;
+        tfPayable.setText(null);
     }
 
     @Override
