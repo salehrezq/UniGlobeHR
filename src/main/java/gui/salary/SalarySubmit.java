@@ -226,6 +226,27 @@ public class SalarySubmit
         @Override
         public void actionPerformed(ActionEvent e) {
 
+            Boolean isEmployeeWithYearMonthSubjectAlreadyInserted
+                    = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), getYearMonthSubjectOfSalary());
+
+            if (isEmployeeWithYearMonthSubjectAlreadyInserted == null) {
+                JOptionPane.showConfirmDialog(null,
+                        "Some database issue",
+                        "Info", JOptionPane.ERROR);
+                return;
+            }
+            if (isEmployeeWithYearMonthSubjectAlreadyInserted) {
+
+                String month = Month.of(salaryInput.getSubjectMonth()).toString();
+                month = month.substring(0, 1).toUpperCase() + month.substring(1).toLowerCase();
+                int year = salaryInput.getSubjectYear();
+
+                JOptionPane.showConfirmDialog(null,
+                        "Salary for the month of " + month + " " + year + " was already inserted.",
+                        "Info", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+
             ValidateWithMessages validateWithMessages = validateSalaryInputs();
 
             // Check if List of boolean values are all true or one value at least is false

@@ -2,7 +2,9 @@ package datalink;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Salary;
@@ -40,6 +42,34 @@ public class CRUDSalary {
             Connect.cleanUp();
         }
         return insert > 0;
+    }
+
+    public static Boolean isEmployeeWithYearMonthSubjectExist(int employeeId, LocalDate yearMonthSubject) {
+
+        Boolean isRecordAvailable = null;
+
+        try {
+            String sql
+                    = "SELECT * FROM `salaries` "
+                    + "WHERE `employee_id` = ? "
+                    + "AND `subject_year_month` = ?";
+
+            conn = Connect.getConnection();
+            PreparedStatement p = conn.prepareStatement(sql);
+            p.setInt(1, employeeId);
+            p.setObject(2, yearMonthSubject);
+
+            ResultSet result = p.executeQuery();
+
+            // Check if there is a result
+            isRecordAvailable = result.isBeforeFirst();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDSalary.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            Connect.cleanUp();
+        }
+        return isRecordAvailable;
     }
 
     public static Salary getById(int id) {
