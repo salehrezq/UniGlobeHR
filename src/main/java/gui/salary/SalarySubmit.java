@@ -241,9 +241,9 @@ public class SalarySubmit
                 month = month.substring(0, 1).toUpperCase() + month.substring(1).toLowerCase();
                 int year = salaryInput.getSubjectYear();
 
-                JOptionPane.showConfirmDialog(null,
+                JOptionPane.showMessageDialog(null,
                         "Salary for the month of " + month + " " + year + " was already inserted.",
-                        "Info", JOptionPane.INFORMATION_MESSAGE);
+                        "Info", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
