@@ -29,7 +29,8 @@ public class SalarySubmit
         CancelListener,
         RowSelectedListener,
         RowDeselectedListener,
-        ComputeListener {
+        ComputeListener,
+        SubjectDateChangeListener {
 
     private Operation operation;
     private JButton btnSubmit;
@@ -178,6 +179,16 @@ public class SalarySubmit
 
     @Override
     public void computed() {
+        btnSubmit.setEnabled(true);
+    }
+
+    @Override
+    public void yearOrMonthChanged() {
+        btnSubmit.setEnabled(false);
+    }
+
+    @Override
+    public void yearAndMonthNotChanged() {
         btnSubmit.setEnabled(true);
     }
 

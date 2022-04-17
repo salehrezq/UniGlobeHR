@@ -31,6 +31,8 @@ public class Compute
     private SalaryInput salaryInput;
     private Details details;
     private List<ComputeListener> computeListeners;
+    private int yearSubjectOldValue;
+    private int monthSubjectOldValue;
 
     public Compute() {
 
@@ -51,6 +53,14 @@ public class Compute
 
     public void setDetails(Details details) {
         this.details = details;
+    }
+
+    public int getYearSubjectOldValue() {
+        return yearSubjectOldValue;
+    }
+
+    public int getMonthSubjectOldValue() {
+        return monthSubjectOldValue;
     }
 
     public static BigDecimal getAttendanceDeductionsByEmployeeOfMonth(int employeeId, YearMonth ym) {
@@ -83,6 +93,10 @@ public class Compute
 
         @Override
         public void actionPerformed(ActionEvent e) {
+
+            yearSubjectOldValue = salaryInput.getSubjectYear();
+            monthSubjectOldValue = salaryInput.getSubjectMonth();
+
             if (employee == null) {
                 JOptionPane.showConfirmDialog(null,
                         "Select Employee", "",

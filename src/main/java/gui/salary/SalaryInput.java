@@ -23,6 +23,7 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.time.Year;
 import java.time.YearMonth;
+import java.util.ArrayList;
 import javax.swing.BorderFactory;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -31,6 +32,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.Border;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
 import javax.swing.text.MaskFormatter;
 import model.Employee;
 import model.Salary;
@@ -49,7 +52,8 @@ public class SalaryInput
         RowSelectedListener,
         EditableListener,
         CancelListener,
-        DeleteListener {
+        DeleteListener,
+        ComputeListener {
 
     private JPanel mainPanel;
     private JPanel panelMetaInputs, panelYearMonthInputs, panelDateOfTake;
@@ -64,13 +68,17 @@ public class SalaryInput
     private Color colorFieldWrong;
     private Color colorDisabled;
     private boolean boolDateFilled;
-    private boolean boolSalaryDisplayMode, boolEditMode, boolCreated, boolUpdated;
+    private boolean boolSalaryDisplayMode, boolEditMode,
+            boolCreated, boolUpdated, boolYearSubjectChanged, boolMonthSubjectChanged;
     private Salary salary;
     private int salaryId;
     private int salaryOldId;
+    private Compute compute;
+    private ArrayList<SubjectDateChangeListener> subjectDateChangeListeners;
 
     public SalaryInput() {
 
+        subjectDateChangeListeners = new ArrayList<>();
         panelMetaInputs = new JPanel();
 
         GridBagConstraints c;
@@ -88,6 +96,7 @@ public class SalaryInput
         yearAndMonth = YearMonth.of(today.getYear(), today.getMonthValue());
 
         tfDateSubject = new JFormattedTextField(getMaskFormatter());
+        tfDateSubject.getDocument().addDocumentListener(new YearSubjectChangeListener());
         tfDateSubject.setPreferredSize(new Dimension(40, 20));
         panelYearMonthInputs.add(tfDateSubject);
 
@@ -95,6 +104,7 @@ public class SalaryInput
             "Jun [6]", "Jul [7]", "Aug [8]", "Sep [9]", "Oct [10]", "Nov [11]", "Dec [12]"};
 
         monthsList = new JComboBox<>(monthsNums);
+        monthsList.addItemListener(new MonthSubjectChangeListener());
         monthsList.setSelectedIndex(yearAndMonth.getMonthValue() - 1);
         panelYearMonthInputs.add(monthsList);
 
@@ -113,7 +123,7 @@ public class SalaryInput
         panelDateOfTake.add(dateSalaryGiven.getDatePicker());
         panelMetaInputs.add(panelDateOfTake);
 
-        ItemChangeListener comboBoxListener = new ItemChangeListener();
+        MonthSubjectChangeListener comboBoxListener = new MonthSubjectChangeListener();
 
         lbAmount = new JLabel("Payable:");
         panelMetaInputs.add(lbAmount);
@@ -183,6 +193,10 @@ public class SalaryInput
 
     public boolean getBoolDateFilled() {
         return boolDateFilled;
+    }
+
+    public void setCompute(Compute compute) {
+        this.compute = compute;
     }
 
     protected void clearInputFields() {
@@ -314,6 +328,12 @@ public class SalaryInput
         return monthsList.getSelectedIndex() + 1;
     }
 
+    @Override
+    public void computed() {
+        boolYearSubjectChanged = false;
+        boolMonthSubjectChanged = false;
+    }
+
     private class DateListenerImpli implements DateListener, DateDeselectedListener {
 
         @Override
@@ -327,12 +347,77 @@ public class SalaryInput
         }
     }
 
-    class ItemChangeListener implements ItemListener {
+    private class YearSubjectChangeListener implements DocumentListener {
+
+        @Override
+        public void insertUpdate(DocumentEvent e) {
+            changed(e);
+        }
+
+        @Override
+        public void removeUpdate(DocumentEvent e) {
+            changed(e);
+        }
+
+        @Override
+        public void changedUpdate(DocumentEvent e) {
+            System.out.println("DocumentListener changedUpdate");
+        }
+
+        private void changed(DocumentEvent e) {
+            String yearSubject = tfDateSubject.getText().trim();
+            if (!yearSubject.equals("")) {
+                if (compute.getYearSubjectOldValue() != Integer.parseInt(yearSubject)) {
+                    boolYearSubjectChanged = true;
+                    notifyYearOrMonthChanged();
+                } else {
+                    boolYearSubjectChanged = false;
+                    if (!boolMonthSubjectChanged) {
+                        notifyYearAndMonthNotChanged();
+                    }
+                }
+            }
+        }
+    }
+
+    class MonthSubjectChangeListener implements ItemListener {
 
         @Override
         public void itemStateChanged(ItemEvent event) {
 
+            // Wait until compute initialized and referenced properly.
+            if (compute == null) {
+                return;
+            }
+
+            JComboBox c = (JComboBox) event.getSource();
+            int monthSubject = c.getSelectedIndex() + 1;
+            if (compute.getMonthSubjectOldValue() != monthSubject) {
+                boolMonthSubjectChanged = true;
+                notifyYearOrMonthChanged();
+            } else {
+                boolMonthSubjectChanged = false;
+                if (!boolYearSubjectChanged) {
+                    notifyYearAndMonthNotChanged();
+                }
+            }
         }
+    }
+
+    public void addSubjectDateChangeListener(SubjectDateChangeListener sdchl) {
+        this.subjectDateChangeListeners.add(sdchl);
+    }
+
+    private void notifyYearOrMonthChanged() {
+        this.subjectDateChangeListeners.forEach((sdchl) -> {
+            sdchl.yearOrMonthChanged();
+        });
+    }
+
+    private void notifyYearAndMonthNotChanged() {
+        this.subjectDateChangeListeners.forEach((sdchl) -> {
+            sdchl.yearAndMonthNotChanged();
+        });
     }
 
     /**
