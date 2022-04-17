@@ -18,7 +18,7 @@ public class SalaryTab {
     private EmployeeCard employeeCard;
     private Details details;
     private Compute compute;
-    private SalaryInput SalaryInput;
+    private SalaryInput salaryInput;
     private SalarySubmit salarySubmit;
     private SalaryCancel salaryCancel;
     private final JPanel panelReuestRecords;
@@ -71,15 +71,15 @@ public class SalaryTab {
         panelInputs.add(panelComputeBtn, c);
 
         salarySubmit = new SalarySubmit();
-        SalaryInput = new SalaryInput();
-        SalaryInput.setCompute(compute);
-        compute.addComputeListener(SalaryInput);
-        SalaryInput.addSubjectDateChangeListener(salarySubmit);
+        salaryInput = new SalaryInput();
+        salaryInput.setCompute(compute);
+        compute.addComputeListener(salaryInput);
+        salaryInput.addSubjectDateChangeListener(salarySubmit);
         compute.addComputeListener(salarySubmit);
-        compute.setSalaryInput(SalaryInput);
-        salarySubmit.addSalaryCreatedListener(SalaryInput);
-        salarySubmit.addSalaryUpdatedListener(SalaryInput);
-        salarySubmit.addSalaryUpdatedICRPListener(SalaryInput);
+        compute.setSalaryInput(salaryInput);
+        salarySubmit.addSalaryCreatedListener(salaryInput);
+        salarySubmit.addSalaryUpdatedListener(salaryInput);
+        salarySubmit.addSalaryUpdatedICRPListener(salaryInput);
         c = new GridBagConstraints();
         c.gridy = 3;
         c.weightx = 1.0;
@@ -87,10 +87,10 @@ public class SalaryTab {
         c.gridwidth = 2;
         c.fill = GridBagConstraints.BOTH;
         c.anchor = GridBagConstraints.PAGE_START;
-        panelInputs.add(SalaryInput.getSalaryInputsPanel(), c);
+        panelInputs.add(salaryInput.getSalaryInputsPanel(), c);
 
         salaryCancel = new SalaryCancel();
-        salaryCancel.addCancelListener(SalaryInput);
+        salaryCancel.addCancelListener(salaryInput);
         salaryCancel.addCancelListener(salarySubmit);
         salarySubmit.addSalaryUpdatedListener(salaryCancel);
         salarySubmit.addSalaryUpdatedICRPListener(salaryCancel);
@@ -104,7 +104,7 @@ public class SalaryTab {
         c.insets = new Insets(3, 31, 5, 0);
         panelInputs.add(salaryCancel.getButtonCancel(), c);
 
-        salarySubmit.setSalaryInput(SalaryInput);
+        salarySubmit.setSalaryInput(salaryInput);
         c = new GridBagConstraints();
         c.gridy = 4;
         c.gridx = 1;
@@ -125,8 +125,8 @@ public class SalaryTab {
         salarySubmit.addSalaryUpdatedICRPListener(salaryRequest);
         salarySubmit.addSalaryUpdatedListener(salaryRecords);
         salarySubmit.addSalaryUpdatedICRPListener(salaryRecords);
-        salaryRecords.addDeleteListener(SalaryInput);
-        salaryRecords.addRowSelectedListener(SalaryInput);
+        salaryRecords.addDeleteListener(salaryInput);
+        salaryRecords.addRowSelectedListener(salaryInput);
         salaryCancel.addCancelListener(salaryRequest);
         salaryCancel.addCancelListener(salaryRecords);
         panelReuestRecords.add(salaryRequest.getPanelControls(), BorderLayout.PAGE_START);
@@ -135,7 +135,7 @@ public class SalaryTab {
         salaryDisplay = new SalaryDisplay();
         salaryCancel.addCancelListener(salaryDisplay);
         salaryDisplay.addSalaryDisplayableListener(salarySubmit);
-        salaryDisplay.addSalaryDisplayableListener(SalaryInput);
+        salaryDisplay.addSalaryDisplayableListener(salaryInput);
         salaryDisplay.addSalaryDisplayableListener(salaryCancel);
         salaryDisplay.addSalaryDisplayableListener(salaryRequest);
         salaryDisplay.addSalaryDisplayableListener(salaryRecords);
@@ -146,7 +146,7 @@ public class SalaryTab {
         salaryEdit = new SalaryEdit();
         salaryEdit.addSalaryEditableListener(salaryRequest);
         salaryEdit.addSalaryEditableListener(salaryRecords);
-        salaryEdit.addSalaryEditableListener(SalaryInput);
+        salaryEdit.addSalaryEditableListener(salaryInput);
         salaryEdit.addSalaryEditableListener(salaryCancel);
         salaryEdit.addSalaryEditableListener(salaryDisplay);
         salaryEdit.addSalaryEditableListener(salarySubmit);
@@ -193,7 +193,7 @@ public class SalaryTab {
     }
 
     public SalaryInput getSalaryInput() {
-        return SalaryInput;
+        return salaryInput;
     }
 
 }

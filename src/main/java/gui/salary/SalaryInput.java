@@ -58,10 +58,10 @@ public class SalaryInput
     private JPanel mainPanel;
     private JPanel panelMetaInputs, panelYearMonthInputs, panelDateOfTake;
     private YearMonth yearAndMonth;
-    private JFormattedTextField tfDateSubject;
+    private JFormattedTextField tfYearSubject;
     private JComboBox monthsList;
     private final String[] monthsNums;
-    private DatePicker dateSalaryGiven;
+    private DatePicker dateOfPayment;
     private JLabel lbAmount;
     private JTextField tfPayable;
     private Color colorFieldRight;
@@ -87,18 +87,17 @@ public class SalaryInput
         colorFieldWrong = new Color(254, 225, 214);
         colorDisabled = new Color(105, 105, 105);
 
-        Border borderDateOfSalary = BorderFactory.createTitledBorder("Date of salary");
-
         panelYearMonthInputs = new JPanel();
-        panelYearMonthInputs.setBorder(borderDateOfSalary);
+        Border borderSubjectDate = BorderFactory.createTitledBorder("Subject date");
+        panelYearMonthInputs.setBorder(borderSubjectDate);
 
         LocalDate today = LocalDate.now();
         yearAndMonth = YearMonth.of(today.getYear(), today.getMonthValue());
 
-        tfDateSubject = new JFormattedTextField(getMaskFormatter());
-        tfDateSubject.getDocument().addDocumentListener(new YearSubjectChangeListener());
-        tfDateSubject.setPreferredSize(new Dimension(40, 20));
-        panelYearMonthInputs.add(tfDateSubject);
+        tfYearSubject = new JFormattedTextField(getMaskFormatter());
+        tfYearSubject.getDocument().addDocumentListener(new YearSubjectChangeListener());
+        tfYearSubject.setPreferredSize(new Dimension(40, 20));
+        panelYearMonthInputs.add(tfYearSubject);
 
         monthsNums = new String[]{"Jan [1]", "Feb [2]", "Mar [3]", "Apr [4]", "May [5]",
             "Jun [6]", "Jul [7]", "Aug [8]", "Sep [9]", "Oct [10]", "Nov [11]", "Dec [12]"};
@@ -110,20 +109,18 @@ public class SalaryInput
 
         panelMetaInputs.add(panelYearMonthInputs);
 
-        Border borderDateOfTake = BorderFactory.createTitledBorder("Date of take");
         panelDateOfTake = new JPanel();
-        panelDateOfTake.setBorder(borderDateOfTake);
+        Border borderPaymentDate = BorderFactory.createTitledBorder("Payment date");
+        panelDateOfTake.setBorder(borderPaymentDate);
 
-        dateSalaryGiven = new DatePicker();
-        dateSalaryGiven.setTodayAsDefault();
+        dateOfPayment = new DatePicker();
+        dateOfPayment.setTodayAsDefault();
         boolDateFilled = true;
         DateListenerImpli dateListenerImpli = new DateListenerImpli();
-        dateSalaryGiven.addDateListener(dateListenerImpli);
-        dateSalaryGiven.addDateDeselectedListener(dateListenerImpli);
-        panelDateOfTake.add(dateSalaryGiven.getDatePicker());
+        dateOfPayment.addDateListener(dateListenerImpli);
+        dateOfPayment.addDateDeselectedListener(dateListenerImpli);
+        panelDateOfTake.add(dateOfPayment.getDatePicker());
         panelMetaInputs.add(panelDateOfTake);
-
-        MonthSubjectChangeListener comboBoxListener = new MonthSubjectChangeListener();
 
         lbAmount = new JLabel("Payable:");
         panelMetaInputs.add(lbAmount);
@@ -176,11 +173,11 @@ public class SalaryInput
      * @return String represent the year field input
      */
     public int getSubjectYear() {
-        return Integer.parseInt(tfDateSubject.getText());
+        return Integer.parseInt(tfYearSubject.getText());
     }
 
     public LocalDate getDateSalaryGiven() {
-        return dateSalaryGiven.getDate();
+        return dateOfPayment.getDate();
     }
 
     public void setTfPayable(String payable) {
@@ -200,16 +197,16 @@ public class SalaryInput
     }
 
     protected void clearInputFields() {
-        tfDateSubject.setText(String.valueOf(yearAndMonth.getYear()));
+        tfYearSubject.setText(String.valueOf(yearAndMonth.getYear()));
         monthsList.setSelectedIndex(yearAndMonth.getMonthValue() - 1);
-        dateSalaryGiven.setTodayAsDefault();
+        dateOfPayment.setTodayAsDefault();
         tfPayable.setText(null);
     }
 
     private void setFieldsEditable(boolean editable) {
-        tfDateSubject.setEditable(editable);
+        tfYearSubject.setEditable(editable);
         monthsList.setEnabled(editable);
-        dateSalaryGiven.setEnabled(editable);
+        dateOfPayment.setEnabled(editable);
         tfPayable.setForeground(editable ? null : colorDisabled);
     }
 
@@ -278,9 +275,9 @@ public class SalaryInput
         java.time.Year year = Year.from(yearMonthSubject);
         Month month = Month.from(yearMonthSubject);
 
-        tfDateSubject.setText(year.toString());
+        tfYearSubject.setText(year.toString());
         monthsList.setSelectedIndex(month.getValue() - 1);
-        dateSalaryGiven.setDateValue(salary.getDateGiven());
+        dateOfPayment.setDateValue(salary.getDateGiven());
         tfPayable.setText(String.valueOf(salary.getPayable()));
 
         // Store id for future comparsions,
@@ -365,7 +362,7 @@ public class SalaryInput
         }
 
         private void changed(DocumentEvent e) {
-            String yearSubject = tfDateSubject.getText().trim();
+            String yearSubject = tfYearSubject.getText().trim();
             if (!yearSubject.equals("")) {
                 if (compute.getYearSubjectOldValue() != Integer.parseInt(yearSubject)) {
                     boolYearSubjectChanged = true;

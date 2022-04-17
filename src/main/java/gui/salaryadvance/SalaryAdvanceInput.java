@@ -84,10 +84,9 @@ public class SalaryAdvanceInput
 
         DocumentRegex docRegx = new DocumentRegex();
 
-        Border borderYearMonthOfAdvance = BorderFactory.createTitledBorder("Year/Month of advance");
-
         panelYearMonthInputs = new JPanel();
-        panelYearMonthInputs.setBorder(borderYearMonthOfAdvance);
+        Border borderSubjectDate = BorderFactory.createTitledBorder("Subject date");
+        panelYearMonthInputs.setBorder(borderSubjectDate);
 
         LocalDate today = LocalDate.now();
         yearAndMonth = YearMonth.of(today.getYear(), today.getMonthValue());
@@ -105,9 +104,9 @@ public class SalaryAdvanceInput
 
         panelMetaInputs.add(panelYearMonthInputs);
 
-        Border borderDateOfTake = BorderFactory.createTitledBorder("Date of take");
+        Border borderPaymentDate = BorderFactory.createTitledBorder("Payment date");
         panelDateOfTake = new JPanel();
-        panelDateOfTake.setBorder(borderDateOfTake);
+        panelDateOfTake.setBorder(borderPaymentDate);
 
         dateAdvanceTaken = new DatePicker();
         dateAdvanceTaken.setTodayAsDefault();
