@@ -208,6 +208,7 @@ public class SalaryAdvanceInput
     @Override
     public void created() {
         boolCreated = true;
+        tfAmount.setText(null);
     }
 
     @Override
