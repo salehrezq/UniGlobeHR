@@ -30,7 +30,8 @@ public class SalarySubmit
         RowSelectedListener,
         RowDeselectedListener,
         ComputeListener,
-        SubjectDateChangeListener {
+        SubjectDateChangeListener,
+        PaymnetListener {
 
     private Operation operation;
     private JButton btnSubmit;
@@ -40,7 +41,7 @@ public class SalarySubmit
     private List<CreateListener> createListeners;
     private List<UpdateListener> updateListeners;
     private List<UpdateICRPListener> updateICRPListeners;
-    private boolean boolSalaryDisplayMode, boolEditMode;
+    private boolean boolSalaryDisplayMode, boolEditMode, boolPaymentCleared;
     private Integer salaryId;
     private Salary salaryBeforeUpdate;
 
@@ -179,7 +180,9 @@ public class SalarySubmit
 
     @Override
     public void computed() {
-        btnSubmit.setEnabled(true);
+        if (!boolPaymentCleared) {
+            btnSubmit.setEnabled(true);
+        }
     }
 
     @Override
@@ -189,6 +192,18 @@ public class SalarySubmit
 
     @Override
     public void yearAndMonthNotChanged() {
+        btnSubmit.setEnabled(true);
+    }
+
+    @Override
+    public void cleared() {
+        boolPaymentCleared = true;
+        btnSubmit.setEnabled(false);
+    }
+
+    @Override
+    public void pending() {
+        boolPaymentCleared = false;
         btnSubmit.setEnabled(true);
     }
 
@@ -220,7 +235,7 @@ public class SalarySubmit
     @Override
     public void employeeSelected(Employee employee) {
         btnSubmit.setEnabled(false);
-        if (!boolSalaryDisplayMode) {
+        if (boolPaymentCleared && !boolSalaryDisplayMode) {
 //            btnSubmit.setEnabled(true);
         }
         this.employee = employee;

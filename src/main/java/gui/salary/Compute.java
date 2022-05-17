@@ -2,6 +2,7 @@ package gui.salary;
 
 import datalink.CRUDAttendance;
 import datalink.CRUDPerformance;
+import datalink.CRUDSalary;
 import datalink.CRUDSalaryAdvance;
 import gui.EmployeeSelectedListener;
 import gui.attendance.AttendanceDeductionsCalculator;
@@ -33,6 +34,7 @@ public class Compute
     private List<ComputeListener> computeListeners;
     private int yearSubjectOldValue;
     private int monthSubjectOldValue;
+    private ArrayList<PaymnetListener> paymnetListeners;
 
     public Compute() {
 
@@ -41,6 +43,7 @@ public class Compute
         btnCompute.addActionListener(new ComputePayables());
 
         computeListeners = new ArrayList<>();
+        paymnetListeners = new ArrayList<>();
     }
 
     public JButton getBtnCompute() {
@@ -97,6 +100,13 @@ public class Compute
             yearSubjectOldValue = salaryInput.getSubjectYear();
             monthSubjectOldValue = salaryInput.getSubjectMonth();
 
+            if (CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(),
+                    salaryInput.getYearMonthSubjectOfSalary())) {
+                notifyPaymentCleared();
+            } else {
+                notifyPaymentPending();
+            }
+
             if (employee == null) {
                 JOptionPane.showConfirmDialog(null,
                         "Select Employee", "",
@@ -136,6 +146,22 @@ public class Compute
     private void notifyComputed() {
         this.computeListeners.forEach((cl) -> {
             cl.computed();
+        });
+    }
+
+    public void addPaymnetListener(PaymnetListener paymentL) {
+        this.paymnetListeners.add(paymentL);
+    }
+
+    private void notifyPaymentCleared() {
+        this.paymnetListeners.forEach((paymentL) -> {
+            paymentL.cleared();
+        });
+    }
+
+    private void notifyPaymentPending() {
+        this.paymnetListeners.forEach((paymentL) -> {
+            paymentL.pending();
         });
     }
 

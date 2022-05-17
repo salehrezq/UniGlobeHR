@@ -9,6 +9,7 @@ import gui.DateDeselectedListener;
 import gui.DateListener;
 import gui.DatePicker;
 import gui.EmployeeSelectedListener;
+import java.awt.CardLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -18,6 +19,7 @@ import java.awt.Insets;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.Month;
@@ -25,6 +27,7 @@ import java.time.Year;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JLabel;
@@ -53,16 +56,17 @@ public class SalaryInput
         EditableListener,
         CancelListener,
         DeleteListener,
-        ComputeListener {
+        ComputeListener,
+        PaymnetListener {
 
-    private JPanel mainPanel;
+    private JPanel mainPanel, panelCards;
     private JPanel panelMetaInputs, panelYearMonthInputs, panelDateOfTake;
     private YearMonth yearAndMonth;
     private JFormattedTextField tfYearSubject;
     private JComboBox monthsList;
     private final String[] monthsNums;
     private DatePicker dateOfPayment;
-    private JLabel lbAmount;
+    private JLabel lbPayable, lbAlreadyPaid, lbPaymentPending, lbPaymentNonDetermined;
     private JTextField tfPayable;
     private Color colorFieldRight;
     private Color colorFieldWrong;
@@ -75,6 +79,11 @@ public class SalaryInput
     private int salaryOldId;
     private Compute compute;
     private ArrayList<SubjectDateChangeListener> subjectDateChangeListeners;
+    private URL urlTickMark;
+    private ImageIcon imageIconTickMark;
+    private final String STR_PANEL_NON_DETERMINED = "non determined";
+    private final String STR_PANEL_PENDING = "pending";
+    private final String STR_PANEL_PAIED = "paied";
 
     public SalaryInput() {
 
@@ -122,14 +131,39 @@ public class SalaryInput
         panelDateOfTake.add(dateOfPayment.getDatePicker());
         panelMetaInputs.add(panelDateOfTake);
 
-        lbAmount = new JLabel("Payable:");
-        panelMetaInputs.add(lbAmount);
+        lbPayable = new JLabel("Payable:");
+        panelMetaInputs.add(lbPayable);
 
         tfPayable = new JTextField();
         tfPayable.setEditable(false);
         tfPayable.setFont(new Font("SansSerif", Font.BOLD, 12));
-        tfPayable.setPreferredSize(new Dimension(95, 27));
+        tfPayable.setPreferredSize(new Dimension(75, 27));
         panelMetaInputs.add(tfPayable);
+
+        lbPaymentNonDetermined = new JLabel("Non determined yet");
+
+        lbPaymentPending = new JLabel("... Pending              ");
+
+        urlTickMark = getClass().getResource("/images/tick.png");
+        imageIconTickMark = new ImageIcon(urlTickMark);
+        lbAlreadyPaid = new JLabel("Alreay Paid     ", imageIconTickMark, 0);
+
+        JPanel panelLabelNonDeterminedYet = new JPanel();
+        panelLabelNonDeterminedYet.add(lbPaymentNonDetermined);
+        JPanel panelLabelPaymentPending = new JPanel();
+        panelLabelPaymentPending.add(lbPaymentPending);
+        JPanel panelLabelPaied = new JPanel();
+        panelLabelPaied.add(lbAlreadyPaid);
+
+        panelCards = new JPanel(new CardLayout());
+        // Add all panels; paid, pending and non determined
+        panelCards.add(panelLabelNonDeterminedYet, STR_PANEL_NON_DETERMINED);
+        panelCards.add(panelLabelPaymentPending, STR_PANEL_PENDING);
+        panelCards.add(panelLabelPaied, STR_PANEL_PAIED);
+        // Show the empty panel
+        CardLayout cl = (CardLayout) (panelCards.getLayout());
+        cl.show(panelCards, STR_PANEL_NON_DETERMINED);
+        panelMetaInputs.add(panelCards);
 
         mainPanel = new JPanel(new GridBagLayout());
 
@@ -159,12 +193,17 @@ public class SalaryInput
         if (boolSalaryDisplayMode && employee != null) {
             clearInputFields();
         }
+        CardLayout cl = (CardLayout) (panelCards.getLayout());
+        cl.show(panelCards, STR_PANEL_NON_DETERMINED);
     }
 
     @Override
     public void employeeDeselected() {
         setFieldsEditable(false);
         tfPayable.setText(null);
+
+        CardLayout cl = (CardLayout) (panelCards.getLayout());
+        cl.show(panelCards, STR_PANEL_NON_DETERMINED);
     }
 
     /**
@@ -190,6 +229,15 @@ public class SalaryInput
 
     public boolean getBoolDateFilled() {
         return boolDateFilled;
+    }
+
+    public LocalDate getYearMonthSubjectOfSalary() {
+        int year = getSubjectYear();
+        Month month = Month.of(getSubjectMonth());
+
+        LocalDate yearMonthSubjectOfSalary = LocalDate.of(year, month, 1);
+
+        return yearMonthSubjectOfSalary;
     }
 
     public void setCompute(Compute compute) {
@@ -329,6 +377,18 @@ public class SalaryInput
     public void computed() {
         boolYearSubjectChanged = false;
         boolMonthSubjectChanged = false;
+    }
+
+    @Override
+    public void cleared() {
+        CardLayout cl = (CardLayout) (panelCards.getLayout());
+        cl.show(panelCards, STR_PANEL_PAIED);
+    }
+
+    @Override
+    public void pending() {
+        CardLayout cl = (CardLayout) (panelCards.getLayout());
+        cl.show(panelCards, STR_PANEL_PENDING);
     }
 
     private class DateListenerImpli implements DateListener, DateDeselectedListener {

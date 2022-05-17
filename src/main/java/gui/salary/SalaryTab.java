@@ -74,8 +74,10 @@ public class SalaryTab {
         salaryInput = new SalaryInput();
         salaryInput.setCompute(compute);
         compute.addComputeListener(salaryInput);
+        compute.addPaymnetListener(salaryInput);
         salaryInput.addSubjectDateChangeListener(salarySubmit);
         compute.addComputeListener(salarySubmit);
+        compute.addPaymnetListener(salarySubmit);
         compute.setSalaryInput(salaryInput);
         salarySubmit.addSalaryCreatedListener(salaryInput);
         salarySubmit.addSalaryUpdatedListener(salaryInput);
