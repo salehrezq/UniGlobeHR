@@ -17,6 +17,7 @@ public class SalaryTab {
     private JPanel panelContainer, panelInputs, panelComputeBtn;
     private EmployeeCard employeeCard;
     private Details details;
+    private SalaryUpToDayInMonth salaryUpToDayInMonth;
     private Compute compute;
     private SalaryInput salaryInput;
     private SalarySubmit salarySubmit;
@@ -44,9 +45,13 @@ public class SalaryTab {
         c.anchor = GridBagConstraints.PAGE_START;
         panelInputs.add(employeeCard, c);
 
+        JPanel panelesCombined = new JPanel();
         JPanel panelHolder = new JPanel();
         details = new Details();
         panelHolder.add(details.getContainer());
+        panelesCombined.add(panelHolder);
+        salaryUpToDayInMonth = new SalaryUpToDayInMonth();
+        panelesCombined.add(salaryUpToDayInMonth.getContainer());
         c = new GridBagConstraints();
         c.gridy = 1;
         c.weightx = 1.0;
@@ -54,7 +59,7 @@ public class SalaryTab {
         c.gridwidth = 2;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.PAGE_START;
-        panelInputs.add(panelHolder, c);
+        panelInputs.add(panelesCombined, c);
 
         panelComputeBtn = new JPanel();
         compute = new Compute();
