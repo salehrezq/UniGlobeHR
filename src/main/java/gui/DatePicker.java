@@ -5,6 +5,8 @@
  */
 package gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -40,21 +42,12 @@ public class DatePicker {
         p.put("text.month", "Month");
         p.put("text.year", "Year");
         datePanel = new JDatePanelImpl(dateModel, p);
+
+        fDatePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
+        fDatePicker.addActionListener(new DateSelectActionHandler());
     }
 
     public JDatePickerImpl getDatePicker() {
-
-        // Don't know about the formatter, but there it is...
-        fDatePicker = new JDatePickerImpl(datePanel, new DateLabelFormatter());
-        fDatePicker.addActionListener((arg0) -> {
-            Date selectedDate = (Date) fDatePicker.getModel().getValue();
-            if (selectedDate != null) {
-                date = LocalDate.ofInstant(selectedDate.toInstant(), ZoneId.systemDefault());
-                this.notifyDateChange(date);
-            } else {
-                this.notifyDateDeselected();
-            }
-        });
         return fDatePicker;
     }
 
@@ -101,6 +94,21 @@ public class DatePicker {
 
     public void setEnabled(boolean enabled) {
         fDatePicker.getComponent(1).setEnabled(enabled);
+    }
+
+    private class DateSelectActionHandler implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            Date selectedDate = (Date) fDatePicker.getModel().getValue();
+            if (selectedDate != null) {
+                date = LocalDate.ofInstant(selectedDate.toInstant(), ZoneId.systemDefault());
+                notifyDateChange(date);
+            } else {
+                notifyDateDeselected();
+            }
+        }
+
     }
 
 }
