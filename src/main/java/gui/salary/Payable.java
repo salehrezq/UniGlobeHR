@@ -115,7 +115,7 @@ public class Payable
         c.gridx = 0;
         c.gridy = 0;
         c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(5, 30, 5, 30);
+        c.insets = new Insets(5, 0, 5, 30);
         c.weightx = 1.0;
         c.weighty = 1.0;
         container.add(panelFields, c);

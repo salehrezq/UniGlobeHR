@@ -63,7 +63,6 @@ public class SalaryTab {
         compute = new Compute();
         compute.setDetails(details);
         panelComputeBtn = new JPanel();
-        panelComputeBtn.add(Box.createHorizontalStrut(1));
         panelComputeBtn.add(compute.getBtnCompute());
         panelesCombineComputeButtonWithPayable.add(panelComputeBtn);
         payable = new Payable();
