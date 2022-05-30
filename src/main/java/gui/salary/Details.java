@@ -53,11 +53,7 @@ public class Details implements EmployeeSelectedListener {
         panelSalaryComponents = (JPanel) TwoColumnsLabelsAndFields.getTwoColumnLayout(labels, components);
         c = new GridBagConstraints();
         c.gridy = 0;
-        c.weightx = 1.0;
-        c.weighty = 0.0;
-        // top, lef, bottom, right
         c.insets = new Insets(20, 0, 0, 0);
-        c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.PAGE_START;
         container.add(panelSalaryComponents, c);
     }

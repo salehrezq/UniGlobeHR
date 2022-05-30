@@ -36,6 +36,7 @@ public class SalarySubmit
     private Operation operation;
     private JButton btnSubmit;
     private SalaryInput salaryInput;
+    private Payable payable;
     private StringBuilder stringBuilder;
     private Employee employee;
     private List<CreateListener> createListeners;
@@ -62,6 +63,10 @@ public class SalarySubmit
 
     public void setSalaryInput(SalaryInput salaryInput) {
         this.salaryInput = salaryInput;
+    }
+
+    public void setPayable(Payable payable) {
+        this.payable = payable;
     }
 
     public void addSalaryCreatedListener(CreateListener createListener) {
@@ -288,7 +293,7 @@ public class SalarySubmit
                 salary.setAgreedSalary(employee.getSalary());
                 salary.setYearMonthSubject(getYearMonthSubjectOfSalary());
                 salary.setDateGiven(salaryInput.getDateSalaryGiven());
-                salary.setPayable(salaryInput.getPayable());
+                salary.setPayable(payable.getPayable());
 
                 if (boolEditMode) {
                     salary.setId(salaryId);

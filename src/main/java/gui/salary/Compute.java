@@ -30,6 +30,7 @@ public class Compute
     private JButton btnCompute;
     private Employee employee;
     private SalaryInput salaryInput;
+    private Payable payable;
     private Details details;
     private List<ComputeListener> computeListeners;
     private int yearSubjectOldValue;
@@ -52,6 +53,10 @@ public class Compute
 
     public void setSalaryInput(SalaryInput salaryInput) {
         this.salaryInput = salaryInput;
+    }
+
+    public void setPayable(Payable payable) {
+        this.payable = payable;
     }
 
     public void setDetails(Details details) {
@@ -128,12 +133,12 @@ public class Compute
             BigDecimal performanceGain = CRUDPerformance.getPerformanceRecordByEmployeeByMonthAggregated(employee.getId(), ym);
             details.setTfPerformanceGain(performanceGain.toPlainString());
 
-            BigDecimal payable = employee.getSalary()
+            BigDecimal payableAmount = employee.getSalary()
                     .subtract(salaryAdvancesAggregated)
                     .subtract(attendanceDeductions)
                     .add(performanceGain);
 
-            salaryInput.setTfPayable(payable.toPlainString());
+            payable.setTfPayable(payableAmount.toPlainString());
 
             notifyComputed();
         }

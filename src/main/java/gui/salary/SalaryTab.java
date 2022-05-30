@@ -17,9 +17,9 @@ public class SalaryTab {
     private JPanel panelContainer, panelInputs, panelComputeBtn;
     private EmployeeCard employeeCard;
     private Details details;
-    private SalaryUpToDayInMonth salaryUpToDayInMonth;
     private Compute compute;
     private SalaryInput salaryInput;
+    private Payable payable;
     private SalarySubmit salarySubmit;
     private SalaryCancel salaryCancel;
     private final JPanel panelReuestRecords;
@@ -45,13 +45,11 @@ public class SalaryTab {
         c.anchor = GridBagConstraints.PAGE_START;
         panelInputs.add(employeeCard, c);
 
-        JPanel panelesCombined = new JPanel();
-        JPanel panelHolder = new JPanel();
+        JPanel panelsCombineDetailsWithSalaryInputs = new JPanel();
         details = new Details();
-        panelHolder.add(details.getContainer());
-        panelesCombined.add(panelHolder);
-        salaryUpToDayInMonth = new SalaryUpToDayInMonth();
-        panelesCombined.add(salaryUpToDayInMonth.getContainer());
+        panelsCombineDetailsWithSalaryInputs.add(details.getContainer());
+        salaryInput = new SalaryInput();
+        panelsCombineDetailsWithSalaryInputs.add(salaryInput.getSalaryInputsPanel());
         c = new GridBagConstraints();
         c.gridy = 1;
         c.weightx = 1.0;
@@ -59,27 +57,35 @@ public class SalaryTab {
         c.gridwidth = 2;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.PAGE_START;
-        panelInputs.add(panelesCombined, c);
+        panelInputs.add(panelsCombineDetailsWithSalaryInputs, c);
 
-        panelComputeBtn = new JPanel();
+        JPanel panelesCombineComputeButtonWithPayable = new JPanel();
         compute = new Compute();
         compute.setDetails(details);
-        panelComputeBtn.add(Box.createHorizontalStrut(125));
+        panelComputeBtn = new JPanel();
+        panelComputeBtn.add(Box.createHorizontalStrut(1));
         panelComputeBtn.add(compute.getBtnCompute());
+        panelesCombineComputeButtonWithPayable.add(panelComputeBtn);
+        payable = new Payable();
+        payable.setSalaryInput(salaryInput);
+        compute.addPaymnetListener(payable);
+        compute.setPayable(payable);
+        panelesCombineComputeButtonWithPayable.add(payable.getContainer());
         c = new GridBagConstraints();
         c.gridy = 2;
+        c.gridx = 0;
         c.weightx = 1.0;
         c.weighty = 0.0;
         c.gridwidth = 2;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.PAGE_START;
-        panelInputs.add(panelComputeBtn, c);
+        panelInputs.add(panelesCombineComputeButtonWithPayable, c);
 
         salarySubmit = new SalarySubmit();
-        salaryInput = new SalaryInput();
+        salarySubmit.setPayable(payable);
         salaryInput.setCompute(compute);
         compute.addComputeListener(salaryInput);
-        compute.addPaymnetListener(salaryInput);
+        compute.addPaymnetListener(payable);
         salaryInput.addSubjectDateChangeListener(salarySubmit);
         compute.addComputeListener(salarySubmit);
         compute.addPaymnetListener(salarySubmit);
@@ -87,14 +93,6 @@ public class SalaryTab {
         salarySubmit.addSalaryCreatedListener(salaryInput);
         salarySubmit.addSalaryUpdatedListener(salaryInput);
         salarySubmit.addSalaryUpdatedICRPListener(salaryInput);
-        c = new GridBagConstraints();
-        c.gridy = 3;
-        c.weightx = 1.0;
-        c.weighty = 0.5;
-        c.gridwidth = 2;
-        c.fill = GridBagConstraints.BOTH;
-        c.anchor = GridBagConstraints.PAGE_START;
-        panelInputs.add(salaryInput.getSalaryInputsPanel(), c);
 
         salaryCancel = new SalaryCancel();
         salaryCancel.addCancelListener(salaryInput);
@@ -185,6 +183,10 @@ public class SalaryTab {
 
     public Compute getCompute() {
         return this.compute;
+    }
+
+    public Payable getPayable() {
+        return this.payable;
     }
 
     public SalarySubmit getSalarySubmit() {
