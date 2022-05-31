@@ -13,7 +13,7 @@ import javax.swing.JRadioButton;
  *
  * @author Saleh
  */
-public class SalaryUpToDayInMonth {
+public class SalaryUpToDayInSubjectMonth {
 
     private JPanel container, panelOptions;
     private JRadioButton rBtnDateToTheEndOfMonth, rBtnDateToSelectedDayInMonth;
@@ -21,7 +21,7 @@ public class SalaryUpToDayInMonth {
     private DatePicker dateSalaryUpToDay;
     private SelectDateRangeModeHandler selectDateRangeModeHandler;
 
-    public SalaryUpToDayInMonth() {
+    public SalaryUpToDayInSubjectMonth() {
 
         GridBagConstraints c;
         container = new JPanel(new GridBagLayout());
