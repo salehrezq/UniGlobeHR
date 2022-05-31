@@ -38,47 +38,41 @@ public class SalaryTab {
         employeeCard = new EmployeeCard();
         c = new GridBagConstraints();
         c.gridy = 0;
-        c.weightx = 1.0;
-        c.weighty = 0.0;
         c.gridwidth = 2;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.anchor = GridBagConstraints.PAGE_START;
         panelInputs.add(employeeCard, c);
 
-        JPanel panelsCombineDetailsWithSalaryInputs = new JPanel();
+        JPanel panelHorizontalDetailsWithInputs = new JPanel();
         details = new Details();
-        panelsCombineDetailsWithSalaryInputs.add(details.getContainer());
-        salaryInput = new SalaryInput();
-        panelsCombineDetailsWithSalaryInputs.add(salaryInput.getSalaryInputsPanel());
         c = new GridBagConstraints();
         c.gridy = 1;
-        c.weightx = 1.0;
-        c.weighty = 0.0;
-        c.gridwidth = 2;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.anchor = GridBagConstraints.PAGE_START;
-        panelInputs.add(panelsCombineDetailsWithSalaryInputs, c);
+        panelHorizontalDetailsWithInputs.add(details.getContainer());
 
-        JPanel panelesCombineComputeButtonWithPayable = new JPanel();
+        JPanel panelVerticalInputWithCompute = new JPanel(new GridBagLayout());
+        salaryInput = new SalaryInput();
+        c = new GridBagConstraints();
+        c.gridy = 0;
+        panelVerticalInputWithCompute.add(salaryInput.getSalaryInputsPanel(), c);
         compute = new Compute();
         compute.setDetails(details);
+
+        JPanel panelComputeWithPayable = new JPanel();
         panelComputeBtn = new JPanel();
         panelComputeBtn.add(compute.getBtnCompute());
-        panelesCombineComputeButtonWithPayable.add(panelComputeBtn);
         payable = new Payable();
+        panelComputeWithPayable.add(panelComputeBtn);
+        panelComputeWithPayable.add(payable.getContainer());
+        c = new GridBagConstraints();
+        c.gridy = 1;
+        panelVerticalInputWithCompute.add(panelComputeWithPayable, c);
+        panelHorizontalDetailsWithInputs.add(panelVerticalInputWithCompute);
+        c = new GridBagConstraints();
+        c.gridy = 1;
+        c.gridx = 0;
+        c.gridwidth = 2;
+        panelInputs.add(panelHorizontalDetailsWithInputs, c);
         payable.setSalaryInput(salaryInput);
         compute.addPaymnetListener(payable);
         compute.setPayable(payable);
-        panelesCombineComputeButtonWithPayable.add(payable.getContainer());
-        c = new GridBagConstraints();
-        c.gridy = 2;
-        c.gridx = 0;
-        c.weightx = 1.0;
-        c.weighty = 0.0;
-        c.gridwidth = 2;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.anchor = GridBagConstraints.PAGE_START;
-        panelInputs.add(panelesCombineComputeButtonWithPayable, c);
 
         salarySubmit = new SalarySubmit();
         salarySubmit.setPayable(payable);
@@ -101,8 +95,7 @@ public class SalaryTab {
         c = new GridBagConstraints();
         c.gridy = 4;
         c.gridx = 0;
-        c.weightx = 0.0;
-        c.weighty = 0.0;
+        c.weightx = 1.0;
         c.anchor = GridBagConstraints.LINE_START;
         // top, left, buttom, right
         c.insets = new Insets(3, 31, 5, 0);
@@ -112,8 +105,7 @@ public class SalaryTab {
         c = new GridBagConstraints();
         c.gridy = 4;
         c.gridx = 1;
-        c.weightx = 0.0;
-        c.weighty = 0.0;
+        c.weightx = 1.0;
         c.anchor = GridBagConstraints.LINE_END;
         // top, left, buttom, right
         c.insets = new Insets(3, 0, 5, 31);
