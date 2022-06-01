@@ -14,9 +14,10 @@ import javax.swing.JPanel;
  */
 public class SalaryTab {
 
-    private JPanel panelContainer, panelInputs, panelComputeBtn;
+    private JPanel panelContainer, panelInputs;
     private EmployeeCard employeeCard;
     private Details details;
+    private SalaryUpToDayInSubjectMonth salaryUpToDayInSubjectMonth;
     private Compute compute;
     private SalaryInput salaryInput;
     private Payable payable;
@@ -52,17 +53,20 @@ public class SalaryTab {
         c = new GridBagConstraints();
         c.gridy = 0;
         panelVerticalInputWithCompute.add(salaryInput.getSalaryInputsPanel(), c);
-        compute = new Compute();
-        compute.setDetails(details);
-
-        JPanel panelComputeWithPayable = new JPanel();
-        panelComputeBtn = new JPanel();
-        panelComputeBtn.add(compute.getBtnCompute());
-        payable = new Payable();
-        panelComputeWithPayable.add(panelComputeBtn);
-        panelComputeWithPayable.add(payable.getContainer());
+        salaryUpToDayInSubjectMonth = new SalaryUpToDayInSubjectMonth();
+        salaryUpToDayInSubjectMonth.setSpinnerMonthDayslModel(salaryInput.getYearMonthSubjectOfSalary());
+        salaryUpToDayInSubjectMonth.setSalaryInput(salaryInput);
         c = new GridBagConstraints();
         c.gridy = 1;
+        panelVerticalInputWithCompute.add(salaryUpToDayInSubjectMonth.getContainer(), c);
+        compute = new Compute();
+        compute.setDetails(details);
+        JPanel panelComputeWithPayable = new JPanel();
+        payable = new Payable();
+        panelComputeWithPayable.add(compute.getBtnCompute());
+        panelComputeWithPayable.add(payable.getContainer());
+        c = new GridBagConstraints();
+        c.gridy = 2;
         panelVerticalInputWithCompute.add(panelComputeWithPayable, c);
         panelHorizontalDetailsWithInputs.add(panelVerticalInputWithCompute);
         c = new GridBagConstraints();

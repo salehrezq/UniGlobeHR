@@ -1,13 +1,12 @@
 package gui.salary;
 
-import gui.DatePicker;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import javax.swing.ButtonGroup;
+import java.time.LocalDate;
+import java.time.temporal.TemporalAdjusters;
+import javax.swing.JCheckBox;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerModel;
+import javax.swing.SpinnerNumberModel;
 
 /**
  *
@@ -15,70 +14,34 @@ import javax.swing.JRadioButton;
  */
 public class SalaryUpToDayInSubjectMonth {
 
-    private JPanel container, panelOptions;
-    private JRadioButton rBtnDateToTheEndOfMonth, rBtnDateToSelectedDayInMonth;
-    private ButtonGroup btnGroup;
-    private DatePicker dateSalaryUpToDay;
-    private SelectDateRangeModeHandler selectDateRangeModeHandler;
+    private JPanel container;
+    private JCheckBox cbSalaryUpToDayInSubjectMonth;
+    private JSpinner spinnerMonthDays;
+    private SpinnerModel spnModel;
+    private SalaryInput salaryInput;
 
     public SalaryUpToDayInSubjectMonth() {
 
-        GridBagConstraints c;
-        container = new JPanel(new GridBagLayout());
-        selectDateRangeModeHandler = new SelectDateRangeModeHandler();
+        container = new JPanel();
+        cbSalaryUpToDayInSubjectMonth = new JCheckBox("Salary up to selected day of subject month");
+        container.add(cbSalaryUpToDayInSubjectMonth);
 
-        rBtnDateToTheEndOfMonth = new JRadioButton("To the end of the month");
-        rBtnDateToTheEndOfMonth.setSelected(true);
-        rBtnDateToTheEndOfMonth.addActionListener(selectDateRangeModeHandler);
-        c = new GridBagConstraints();
-        c.gridy = 0;
-        c.weightx = 1.0;
-        c.weighty = 0.0;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.anchor = GridBagConstraints.PAGE_START;
-        container.add(rBtnDateToTheEndOfMonth, c);
-
-        rBtnDateToSelectedDayInMonth = new JRadioButton("Up to selected day");
-        rBtnDateToSelectedDayInMonth.addActionListener(selectDateRangeModeHandler);
-        c = new GridBagConstraints();
-        c.gridy = 1;
-        c.weightx = 1.0;
-        c.weighty = 0.0;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.anchor = GridBagConstraints.PAGE_START;
-        container.add(rBtnDateToSelectedDayInMonth, c);
-
-        btnGroup = new ButtonGroup();
-        btnGroup.add(rBtnDateToTheEndOfMonth);
-        btnGroup.add(rBtnDateToSelectedDayInMonth);
-
-        dateSalaryUpToDay = new DatePicker();
-        dateSalaryUpToDay.setEnabled(false);
-        dateSalaryUpToDay.setTodayAsDefault();
-        c = new GridBagConstraints();
-        c.gridy = 2;
-        c.weightx = 1.0;
-        c.weighty = 0.0;
-        c.fill = GridBagConstraints.HORIZONTAL;
-        c.anchor = GridBagConstraints.PAGE_START;
-        container.add(dateSalaryUpToDay.getDatePicker(), c);
+        spinnerMonthDays = new JSpinner();
+        container.add(spinnerMonthDays);
     }
 
     public JPanel getContainer() {
         return this.container;
     }
 
-    private class SelectDateRangeModeHandler implements ActionListener {
+    public void setSalaryInput(SalaryInput salaryInput) {
+        this.salaryInput = salaryInput;
+    }
 
-        @Override
-        public void actionPerformed(ActionEvent e) {
-            JRadioButton source = (JRadioButton) e.getSource();
-
-            if (source == rBtnDateToTheEndOfMonth) {
-                dateSalaryUpToDay.setEnabled(false);
-            } else if (source == rBtnDateToSelectedDayInMonth) {
-                dateSalaryUpToDay.setEnabled(true);
-            }
-        }
+    public void setSpinnerMonthDayslModel(LocalDate subjectYearMonth) {
+        LocalDate lastDay = subjectYearMonth.with(TemporalAdjusters.lastDayOfMonth()); //2015-11-30
+        int lastDayOfMonth = lastDay.getDayOfMonth();
+        spnModel = new SpinnerNumberModel(lastDayOfMonth, 1, lastDayOfMonth, 1);
+        spinnerMonthDays.setModel(spnModel);
     }
 }
