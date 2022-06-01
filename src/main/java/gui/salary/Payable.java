@@ -11,8 +11,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.time.YearMonth;
@@ -42,7 +40,7 @@ public class Payable
         DeleteListener,
         PaymnetListener {
 
-    private JPanel container, panelFields, panelCards;
+    private JPanel container, panelCards;
     private YearMonth yearAndMonth;
     private JLabel lbPayable, lbAlreadyPaid, lbPaymentPending, lbPaymentNonDetermined;
     private JTextField tfPayable;
@@ -66,7 +64,7 @@ public class Payable
     public Payable() {
 
         subjectDateChangeListeners = new ArrayList<>();
-        panelFields = new JPanel();
+        container = new JPanel();
 
         GridBagConstraints c;
 
@@ -75,13 +73,13 @@ public class Payable
         colorDisabled = new Color(105, 105, 105);
 
         lbPayable = new JLabel("Payable:");
-        panelFields.add(lbPayable);
+        container.add(lbPayable);
 
         tfPayable = new JTextField();
         tfPayable.setEditable(false);
         tfPayable.setFont(new Font("SansSerif", Font.BOLD, 12));
         tfPayable.setPreferredSize(new Dimension(75, 27));
-        panelFields.add(tfPayable);
+        container.add(tfPayable);
 
         lbPaymentNonDetermined = new JLabel("Non determined yet");
 
@@ -106,19 +104,7 @@ public class Payable
         // Show the empty panel
         CardLayout cl = (CardLayout) (panelCards.getLayout());
         cl.show(panelCards, STR_PANEL_NON_DETERMINED);
-        panelFields.add(panelCards);
-
-        container = new JPanel(new GridBagLayout());
-
-        c = new GridBagConstraints();
-        c.anchor = GridBagConstraints.PAGE_START;
-        c.gridx = 0;
-        c.gridy = 0;
-        c.fill = GridBagConstraints.BOTH;
-        c.insets = new Insets(5, 0, 5, 30);
-        c.weightx = 1.0;
-        c.weighty = 1.0;
-        container.add(panelFields, c);
+        container.add(panelCards);
 
         setFieldsEditable(false);
     }
