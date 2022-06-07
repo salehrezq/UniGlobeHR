@@ -9,6 +9,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.Month;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
@@ -191,12 +192,12 @@ public class SalarySubmit
     }
 
     @Override
-    public void yearOrMonthChanged() {
+    public void yearOrMonthChanged(YearMonth yearMonth) {
         btnSubmit.setEnabled(false);
     }
 
     @Override
-    public void yearAndMonthNotChanged() {
+    public void yearAndMonthNotChanged(YearMonth yearMonth) {
         btnSubmit.setEnabled(true);
     }
 

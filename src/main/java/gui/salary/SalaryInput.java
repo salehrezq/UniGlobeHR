@@ -53,7 +53,10 @@ public class SalaryInput
 
     private JPanel mainPanel;
     private JPanel panelMetaInputs, panelYearMonthInputs, panelDateOfTake;
-    private YearMonth yearAndMonth;
+    private YearMonth yearAndMonthSubjectInitial;
+    private YearMonth yearAndMonthSubjectUpdatable;
+    private int yearSubject;
+    private int monthSubject;
     private JFormattedTextField tfYearSubject;
     private JComboBox monthsList;
     private final String[] monthsNums;
@@ -86,7 +89,10 @@ public class SalaryInput
         panelYearMonthInputs.setBorder(borderSubjectDate);
 
         LocalDate today = LocalDate.now();
-        yearAndMonth = YearMonth.of(today.getYear(), today.getMonthValue());
+        yearAndMonthSubjectInitial = YearMonth.of(today.getYear(), today.getMonthValue());
+        yearAndMonthSubjectUpdatable = yearAndMonthSubjectInitial;
+        yearSubject = yearAndMonthSubjectInitial.getYear();
+        monthSubject = yearAndMonthSubjectInitial.getMonthValue();
 
         tfYearSubject = new JFormattedTextField(getMaskFormatter());
         tfYearSubject.getDocument().addDocumentListener(new YearSubjectChangeListener());
@@ -98,7 +104,7 @@ public class SalaryInput
 
         monthsList = new JComboBox<>(monthsNums);
         monthsList.addItemListener(new MonthSubjectChangeListener());
-        monthsList.setSelectedIndex(yearAndMonth.getMonthValue() - 1);
+        monthsList.setSelectedIndex(yearAndMonthSubjectInitial.getMonthValue() - 1);
         panelYearMonthInputs.add(monthsList);
 
         panelMetaInputs.add(panelYearMonthInputs);
@@ -181,8 +187,8 @@ public class SalaryInput
     }
 
     protected void clearInputFields() {
-        tfYearSubject.setText(String.valueOf(yearAndMonth.getYear()));
-        monthsList.setSelectedIndex(yearAndMonth.getMonthValue() - 1);
+        tfYearSubject.setText(String.valueOf(yearAndMonthSubjectInitial.getYear()));
+        monthsList.setSelectedIndex(yearAndMonthSubjectInitial.getMonthValue() - 1);
         dateOfPayment.setTodayAsDefault();
     }
 
@@ -342,15 +348,18 @@ public class SalaryInput
         }
 
         private void changed(DocumentEvent e) {
-            String yearSubject = tfYearSubject.getText().trim();
-            if (!yearSubject.equals("")) {
-                if (compute.getYearSubjectOldValue() != Integer.parseInt(yearSubject)) {
+            String yearSubjectString = tfYearSubject.getText().trim();
+            if (!yearSubjectString.isBlank()) {
+                yearSubject = Integer.parseInt(yearSubjectString);
+                if (compute.getYearSubjectOldValue() != yearSubject) {
+                    yearAndMonthSubjectUpdatable = YearMonth.of(yearSubject, monthSubject);
                     boolYearSubjectChanged = true;
-                    notifyYearOrMonthChanged();
+                    notifyYearOrMonthChanged(yearAndMonthSubjectUpdatable);
                 } else {
                     boolYearSubjectChanged = false;
                     if (!boolMonthSubjectChanged) {
-                        notifyYearAndMonthNotChanged();
+                        yearAndMonthSubjectUpdatable = YearMonth.of(yearSubject, monthSubject);
+                        notifyYearAndMonthNotChanged(yearAndMonthSubjectUpdatable);
                     }
                 }
             }
@@ -367,15 +376,15 @@ public class SalaryInput
                 return;
             }
 
-            JComboBox c = (JComboBox) event.getSource();
-            int monthSubject = c.getSelectedIndex() + 1;
-            if (compute.getMonthSubjectOldValue() != monthSubject) {
-                boolMonthSubjectChanged = true;
-                notifyYearOrMonthChanged();
-            } else {
-                boolMonthSubjectChanged = false;
-                if (!boolYearSubjectChanged) {
-                    notifyYearAndMonthNotChanged();
+            JComboBox source = (JComboBox) event.getSource();
+            if (source == monthsList) {
+                if (event.getStateChange() == ItemEvent.SELECTED) {
+                    monthSubject = source.getSelectedIndex() + 1;
+                    if (compute.getMonthSubjectOldValue() != monthSubject) {
+                        boolMonthSubjectChanged = true;
+                        yearAndMonthSubjectUpdatable = YearMonth.of(yearSubject, monthSubject);
+                        notifyYearOrMonthChanged(yearAndMonthSubjectUpdatable);
+                    }
                 }
             }
         }
@@ -385,15 +394,15 @@ public class SalaryInput
         this.subjectDateChangeListeners.add(sdchl);
     }
 
-    private void notifyYearOrMonthChanged() {
+    private void notifyYearOrMonthChanged(YearMonth yearMonthSubject) {
         this.subjectDateChangeListeners.forEach((sdchl) -> {
-            sdchl.yearOrMonthChanged();
+            sdchl.yearOrMonthChanged(yearMonthSubject);
         });
     }
 
-    private void notifyYearAndMonthNotChanged() {
+    private void notifyYearAndMonthNotChanged(YearMonth yearMonthSubject) {
         this.subjectDateChangeListeners.forEach((sdchl) -> {
-            sdchl.yearAndMonthNotChanged();
+            sdchl.yearAndMonthNotChanged(yearMonthSubject);
         });
     }
 
@@ -410,7 +419,7 @@ public class SalaryInput
         MaskFormatter mask = null;
         try {
             mask = new MaskFormatter("####");
-            mask.setPlaceholder(String.valueOf(yearAndMonth.getYear()));
+            mask.setPlaceholder(String.valueOf(yearAndMonthSubjectInitial.getYear()));
         } catch (ParseException e) {
             e.printStackTrace();
         }

@@ -56,6 +56,7 @@ public class SalaryTab {
         salaryUpToDayInSubjectMonth = new SalaryUpToDayInSubjectMonth();
         salaryUpToDayInSubjectMonth.setSpinnerMonthDayslModel(salaryInput.getYearMonthSubjectOfSalary());
         salaryUpToDayInSubjectMonth.setSalaryInput(salaryInput);
+        salaryInput.addSubjectDateChangeListener(salaryUpToDayInSubjectMonth);
         c = new GridBagConstraints();
         c.gridy = 1;
         panelVerticalInputWithCompute.add(salaryUpToDayInSubjectMonth.getContainer(), c);

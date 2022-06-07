@@ -53,6 +53,7 @@ public class Compute
 
     public void setSalaryInput(SalaryInput salaryInput) {
         this.salaryInput = salaryInput;
+        yearSubjectOldValue = this.salaryInput.getSubjectYear();
     }
 
     public void setPayable(Payable payable) {
