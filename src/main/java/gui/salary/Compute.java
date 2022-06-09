@@ -139,7 +139,7 @@ public class Compute
             BigDecimal performanceGain = CRUDPerformance.getPerformanceRecordByEmployeeByMonthAggregated(employee.getId(), ym);
             details.setTfPerformanceGain(performanceGain.toPlainString());
 
-            if (salaryUpToDayInSubjectMonth.isSalaryUpToDayMode()) {
+            if (salaryUpToDayInSubjectMonth.getMode() == SalaryUpToDayInSubjectMonth.Mode.BEFORE_END_OF_MONTH) {
                 int dayOfMonth = salaryUpToDayInSubjectMonth.getDayOfMonth();
                 System.out.println("Day of the subject month " + dayOfMonth);
             }

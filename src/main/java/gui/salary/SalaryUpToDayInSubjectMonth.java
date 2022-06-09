@@ -23,14 +23,20 @@ public class SalaryUpToDayInSubjectMonth
 
     private JPanel container;
     private JCheckBox cbSalaryUpToDayInSubjectMonth;
-    private boolean boolSalaryUpToDayMode;
     private JSpinner spinnerMonthDays;
     private SpinnerModel spnModel;
     private SalaryInput salaryInput;
     private int dayOfMonth;
     private LocalDate dateSelected;
+    private Mode mode;
+
+    public enum Mode {
+        END_OF_MONTH, BEFORE_END_OF_MONTH;
+    }
 
     public SalaryUpToDayInSubjectMonth() {
+
+        mode = Mode.END_OF_MONTH;
 
         container = new JPanel();
         cbSalaryUpToDayInSubjectMonth = new JCheckBox("Salary up to selected day of subject month");
@@ -77,8 +83,8 @@ public class SalaryUpToDayInSubjectMonth
         return this.dayOfMonth;
     }
 
-    protected boolean isSalaryUpToDayMode() {
-        return boolSalaryUpToDayMode;
+    protected Mode getMode() {
+        return this.mode;
     }
 
     private class DayOfSubjectMonthSelectedSpinnerHandler implements ChangeListener {
@@ -96,9 +102,9 @@ public class SalaryUpToDayInSubjectMonth
         public void actionPerformed(ActionEvent e) {
             JCheckBox checkBox = (JCheckBox) e.getSource();
             if (checkBox.isSelected()) {
-                boolSalaryUpToDayMode = true;
+                mode = Mode.BEFORE_END_OF_MONTH;
             } else {
-                boolSalaryUpToDayMode = false;
+                mode = Mode.END_OF_MONTH;
             }
         }
     }
