@@ -62,6 +62,7 @@ public class SalaryTab {
         panelVerticalInputWithCompute.add(salaryUpToDayInSubjectMonth.getContainer(), c);
         compute = new Compute();
         compute.setDetails(details);
+        compute.setSalaryUpToDayInSubjectMonth(salaryUpToDayInSubjectMonth);
         JPanel panelComputeWithPayable = new JPanel();
         payable = new Payable();
         panelComputeWithPayable.add(compute.getBtnCompute());

@@ -36,6 +36,7 @@ public class Compute
     private int yearSubjectOldValue;
     private int monthSubjectOldValue;
     private ArrayList<PaymnetListener> paymnetListeners;
+    private SalaryUpToDayInSubjectMonth salaryUpToDayInSubjectMonth;
 
     public Compute() {
 
@@ -70,6 +71,10 @@ public class Compute
 
     public int getMonthSubjectOldValue() {
         return monthSubjectOldValue;
+    }
+
+    public void setSalaryUpToDayInSubjectMonth(SalaryUpToDayInSubjectMonth salaryUpToDayInSubjectMonth) {
+        this.salaryUpToDayInSubjectMonth = salaryUpToDayInSubjectMonth;
     }
 
     public static BigDecimal getAttendanceDeductionsByEmployeeOfMonth(int employeeId, YearMonth ym) {
@@ -133,6 +138,11 @@ public class Compute
 
             BigDecimal performanceGain = CRUDPerformance.getPerformanceRecordByEmployeeByMonthAggregated(employee.getId(), ym);
             details.setTfPerformanceGain(performanceGain.toPlainString());
+
+            if (salaryUpToDayInSubjectMonth.isSalaryUpToDayMode()) {
+                int dayOfMonth = salaryUpToDayInSubjectMonth.getDayOfMonth();
+                System.out.println("Day of the subject month " + dayOfMonth);
+            }
 
             BigDecimal payableAmount = employee.getSalary()
                     .subtract(salaryAdvancesAggregated)

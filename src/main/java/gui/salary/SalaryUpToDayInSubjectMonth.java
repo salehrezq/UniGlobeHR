@@ -1,5 +1,7 @@
 package gui.salary;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.temporal.TemporalAdjusters;
@@ -8,6 +10,8 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  *
@@ -19,17 +23,22 @@ public class SalaryUpToDayInSubjectMonth
 
     private JPanel container;
     private JCheckBox cbSalaryUpToDayInSubjectMonth;
+    private boolean boolSalaryUpToDayMode;
     private JSpinner spinnerMonthDays;
     private SpinnerModel spnModel;
     private SalaryInput salaryInput;
+    private int dayOfMonth;
+    private LocalDate dateSelected;
 
     public SalaryUpToDayInSubjectMonth() {
 
         container = new JPanel();
         cbSalaryUpToDayInSubjectMonth = new JCheckBox("Salary up to selected day of subject month");
+        cbSalaryUpToDayInSubjectMonth.addActionListener(new SalaryUpToDayInSubjectMonthModeHandler());
         container.add(cbSalaryUpToDayInSubjectMonth);
 
         spinnerMonthDays = new JSpinner();
+        spinnerMonthDays.addChangeListener(new DayOfSubjectMonthSelectedSpinnerHandler());
         container.add(spinnerMonthDays);
     }
 
@@ -44,6 +53,7 @@ public class SalaryUpToDayInSubjectMonth
     public void setSpinnerMonthDayslModel(LocalDate subjectYearMonth) {
         LocalDate lastDay = subjectYearMonth.with(TemporalAdjusters.lastDayOfMonth()); //2015-11-30
         int lastDayOfMonth = lastDay.getDayOfMonth();
+        dayOfMonth = lastDayOfMonth;
         spnModel = new SpinnerNumberModel(lastDayOfMonth, 1, lastDayOfMonth, 1);
         spinnerMonthDays.setModel(spnModel);
     }
@@ -61,5 +71,35 @@ public class SalaryUpToDayInSubjectMonth
     @Override
     public void yearAndMonthNotChanged(YearMonth yearMonth) {
         setSpinnerMonthDayslModel(yearMonth);
+    }
+
+    protected int getDayOfMonth() {
+        return this.dayOfMonth;
+    }
+
+    protected boolean isSalaryUpToDayMode() {
+        return boolSalaryUpToDayMode;
+    }
+
+    private class DayOfSubjectMonthSelectedSpinnerHandler implements ChangeListener {
+
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            JSpinner spinner = (JSpinner) e.getSource();
+            dayOfMonth = (int) spinner.getValue();
+        }
+    }
+
+    private class SalaryUpToDayInSubjectMonthModeHandler implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            JCheckBox checkBox = (JCheckBox) e.getSource();
+            if (checkBox.isSelected()) {
+                boolSalaryUpToDayMode = true;
+            } else {
+                boolSalaryUpToDayMode = false;
+            }
+        }
     }
 }
