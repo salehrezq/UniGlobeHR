@@ -9,8 +9,10 @@ import gui.attendance.AttendanceDeductionsCalculator;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
+import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JButton;
@@ -139,17 +141,75 @@ public class Compute
             BigDecimal performanceGain = CRUDPerformance.getPerformanceRecordByEmployeeByMonthAggregated(employee.getId(), ym);
             details.setTfPerformanceGain(performanceGain.toPlainString());
 
-            if (salaryUpToDayInSubjectMonth.getMode() == SalaryUpToDayInSubjectMonth.Mode.BEFORE_END_OF_MONTH) {
-                int dayOfMonth = salaryUpToDayInSubjectMonth.getDayOfMonth();
-                System.out.println("Day of the subject month " + dayOfMonth);
+            LocalDate emplyeeEnrollmentDate = employee.getEnrolledDate();
+            int yearOfEmplyeeEnrollmentDate = emplyeeEnrollmentDate.getYear();
+            int monthOfEmplyeeEnrollmentDate = emplyeeEnrollmentDate.getMonthValue();
+            int yearOfSalaryEndDate = salaryInput.getSubjectYear();
+            int monthOfSalaryEndDate = salaryInput.getSubjectMonth();
+            SalaryUpToDayInSubjectMonth.Mode mode = salaryUpToDayInSubjectMonth.getMode();
+
+            boolean areTwoDatesInTheSameYearMonth
+                    = (yearOfEmplyeeEnrollmentDate == yearOfSalaryEndDate)
+                    && (monthOfEmplyeeEnrollmentDate == monthOfSalaryEndDate);
+
+            BigDecimal payableAmount = BigDecimal.ZERO;
+
+            if (mode == SalaryUpToDayInSubjectMonth.Mode.END_OF_MONTH && !areTwoDatesInTheSameYearMonth) {
+                // Case A: usual employee
+                // If mode is END_OF_MONTH 
+                // and the year and month are not the same for both;
+                // the employee enrollment date and salary subject date
+                // then it is full month salary.
+                payableAmount = employee.getSalary()
+                        .subtract(salaryAdvancesAggregated)
+                        .subtract(attendanceDeductions)
+                        .add(performanceGain);
+                System.out.println("Normal full month");
+            } else if ((mode == SalaryUpToDayInSubjectMonth.Mode.BEFORE_END_OF_MONTH) && (!areTwoDatesInTheSameYearMonth)) {
+                // Case B: experienced leaving employee
+                // If mode is BEFORE_END_OF_MONTH
+                // and the year and month are not the same for both;
+                // the employee enrollment date and salary subject date
+                // then salary calculated from the begning of the subject month date
+                // up to the selected day of the subject month.
+                int upToDay = salaryUpToDayInSubjectMonth.getDayOfMonth();
+                payableAmount = employee.salaryOfSubMonth(upToDay)
+                        .subtract(salaryAdvancesAggregated)
+                        .subtract(attendanceDeductions)
+                        .add(performanceGain);
+                System.out.println("Termination after more than one month jump");
+            } else if (mode == SalaryUpToDayInSubjectMonth.Mode.BEFORE_END_OF_MONTH && areTwoDatesInTheSameYearMonth) {
+                // Case C short lived employee
+                // If mode is BEFORE_END_OF_MONTH
+                // and the year and month are the same for both;
+                // the employee enrollment date and salary subject date
+                // then it is short lived employee
+                // Get difference in days between leaving date and enrollment date,
+                // and calculate salary for those days.
+                int days = salaryUpToDayInSubjectMonth.getDayOfMonth() - emplyeeEnrollmentDate.getDayOfMonth();
+                payableAmount = employee.salaryOfSubMonth(days + 1)
+                        .subtract(salaryAdvancesAggregated)
+                        .subtract(attendanceDeductions)
+                        .add(performanceGain);
+                System.out.println("Termination of short lived");
+            } else if (mode == SalaryUpToDayInSubjectMonth.Mode.END_OF_MONTH && areTwoDatesInTheSameYearMonth) {
+                // Case D fresh employee
+                // His first month of work that does
+                // not start from the begning of the month.
+                // Calculate salary from enrollment day date up to the end of the month.
+                LocalDate maximumDayDateOfSubjectMonth = salaryInput.getYearMonthSubjectOfSalary().with(TemporalAdjusters.lastDayOfMonth());
+                int lastDayOfSubjectMonth = maximumDayDateOfSubjectMonth.getDayOfMonth();
+                int enrollmentDay = emplyeeEnrollmentDate.getDayOfMonth();
+                int days = lastDayOfSubjectMonth - enrollmentDay;
+                payableAmount = employee.salaryOfSubMonth(days + 1)
+                        .subtract(salaryAdvancesAggregated)
+                        .subtract(attendanceDeductions)
+                        .add(performanceGain);
+                System.out.println("Normal fresh month");
             }
 
-            BigDecimal payableAmount = employee.getSalary()
-                    .subtract(salaryAdvancesAggregated)
-                    .subtract(attendanceDeductions)
-                    .add(performanceGain);
-
             payable.setTfPayable(payableAmount.toPlainString());
+            System.out.println("payableAmount " + payableAmount);
 
             notifyComputed();
         }

@@ -6,6 +6,7 @@
 package model;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 
 /**
@@ -65,4 +66,11 @@ public class Employee {
         return this.getName();
     }
 
+    public BigDecimal salaryOfSingleDay() {
+        return this.salary.divide(new BigDecimal("30"), 3, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal salaryOfSubMonth(int days) {
+        return this.salaryOfSingleDay().multiply(new BigDecimal(days));
+    }
 }
