@@ -57,6 +57,7 @@ public class Compute
     public void setSalaryInput(SalaryInput salaryInput) {
         this.salaryInput = salaryInput;
         yearSubjectOldValue = this.salaryInput.getSubjectYear();
+        monthSubjectOldValue = this.salaryInput.getSubjectMonth();
     }
 
     public void setPayable(Payable payable) {
@@ -211,7 +212,7 @@ public class Compute
             payable.setTfPayable(payableAmount.toPlainString());
             System.out.println("payableAmount " + payableAmount);
 
-            notifyComputed();
+            notifyComputed(YearMonth.from(salaryInput.getYearMonthSubjectOfSalary()));
         }
     }
 
@@ -219,9 +220,9 @@ public class Compute
         this.computeListeners.add(cl);
     }
 
-    private void notifyComputed() {
+    private void notifyComputed(YearMonth yearMonthOfCompution) {
         this.computeListeners.forEach((cl) -> {
-            cl.computed();
+            cl.computed(yearMonthOfCompution);
         });
     }
 

@@ -312,7 +312,7 @@ public class SalaryInput
     }
 
     @Override
-    public void computed() {
+    public void computed(YearMonth yearMonthOfCompution) {
         boolYearSubjectChanged = false;
         boolMonthSubjectChanged = false;
     }
@@ -384,6 +384,12 @@ public class SalaryInput
                         boolMonthSubjectChanged = true;
                         yearAndMonthSubjectUpdatable = YearMonth.of(yearSubject, monthSubject);
                         notifyYearOrMonthChanged(yearAndMonthSubjectUpdatable);
+                    } else {
+                        boolMonthSubjectChanged = false;
+                        if (!boolYearSubjectChanged) {
+                            yearAndMonthSubjectUpdatable = YearMonth.of(yearSubject, monthSubject);
+                            notifyYearAndMonthNotChanged(yearAndMonthSubjectUpdatable);
+                        }
                     }
                 }
             }
