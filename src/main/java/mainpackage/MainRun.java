@@ -44,6 +44,7 @@ public class MainRun implements LookAndFeelLisener {
 
         menu = new Menu();
         menu.createMenuBar();
+        menu.setLookAndFeelListener(this);
         //Create and set up the window.
         frame = new JFrame("UniGlobe HR");
 
@@ -74,7 +75,6 @@ public class MainRun implements LookAndFeelLisener {
         javax.swing.SwingUtilities.invokeLater(() -> {
             MainRun mainRun = new MainRun();
             mainRun.createAndShowGUI();
-            menu.setLookAndFeelListener(mainRun);
             mainRun.setSavedLookAndFeel();
         });
     }
