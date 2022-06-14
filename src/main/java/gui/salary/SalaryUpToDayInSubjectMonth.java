@@ -1,5 +1,6 @@
 package gui.salary;
 
+import gui.MenuItemSalaryUpToDateModeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
@@ -19,7 +20,8 @@ import javax.swing.event.ChangeListener;
  */
 public class SalaryUpToDayInSubjectMonth
         implements
-        SubjectDateChangeListener {
+        SubjectDateChangeListener,
+        MenuItemSalaryUpToDateModeListener {
 
     private JPanel container;
     private JCheckBox cbSalaryUpToDayInSubjectMonth;
@@ -85,6 +87,11 @@ public class SalaryUpToDayInSubjectMonth
 
     protected Mode getMode() {
         return this.mode;
+    }
+
+    @Override
+    public void setEnabled(boolean enable) {
+        System.out.println(enable ? "SalaryUpToDayInSubjectMonth enabled" : "SalaryUpToDayInSubjectMonth disabled");
     }
 
     private class DayOfSubjectMonthSelectedSpinnerHandler implements ChangeListener {

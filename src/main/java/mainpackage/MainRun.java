@@ -45,6 +45,9 @@ public class MainRun implements LookAndFeelLisener {
         menu = new Menu();
         menu.createMenuBar();
         menu.setLookAndFeelListener(this);
+        menu.getMenuItemsSalaryUpToDateMode().
+                addMenuItemSalaryUpToDateModeListener(stage.getSalaryUpToDayInSubjectMonth());
+//        menu.
         //Create and set up the window.
         frame = new JFrame("UniGlobe HR");
 

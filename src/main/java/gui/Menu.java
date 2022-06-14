@@ -74,6 +74,10 @@ public class Menu {
         this.lookAndFeelLisener = lookAndFeelLisener;
     }
 
+    public MenuItemsSalaryUpToDateMode getMenuItemsSalaryUpToDateMode() {
+        return menuItemsSalaryUpToDateMode;
+    }
+
     private class MenuItemActions implements ActionListener {
 
         @Override

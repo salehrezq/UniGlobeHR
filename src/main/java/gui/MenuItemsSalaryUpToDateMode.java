@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.JMenuItem;
 
 /**
@@ -16,6 +17,7 @@ public class MenuItemsSalaryUpToDateMode {
     private static final String STR_DISABLE_ALARY_UPTO_SELECTED_DATE = "Disable salary up to date";
     private static final String BULLET_SELECTED = "⚫";
     private static final String BULLET_DESELECTED = "⚪";
+    private ArrayList<MenuItemSalaryUpToDateModeListener> menuItemSalaryUpToDateModeListeners;
 
     public MenuItemsSalaryUpToDateMode() {
         MenuItemActions menuItemActions = new MenuItemActions();
@@ -23,6 +25,7 @@ public class MenuItemsSalaryUpToDateMode {
         itemActionEnableSalaryUpToSelectedDate.addActionListener(menuItemActions);
         itemActionDisableSalaryUpToSelectedDate = new JMenuItem(BULLET_SELECTED + " " + STR_DISABLE_ALARY_UPTO_SELECTED_DATE);
         itemActionDisableSalaryUpToSelectedDate.addActionListener(menuItemActions);
+        menuItemSalaryUpToDateModeListeners = new ArrayList<>();
     }
 
     protected JMenuItem getItemActionEnableSalaryUpToSelectedDate() {
@@ -31,6 +34,16 @@ public class MenuItemsSalaryUpToDateMode {
 
     protected JMenuItem getItemActionDisableSalaryUpToSelectedDate() {
         return itemActionDisableSalaryUpToSelectedDate;
+    }
+
+    public void addMenuItemSalaryUpToDateModeListener(MenuItemSalaryUpToDateModeListener misutdml) {
+        this.menuItemSalaryUpToDateModeListeners.add(misutdml);
+    }
+
+    private void notifySetEnabled(boolean enabled) {
+        this.menuItemSalaryUpToDateModeListeners.forEach((misutdml) -> {
+            misutdml.setEnabled(enabled);
+        });
     }
 
     private class MenuItemActions implements ActionListener {
@@ -42,9 +55,11 @@ public class MenuItemsSalaryUpToDateMode {
             if (source == itemActionEnableSalaryUpToSelectedDate) {
                 itemActionEnableSalaryUpToSelectedDate.setText(BULLET_SELECTED + " " + STR_ENABLE_SALARY_UPTO_SELECTED_DATE);
                 itemActionDisableSalaryUpToSelectedDate.setText(BULLET_DESELECTED + " " + STR_DISABLE_ALARY_UPTO_SELECTED_DATE);
+                notifySetEnabled(true);
             } else if (source == itemActionDisableSalaryUpToSelectedDate) {
                 itemActionEnableSalaryUpToSelectedDate.setText(BULLET_DESELECTED + " " + STR_ENABLE_SALARY_UPTO_SELECTED_DATE);
                 itemActionDisableSalaryUpToSelectedDate.setText(BULLET_SELECTED + " " + STR_DISABLE_ALARY_UPTO_SELECTED_DATE);
+                notifySetEnabled(false);
             }
         }
     }

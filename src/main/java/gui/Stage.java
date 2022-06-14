@@ -8,6 +8,7 @@ package gui;
 import gui.attendance.AttendanceTab;
 import gui.performance.PerformanceTab;
 import gui.salary.SalaryTab;
+import gui.salary.SalaryUpToDayInSubjectMonth;
 import gui.salaryadvance.SalaryAdvanceTab;
 import java.awt.Dimension;
 import java.awt.GridLayout;
@@ -73,5 +74,9 @@ public class Stage extends JPanel {
         splitPane.setDividerLocation(100);
         this.setPreferredSize(new Dimension(1000, 500));
         this.add(splitPane);
+    }
+
+    public SalaryUpToDayInSubjectMonth getSalaryUpToDayInSubjectMonth() {
+        return this.controls.getSalaryTab().getSalaryUpToDayInSubjectMonth();
     }
 }

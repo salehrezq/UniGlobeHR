@@ -178,6 +178,10 @@ public class SalaryTab {
         return details;
     }
 
+    public SalaryUpToDayInSubjectMonth getSalaryUpToDayInSubjectMonth() {
+        return salaryUpToDayInSubjectMonth;
+    }
+
     public Compute getCompute() {
         return this.compute;
     }
