@@ -99,6 +99,9 @@ public class SalaryUpToDayInSubjectMonth
     @Override
     public void modeAbility(boolean enable) {
         enableControls(enable);
+        if (!enable) {
+            cbSalaryUpToDayInSubjectMonth.setSelected(false);
+        }
     }
 
     private class DayOfSubjectMonthSelectedSpinnerHandler implements ChangeListener {
