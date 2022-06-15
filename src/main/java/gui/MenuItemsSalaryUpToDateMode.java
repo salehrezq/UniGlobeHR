@@ -43,9 +43,9 @@ public class MenuItemsSalaryUpToDateMode
         this.menuItemSalaryUpToDateModeListeners.add(misutdml);
     }
 
-    private void notifySetEnabled(boolean enabled) {
+    private void notifyModeAbility(boolean enabled) {
         this.menuItemSalaryUpToDateModeListeners.forEach((misutdml) -> {
-            misutdml.setEnabled(enabled);
+            misutdml.modeAbility(enabled);
         });
     }
 
@@ -75,11 +75,11 @@ public class MenuItemsSalaryUpToDateMode
             if (source == itemActionEnableSalaryUpToSelectedDate) {
                 itemActionEnableSalaryUpToSelectedDate.setText(BULLET_SELECTED + " " + STR_ENABLE_SALARY_UPTO_SELECTED_DATE);
                 itemActionDisableSalaryUpToSelectedDate.setText(BULLET_DESELECTED + " " + STR_DISABLE_ALARY_UPTO_SELECTED_DATE);
-                notifySetEnabled(true);
+                notifyModeAbility(true);
             } else if (source == itemActionDisableSalaryUpToSelectedDate) {
                 itemActionEnableSalaryUpToSelectedDate.setText(BULLET_DESELECTED + " " + STR_ENABLE_SALARY_UPTO_SELECTED_DATE);
                 itemActionDisableSalaryUpToSelectedDate.setText(BULLET_SELECTED + " " + STR_DISABLE_ALARY_UPTO_SELECTED_DATE);
-                notifySetEnabled(false);
+                notifyModeAbility(false);
             }
         }
     }

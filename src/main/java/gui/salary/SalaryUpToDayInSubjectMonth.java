@@ -97,7 +97,7 @@ public class SalaryUpToDayInSubjectMonth
     }
 
     @Override
-    public void setEnabled(boolean enable) {
+    public void modeAbility(boolean enable) {
         enableControls(enable);
     }
 
