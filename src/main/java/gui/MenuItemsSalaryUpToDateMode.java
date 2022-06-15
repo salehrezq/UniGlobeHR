@@ -4,12 +4,14 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JMenuItem;
+import model.Employee;
 
 /**
  *
  * @author Saleh
  */
-public class MenuItemsSalaryUpToDateMode {
+public class MenuItemsSalaryUpToDateMode
+        implements EmployeeSelectedListener {
 
     private JMenuItem itemActionEnableSalaryUpToSelectedDate,
             itemActionDisableSalaryUpToSelectedDate;
@@ -26,6 +28,7 @@ public class MenuItemsSalaryUpToDateMode {
         itemActionDisableSalaryUpToSelectedDate = new JMenuItem(BULLET_SELECTED + " " + STR_DISABLE_ALARY_UPTO_SELECTED_DATE);
         itemActionDisableSalaryUpToSelectedDate.addActionListener(menuItemActions);
         menuItemSalaryUpToDateModeListeners = new ArrayList<>();
+        enableControls(false);
     }
 
     protected JMenuItem getItemActionEnableSalaryUpToSelectedDate() {
@@ -44,6 +47,23 @@ public class MenuItemsSalaryUpToDateMode {
         this.menuItemSalaryUpToDateModeListeners.forEach((misutdml) -> {
             misutdml.setEnabled(enabled);
         });
+    }
+
+    private void enableControls(boolean enable) {
+        itemActionEnableSalaryUpToSelectedDate.setEnabled(enable);
+        itemActionDisableSalaryUpToSelectedDate.setEnabled(enable);
+    }
+
+    @Override
+    public void employeeSelected(Employee employee) {
+        itemActionDisableSalaryUpToSelectedDate.doClick();
+        enableControls(true);
+    }
+
+    @Override
+    public void employeeDeselected() {
+        itemActionDisableSalaryUpToSelectedDate.doClick();
+        enableControls(false);
     }
 
     private class MenuItemActions implements ActionListener {

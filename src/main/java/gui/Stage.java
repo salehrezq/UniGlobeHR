@@ -79,4 +79,8 @@ public class Stage extends JPanel {
     public SalaryUpToDayInSubjectMonth getSalaryUpToDayInSubjectMonth() {
         return this.controls.getSalaryTab().getSalaryUpToDayInSubjectMonth();
     }
+
+    public void addEmployeeSelectedListener(EmployeeSelectedListener employeeSelectedListener) {
+        treeEmployees.addEmployeeSelectedListener(employeeSelectedListener);
+    }
 }
