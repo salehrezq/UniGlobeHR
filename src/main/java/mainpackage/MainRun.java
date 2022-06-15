@@ -7,6 +7,7 @@ package mainpackage;
 
 import gui.LookAndFeelLisener;
 import gui.Menu;
+import gui.MenuItemsSalaryUpToDateMode;
 import gui.Stage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -45,9 +46,9 @@ public class MainRun implements LookAndFeelLisener {
         menu = new Menu();
         menu.createMenuBar();
         menu.setLookAndFeelListener(this);
-        menu.getMenuItemsSalaryUpToDateMode().
-                addMenuItemSalaryUpToDateModeListener(stage.getSalaryUpToDayInSubjectMonth());
-        stage.addEmployeeSelectedListener(menu.getMenuItemsSalaryUpToDateMode());
+        MenuItemsSalaryUpToDateMode itemSalaryUpToDateMode = menu.getMenuItemsSalaryUpToDateMode();
+        itemSalaryUpToDateMode.addMenuItemSalaryUpToDateModeListener(stage.getSalaryTab().getSalaryUpToDayInSubjectMonth());
+        stage.addEmployeeSelectedListener(itemSalaryUpToDateMode);
 
 //        menu.
         //Create and set up the window.
