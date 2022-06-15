@@ -42,14 +42,14 @@ public class SalaryUpToDayInSubjectMonth
 
         container = new JPanel();
         cbSalaryUpToDayInSubjectMonth = new JCheckBox("Salary up to selected day of subject month");
-        cbSalaryUpToDayInSubjectMonth.setEnabled(false);
         cbSalaryUpToDayInSubjectMonth.addActionListener(new SalaryUpToDayInSubjectMonthModeHandler());
         container.add(cbSalaryUpToDayInSubjectMonth);
 
         spinnerMonthDays = new JSpinner();
-        spinnerMonthDays.setEnabled(false);
         spinnerMonthDays.addChangeListener(new DayOfSubjectMonthSelectedSpinnerHandler());
         container.add(spinnerMonthDays);
+
+        enableControls(false);
     }
 
     public JPanel getContainer() {
@@ -91,10 +91,14 @@ public class SalaryUpToDayInSubjectMonth
         return this.mode;
     }
 
-    @Override
-    public void setEnabled(boolean enable) {
+    private void enableControls(boolean enable) {
         cbSalaryUpToDayInSubjectMonth.setEnabled(enable);
         spinnerMonthDays.setEnabled(enable);
+    }
+
+    @Override
+    public void setEnabled(boolean enable) {
+        enableControls(enable);
     }
 
     private class DayOfSubjectMonthSelectedSpinnerHandler implements ChangeListener {
