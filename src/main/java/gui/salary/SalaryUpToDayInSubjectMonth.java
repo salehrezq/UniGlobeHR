@@ -42,10 +42,12 @@ public class SalaryUpToDayInSubjectMonth
 
         container = new JPanel();
         cbSalaryUpToDayInSubjectMonth = new JCheckBox("Salary up to selected day of subject month");
+        cbSalaryUpToDayInSubjectMonth.setEnabled(false);
         cbSalaryUpToDayInSubjectMonth.addActionListener(new SalaryUpToDayInSubjectMonthModeHandler());
         container.add(cbSalaryUpToDayInSubjectMonth);
 
         spinnerMonthDays = new JSpinner();
+        spinnerMonthDays.setEnabled(false);
         spinnerMonthDays.addChangeListener(new DayOfSubjectMonthSelectedSpinnerHandler());
         container.add(spinnerMonthDays);
     }
@@ -91,7 +93,8 @@ public class SalaryUpToDayInSubjectMonth
 
     @Override
     public void setEnabled(boolean enable) {
-        System.out.println(enable ? "SalaryUpToDayInSubjectMonth enabled" : "SalaryUpToDayInSubjectMonth disabled");
+        cbSalaryUpToDayInSubjectMonth.setEnabled(enable);
+        spinnerMonthDays.setEnabled(enable);
     }
 
     private class DayOfSubjectMonthSelectedSpinnerHandler implements ChangeListener {
