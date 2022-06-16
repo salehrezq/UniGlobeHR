@@ -63,6 +63,7 @@ public class SalaryTab {
         compute = new Compute();
         compute.setDetails(details);
         compute.setSalaryUpToDayInSubjectMonth(salaryUpToDayInSubjectMonth);
+        salaryUpToDayInSubjectMonth.addSalaryUpToDateSpinnerCheckedListener(compute);
         JPanel panelComputeWithPayable = new JPanel();
         payable = new Payable();
         panelComputeWithPayable.add(compute.getBtnCompute());

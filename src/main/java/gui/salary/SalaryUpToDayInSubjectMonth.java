@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.YearMonth;
 import java.time.temporal.TemporalAdjusters;
+import java.util.ArrayList;
 import javax.swing.JCheckBox;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
@@ -31,6 +32,7 @@ public class SalaryUpToDayInSubjectMonth
     private int dayOfMonth;
     private LocalDate dateSelected;
     private Mode mode;
+    private ArrayList<SalaryUpToDateSpinnerCheckedListener> salaryUpToDateSpinnerCheckedListeners;
 
     public enum Mode {
         END_OF_MONTH, BEFORE_END_OF_MONTH;
@@ -48,6 +50,8 @@ public class SalaryUpToDayInSubjectMonth
         spinnerMonthDays = new JSpinner();
         spinnerMonthDays.addChangeListener(new DayOfSubjectMonthSelectedSpinnerHandler());
         container.add(spinnerMonthDays);
+
+        salaryUpToDateSpinnerCheckedListeners = new ArrayList<>();
 
         enableControls(false);
     }
@@ -104,6 +108,16 @@ public class SalaryUpToDayInSubjectMonth
         }
     }
 
+    public void addSalaryUpToDateSpinnerCheckedListener(SalaryUpToDateSpinnerCheckedListener sutdscl) {
+        this.salaryUpToDateSpinnerCheckedListeners.add(sutdscl);
+    }
+
+    private void notifySpinnerChecked(boolean checked) {
+        this.salaryUpToDateSpinnerCheckedListeners.forEach((sutdscl) -> {
+            sutdscl.spinnerChecked(checked);
+        });
+    }
+
     private class DayOfSubjectMonthSelectedSpinnerHandler implements ChangeListener {
 
         @Override
@@ -118,6 +132,7 @@ public class SalaryUpToDayInSubjectMonth
         @Override
         public void actionPerformed(ActionEvent e) {
             JCheckBox checkBox = (JCheckBox) e.getSource();
+            notifySpinnerChecked(checkBox.isSelected());
             if (checkBox.isSelected()) {
                 mode = Mode.BEFORE_END_OF_MONTH;
             } else {

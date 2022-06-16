@@ -6,4 +6,5 @@ package gui.salary;
  */
 public interface SalaryUpToDateSpinnerCheckedListener {
 
+    public void spinnerChecked(boolean checked);
 }

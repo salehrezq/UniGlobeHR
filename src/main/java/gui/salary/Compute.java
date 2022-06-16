@@ -29,7 +29,8 @@ import model.Employee;
 public class Compute
         implements
         EmployeeSelectedListener,
-        MenuItemSalaryUpToDateModeListener {
+        MenuItemSalaryUpToDateModeListener,
+        SalaryUpToDateSpinnerCheckedListener {
 
     private JButton btnCompute;
     private Employee employee;
@@ -113,6 +114,11 @@ public class Compute
         if (employee != null) {
             btnCompute.setEnabled(!enable);
         }
+    }
+
+    @Override
+    public void spinnerChecked(boolean checked) {
+        btnCompute.setEnabled(checked);
     }
 
     class ComputePayables implements ActionListener {
