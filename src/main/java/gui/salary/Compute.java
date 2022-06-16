@@ -5,6 +5,7 @@ import datalink.CRUDPerformance;
 import datalink.CRUDSalary;
 import datalink.CRUDSalaryAdvance;
 import gui.EmployeeSelectedListener;
+import gui.MenuItemSalaryUpToDateModeListener;
 import gui.attendance.AttendanceDeductionsCalculator;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -27,7 +28,8 @@ import model.Employee;
  */
 public class Compute
         implements
-        EmployeeSelectedListener {
+        EmployeeSelectedListener,
+        MenuItemSalaryUpToDateModeListener {
 
     private JButton btnCompute;
     private Employee employee;
@@ -104,6 +106,13 @@ public class Compute
     public void employeeDeselected() {
         this.employee = null;
         btnCompute.setEnabled(false);
+    }
+
+    @Override
+    public void modeAbility(boolean enable) {
+        if (employee != null) {
+            btnCompute.setEnabled(!enable);
+        }
     }
 
     class ComputePayables implements ActionListener {

@@ -48,6 +48,7 @@ public class MainRun implements LookAndFeelLisener {
         menu.setLookAndFeelListener(this);
         MenuItemsSalaryUpToDateMode itemSalaryUpToDateMode = menu.getMenuItemsSalaryUpToDateMode();
         itemSalaryUpToDateMode.addMenuItemSalaryUpToDateModeListener(stage.getSalaryTab().getSalaryUpToDayInSubjectMonth());
+        itemSalaryUpToDateMode.addMenuItemSalaryUpToDateModeListener(stage.getSalaryTab().getCompute());
         stage.addEmployeeSelectedListener(itemSalaryUpToDateMode);
 
 //        menu.
