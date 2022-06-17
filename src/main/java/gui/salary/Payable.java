@@ -87,7 +87,7 @@ public class Payable
 
         urlTickMark = getClass().getResource("/images/tick.png");
         imageIconTickMark = new ImageIcon(urlTickMark);
-        lbAlreadyPaid = new JLabel("Alreay Paid     ", imageIconTickMark, 0);
+        lbAlreadyPaid = new JLabel("Already Paid     ", imageIconTickMark, 0);
 
         JPanel panelLabelNonDeterminedYet = new JPanel();
         panelLabelNonDeterminedYet.add(lbPaymentNonDetermined);
