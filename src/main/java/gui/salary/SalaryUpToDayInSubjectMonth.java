@@ -69,9 +69,9 @@ public class SalaryUpToDayInSubjectMonth
 
     public void setSpinnerMonthDayslModel(LocalDate subjectYearMonth) {
         LocalDate lastDay = subjectYearMonth.with(TemporalAdjusters.lastDayOfMonth()); //2015-11-30
-        int lastDayOfMonth = lastDay.getDayOfMonth();
-        dayOfMonth = lastDayOfMonth;
-        spnModel = new SpinnerNumberModel(lastDayOfMonth, 1, lastDayOfMonth, 1);
+        int oneDayBeforeLastDayOfMonth = lastDay.getDayOfMonth() - 1;
+        dayOfMonth = oneDayBeforeLastDayOfMonth;
+        spnModel = new SpinnerNumberModel(oneDayBeforeLastDayOfMonth, 1, oneDayBeforeLastDayOfMonth, 1);
         spinnerMonthDays.setModel(spnModel);
     }
 
