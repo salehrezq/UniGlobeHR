@@ -1,5 +1,6 @@
 package gui.salary;
 
+import gui.EmployeeSelectedListener;
 import gui.MenuItemSalaryUpToDateModeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +15,7 @@ import javax.swing.SpinnerModel;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
+import model.Employee;
 
 /**
  *
@@ -22,7 +24,8 @@ import javax.swing.event.ChangeListener;
 public class SalaryUpToDayInSubjectMonth
         implements
         SubjectDateChangeListener,
-        MenuItemSalaryUpToDateModeListener {
+        MenuItemSalaryUpToDateModeListener,
+        EmployeeSelectedListener {
 
     private JPanel container;
     private JCheckBox cbSalaryUpToDayInSubjectMonth;
@@ -106,6 +109,16 @@ public class SalaryUpToDayInSubjectMonth
         if (!enable) {
             cbSalaryUpToDayInSubjectMonth.setSelected(false);
         }
+    }
+
+    @Override
+    public void employeeSelected(Employee employee) {
+        mode = Mode.END_OF_MONTH;
+    }
+
+    @Override
+    public void employeeDeselected() {
+        mode = Mode.END_OF_MONTH;
     }
 
     public void addSalaryUpToDateSpinnerCheckedListener(SalaryUpToDateSpinnerCheckedListener sutdscl) {
