@@ -20,6 +20,7 @@ public class MenuItemsSalaryUpToDateMode
     private static final String BULLET_SELECTED = "⚫";
     private static final String BULLET_DESELECTED = "⚪";
     private ArrayList<MenuItemSalaryUpToDateModeListener> menuItemSalaryUpToDateModeListeners;
+    private MenuItemsSalaryUpToDateModeState modeState;
 
     public MenuItemsSalaryUpToDateMode() {
         MenuItemActions menuItemActions = new MenuItemActions();
@@ -28,8 +29,13 @@ public class MenuItemsSalaryUpToDateMode
         itemActionDisableSalaryUpToSelectedDate = new JMenuItem(BULLET_SELECTED + " " + STR_DISABLE_ALARY_UPTO_SELECTED_DATE);
         itemActionDisableSalaryUpToSelectedDate.addActionListener(menuItemActions);
         menuItemSalaryUpToDateModeListeners = new ArrayList<>();
+        modeState = MenuItemsSalaryUpToDateModeState.DISABLED;
         enableControls(false);
     }
+
+    private enum MenuItemsSalaryUpToDateModeState {
+        ENABLED, DISABLED
+    };
 
     protected JMenuItem getItemActionEnableSalaryUpToSelectedDate() {
         return itemActionEnableSalaryUpToSelectedDate;
@@ -56,13 +62,17 @@ public class MenuItemsSalaryUpToDateMode
 
     @Override
     public void employeeSelected(Employee employee) {
-        itemActionDisableSalaryUpToSelectedDate.doClick();
+        if (modeState == MenuItemsSalaryUpToDateModeState.ENABLED) {
+            itemActionDisableSalaryUpToSelectedDate.doClick();
+        }
         enableControls(true);
     }
 
     @Override
     public void employeeDeselected() {
-        itemActionDisableSalaryUpToSelectedDate.doClick();
+        if (modeState == MenuItemsSalaryUpToDateModeState.DISABLED) {
+            itemActionDisableSalaryUpToSelectedDate.doClick();
+        }
         enableControls(false);
     }
 
@@ -75,10 +85,12 @@ public class MenuItemsSalaryUpToDateMode
             if (source == itemActionEnableSalaryUpToSelectedDate) {
                 itemActionEnableSalaryUpToSelectedDate.setText(BULLET_SELECTED + " " + STR_ENABLE_SALARY_UPTO_SELECTED_DATE);
                 itemActionDisableSalaryUpToSelectedDate.setText(BULLET_DESELECTED + " " + STR_DISABLE_ALARY_UPTO_SELECTED_DATE);
+                modeState = MenuItemsSalaryUpToDateModeState.ENABLED;
                 notifyModeAbility(true);
             } else if (source == itemActionDisableSalaryUpToSelectedDate) {
                 itemActionEnableSalaryUpToSelectedDate.setText(BULLET_DESELECTED + " " + STR_ENABLE_SALARY_UPTO_SELECTED_DATE);
                 itemActionDisableSalaryUpToSelectedDate.setText(BULLET_SELECTED + " " + STR_DISABLE_ALARY_UPTO_SELECTED_DATE);
+                modeState = MenuItemsSalaryUpToDateModeState.DISABLED;
                 notifyModeAbility(false);
             }
         }

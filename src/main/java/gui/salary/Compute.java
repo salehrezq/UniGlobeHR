@@ -43,6 +43,7 @@ public class Compute
     private int monthSubjectOldValue;
     private ArrayList<PaymnetListener> paymnetListeners;
     private SalaryUpToDayInSubjectMonth salaryUpToDayInSubjectMonth;
+    private Salary salary;
 
     public Compute() {
 
@@ -101,12 +102,19 @@ public class Compute
     @Override
     public void employeeSelected(Employee employee) {
         this.employee = employee;
-        btnCompute.setEnabled(true);
+        salary = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), salaryInput.getYearMonthSubjectOfSalary());
+
+        if (salary != null) {
+            btnCompute.setEnabled(false);
+        } else {
+            btnCompute.setEnabled(true);
+        }
     }
 
     @Override
     public void employeeDeselected() {
         this.employee = null;
+        salary = null;
         btnCompute.setEnabled(false);
     }
 
