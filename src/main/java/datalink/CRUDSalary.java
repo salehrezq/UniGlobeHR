@@ -44,9 +44,9 @@ public class CRUDSalary {
         return insert > 0;
     }
 
-    public static Boolean isEmployeeWithYearMonthSubjectExist(int employeeId, LocalDate yearMonthSubject) {
+    public static Salary isEmployeeWithYearMonthSubjectExist(int employeeId, LocalDate yearMonthSubject) {
 
-        Boolean isRecordAvailable = null;
+        Salary salary = null;
 
         try {
             String sql
@@ -62,14 +62,22 @@ public class CRUDSalary {
             ResultSet result = p.executeQuery();
 
             // Check if there is a result
-            isRecordAvailable = result.isBeforeFirst();
+            if (result.next()) {
+                salary = new Salary();
+                salary.setId(result.getInt("id"));
+                salary.setEmployeeId(result.getInt("employee_id"));
+                salary.setYearMonthSubject(result.getDate("subject_year_month").toLocalDate());
+                salary.setDateGiven(result.getDate("date_given").toLocalDate());
+                salary.setAgreedSalary(result.getBigDecimal("agreed_salary"));
+                salary.setPayable(result.getBigDecimal("payable"));
+            }
 
         } catch (SQLException ex) {
             Logger.getLogger(CRUDSalary.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             Connect.cleanUp();
         }
-        return isRecordAvailable;
+        return salary;
     }
 
     public static Salary getById(int id) {

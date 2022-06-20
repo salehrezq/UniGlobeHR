@@ -21,6 +21,7 @@ import javax.swing.JOptionPane;
 import model.AbsentOrLateEntity;
 import model.AttendanceDeduction;
 import model.Employee;
+import model.Salary;
 
 /**
  *
@@ -129,8 +130,10 @@ public class Compute
             yearSubjectOldValue = salaryInput.getSubjectYear();
             monthSubjectOldValue = salaryInput.getSubjectMonth();
 
-            if (CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(),
-                    salaryInput.getYearMonthSubjectOfSalary())) {
+            Salary salary = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(),
+                    salaryInput.getYearMonthSubjectOfSalary());
+
+            if (salary != null) {
                 notifyPaymentCleared();
             } else {
                 notifyPaymentPending();

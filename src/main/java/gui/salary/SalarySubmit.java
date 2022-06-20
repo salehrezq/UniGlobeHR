@@ -262,16 +262,9 @@ public class SalarySubmit
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            Boolean isEmployeeWithYearMonthSubjectAlreadyInserted
-                    = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), getYearMonthSubjectOfSalary());
+            Salary isEmployeeWithYearMonthSubjectAlreadyInserted = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), getYearMonthSubjectOfSalary());
 
-            if (isEmployeeWithYearMonthSubjectAlreadyInserted == null) {
-                JOptionPane.showConfirmDialog(null,
-                        "Some database issue",
-                        "Info", JOptionPane.ERROR);
-                return;
-            }
-            if (isEmployeeWithYearMonthSubjectAlreadyInserted) {
+            if (isEmployeeWithYearMonthSubjectAlreadyInserted != null) {
 
                 String month = Month.of(salaryInput.getSubjectMonth()).toString();
                 month = month.substring(0, 1).toUpperCase() + month.substring(1).toLowerCase();
