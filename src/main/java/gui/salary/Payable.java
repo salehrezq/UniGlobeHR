@@ -56,9 +56,6 @@ public class Payable
     private ArrayList<SubjectDateChangeListener> subjectDateChangeListeners;
     private URL urlTickMark;
     private ImageIcon imageIconTickMark;
-    private final String STR_PANEL_NON_DETERMINED = "non determined";
-    private final String STR_PANEL_PENDING = "pending";
-    private final String STR_PANEL_PAIED = "paied";
     private SalaryInput salaryInput;
 
     public Payable() {
@@ -97,16 +94,37 @@ public class Payable
         panelLabelPaied.add(lbAlreadyPaid);
 
         panelCards = new JPanel(new CardLayout());
-        // Add all panels; paid, pending and non determined
-        panelCards.add(panelLabelNonDeterminedYet, STR_PANEL_NON_DETERMINED);
-        panelCards.add(panelLabelPaymentPending, STR_PANEL_PENDING);
-        panelCards.add(panelLabelPaied, STR_PANEL_PAIED);
-        // Show the empty panel
-        CardLayout cl = (CardLayout) (panelCards.getLayout());
-        cl.show(panelCards, STR_PANEL_NON_DETERMINED);
         container.add(panelCards);
+        // Add all panels; paid, pending and non determined
+        panelCards.add(panelLabelNonDeterminedYet, PaymentState.NON_DETERMINED.state());
+        panelCards.add(panelLabelPaymentPending, PaymentState.PENDING.state());
+        panelCards.add(panelLabelPaied, PaymentState.PAIED.state());
+        // Show the empty panel
+        setPaymentPanelCardState(PaymentState.NON_DETERMINED.state());
 
         setFieldsEditable(false);
+    }
+
+    private enum PaymentState {
+
+        NON_DETERMINED("non determined"),
+        PENDING("pending"),
+        PAIED("paied");
+
+        private final String state;
+
+        private PaymentState(String state) {
+            this.state = state;
+        }
+
+        private String state() {
+            return state;
+        }
+    }
+
+    private void setPaymentPanelCardState(String state) {
+        CardLayout cl = (CardLayout) (panelCards.getLayout());
+        cl.show(panelCards, state);
     }
 
     public JPanel getContainer() {
@@ -126,17 +144,14 @@ public class Payable
         if (boolSalaryDisplayMode && employee != null) {
             clearInputFields();
         }
-        CardLayout cl = (CardLayout) (panelCards.getLayout());
-        cl.show(panelCards, STR_PANEL_NON_DETERMINED);
+        setPaymentPanelCardState(PaymentState.NON_DETERMINED.state());
     }
 
     @Override
     public void employeeDeselected() {
         setFieldsEditable(false);
         tfPayable.setText(null);
-
-        CardLayout cl = (CardLayout) (panelCards.getLayout());
-        cl.show(panelCards, STR_PANEL_NON_DETERMINED);
+        setPaymentPanelCardState(PaymentState.NON_DETERMINED.state());
     }
 
     public void setTfPayable(String payable) {
@@ -258,14 +273,12 @@ public class Payable
 
     @Override
     public void cleared() {
-        CardLayout cl = (CardLayout) (panelCards.getLayout());
-        cl.show(panelCards, STR_PANEL_PAIED);
+        setPaymentPanelCardState(PaymentState.PAIED.state());
     }
 
     @Override
     public void pending() {
-        CardLayout cl = (CardLayout) (panelCards.getLayout());
-        cl.show(panelCards, STR_PANEL_PENDING);
+        setPaymentPanelCardState(PaymentState.PENDING.state());
     }
 
     public void addSubjectDateChangeListener(SubjectDateChangeListener sdchl) {
