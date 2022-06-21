@@ -177,7 +177,8 @@ public class Payable
     }
 
     private void setFieldsEditable(boolean editable) {
-        tfPayable.setForeground(editable ? null : colorDisabled);
+        // Comment out for the moment, later we may need it.
+        // tfPayable.setForeground(editable ? null : colorDisabled);
     }
 
     @Override
