@@ -49,7 +49,7 @@ public class Payable
     private Color colorDisabled;
     private boolean boolSalaryDisplayMode, boolEditMode,
             boolCreated, boolUpdated, boolMonthSubjectChanged;
-    private Salary salary;
+    private Salary salary, salaryExistenceCheck;
     private int salaryId;
     private int salaryOldId;
     private Compute compute;
@@ -137,14 +137,20 @@ public class Payable
 
     @Override
     public void employeeSelected(Employee employee) {
-        tfPayable.setText(null);
-        if (!boolSalaryDisplayMode) {
-            setFieldsEditable(true);
+        salaryExistenceCheck = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), salaryInput.getYearMonthSubjectOfSalary());
+        if (salaryExistenceCheck != null) {
+            tfPayable.setText(salaryExistenceCheck.getPayable().toPlainString());
+            setPaymentPanelCardState(PaymentState.PAIED.state());
+        } else {
+            tfPayable.setText(null);
+            if (!boolSalaryDisplayMode) {
+                setFieldsEditable(true);
+            }
+            if (boolSalaryDisplayMode && employee != null) {
+                clearInputFields();
+            }
+            setPaymentPanelCardState(PaymentState.NON_DETERMINED.state());
         }
-        if (boolSalaryDisplayMode && employee != null) {
-            clearInputFields();
-        }
-        setPaymentPanelCardState(PaymentState.NON_DETERMINED.state());
     }
 
     @Override
