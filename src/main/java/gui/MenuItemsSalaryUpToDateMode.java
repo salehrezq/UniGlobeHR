@@ -1,10 +1,13 @@
 package gui;
 
+import datalink.CRUDSalary;
+import gui.salary.SalaryInput;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JMenuItem;
 import model.Employee;
+import model.Salary;
 
 /**
  *
@@ -21,6 +24,8 @@ public class MenuItemsSalaryUpToDateMode
     private static final String BULLET_DESELECTED = "⚪";
     private ArrayList<MenuItemSalaryUpToDateModeListener> menuItemSalaryUpToDateModeListeners;
     private MenuItemsSalaryUpToDateModeState modeState;
+    private Salary salary;
+    private SalaryInput salaryInput;
 
     public MenuItemsSalaryUpToDateMode() {
         MenuItemActions menuItemActions = new MenuItemActions();
@@ -65,7 +70,14 @@ public class MenuItemsSalaryUpToDateMode
         if (modeState == MenuItemsSalaryUpToDateModeState.ENABLED) {
             itemActionDisableSalaryUpToSelectedDate.doClick();
         }
-        enableControls(true);
+
+        salary = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), salaryInput.getYearMonthSubjectOfSalary());
+
+        if (salary != null) {
+            enableControls(false);
+        } else {
+            enableControls(true);
+        }
     }
 
     @Override
@@ -74,6 +86,10 @@ public class MenuItemsSalaryUpToDateMode
             itemActionDisableSalaryUpToSelectedDate.doClick();
         }
         enableControls(false);
+    }
+
+    public void setSalaryInput(SalaryInput salaryInput) {
+        this.salaryInput = salaryInput;
     }
 
     private class MenuItemActions implements ActionListener {
