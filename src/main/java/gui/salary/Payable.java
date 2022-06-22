@@ -13,6 +13,7 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.math.BigDecimal;
 import java.net.URL;
+import java.time.LocalDate;
 import java.time.YearMonth;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -37,7 +38,8 @@ public class Payable
         EditableListener,
         CancelListener,
         DeleteListener,
-        PaymnetListener {
+        PaymnetListener,
+        SubjectDateChangeListener {
 
     private JPanel container, panelCards;
     private YearMonth yearAndMonth;
@@ -55,6 +57,7 @@ public class Payable
     private URL urlTickMark;
     private ImageIcon imageIconTickMark;
     private SalaryInput salaryInput;
+    private int employeeId;
 
     public Payable() {
 
@@ -102,6 +105,32 @@ public class Payable
         setFieldsEditable(false);
     }
 
+    @Override
+    public void yearOrMonthChanged(YearMonth yearMonth) {
+        LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
+        salaryExistenceCheck = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employeeId, yearMonthSubjectOfSalary);
+        if (salaryExistenceCheck != null) {
+            tfPayable.setText(salaryExistenceCheck.getPayable().toPlainString());
+            setPaymentPanelCardState(PaymentState.PAIED.state());
+        } else {
+            tfPayable.setText(null);
+            setPaymentPanelCardState(PaymentState.NON_DETERMINED.state());
+        }
+    }
+
+    @Override
+    public void yearAndMonthNotChanged(YearMonth yearMonth) {
+        LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
+        salaryExistenceCheck = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employeeId, yearMonthSubjectOfSalary);
+        if (salaryExistenceCheck != null) {
+            tfPayable.setText(salaryExistenceCheck.getPayable().toPlainString());
+            setPaymentPanelCardState(PaymentState.PAIED.state());
+        } else {
+            tfPayable.setText(null);
+            setPaymentPanelCardState(PaymentState.NON_DETERMINED.state());
+        }
+    }
+
     private enum PaymentState {
 
         NON_DETERMINED("non determined"),
@@ -134,6 +163,7 @@ public class Payable
 
     @Override
     public void employeeSelected(Employee employee) {
+        employeeId = employee.getId();
         salaryExistenceCheck = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), salaryInput.getYearMonthSubjectOfSalary());
         if (salaryExistenceCheck != null) {
             tfPayable.setText(salaryExistenceCheck.getPayable().toPlainString());
@@ -152,6 +182,7 @@ public class Payable
 
     @Override
     public void employeeDeselected() {
+        employeeId = 0;
         setFieldsEditable(false);
         tfPayable.setText(null);
         setPaymentPanelCardState(PaymentState.NON_DETERMINED.state());

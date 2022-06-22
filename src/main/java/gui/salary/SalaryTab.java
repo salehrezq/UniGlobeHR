@@ -69,6 +69,7 @@ public class SalaryTab {
         payable = new Payable();
         panelComputeWithPayable.add(compute.getBtnCompute());
         panelComputeWithPayable.add(payable.getContainer());
+        salaryInput.addSubjectDateChangeListener(payable);
         c = new GridBagConstraints();
         c.gridy = 2;
         panelVerticalInputWithCompute.add(panelComputeWithPayable, c);
