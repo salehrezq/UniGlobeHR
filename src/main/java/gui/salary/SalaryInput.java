@@ -162,7 +162,7 @@ public class SalaryInput
      * @return String represent the year field input
      */
     public int getSubjectYear() {
-        return Integer.parseInt(tfYearSubject.getText());
+        return yearSubject;
     }
 
     public LocalDate getDateSalaryGiven() {
@@ -308,7 +308,7 @@ public class SalaryInput
      * @return int represent the month
      */
     public int getSubjectMonth() {
-        return monthsList.getSelectedIndex() + 1;
+        return monthSubject;
     }
 
     @Override
