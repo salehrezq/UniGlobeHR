@@ -2,8 +2,11 @@ package gui;
 
 import datalink.CRUDSalary;
 import gui.salary.SalaryInput;
+import gui.salary.SubjectDateChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.YearMonth;
 import java.util.ArrayList;
 import javax.swing.JMenuItem;
 import model.Employee;
@@ -14,7 +17,9 @@ import model.Salary;
  * @author Saleh
  */
 public class MenuItemsSalaryUpToDateMode
-        implements EmployeeSelectedListener {
+        implements
+        EmployeeSelectedListener,
+        SubjectDateChangeListener {
 
     private JMenuItem itemActionEnableSalaryUpToSelectedDate,
             itemActionDisableSalaryUpToSelectedDate;
@@ -26,6 +31,7 @@ public class MenuItemsSalaryUpToDateMode
     private MenuItemsSalaryUpToDateModeState modeState;
     private Salary salary;
     private SalaryInput salaryInput;
+    private Employee employee;
 
     public MenuItemsSalaryUpToDateMode() {
         MenuItemActions menuItemActions = new MenuItemActions();
@@ -36,6 +42,30 @@ public class MenuItemsSalaryUpToDateMode
         menuItemSalaryUpToDateModeListeners = new ArrayList<>();
         modeState = MenuItemsSalaryUpToDateModeState.DISABLED;
         enableControls(false);
+    }
+
+    @Override
+    public void yearOrMonthChanged(YearMonth yearMonth) {
+        LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
+        salary = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary);
+        if (salary != null) {
+            itemActionDisableSalaryUpToSelectedDate.doClick();
+            enableControls(false);
+        } else {
+            enableControls(true);
+        }
+    }
+
+    @Override
+    public void yearAndMonthNotChanged(YearMonth yearMonth) {
+        LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
+        salary = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary);
+        if (salary != null) {
+            itemActionDisableSalaryUpToSelectedDate.doClick();
+            enableControls(false);
+        } else {
+            enableControls(true);
+        }
     }
 
     private enum MenuItemsSalaryUpToDateModeState {
@@ -67,6 +97,7 @@ public class MenuItemsSalaryUpToDateMode
 
     @Override
     public void employeeSelected(Employee employee) {
+        this.employee = employee;
         if (modeState == MenuItemsSalaryUpToDateModeState.ENABLED) {
             itemActionDisableSalaryUpToSelectedDate.doClick();
         }
@@ -82,6 +113,7 @@ public class MenuItemsSalaryUpToDateMode
 
     @Override
     public void employeeDeselected() {
+        this.employee = null;
         if (modeState == MenuItemsSalaryUpToDateModeState.DISABLED) {
             itemActionDisableSalaryUpToSelectedDate.doClick();
         }
