@@ -31,7 +31,8 @@ public class Compute
         implements
         EmployeeSelectedListener,
         MenuItemSalaryUpToDateModeListener,
-        SalaryUpToDateSpinnerCheckedListener {
+        SalaryUpToDateSpinnerCheckedListener,
+        SubjectDateChangeListener {
 
     private JButton btnCompute;
     private Employee employee;
@@ -128,6 +129,31 @@ public class Compute
     @Override
     public void spinnerChecked(boolean checked) {
         btnCompute.setEnabled(checked);
+    }
+
+    @Override
+    public void yearOrMonthChanged(YearMonth yearMonth) {
+
+        LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
+        salary = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary);
+
+        if (salary != null) {
+            btnCompute.setEnabled(false);
+        } else {
+            btnCompute.setEnabled(true);
+        }
+    }
+
+    @Override
+    public void yearAndMonthNotChanged(YearMonth yearMonth) {
+        LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
+        salary = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary);
+
+        if (salary != null) {
+            btnCompute.setEnabled(false);
+        } else {
+            btnCompute.setEnabled(true);
+        }
     }
 
     class ComputePayables implements ActionListener {
