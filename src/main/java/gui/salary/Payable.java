@@ -14,7 +14,6 @@ import java.awt.GridBagConstraints;
 import java.math.BigDecimal;
 import java.net.URL;
 import java.time.YearMonth;
-import java.util.ArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -53,14 +52,12 @@ public class Payable
     private int salaryId;
     private int salaryOldId;
     private Compute compute;
-    private ArrayList<SubjectDateChangeListener> subjectDateChangeListeners;
     private URL urlTickMark;
     private ImageIcon imageIconTickMark;
     private SalaryInput salaryInput;
 
     public Payable() {
 
-        subjectDateChangeListeners = new ArrayList<>();
         container = new JPanel();
 
         GridBagConstraints c;
@@ -286,9 +283,5 @@ public class Payable
     @Override
     public void pending() {
         setPaymentPanelCardState(PaymentState.PENDING.state());
-    }
-
-    public void addSubjectDateChangeListener(SubjectDateChangeListener sdchl) {
-        this.subjectDateChangeListeners.add(sdchl);
     }
 }
