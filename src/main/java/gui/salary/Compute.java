@@ -44,7 +44,7 @@ public class Compute
     private int monthSubjectOldValue;
     private ArrayList<PaymnetListener> paymnetListeners;
     private SalaryUpToDayInSubjectMonth salaryUpToDayInSubjectMonth;
-    private Salary salary;
+    private boolean boolSalaryPaid;
 
     public Compute() {
 
@@ -103,9 +103,9 @@ public class Compute
     @Override
     public void employeeSelected(Employee employee) {
         this.employee = employee;
-        salary = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), salaryInput.getYearMonthSubjectOfSalary());
+        boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), salaryInput.getYearMonthSubjectOfSalary()) != null;
 
-        if (salary != null) {
+        if (boolSalaryPaid) {
             btnCompute.setEnabled(false);
         } else {
             btnCompute.setEnabled(true);
@@ -115,7 +115,7 @@ public class Compute
     @Override
     public void employeeDeselected() {
         this.employee = null;
-        salary = null;
+        boolSalaryPaid = false;
         btnCompute.setEnabled(false);
     }
 
@@ -135,9 +135,9 @@ public class Compute
     public void yearOrMonthChanged(YearMonth yearMonth) {
 
         LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
-        salary = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary);
+        boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary) != null;
 
-        if (salary != null) {
+        if (boolSalaryPaid) {
             btnCompute.setEnabled(false);
         } else {
             btnCompute.setEnabled(true);
@@ -147,9 +147,9 @@ public class Compute
     @Override
     public void yearAndMonthNotChanged(YearMonth yearMonth) {
         LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
-        salary = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary);
+        boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary) != null;
 
-        if (salary != null) {
+        if (boolSalaryPaid) {
             btnCompute.setEnabled(false);
         } else {
             btnCompute.setEnabled(true);

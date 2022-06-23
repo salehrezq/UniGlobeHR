@@ -49,8 +49,8 @@ public class Payable
     private Color colorFieldWrong;
     private Color colorDisabled;
     private boolean boolSalaryDisplayMode, boolEditMode,
-            boolCreated, boolUpdated, boolMonthSubjectChanged;
-    private Salary salary, salaryExistenceCheck;
+            boolCreated, boolUpdated, boolMonthSubjectChanged, boolSalaryPaid;
+    private Salary salary, salaryTemp;
     private int salaryId;
     private int salaryOldId;
     private Compute compute;
@@ -108,9 +108,10 @@ public class Payable
     @Override
     public void yearOrMonthChanged(YearMonth yearMonth) {
         LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
-        salaryExistenceCheck = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employeeId, yearMonthSubjectOfSalary);
-        if (salaryExistenceCheck != null) {
-            tfPayable.setText(salaryExistenceCheck.getPayable().toPlainString());
+        salaryTemp = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employeeId, yearMonthSubjectOfSalary);
+        boolSalaryPaid = salary != null;
+        if (boolSalaryPaid) {
+            tfPayable.setText(salaryTemp.getPayable().toPlainString());
             setPaymentPanelCardState(PaymentState.PAIED.state());
         } else {
             tfPayable.setText(null);
@@ -121,9 +122,10 @@ public class Payable
     @Override
     public void yearAndMonthNotChanged(YearMonth yearMonth) {
         LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
-        salaryExistenceCheck = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employeeId, yearMonthSubjectOfSalary);
-        if (salaryExistenceCheck != null) {
-            tfPayable.setText(salaryExistenceCheck.getPayable().toPlainString());
+        salaryTemp = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employeeId, yearMonthSubjectOfSalary);
+        boolSalaryPaid = salary != null;
+        if (boolSalaryPaid) {
+            tfPayable.setText(salaryTemp.getPayable().toPlainString());
             setPaymentPanelCardState(PaymentState.PAIED.state());
         } else {
             tfPayable.setText(null);
@@ -164,9 +166,10 @@ public class Payable
     @Override
     public void employeeSelected(Employee employee) {
         employeeId = employee.getId();
-        salaryExistenceCheck = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), salaryInput.getYearMonthSubjectOfSalary());
-        if (salaryExistenceCheck != null) {
-            tfPayable.setText(salaryExistenceCheck.getPayable().toPlainString());
+        salaryTemp = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), salaryInput.getYearMonthSubjectOfSalary());
+        boolSalaryPaid = salaryTemp != null;
+        if (boolSalaryPaid) {
+            tfPayable.setText(salaryTemp.getPayable().toPlainString());
             setPaymentPanelCardState(PaymentState.PAIED.state());
         } else {
             tfPayable.setText(null);
