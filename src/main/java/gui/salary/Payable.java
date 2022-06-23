@@ -109,7 +109,7 @@ public class Payable
     public void yearOrMonthChanged(YearMonth yearMonth) {
         LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
         salaryTemp = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employeeId, yearMonthSubjectOfSalary);
-        boolSalaryPaid = salary != null;
+        boolSalaryPaid = salaryTemp != null;
         if (boolSalaryPaid) {
             tfPayable.setText(salaryTemp.getPayable().toPlainString());
             setPaymentPanelCardState(PaymentState.PAIED.state());
@@ -123,7 +123,7 @@ public class Payable
     public void yearAndMonthNotChanged(YearMonth yearMonth) {
         LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
         salaryTemp = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employeeId, yearMonthSubjectOfSalary);
-        boolSalaryPaid = salary != null;
+        boolSalaryPaid = salaryTemp != null;
         if (boolSalaryPaid) {
             tfPayable.setText(salaryTemp.getPayable().toPlainString());
             setPaymentPanelCardState(PaymentState.PAIED.state());
