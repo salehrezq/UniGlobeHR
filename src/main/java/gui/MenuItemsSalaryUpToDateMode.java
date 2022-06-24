@@ -10,7 +10,6 @@ import java.time.YearMonth;
 import java.util.ArrayList;
 import javax.swing.JMenuItem;
 import model.Employee;
-import model.Salary;
 
 /**
  *
@@ -29,9 +28,9 @@ public class MenuItemsSalaryUpToDateMode
     private static final String BULLET_DESELECTED = "⚪";
     private ArrayList<MenuItemSalaryUpToDateModeListener> menuItemSalaryUpToDateModeListeners;
     private MenuItemsSalaryUpToDateModeState modeState;
-    private Salary salary;
     private SalaryInput salaryInput;
     private Employee employee;
+    private boolean boolSalaryPaid;
 
     public MenuItemsSalaryUpToDateMode() {
         MenuItemActions menuItemActions = new MenuItemActions();
@@ -47,8 +46,9 @@ public class MenuItemsSalaryUpToDateMode
     @Override
     public void yearOrMonthChanged(YearMonth yearMonth) {
         LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
-        salary = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary);
-        if (salary != null) {
+        boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary) != null;
+
+        if (boolSalaryPaid) {
             itemActionDisableSalaryUpToSelectedDate.doClick();
             enableControls(false);
         } else {
@@ -59,8 +59,9 @@ public class MenuItemsSalaryUpToDateMode
     @Override
     public void yearAndMonthNotChanged(YearMonth yearMonth) {
         LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
-        salary = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary);
-        if (salary != null) {
+        boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary) != null;
+
+        if (boolSalaryPaid) {
             itemActionDisableSalaryUpToSelectedDate.doClick();
             enableControls(false);
         } else {
@@ -102,9 +103,9 @@ public class MenuItemsSalaryUpToDateMode
             itemActionDisableSalaryUpToSelectedDate.doClick();
         }
 
-        salary = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), salaryInput.getYearMonthSubjectOfSalary());
+        boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), salaryInput.getYearMonthSubjectOfSalary()) != null;
 
-        if (salary != null) {
+        if (boolSalaryPaid) {
             enableControls(false);
         } else {
             enableControls(true);
