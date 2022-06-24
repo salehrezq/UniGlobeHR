@@ -44,7 +44,7 @@ public class Compute
     private int monthSubjectOldValue;
     private ArrayList<PaymnetListener> paymnetListeners;
     private SalaryUpToDayInSubjectMonth salaryUpToDayInSubjectMonth;
-    private boolean boolSalaryPaid;
+    private boolean boolSalaryPaid, boolMenuItemOfSalaryUpToDateMode, boolSpinnerChecked;
 
     public Compute() {
 
@@ -121,26 +121,35 @@ public class Compute
 
     @Override
     public void modeAbility(boolean enable) {
+        boolMenuItemOfSalaryUpToDateMode = enable;
         if (employee != null) {
-            btnCompute.setEnabled(!enable);
+            if (enable) {
+                btnCompute.setEnabled(false);
+            } else if (!enable && !boolSalaryPaid) {
+                btnCompute.setEnabled(true);
+            }
         }
     }
 
     @Override
     public void spinnerChecked(boolean checked) {
+        boolSpinnerChecked = checked;
         btnCompute.setEnabled(checked);
     }
 
     @Override
     public void yearOrMonthChanged(YearMonth yearMonth) {
-
         LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
         boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary) != null;
 
         if (boolSalaryPaid) {
             btnCompute.setEnabled(false);
         } else {
-            btnCompute.setEnabled(true);
+            if (boolMenuItemOfSalaryUpToDateMode && !boolSpinnerChecked) {
+                btnCompute.setEnabled(false);
+            } else {
+                btnCompute.setEnabled(true);
+            }
         }
     }
 
@@ -152,7 +161,11 @@ public class Compute
         if (boolSalaryPaid) {
             btnCompute.setEnabled(false);
         } else {
-            btnCompute.setEnabled(true);
+            if (boolMenuItemOfSalaryUpToDateMode && !boolSpinnerChecked) {
+                btnCompute.setEnabled(false);
+            } else {
+                btnCompute.setEnabled(true);
+            }
         }
     }
 
