@@ -21,7 +21,6 @@ import javax.swing.JOptionPane;
 import model.AbsentOrLateEntity;
 import model.AttendanceDeduction;
 import model.Employee;
-import model.Salary;
 
 /**
  *
@@ -172,14 +171,11 @@ public class Compute
             yearSubjectOldValue = salaryInput.getSubjectYear();
             monthSubjectOldValue = salaryInput.getSubjectMonth();
 
-            Salary salary = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(),
-                    salaryInput.getYearMonthSubjectOfSalary());
-
-            if (salary != null) {
-                notifyPaymentCleared();
-            } else {
-                notifyPaymentPending();
-            }
+            // In different places of the code; checks made to check if salary has
+            // been paid. The check always disable the btnCompute if salary has been paid
+            // otherwise enable it; the remaining case of salary is pending, so here
+            // we notify regarding it.
+            notifyPaymentPending();
 
             if (employee == null) {
                 JOptionPane.showConfirmDialog(null,
