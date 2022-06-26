@@ -7,6 +7,7 @@ import datalink.CRUDSalary;
 import gui.EmployeeSelectedListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.time.YearMonth;
@@ -186,7 +187,7 @@ public class SalarySubmit
     }
 
     @Override
-    public void computed(YearMonth yearMonthOfCompution) {
+    public void computed(BigDecimal amount, YearMonth yearMonthOfCompution) {
         if (!boolPaymentCleared) {
             btnSubmit.setEnabled(true);
         }

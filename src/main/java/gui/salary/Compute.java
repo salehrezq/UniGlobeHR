@@ -277,7 +277,7 @@ public class Compute
             payable.setTfPayable(payableAmount.toPlainString());
             System.out.println("payableAmount " + payableAmount);
 
-            notifyComputed(YearMonth.from(salaryInput.getYearMonthSubjectOfSalary()));
+            notifyComputed(payableAmount, YearMonth.from(salaryInput.getYearMonthSubjectOfSalary()));
         }
     }
 
@@ -285,9 +285,9 @@ public class Compute
         this.computeListeners.add(cl);
     }
 
-    private void notifyComputed(YearMonth yearMonthOfCompution) {
+    private void notifyComputed(BigDecimal amount, YearMonth yearMonthOfCompution) {
         this.computeListeners.forEach((cl) -> {
-            cl.computed(yearMonthOfCompution);
+            cl.computed(amount, yearMonthOfCompution);
         });
     }
 

@@ -16,6 +16,7 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.math.BigDecimal;
 import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.Month;
@@ -312,7 +313,7 @@ public class SalaryInput
     }
 
     @Override
-    public void computed(YearMonth yearMonthOfCompution) {
+    public void computed(BigDecimal amount, YearMonth yearMonthOfCompution) {
         boolYearSubjectChanged = false;
         boolMonthSubjectChanged = false;
     }
