@@ -39,7 +39,8 @@ public class Payable
         CancelListener,
         DeleteListener,
         PaymnetListener,
-        SubjectDateChangeListener {
+        SubjectDateChangeListener,
+        ComputeListener {
 
     private JPanel container, panelCards;
     private YearMonth yearAndMonth;
@@ -131,6 +132,11 @@ public class Payable
             tfPayable.setText(null);
             setPaymentPanelCardState(PaymentState.NON_DETERMINED.state());
         }
+    }
+
+    @Override
+    public void computed(BigDecimal amount, YearMonth yearMonthSubjectOfCompution) {
+        tfPayable.setText(amount.toPlainString());
     }
 
     private enum PaymentState {

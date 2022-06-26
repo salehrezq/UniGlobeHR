@@ -81,7 +81,7 @@ public class SalaryTab {
         panelInputs.add(panelHorizontalDetailsWithInputs, c);
         payable.setSalaryInput(salaryInput);
         compute.addPaymnetListener(payable);
-        compute.setPayable(payable);
+        compute.addComputeListener(payable);
 
         salarySubmit = new SalarySubmit();
         salarySubmit.setPayable(payable);

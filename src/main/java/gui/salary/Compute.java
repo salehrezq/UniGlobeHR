@@ -37,7 +37,6 @@ public class Compute
     private JButton btnCompute;
     private Employee employee;
     private SalaryInput salaryInput;
-    private Payable payable;
     private Details details;
     private List<ComputeListener> computeListeners;
     private int yearSubjectOldValue;
@@ -64,10 +63,6 @@ public class Compute
         this.salaryInput = salaryInput;
         yearSubjectOldValue = this.salaryInput.getSubjectYear();
         monthSubjectOldValue = this.salaryInput.getSubjectMonth();
-    }
-
-    public void setPayable(Payable payable) {
-        this.payable = payable;
     }
 
     public void setDetails(Details details) {
@@ -273,10 +268,7 @@ public class Compute
                         .add(performanceGain);
                 System.out.println("Normal fresh month");
             }
-
-            payable.setTfPayable(payableAmount.toPlainString());
             System.out.println("payableAmount " + payableAmount);
-
             notifyComputed(payableAmount, YearMonth.from(salaryInput.getYearMonthSubjectOfSalary()));
         }
     }
