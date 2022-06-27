@@ -13,6 +13,7 @@ public class Attendance extends AbsentOrLateEntity {
 
     private int id;
     private boolean state;
+    private boolean locked;
 
     public int getId() {
         return id;
@@ -30,4 +31,11 @@ public class Attendance extends AbsentOrLateEntity {
         this.state = state;
     }
 
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
 }

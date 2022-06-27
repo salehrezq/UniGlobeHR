@@ -14,6 +14,7 @@ public class SalaryAdvance {
     private LocalDate yearMonthSubject;
     private LocalDate dateTaken;
     private BigDecimal amount;
+    private boolean locked;
 
     public int getId() {
         return id;
@@ -53,6 +54,14 @@ public class SalaryAdvance {
 
     public void setAmount(BigDecimal amount) {
         this.amount = amount;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 
 }

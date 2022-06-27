@@ -17,6 +17,7 @@ public class Performance {
     private int typeId;
     private BigDecimal amount;
     private Boolean state;
+    private boolean locked;
 
     public int getId() {
         return id;
@@ -82,4 +83,11 @@ public class Performance {
         this.state = state;
     }
 
+    public boolean isLocked() {
+        return locked;
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+    }
 }
