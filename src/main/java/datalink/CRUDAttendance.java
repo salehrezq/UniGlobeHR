@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.YearMonth;
+import java.time.temporal.Temporal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
@@ -143,6 +144,55 @@ public class CRUDAttendance {
             }
         }
         return eas;
+    }
+
+    private static boolean updateRowLock(int employeeId, YearMonth ym, boolean lock) {
+        int update = 0;
+
+        try {
+            LocalDate firstOfThisMonth = ym.atDay(1);
+            LocalDate firstOfNextMonth = ym.plusMonths(1).atDay(1);
+            // UPDATE `attendance` SET `state`= ? WHERE
+            String sql = "UPDATE `attendance` SET `locked` = ? "
+                    + "WHERE `employee_id` = ? AND `date` >= ? AND `date` < ?";
+            conn = Connect.getConnection();
+            PreparedStatement p = conn.prepareStatement(sql);
+
+            System.out.println(lock);
+            p.setBoolean(1, lock);
+            p.setInt(2, employeeId);
+            p.setObject(3, firstOfThisMonth);
+            p.setObject(4, firstOfNextMonth);
+            System.out.println(p);
+            update = p.executeUpdate();
+            if (update > 0) {
+                conn.commit();
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDAttendance.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            Connect.cleanUp();
+        }
+        return update > 0;
+    }
+
+    public static void lockRowsOf(int employeeId, Temporal ym) {
+        updateRowLock(employeeId, getYearMonth(ym), true);
+    }
+
+    public static void unlockRowsOf(int employeeId, Temporal ym) {
+        updateRowLock(employeeId, getYearMonth(ym), false);
+    }
+
+    private static YearMonth getYearMonth(Temporal date) {
+        YearMonth yearMonth = null;
+        if (date instanceof YearMonth) {
+            yearMonth = (YearMonth) date;
+        } else if (date instanceof LocalDate) {
+            LocalDate ld = (LocalDate) date;
+            yearMonth = YearMonth.of(ld.getYear(), ld.getMonth());
+        }
+        return yearMonth;
     }
 
     /**
