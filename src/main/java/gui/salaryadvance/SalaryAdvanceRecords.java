@@ -76,7 +76,7 @@ public class SalaryAdvanceRecords
 
         panelTable = new JPanel();
 
-        model = new DefaultTableModel(new String[]{"Date taken", "Amount", "SalaryAdvance Id"}, 0) {
+        model = new DefaultTableModel(new String[]{"Date given", "Amount", "SalaryAdvance Id"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 // Disable cells editing.
@@ -206,7 +206,7 @@ public class SalaryAdvanceRecords
 
         SalaryAdvance salaryAdvance = CRUDSalaryAdvance.getById(salaryAdvanceId);
 
-        table.getModel().setValueAt(salaryAdvance.getDateTaken(), oldSelectedModelRow, 0);
+        table.getModel().setValueAt(salaryAdvance.getDateGiven(), oldSelectedModelRow, 0);
         table.getModel().setValueAt(salaryAdvance.getAmount(), oldSelectedModelRow, 1);
         table.getModel().setValueAt(salaryAdvanceId, oldSelectedModelRow, 2);
     }
@@ -241,7 +241,7 @@ public class SalaryAdvanceRecords
         int size = salaryaAvanceRecords.size();
         for (int i = 0; i < size; i++) {
             SalaryAdvance salaryAdvance = salaryaAvanceRecords.get(i);
-            modelRow[0] = salaryAdvance.getDateTaken();
+            modelRow[0] = salaryAdvance.getDateGiven();
             modelRow[1] = salaryAdvance.getAmount();
             modelRow[2] = salaryAdvance.getId();
             model.addRow(modelRow);

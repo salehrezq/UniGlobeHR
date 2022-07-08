@@ -27,14 +27,14 @@ public class CRUDSalaryAdvance {
 
         try {
             String sql = "INSERT INTO salary_advances ("
-                    + "`employee_id`, `subject_year_month`, `date_taken`, `amount`)"
+                    + "`employee_id`, `subject_year_month`, `date_given`, `amount`)"
                     + " VALUES (?, ?, ?, ?)";
             conn = Connect.getConnection();
             PreparedStatement p = conn.prepareStatement(sql);
 
             p.setInt(1, salaryAdvance.getEmployeeId());
             p.setObject(2, salaryAdvance.getYearMonthSubject());
-            p.setObject(3, salaryAdvance.getDateTaken());
+            p.setObject(3, salaryAdvance.getDateGiven());
             p.setBigDecimal(4, salaryAdvance.getAmount());
             insert = p.executeUpdate();
             conn.commit();
@@ -62,7 +62,7 @@ public class CRUDSalaryAdvance {
                 salaryAdvance.setId(id);
                 salaryAdvance.setEmployeeId(result.getInt("employee_id"));
                 salaryAdvance.setYearMonthSubject(result.getObject("subject_year_month", LocalDate.class));
-                salaryAdvance.setDateTaken(result.getObject("date_taken", LocalDate.class));
+                salaryAdvance.setDateGiven(result.getObject("date_given", LocalDate.class));
                 salaryAdvance.setAmount(result.getBigDecimal("amount"));
             }
         } catch (SQLException ex) {
@@ -83,7 +83,7 @@ public class CRUDSalaryAdvance {
 
             String sql = "SELECT * FROM `salary_advances`"
                     + " WHERE `employee_id` = ? AND `subject_year_month` >= ? AND `subject_year_month` < ?"
-                    + " ORDER BY `date_taken` ASC";
+                    + " ORDER BY `date_given` ASC";
 
             conn = Connect.getConnection();
             PreparedStatement p = conn.prepareStatement(sql);
@@ -100,7 +100,7 @@ public class CRUDSalaryAdvance {
                 salaryAdvance.setId(result.getInt("id"));
                 salaryAdvance.setEmployeeId(result.getInt("employee_id"));
                 salaryAdvance.setYearMonthSubject(result.getObject("subject_year_month", LocalDate.class));
-                salaryAdvance.setDateTaken(result.getObject("date_taken", LocalDate.class));
+                salaryAdvance.setDateGiven(result.getObject("date_given", LocalDate.class));
                 salaryAdvance.setAmount(result.getBigDecimal("amount"));
                 salaryAdvancesList.add(salaryAdvance);
             }
@@ -153,14 +153,14 @@ public class CRUDSalaryAdvance {
             String sql = "UPDATE `salary_advances` "
                     + "SET "
                     + "`subject_year_month`= ?, "
-                    + "`date_taken` = ?, "
+                    + "`date_given` = ?, "
                     + "`amount` = ? "
                     + "WHERE `id` = ?";
             conn = Connect.getConnection();
             PreparedStatement p = conn.prepareStatement(sql);
 
             p.setObject(1, salaryAdvance.getYearMonthSubject());
-            p.setObject(2, salaryAdvance.getDateTaken());
+            p.setObject(2, salaryAdvance.getDateGiven());
             p.setBigDecimal(3, salaryAdvance.getAmount());
             p.setInt(4, salaryAdvance.getId());
 

@@ -59,7 +59,7 @@ public class SalaryAdvanceInput
     private JFormattedTextField tfYearSubject;
     private JComboBox monthsList;
     private final String[] monthsNums;
-    private DatePicker dateAdvanceTaken;
+    private DatePicker dateAdvanceGiven;
     private JLabel lbAmount;
     private JTextField tfAmount;
     private Color colorFieldRight;
@@ -108,13 +108,13 @@ public class SalaryAdvanceInput
         panelDateOfTake = new JPanel();
         panelDateOfTake.setBorder(borderPaymentDate);
 
-        dateAdvanceTaken = new DatePicker();
-        dateAdvanceTaken.setTodayAsDefault();
+        dateAdvanceGiven = new DatePicker();
+        dateAdvanceGiven.setTodayAsDefault();
         boolDateFilled = true;
         DateListenerImpli dateListenerImpli = new DateListenerImpli();
-        dateAdvanceTaken.addDateListener(dateListenerImpli);
-        dateAdvanceTaken.addDateDeselectedListener(dateListenerImpli);
-        panelDateOfTake.add(dateAdvanceTaken.getDatePicker());
+        dateAdvanceGiven.addDateListener(dateListenerImpli);
+        dateAdvanceGiven.addDateDeselectedListener(dateListenerImpli);
+        panelDateOfTake.add(dateAdvanceGiven.getDatePicker());
         panelMetaInputs.add(panelDateOfTake);
 
         ItemChangeListener comboBoxListener = new ItemChangeListener();
@@ -173,8 +173,8 @@ public class SalaryAdvanceInput
         return tfYearSubject.getText();
     }
 
-    public LocalDate getDateAdvanceTaken() {
-        return dateAdvanceTaken.getDate();
+    public LocalDate getDateAdvanceGiven() {
+        return dateAdvanceGiven.getDate();
     }
 
     public BigDecimal getAmount() {
@@ -192,7 +192,7 @@ public class SalaryAdvanceInput
     protected void clearInputFields() {
         tfYearSubject.setText(String.valueOf(yearAndMonth.getYear()));
         monthsList.setSelectedIndex(yearAndMonth.getMonthValue() - 1);
-        dateAdvanceTaken.setTodayAsDefault();
+        dateAdvanceGiven.setTodayAsDefault();
         tfAmount.setText(null);
         boolTfAmountFilled = false;
     }
@@ -200,7 +200,7 @@ public class SalaryAdvanceInput
     private void setFieldsEditable(boolean editable) {
         tfYearSubject.setEditable(editable);
         monthsList.setEnabled(editable);
-        dateAdvanceTaken.setEnabled(editable);
+        dateAdvanceGiven.setEnabled(editable);
         tfAmount.setEditable(editable);
         tfAmount.setForeground(editable ? null : colorDisabled);
     }
@@ -272,7 +272,7 @@ public class SalaryAdvanceInput
 
         tfYearSubject.setText(year.toString());
         monthsList.setSelectedIndex(month.getValue() - 1);
-        dateAdvanceTaken.setDateValue(salaryAdvance.getDateTaken());
+        dateAdvanceGiven.setDateValue(salaryAdvance.getDateGiven());
         tfAmount.setText(String.valueOf(salaryAdvance.getAmount()));
 
         // Store id for future comparsions,

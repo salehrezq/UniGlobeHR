@@ -240,7 +240,7 @@ public class SalaryAdvanceSubmit
                 SalaryAdvance salaryAdvance = new SalaryAdvance();
                 salaryAdvance.setEmployeeId(employee.getId());
                 salaryAdvance.setYearMonthSubject(getYearMonthSubjectOfAdvance());
-                salaryAdvance.setDateTaken(salaryAdvanceInput.getDateAdvanceTaken());
+                salaryAdvance.setDateGiven(salaryAdvanceInput.getDateAdvanceGiven());
                 salaryAdvance.setAmount(salaryAdvanceInput.getAmount());
 
                 if (boolEditMode) {

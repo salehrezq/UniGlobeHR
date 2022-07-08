@@ -12,7 +12,7 @@ public class SalaryAdvance {
     private int id;
     private int employeeId;
     private LocalDate yearMonthSubject;
-    private LocalDate dateTaken;
+    private LocalDate dateGiven;
     private BigDecimal amount;
     private boolean locked;
 
@@ -40,12 +40,12 @@ public class SalaryAdvance {
         this.yearMonthSubject = yearMonthSubject;
     }
 
-    public LocalDate getDateTaken() {
-        return dateTaken;
+    public LocalDate getDateGiven() {
+        return dateGiven;
     }
 
-    public void setDateTaken(LocalDate dateTaken) {
-        this.dateTaken = dateTaken;
+    public void setDateGiven(LocalDate dateGiven) {
+        this.dateGiven = dateGiven;
     }
 
     public BigDecimal getAmount() {

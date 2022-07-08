@@ -76,7 +76,7 @@ public class SalaryRecords
 
         panelTable = new JPanel();
 
-        model = new DefaultTableModel(new String[]{"Date taken", "Amount", "SalaryAdvance Id"}, 0) {
+        model = new DefaultTableModel(new String[]{"Date given", "Amount", "SalaryAdvance Id"}, 0) {
             @Override
             public boolean isCellEditable(int row, int column) {
                 // Disable cells editing.
