@@ -58,7 +58,7 @@ public class Payable
     private URL urlTickMark;
     private ImageIcon imageIconTickMark;
     private SalaryInput salaryInput;
-    private int employeeId;
+    private Employee employee;
 
     public Payable() {
 
@@ -108,29 +108,33 @@ public class Payable
 
     @Override
     public void yearOrMonthChanged(YearMonth yearMonth) {
-        LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
-        salaryTemp = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employeeId, yearMonthSubjectOfSalary);
-        boolSalaryPaid = salaryTemp != null;
-        if (boolSalaryPaid) {
-            tfPayable.setText(salaryTemp.getPayable().toPlainString());
-            setPaymentPanelCardState(PaymentState.PAIED.state());
-        } else {
-            tfPayable.setText(null);
-            setPaymentPanelCardState(PaymentState.NON_DETERMINED.state());
+        if (employee != null) {
+            LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
+            salaryTemp = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary);
+            boolSalaryPaid = salaryTemp != null;
+            if (boolSalaryPaid) {
+                tfPayable.setText(salaryTemp.getPayable().toPlainString());
+                setPaymentPanelCardState(PaymentState.PAIED.state());
+            } else {
+                tfPayable.setText(null);
+                setPaymentPanelCardState(PaymentState.NON_DETERMINED.state());
+            }
         }
     }
 
     @Override
     public void yearAndMonthNotChanged(YearMonth yearMonth) {
-        LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
-        salaryTemp = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employeeId, yearMonthSubjectOfSalary);
-        boolSalaryPaid = salaryTemp != null;
-        if (boolSalaryPaid) {
-            tfPayable.setText(salaryTemp.getPayable().toPlainString());
-            setPaymentPanelCardState(PaymentState.PAIED.state());
-        } else {
-            tfPayable.setText(null);
-            setPaymentPanelCardState(PaymentState.NON_DETERMINED.state());
+        if (employee != null) {
+            LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
+            salaryTemp = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary);
+            boolSalaryPaid = salaryTemp != null;
+            if (boolSalaryPaid) {
+                tfPayable.setText(salaryTemp.getPayable().toPlainString());
+                setPaymentPanelCardState(PaymentState.PAIED.state());
+            } else {
+                tfPayable.setText(null);
+                setPaymentPanelCardState(PaymentState.NON_DETERMINED.state());
+            }
         }
     }
 
@@ -171,7 +175,7 @@ public class Payable
 
     @Override
     public void employeeSelected(Employee employee) {
-        employeeId = employee.getId();
+        this.employee = employee;
         salaryTemp = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), salaryInput.getYearMonthSubjectOfSalary());
         boolSalaryPaid = salaryTemp != null;
         if (boolSalaryPaid) {
@@ -191,7 +195,7 @@ public class Payable
 
     @Override
     public void employeeDeselected() {
-        employeeId = 0;
+        employee = null;
         setFieldsEditable(false);
         tfPayable.setText(null);
         setPaymentPanelCardState(PaymentState.NON_DETERMINED.state());

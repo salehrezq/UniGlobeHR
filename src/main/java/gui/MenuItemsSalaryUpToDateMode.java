@@ -45,27 +45,31 @@ public class MenuItemsSalaryUpToDateMode
 
     @Override
     public void yearOrMonthChanged(YearMonth yearMonth) {
-        LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
-        boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary) != null;
+        if (employee != null) {
+            LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
+            boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary) != null;
 
-        if (boolSalaryPaid) {
-            itemActionDisableSalaryUpToSelectedDate.doClick();
-            enableControls(false);
-        } else {
-            enableControls(true);
+            if (boolSalaryPaid) {
+                itemActionDisableSalaryUpToSelectedDate.doClick();
+                enableControls(false);
+            } else {
+                enableControls(true);
+            }
         }
     }
 
     @Override
     public void yearAndMonthNotChanged(YearMonth yearMonth) {
-        LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
-        boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary) != null;
+        if (employee != null) {
+            LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
+            boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary) != null;
 
-        if (boolSalaryPaid) {
-            itemActionDisableSalaryUpToSelectedDate.doClick();
-            enableControls(false);
-        } else {
-            enableControls(true);
+            if (boolSalaryPaid) {
+                itemActionDisableSalaryUpToSelectedDate.doClick();
+                enableControls(false);
+            } else {
+                enableControls(true);
+            }
         }
     }
 

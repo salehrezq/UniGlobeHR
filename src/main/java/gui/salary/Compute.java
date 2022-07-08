@@ -133,32 +133,36 @@ public class Compute
 
     @Override
     public void yearOrMonthChanged(YearMonth yearMonth) {
-        LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
-        boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary) != null;
+        if (employee != null) {
+            LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
+            boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary) != null;
 
-        if (boolSalaryPaid) {
-            btnCompute.setEnabled(false);
-        } else {
-            if (boolMenuItemOfSalaryUpToDateMode && !boolSpinnerChecked) {
+            if (boolSalaryPaid) {
                 btnCompute.setEnabled(false);
             } else {
-                btnCompute.setEnabled(true);
+                if (boolMenuItemOfSalaryUpToDateMode && !boolSpinnerChecked) {
+                    btnCompute.setEnabled(false);
+                } else {
+                    btnCompute.setEnabled(true);
+                }
             }
         }
     }
 
     @Override
     public void yearAndMonthNotChanged(YearMonth yearMonth) {
-        LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
-        boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary) != null;
+        if (employee != null) {
+            LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
+            boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary) != null;
 
-        if (boolSalaryPaid) {
-            btnCompute.setEnabled(false);
-        } else {
-            if (boolMenuItemOfSalaryUpToDateMode && !boolSpinnerChecked) {
+            if (boolSalaryPaid) {
                 btnCompute.setEnabled(false);
             } else {
-                btnCompute.setEnabled(true);
+                if (boolMenuItemOfSalaryUpToDateMode && !boolSpinnerChecked) {
+                    btnCompute.setEnabled(false);
+                } else {
+                    btnCompute.setEnabled(true);
+                }
             }
         }
     }
