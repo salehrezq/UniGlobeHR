@@ -258,6 +258,12 @@ public class SalarySubmit
         this.employee = null;
     }
 
+    private static void showMessage(String message, boolean state) {
+        JOptionPane.showConfirmDialog(null,
+                message, state ? "Success" : "Error",
+                JOptionPane.DEFAULT_OPTION, state ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE);
+    }
+
     class SubmitSalary implements ActionListener {
 
         @Override
@@ -285,56 +291,55 @@ public class SalarySubmit
             // So you have to check the size first, or depending on context needs.
             boolean areAllInputsFilled = validateWithMessages.booleans.stream().allMatch(Boolean::booleanValue);
 
-            if (areAllInputsFilled) {
-
-                Salary salary = new Salary();
-                salary.setEmployeeId(employee.getId());
-                salary.setAgreedSalary(employee.getSalary());
-                salary.setYearMonthSubject(getYearMonthSubjectOfSalary());
-                salary.setDateGiven(salaryInput.getDateSalaryGiven());
-                salary.setPayable(payable.getPayable());
-
-                if (boolEditMode) {
-                    salary.setId(salaryId);
-                }
-                // Create|Update
-                boolean submitted = operation.post(salary);
-
-                if (submitted) {
-                    notifyCreated();
-
-                    String informMessage = null;
-
-                    if (getOperation() instanceof CreateOperation) {
-                        notifyCreated();
-                        informMessage = "Salary created successfully.";
-                    } else if (getOperation() instanceof UpdateOperation) {
-                        boolEditMode = false;
-
-                        btnSubmit.setEnabled(false);
-                        informMessage = "Salary updated successfully.";
-
-                        // Compare the salary subject date between old and updated record
-                        if (salary.getYearMonthSubject()
-                                .isEqual(salaryBeforeUpdate.getYearMonthSubject())) {
-                            notifyUpdated();
-                        } else {
-                            // If subject_year_month has been changed (different value) then the
-                            // record should not appear against the same requested subject_year_month
-                            // attributes, because they are no longer relevant after the change
-                            notifyUpdatedICRP();
-                        }
-                    }
-                    JOptionPane.showConfirmDialog(null,
-                            informMessage,
-                            "Info", JOptionPane.PLAIN_MESSAGE);
-                }
-            } else {
+            if (!areAllInputsFilled) {
                 JOptionPane.showConfirmDialog(null,
                         prepareInputsFailMessage(validateWithMessages.messages), "Incorrect inputs or empty fields",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+                return;
             }
+
+            Salary salary = new Salary();
+            salary.setEmployeeId(employee.getId());
+            salary.setAgreedSalary(employee.getSalary());
+            salary.setYearMonthSubject(getYearMonthSubjectOfSalary());
+            salary.setDateGiven(salaryInput.getDateSalaryGiven());
+            salary.setPayable(payable.getPayable());
+
+            if (boolEditMode) {
+                salary.setId(salaryId);
+            }
+            // Create|Update
+            boolean submitted = operation.post(salary);
+
+            String informMessage = "No operation!";
+            if (getOperation() instanceof CreateOperation) {
+                if (submitted) {
+                    notifyCreated();
+                    informMessage = "Salary created successfully.";
+                } else {
+                    informMessage = "Issue regarding Salary create.";
+                }
+            } else if (getOperation() instanceof UpdateOperation) {
+                if (submitted) {
+                    boolEditMode = false;
+                    btnSubmit.setEnabled(false);
+                    informMessage = "Salary updated successfully.";
+
+                    // Compare the salary subject date between old and updated record
+                    if (salary.getYearMonthSubject()
+                            .isEqual(salaryBeforeUpdate.getYearMonthSubject())) {
+                        notifyUpdated();
+                    } else {
+                        // If subject_year_month has been changed (different value) then the
+                        // record should not appear against the same requested subject_year_month
+                        // attributes, because they are no longer relevant after the change
+                        notifyUpdatedICRP();
+                    }
+                } else {
+                    informMessage = "Issue regarding Salary update.";
+                }
+            }
+            showMessage(informMessage, submitted);
         }
     }
-
 }
