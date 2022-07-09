@@ -59,6 +59,16 @@ public class Connect {
         return conn;
     }
 
+    public static void rollBack() {
+        if (conn != null) {
+            try {
+                conn.rollback();
+            } catch (SQLException ex) {
+                Logger.getLogger(Connect.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
     public static void cleanUp() {
         if (conn != null) {
             try {

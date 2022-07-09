@@ -7,6 +7,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import java.util.List;
@@ -194,6 +195,33 @@ public class CRUDPerformance {
             Connect.cleanUp();
         }
         return update > 0;
+    }
+
+    /**
+     * To update the {@code locked } attribute of the relation to {@code true}
+     * when salary is paid. This method uses the passed connection to execute
+     * update on it to benefit from atomic commit for data consistency sake.
+     *
+     * @param conn
+     * @param employeeId
+     * @param yearMonthSubject
+     * @throws SQLException
+     */
+    protected static void lockRelatedPerformance(Connection conn, int employeeId, LocalDate yearMonthSubject) throws SQLException {
+        String sqlLockPerformance = "UPDATE `performance` SET `locked` = true "
+                + "WHERE `employee_id` = ? AND `date_time` >= ? AND `date_time` < ?";
+
+        LocalDate fotm = H.getYearMonth(yearMonthSubject).atDay(1);
+        LocalDate fonm = H.getYearMonth(yearMonthSubject).plusMonths(1).atDay(1);
+
+        LocalDateTime firstOfThisMonth = LocalDateTime.of(fotm, LocalTime.of(0, 0, 0));
+        LocalDateTime firstOfNextMonth = LocalDateTime.of(fonm, LocalTime.of(0, 0, 0));
+
+        PreparedStatement lockPerformance = conn.prepareStatement(sqlLockPerformance);
+        lockPerformance.setInt(1, employeeId);
+        lockPerformance.setObject(2, firstOfThisMonth);
+        lockPerformance.setObject(3, firstOfNextMonth);
+        lockPerformance.executeUpdate();
     }
 
     public static boolean delete(Integer id) {

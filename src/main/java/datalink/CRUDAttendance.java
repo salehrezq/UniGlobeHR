@@ -146,6 +146,30 @@ public class CRUDAttendance {
         return eas;
     }
 
+    /**
+     * To update the {@code locked } attribute of the relation to {@code true}
+     * when salary is paid. This method uses the passed connection to execute
+     * update on it to benefit from atomic commit for data consistency sake.
+     *
+     * @param conn
+     * @param employeeId
+     * @param yearMonthSubject
+     * @throws SQLException
+     */
+    protected static void lockRelatedAttendance(Connection conn, int employeeId, LocalDate yearMonthSubject) throws SQLException {
+        String sqlLockAttendance = "UPDATE `attendance` SET `locked` = true "
+                + "WHERE `employee_id` = ? AND `date` >= ? AND `date` < ?";
+
+        LocalDate firstOfThisMonth = H.getYearMonth(yearMonthSubject).atDay(1);
+        LocalDate firstOfNextMonth = H.getYearMonth(yearMonthSubject).plusMonths(1).atDay(1);
+
+        PreparedStatement lockAttendance = conn.prepareStatement(sqlLockAttendance);
+        lockAttendance.setInt(1, employeeId);
+        lockAttendance.setObject(2, firstOfThisMonth);
+        lockAttendance.setObject(3, firstOfNextMonth);
+        lockAttendance.executeUpdate();
+    }
+
     private static boolean updateRowLock(int employeeId, YearMonth ym, boolean lock) {
         int update = 0;
 

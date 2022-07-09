@@ -175,6 +175,30 @@ public class CRUDSalaryAdvance {
         return update > 0;
     }
 
+    /**
+     * To update the {@code locked } attribute of the relation to {@code true}
+     * when salary is paid. This method uses the passed connection to execute
+     * update on it to benefit from atomic commit for data consistency sake.
+     *
+     * @param conn
+     * @param employeeId
+     * @param yearMonthSubject
+     * @throws SQLException
+     */
+    protected static void lockRelatedSalaryAdvance(Connection conn, int employeeId, LocalDate yearMonthSubject) throws SQLException {
+        String sqlLockSalaryAdvance = "UPDATE `salary_advances` SET `locked` = true "
+                + "WHERE `employee_id` = ? AND `subject_year_month` >= ? AND `subject_year_month` < ?";
+
+        LocalDate firstOfThisMonth = H.getYearMonth(yearMonthSubject).atDay(1);
+        LocalDate firstOfNextMonth = H.getYearMonth(yearMonthSubject).plusMonths(1).atDay(1);
+
+        PreparedStatement lockSalaryAdvance = conn.prepareStatement(sqlLockSalaryAdvance);
+        lockSalaryAdvance.setInt(1, employeeId);
+        lockSalaryAdvance.setObject(2, firstOfThisMonth);
+        lockSalaryAdvance.setObject(3, firstOfNextMonth);
+        lockSalaryAdvance.executeUpdate();
+    }
+
     public static boolean delete(Integer id) {
 
         int delete = 0;

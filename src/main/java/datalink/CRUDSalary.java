@@ -22,23 +22,31 @@ public class CRUDSalary {
         int insert = 0;
 
         try {
-            String sql = "INSERT INTO salaries ("
+            String sqlCreateSalary = "INSERT INTO salaries ("
                     + "`employee_id`, `subject_year_month`, `date_given`,`agreed_salary` ,`payable`)"
                     + " VALUES (?, ?, ?, ?, ?)";
-            conn = Connect.getConnection();
-            PreparedStatement p = conn.prepareStatement(sql);
 
-            p.setInt(1, salary.getEmployeeId());
-            p.setObject(2, salary.getYearMonthSubject());
-            p.setObject(3, salary.getDateGiven());
-            p.setBigDecimal(4, salary.getAgreedSalary());
-            p.setBigDecimal(5, salary.getPayable());
-            insert = p.executeUpdate();
+            conn = Connect.getConnection();
+            PreparedStatement createSalary = conn.prepareStatement(sqlCreateSalary);
+
+            createSalary.setInt(1, salary.getEmployeeId());
+            createSalary.setObject(2, salary.getYearMonthSubject());
+            createSalary.setObject(3, salary.getDateGiven());
+            createSalary.setBigDecimal(4, salary.getAgreedSalary());
+            createSalary.setBigDecimal(5, salary.getPayable());
+            insert = createSalary.executeUpdate();
+
+            CRUDAttendance.lockRelatedAttendance(conn, salary.getEmployeeId(), salary.getYearMonthSubject());
+            CRUDPerformance.lockRelatedPerformance(conn, salary.getEmployeeId(), salary.getYearMonthSubject());
+            CRUDSalaryAdvance.lockRelatedSalaryAdvance(conn, salary.getEmployeeId(), salary.getYearMonthSubject());
+
             conn.commit();
 
         } catch (SQLException ex) {
             Logger.getLogger(CRUDSalary.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
         } finally {
+            Connect.rollBack();
             Connect.cleanUp();
         }
         return insert > 0;
