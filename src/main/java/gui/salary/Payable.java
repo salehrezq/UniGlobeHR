@@ -139,7 +139,7 @@ public class Payable
     }
 
     @Override
-    public void computed(BigDecimal amount, YearMonth yearMonthSubjectOfCompution) {
+    public void computed(BigDecimal amount) {
         tfPayable.setText(amount.toPlainString());
     }
 

@@ -1,7 +1,6 @@
 package gui.salary;
 
 import java.math.BigDecimal;
-import java.time.YearMonth;
 
 /**
  *
@@ -9,5 +8,5 @@ import java.time.YearMonth;
  */
 public interface ComputeListener {
 
-    public void computed(BigDecimal amount, YearMonth yearMonthSubjectOfCompution);
+    public void computed(BigDecimal amount);
 }

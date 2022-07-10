@@ -313,7 +313,7 @@ public class SalaryInput
     }
 
     @Override
-    public void computed(BigDecimal amount, YearMonth yearMonthOfCompution) {
+    public void computed(BigDecimal amount) {
         boolYearSubjectChanged = false;
         boolMonthSubjectChanged = false;
     }

@@ -47,7 +47,6 @@ public class SalarySubmit
     private boolean boolSalaryDisplayMode, boolEditMode, boolPaymentCleared;
     private Integer salaryId;
     private Salary salaryBeforeUpdate;
-    private YearMonth yearMonthOfCompution;
 
     public SalarySubmit() {
 
@@ -187,11 +186,10 @@ public class SalarySubmit
     }
 
     @Override
-    public void computed(BigDecimal amount, YearMonth yearMonthOfCompution) {
+    public void computed(BigDecimal amount) {
         if (!boolPaymentCleared) {
             btnSubmit.setEnabled(true);
         }
-        this.yearMonthOfCompution = yearMonthOfCompution;
     }
 
     @Override
@@ -201,9 +199,7 @@ public class SalarySubmit
 
     @Override
     public void yearAndMonthNotChanged(YearMonth yearMonth) {
-        if (yearMonth.equals(this.yearMonthOfCompution)) {
-            btnSubmit.setEnabled(true);
-        }
+        btnSubmit.setEnabled(false);
     }
 
     @Override

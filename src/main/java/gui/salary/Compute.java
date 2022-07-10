@@ -269,7 +269,7 @@ public class Compute
                 System.out.println("Normal fresh month");
             }
             System.out.println("payableAmount " + payableAmount);
-            notifyComputed(payableAmount, YearMonth.from(salaryInput.getYearMonthSubjectOfSalary()));
+            notifyComputed(payableAmount);
         }
     }
 
@@ -277,9 +277,9 @@ public class Compute
         this.computeListeners.add(cl);
     }
 
-    private void notifyComputed(BigDecimal amount, YearMonth yearMonthOfCompution) {
+    private void notifyComputed(BigDecimal amount) {
         this.computeListeners.forEach((cl) -> {
-            cl.computed(amount, yearMonthOfCompution);
+            cl.computed(amount);
         });
     }
 
