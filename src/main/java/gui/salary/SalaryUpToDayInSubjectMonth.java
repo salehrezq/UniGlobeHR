@@ -107,6 +107,7 @@ public class SalaryUpToDayInSubjectMonth
     public void modeAbility(boolean enable) {
         enableControls(enable);
         if (!enable) {
+            mode = Mode.END_OF_MONTH;
             cbSalaryUpToDayInSubjectMonth.setSelected(false);
         }
     }
