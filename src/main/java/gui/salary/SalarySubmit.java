@@ -5,6 +5,7 @@ import crud.UpdateICRPListener;
 import crud.UpdateListener;
 import datalink.CRUDSalary;
 import gui.EmployeeSelectedListener;
+import gui.MenuItemSalaryUpToDateModeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
@@ -33,7 +34,9 @@ public class SalarySubmit
         RowDeselectedListener,
         ComputeListener,
         SubjectDateChangeListener,
-        PaymnetListener {
+        PaymnetListener,
+        MenuItemSalaryUpToDateModeListener,
+        SalaryUpToDateSpinnerCheckedListener {
 
     private Operation operation;
     private JButton btnSubmit;
@@ -212,6 +215,16 @@ public class SalarySubmit
     public void pending() {
         boolPaymentCleared = false;
         btnSubmit.setEnabled(true);
+    }
+
+    @Override
+    public void modeAbility(boolean enable) {
+        btnSubmit.setEnabled(false);
+    }
+
+    @Override
+    public void spinnerChecked(boolean checked) {
+        btnSubmit.setEnabled(false);
     }
 
     private class ValidateWithMessages {
