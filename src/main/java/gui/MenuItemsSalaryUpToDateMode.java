@@ -46,7 +46,7 @@ public class MenuItemsSalaryUpToDateMode
             boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary) != null;
 
             if (boolSalaryPaid) {
-                setSelected(false);
+                setModeSelected(false);
                 enableCheckBox(false);
             } else {
                 enableCheckBox(true);
@@ -61,7 +61,7 @@ public class MenuItemsSalaryUpToDateMode
             boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary) != null;
 
             if (boolSalaryPaid) {
-                setSelected(false);
+                setModeSelected(false);
                 enableCheckBox(false);
             } else {
                 enableCheckBox(true);
@@ -87,7 +87,7 @@ public class MenuItemsSalaryUpToDateMode
         checkBoxMenuItemSwitchSalaryUpToDateMode.setEnabled(enable);
     }
 
-    private void setSelected(boolean selected) {
+    protected void setModeSelected(boolean selected) {
         checkBoxMenuItemSwitchSalaryUpToDateMode.setSelected(selected);
         notifyModeAbility(selected);
     }
@@ -96,7 +96,7 @@ public class MenuItemsSalaryUpToDateMode
     public void employeeSelected(Employee employee) {
         this.employee = employee;
         if (modeState == MenuItemsSalaryUpToDateModeState.ENABLED) {
-            setSelected(false);
+            setModeSelected(false);
         }
 
         boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), salaryInput.getYearMonthSubjectOfSalary()) != null;
@@ -111,7 +111,7 @@ public class MenuItemsSalaryUpToDateMode
     @Override
     public void employeeDeselected() {
         this.employee = null;
-        setSelected(false);
+        setModeSelected(false);
         enableCheckBox(false);
     }
 
