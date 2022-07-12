@@ -56,8 +56,7 @@ public class Menu {
         menuFile.add(itemInsertEmployee);
         menuView.add(itemMetalLookAndFeel);
         menuView.add(itemSystemLookAndFeel);
-        menuAction.add(menuItemsSalaryUpToDateMode.getItemActionEnableSalaryUpToSelectedDate());
-        menuAction.add(menuItemsSalaryUpToDateMode.getItemActionDisableSalaryUpToSelectedDate());
+        menuAction.add(menuItemsSalaryUpToDateMode.getCheckBoxMenuItemEnableDisableSalaryUpToSelectedDate());
         itemInsertEmployee.addActionListener(menuItemActions);
         itemMetalLookAndFeel.addActionListener(menuItemActions);
         itemSystemLookAndFeel.addActionListener(menuItemActions);
