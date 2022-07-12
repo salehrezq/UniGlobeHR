@@ -10,8 +10,12 @@ import gui.performance.PerformanceTab;
 import gui.salary.SalaryTab;
 import gui.salaryadvance.SalaryAdvanceTab;
 import java.awt.GridLayout;
+import java.util.ArrayList;
+import java.util.List;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 /**
  *
@@ -24,10 +28,12 @@ public class Controls extends JPanel {
     private PerformanceTab performanceTab;
     private SalaryAdvanceTab salaryAdvanceTab;
     private SalaryTab salaryTab;
+    private List<TabsChangeListener> tabsChangeListeners;
 
     public Controls() {
         super();
         this.setLayout(new GridLayout(1, 0));
+        tabsChangeListeners = new ArrayList<>();
 
         tabs = new JTabbedPane();
 
@@ -42,6 +48,8 @@ public class Controls extends JPanel {
 
         salaryTab = new SalaryTab();
         tabs.add(salaryTab.getSalaryTab(), "Salary");
+
+        tabs.addChangeListener(new TabsChangeHandler());
 
         this.add(tabs);
     }
@@ -60,5 +68,26 @@ public class Controls extends JPanel {
 
     public SalaryTab getSalaryTab() {
         return salaryTab;
+    }
+
+    public void addTabsChangeListener(TabsChangeListener tcl) {
+        this.tabsChangeListeners.add(tcl);
+    }
+
+    private void notifyTabSelected(int tab) {
+        this.tabsChangeListeners.forEach((tcl) -> {
+            tcl.tabSelected(tab);
+        });
+    }
+
+    private class TabsChangeHandler implements ChangeListener {
+
+        @Override
+        public void stateChanged(ChangeEvent e) {
+            if (e.getSource() instanceof JTabbedPane) {
+                JTabbedPane pane = (JTabbedPane) e.getSource();
+                notifyTabSelected(pane.getSelectedIndex());
+            }
+        }
     }
 }

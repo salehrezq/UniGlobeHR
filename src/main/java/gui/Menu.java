@@ -21,12 +21,12 @@ import mainpackage.MainRun;
  *
  * @author Saleh
  */
-public class Menu {
+public class Menu implements TabsChangeListener {
 
     private JMenuBar menubar;
     private JMenu menuFile;
     private JMenu menuView;
-    private JMenu menuAction;
+    private JMenu menuSalaryActions;
     private JMenuItem itemInsertEmployee,
             itemMetalLookAndFeel,
             itemSystemLookAndFeel;
@@ -49,20 +49,21 @@ public class Menu {
         menubar = new JMenuBar();
         menuFile = new JMenu("File");
         menuView = new JMenu("View");
-        menuAction = new JMenu("Action");
+        menuSalaryActions = new JMenu("Action");
+        menuSalaryActions.setEnabled(false);
         itemInsertEmployee = new JMenuItem("New Employee");
         itemMetalLookAndFeel = new JMenuItem("Java theme");
         itemSystemLookAndFeel = new JMenuItem("System theme");
         menuFile.add(itemInsertEmployee);
         menuView.add(itemMetalLookAndFeel);
         menuView.add(itemSystemLookAndFeel);
-        menuAction.add(menuItemsSalaryUpToDateMode.getCheckBoxMenuItemEnableDisableSalaryUpToSelectedDate());
+        menuSalaryActions.add(menuItemsSalaryUpToDateMode.getCheckBoxMenuItemEnableDisableSalaryUpToSelectedDate());
         itemInsertEmployee.addActionListener(menuItemActions);
         itemMetalLookAndFeel.addActionListener(menuItemActions);
         itemSystemLookAndFeel.addActionListener(menuItemActions);
         menubar.add(menuFile);
         menubar.add(menuView);
-        menubar.add(menuAction);
+        menubar.add(menuSalaryActions);
     }
 
     public JMenuBar getMenuBar() {
@@ -75,6 +76,19 @@ public class Menu {
 
     public MenuItemsSalaryUpToDateMode getMenuItemsSalaryUpToDateMode() {
         return menuItemsSalaryUpToDateMode;
+    }
+
+    @Override
+    public void tabSelected(int tab) {
+        // Salary tab
+        if (tab == 3) {
+            // menu actions item related to salary
+            menuSalaryActions.setEnabled(true);
+        } else {
+            // menu actions item related to salary
+            menuSalaryActions.setEnabled(false);
+            menuItemsSalaryUpToDateMode.setModeSelected(false);
+        }
     }
 
     private class MenuItemActions implements ActionListener {

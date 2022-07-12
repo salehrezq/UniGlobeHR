@@ -81,7 +81,12 @@ public class Stage extends JPanel {
         treeEmployees.addEmployeeSelectedListener(employeeSelectedListener);
     }
 
+    public void addTabsChangeListener(TabsChangeListener tcl) {
+        controls.addTabsChangeListener(tcl);
+    }
+
     public SalaryTab getSalaryTab() {
         return controls.getSalaryTab();
     }
+
 }
