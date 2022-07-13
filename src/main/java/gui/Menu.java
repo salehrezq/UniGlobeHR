@@ -49,7 +49,7 @@ public class Menu implements TabsChangeListener {
         menubar = new JMenuBar();
         menuFile = new JMenu("File");
         menuView = new JMenu("View");
-        menuSalaryActions = new JMenu("Action");
+        menuSalaryActions = new JMenu("Salary");
         menuSalaryActions.setEnabled(false);
         itemInsertEmployee = new JMenuItem("New Employee");
         itemMetalLookAndFeel = new JMenuItem("Java theme");
