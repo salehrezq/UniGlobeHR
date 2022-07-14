@@ -31,6 +31,7 @@ public class Menu implements TabsChangeListener {
             itemMetalLookAndFeel,
             itemSystemLookAndFeel;
     private MenuItemsSalaryUpToDateMode menuItemsSalaryUpToDateMode;
+    private MenuItemsSalaryDeleteMode menuItemsSalaryDeleteMode;
     private NewEmployeeDialog newEmployeeDialog;
     private Preferences prefs;
     private LookAndFeelLisener lookAndFeelLisener;
@@ -39,6 +40,7 @@ public class Menu implements TabsChangeListener {
     public Menu() {
         super();
         menuItemsSalaryUpToDateMode = new MenuItemsSalaryUpToDateMode();
+        menuItemsSalaryDeleteMode = new MenuItemsSalaryDeleteMode();
     }
 
     public void createMenuBar() {
@@ -58,6 +60,7 @@ public class Menu implements TabsChangeListener {
         menuView.add(itemMetalLookAndFeel);
         menuView.add(itemSystemLookAndFeel);
         menuSalaryActions.add(menuItemsSalaryUpToDateMode.getCheckBoxMenuItemEnableDisableSalaryUpToSelectedDate());
+        menuSalaryActions.add(menuItemsSalaryDeleteMode.getCheckBoxMenuItemSwitchSalaryDeleteMode());
         itemInsertEmployee.addActionListener(menuItemActions);
         itemMetalLookAndFeel.addActionListener(menuItemActions);
         itemSystemLookAndFeel.addActionListener(menuItemActions);
