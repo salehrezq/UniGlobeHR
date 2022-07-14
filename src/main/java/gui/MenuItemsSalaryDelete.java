@@ -15,27 +15,27 @@ import model.Employee;
  *
  * @author Saleh
  */
-public class MenuItemsSalaryDeleteMode
+public class MenuItemsSalaryDelete
         implements
         EmployeeSelectedListener,
         SubjectDateChangeListener {
 
-    private JCheckBoxMenuItem checkBoxMenuItemSwitchSalaryDeleteMode;
-    private ArrayList<MenuItemSalaryDeleteModeListener> menuItemSalaryDeleteModeListeners;
-    private MenuItemsSalaryDeleteModeState modeState;
+    private JCheckBoxMenuItem checkBoxMenuItemSwitchSalaryDelete;
+    private ArrayList<MenuItemSalaryDeleteListener> menuItemSalaryDeleteListeners;
+    private MenuItemsSalaryDeleteState OptionState;
     private SalaryInput salaryInput;
     private Employee employee;
     private boolean boolSalaryPaid;
 
-    public MenuItemsSalaryDeleteMode() {
-        checkBoxMenuItemSwitchSalaryDeleteMode = new JCheckBoxMenuItem("Enable salary Delete mode");
-        checkBoxMenuItemSwitchSalaryDeleteMode.addItemListener(new MenuItemActionHandler());
-        menuItemSalaryDeleteModeListeners = new ArrayList<>();
-        modeState = MenuItemsSalaryDeleteModeState.DISABLED;
+    public MenuItemsSalaryDelete() {
+        checkBoxMenuItemSwitchSalaryDelete = new JCheckBoxMenuItem("Enable salary Delete");
+        checkBoxMenuItemSwitchSalaryDelete.addItemListener(new MenuItemActionHandler());
+        menuItemSalaryDeleteListeners = new ArrayList<>();
+        OptionState = MenuItemsSalaryDeleteState.DISABLED;
         enableCheckBox(false);
     }
 
-    private enum MenuItemsSalaryDeleteModeState {
+    private enum MenuItemsSalaryDeleteState {
         ENABLED, DISABLED
     };
 
@@ -46,7 +46,7 @@ public class MenuItemsSalaryDeleteMode
             boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary) != null;
 
             if (boolSalaryPaid) {
-                setModeSelected(false);
+                setOptionSelected(false);
                 enableCheckBox(false);
             } else {
                 enableCheckBox(true);
@@ -61,7 +61,7 @@ public class MenuItemsSalaryDeleteMode
             boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary) != null;
 
             if (boolSalaryPaid) {
-                setModeSelected(false);
+                setOptionSelected(false);
                 enableCheckBox(false);
             } else {
                 enableCheckBox(true);
@@ -69,34 +69,34 @@ public class MenuItemsSalaryDeleteMode
         }
     }
 
-    protected JCheckBoxMenuItem getCheckBoxMenuItemSwitchSalaryDeleteMode() {
-        return checkBoxMenuItemSwitchSalaryDeleteMode;
+    protected JCheckBoxMenuItem getCheckBoxMenuItemSwitchSalaryDelete() {
+        return checkBoxMenuItemSwitchSalaryDelete;
     }
 
-    public void addMenuItemSalaryDeleteModeListener(MenuItemSalaryDeleteModeListener misdml) {
-        this.menuItemSalaryDeleteModeListeners.add(misdml);
+    public void addMenuItemSalaryDeleteModeListener(MenuItemSalaryDeleteListener misdml) {
+        this.menuItemSalaryDeleteListeners.add(misdml);
     }
 
-    private void notifyModeAbility(boolean enabled) {
-        this.menuItemSalaryDeleteModeListeners.forEach((misdml) -> {
-            misdml.modeAbility(enabled);
+    private void notifyOptionAbility(boolean enabled) {
+        this.menuItemSalaryDeleteListeners.forEach((misdml) -> {
+            misdml.optionAbility(enabled);
         });
     }
 
     private void enableCheckBox(boolean enable) {
-        checkBoxMenuItemSwitchSalaryDeleteMode.setEnabled(enable);
+        checkBoxMenuItemSwitchSalaryDelete.setEnabled(enable);
     }
 
-    protected void setModeSelected(boolean selected) {
-        checkBoxMenuItemSwitchSalaryDeleteMode.setSelected(selected);
-        notifyModeAbility(selected);
+    protected void setOptionSelected(boolean selected) {
+        checkBoxMenuItemSwitchSalaryDelete.setSelected(selected);
+        notifyOptionAbility(selected);
     }
 
     @Override
     public void employeeSelected(Employee employee) {
         this.employee = employee;
-        if (modeState == MenuItemsSalaryDeleteModeState.ENABLED) {
-            setModeSelected(false);
+        if (OptionState == MenuItemsSalaryDeleteState.ENABLED) {
+            setOptionSelected(false);
         }
 
         boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), salaryInput.getYearMonthSubjectOfSalary()) != null;
@@ -111,7 +111,7 @@ public class MenuItemsSalaryDeleteMode
     @Override
     public void employeeDeselected() {
         this.employee = null;
-        setModeSelected(false);
+        setOptionSelected(false);
         enableCheckBox(false);
     }
 
@@ -123,13 +123,13 @@ public class MenuItemsSalaryDeleteMode
 
         @Override
         public void itemStateChanged(ItemEvent e) {
-            boolean isSelected = checkBoxMenuItemSwitchSalaryDeleteMode.isSelected();
+            boolean isSelected = checkBoxMenuItemSwitchSalaryDelete.isSelected();
             if (isSelected) {
-                modeState = MenuItemsSalaryDeleteModeState.ENABLED;
-                notifyModeAbility(true);
+                OptionState = MenuItemsSalaryDeleteState.ENABLED;
+                notifyOptionAbility(true);
             } else if (!isSelected) {
-                modeState = MenuItemsSalaryDeleteModeState.DISABLED;
-                notifyModeAbility(false);
+                OptionState = MenuItemsSalaryDeleteState.DISABLED;
+                notifyOptionAbility(false);
             }
         }
     }
