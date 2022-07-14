@@ -47,13 +47,13 @@ public class MainRun implements LookAndFeelLisener {
         menu.createMenuBar();
         menu.setLookAndFeelListener(this);
         stage.addTabsChangeListener(menu);
-        MenuItemsSalaryUpToDate itemSalaryUpToDateMode = menu.getMenuItemsSalaryUpToDateMode();
-        itemSalaryUpToDateMode.setSalaryInput(stage.getSalaryTab().getSalaryInput());
-        itemSalaryUpToDateMode.addMenuItemSalaryUpToDateListener(stage.getSalaryTab().getSalaryUpToDayInSubjectMonth());
-        itemSalaryUpToDateMode.addMenuItemSalaryUpToDateListener(stage.getSalaryTab().getCompute());
-        itemSalaryUpToDateMode.addMenuItemSalaryUpToDateListener(stage.getSalaryTab().getSalarySubmit());
-        stage.addEmployeeSelectedListener(itemSalaryUpToDateMode);
-        stage.getSalaryTab().getSalaryInput().addSubjectDateChangeListener(itemSalaryUpToDateMode);
+        MenuItemsSalaryUpToDate menuItemSalaryUpToDate = menu.getMenuItemsSalaryUpToDate();
+        menuItemSalaryUpToDate.setSalaryInput(stage.getSalaryTab().getSalaryInput());
+        menuItemSalaryUpToDate.addMenuItemSalaryUpToDateListener(stage.getSalaryTab().getSalaryUpToDayInSubjectMonth());
+        menuItemSalaryUpToDate.addMenuItemSalaryUpToDateListener(stage.getSalaryTab().getCompute());
+        menuItemSalaryUpToDate.addMenuItemSalaryUpToDateListener(stage.getSalaryTab().getSalarySubmit());
+        stage.addEmployeeSelectedListener(menuItemSalaryUpToDate);
+        stage.getSalaryTab().getSalaryInput().addSubjectDateChangeListener(menuItemSalaryUpToDate);
 
 //        menu.
         //Create and set up the window.
