@@ -15,27 +15,27 @@ import model.Employee;
  *
  * @author Saleh
  */
-public class MenuItemsSalaryUpToDateMode
+public class MenuItemsSalaryUpToDate
         implements
         EmployeeSelectedListener,
         SubjectDateChangeListener {
 
-    private JCheckBoxMenuItem checkBoxMenuItemSwitchSalaryUpToDateMode;
-    private ArrayList<MenuItemSalaryUpToDateModeListener> menuItemSalaryUpToDateModeListeners;
-    private MenuItemsSalaryUpToDateModeState modeState;
+    private JCheckBoxMenuItem checkBoxMenuItemSwitchSalaryUpToDate;
+    private ArrayList<MenuItemSalaryUpToDateListener> menuItemSalaryUpToDateListeners;
+    private MenuItemsSalaryUpToDateState optionState;
     private SalaryInput salaryInput;
     private Employee employee;
     private boolean boolSalaryPaid;
 
-    public MenuItemsSalaryUpToDateMode() {
-        checkBoxMenuItemSwitchSalaryUpToDateMode = new JCheckBoxMenuItem("Enable salary up to date mode");
-        checkBoxMenuItemSwitchSalaryUpToDateMode.addItemListener(new MenuItemActionHandler());
-        menuItemSalaryUpToDateModeListeners = new ArrayList<>();
-        modeState = MenuItemsSalaryUpToDateModeState.DISABLED;
+    public MenuItemsSalaryUpToDate() {
+        checkBoxMenuItemSwitchSalaryUpToDate = new JCheckBoxMenuItem("Enable salary up to date option");
+        checkBoxMenuItemSwitchSalaryUpToDate.addItemListener(new MenuItemActionHandler());
+        menuItemSalaryUpToDateListeners = new ArrayList<>();
+        optionState = MenuItemsSalaryUpToDateState.DISABLED;
         enableCheckBox(false);
     }
 
-    private enum MenuItemsSalaryUpToDateModeState {
+    private enum MenuItemsSalaryUpToDateState {
         ENABLED, DISABLED
     };
 
@@ -46,7 +46,7 @@ public class MenuItemsSalaryUpToDateMode
             boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary) != null;
 
             if (boolSalaryPaid) {
-                setModeSelected(false);
+                setOptionSelected(false);
                 enableCheckBox(false);
             } else {
                 enableCheckBox(true);
@@ -61,7 +61,7 @@ public class MenuItemsSalaryUpToDateMode
             boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary) != null;
 
             if (boolSalaryPaid) {
-                setModeSelected(false);
+                setOptionSelected(false);
                 enableCheckBox(false);
             } else {
                 enableCheckBox(true);
@@ -70,33 +70,33 @@ public class MenuItemsSalaryUpToDateMode
     }
 
     protected JCheckBoxMenuItem getCheckBoxMenuItemEnableDisableSalaryUpToSelectedDate() {
-        return checkBoxMenuItemSwitchSalaryUpToDateMode;
+        return checkBoxMenuItemSwitchSalaryUpToDate;
     }
 
-    public void addMenuItemSalaryUpToDateModeListener(MenuItemSalaryUpToDateModeListener misutdml) {
-        this.menuItemSalaryUpToDateModeListeners.add(misutdml);
+    public void addMenuItemSalaryUpToDateListener(MenuItemSalaryUpToDateListener misutdml) {
+        this.menuItemSalaryUpToDateListeners.add(misutdml);
     }
 
-    private void notifyModeAbility(boolean enabled) {
-        this.menuItemSalaryUpToDateModeListeners.forEach((misutdml) -> {
-            misutdml.modeAbility(enabled);
+    private void notifyOptionAbility(boolean enabled) {
+        this.menuItemSalaryUpToDateListeners.forEach((misutdml) -> {
+            misutdml.optionAbility(enabled);
         });
     }
 
     private void enableCheckBox(boolean enable) {
-        checkBoxMenuItemSwitchSalaryUpToDateMode.setEnabled(enable);
+        checkBoxMenuItemSwitchSalaryUpToDate.setEnabled(enable);
     }
 
-    protected void setModeSelected(boolean selected) {
-        checkBoxMenuItemSwitchSalaryUpToDateMode.setSelected(selected);
-        notifyModeAbility(selected);
+    protected void setOptionSelected(boolean selected) {
+        checkBoxMenuItemSwitchSalaryUpToDate.setSelected(selected);
+        notifyOptionAbility(selected);
     }
 
     @Override
     public void employeeSelected(Employee employee) {
         this.employee = employee;
-        if (modeState == MenuItemsSalaryUpToDateModeState.ENABLED) {
-            setModeSelected(false);
+        if (optionState == MenuItemsSalaryUpToDateState.ENABLED) {
+            setOptionSelected(false);
         }
 
         boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), salaryInput.getYearMonthSubjectOfSalary()) != null;
@@ -111,7 +111,7 @@ public class MenuItemsSalaryUpToDateMode
     @Override
     public void employeeDeselected() {
         this.employee = null;
-        setModeSelected(false);
+        setOptionSelected(false);
         enableCheckBox(false);
     }
 
@@ -123,13 +123,13 @@ public class MenuItemsSalaryUpToDateMode
 
         @Override
         public void itemStateChanged(ItemEvent e) {
-            boolean isSelected = checkBoxMenuItemSwitchSalaryUpToDateMode.isSelected();
+            boolean isSelected = checkBoxMenuItemSwitchSalaryUpToDate.isSelected();
             if (isSelected) {
-                modeState = MenuItemsSalaryUpToDateModeState.ENABLED;
-                notifyModeAbility(true);
+                optionState = MenuItemsSalaryUpToDateState.ENABLED;
+                notifyOptionAbility(true);
             } else if (!isSelected) {
-                modeState = MenuItemsSalaryUpToDateModeState.DISABLED;
-                notifyModeAbility(false);
+                optionState = MenuItemsSalaryUpToDateState.DISABLED;
+                notifyOptionAbility(false);
             }
         }
     }

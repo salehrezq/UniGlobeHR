@@ -30,7 +30,7 @@ public class Menu implements TabsChangeListener {
     private JMenuItem itemInsertEmployee,
             itemMetalLookAndFeel,
             itemSystemLookAndFeel;
-    private MenuItemsSalaryUpToDateMode menuItemsSalaryUpToDateMode;
+    private MenuItemsSalaryUpToDate menuItemsSalaryUpToDateMode;
     private MenuItemsSalaryDeleteMode menuItemsSalaryDeleteMode;
     private NewEmployeeDialog newEmployeeDialog;
     private Preferences prefs;
@@ -39,7 +39,7 @@ public class Menu implements TabsChangeListener {
 
     public Menu() {
         super();
-        menuItemsSalaryUpToDateMode = new MenuItemsSalaryUpToDateMode();
+        menuItemsSalaryUpToDateMode = new MenuItemsSalaryUpToDate();
         menuItemsSalaryDeleteMode = new MenuItemsSalaryDeleteMode();
     }
 
@@ -77,7 +77,7 @@ public class Menu implements TabsChangeListener {
         this.lookAndFeelLisener = lookAndFeelLisener;
     }
 
-    public MenuItemsSalaryUpToDateMode getMenuItemsSalaryUpToDateMode() {
+    public MenuItemsSalaryUpToDate getMenuItemsSalaryUpToDateMode() {
         return menuItemsSalaryUpToDateMode;
     }
 
@@ -90,7 +90,7 @@ public class Menu implements TabsChangeListener {
         } else {
             // menu actions item related to salary
             menuSalaryActions.setEnabled(false);
-            menuItemsSalaryUpToDateMode.setModeSelected(false);
+            menuItemsSalaryUpToDateMode.setOptionSelected(false);
         }
     }
 

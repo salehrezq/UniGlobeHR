@@ -5,7 +5,6 @@ import datalink.CRUDPerformance;
 import datalink.CRUDSalary;
 import datalink.CRUDSalaryAdvance;
 import gui.EmployeeSelectedListener;
-import gui.MenuItemSalaryUpToDateModeListener;
 import gui.attendance.AttendanceDeductionsCalculator;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -21,6 +20,7 @@ import javax.swing.JOptionPane;
 import model.AbsentOrLateEntity;
 import model.AttendanceDeduction;
 import model.Employee;
+import gui.MenuItemSalaryUpToDateListener;
 
 /**
  *
@@ -29,7 +29,7 @@ import model.Employee;
 public class Compute
         implements
         EmployeeSelectedListener,
-        MenuItemSalaryUpToDateModeListener,
+        MenuItemSalaryUpToDateListener,
         SalaryUpToDateSpinnerCheckedListener,
         SubjectDateChangeListener {
 
@@ -114,7 +114,7 @@ public class Compute
     }
 
     @Override
-    public void modeAbility(boolean enable) {
+    public void optionAbility(boolean enable) {
         boolMenuItemOfSalaryUpToDateMode = enable;
         if (employee != null) {
             if (enable) {

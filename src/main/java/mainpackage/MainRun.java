@@ -7,7 +7,7 @@ package mainpackage;
 
 import gui.LookAndFeelLisener;
 import gui.Menu;
-import gui.MenuItemsSalaryUpToDateMode;
+import gui.MenuItemsSalaryUpToDate;
 import gui.Stage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,11 +47,11 @@ public class MainRun implements LookAndFeelLisener {
         menu.createMenuBar();
         menu.setLookAndFeelListener(this);
         stage.addTabsChangeListener(menu);
-        MenuItemsSalaryUpToDateMode itemSalaryUpToDateMode = menu.getMenuItemsSalaryUpToDateMode();
+        MenuItemsSalaryUpToDate itemSalaryUpToDateMode = menu.getMenuItemsSalaryUpToDateMode();
         itemSalaryUpToDateMode.setSalaryInput(stage.getSalaryTab().getSalaryInput());
-        itemSalaryUpToDateMode.addMenuItemSalaryUpToDateModeListener(stage.getSalaryTab().getSalaryUpToDayInSubjectMonth());
-        itemSalaryUpToDateMode.addMenuItemSalaryUpToDateModeListener(stage.getSalaryTab().getCompute());
-        itemSalaryUpToDateMode.addMenuItemSalaryUpToDateModeListener(stage.getSalaryTab().getSalarySubmit());
+        itemSalaryUpToDateMode.addMenuItemSalaryUpToDateListener(stage.getSalaryTab().getSalaryUpToDayInSubjectMonth());
+        itemSalaryUpToDateMode.addMenuItemSalaryUpToDateListener(stage.getSalaryTab().getCompute());
+        itemSalaryUpToDateMode.addMenuItemSalaryUpToDateListener(stage.getSalaryTab().getSalarySubmit());
         stage.addEmployeeSelectedListener(itemSalaryUpToDateMode);
         stage.getSalaryTab().getSalaryInput().addSubjectDateChangeListener(itemSalaryUpToDateMode);
 

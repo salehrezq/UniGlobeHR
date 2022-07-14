@@ -5,7 +5,6 @@ import crud.UpdateICRPListener;
 import crud.UpdateListener;
 import datalink.CRUDSalary;
 import gui.EmployeeSelectedListener;
-import gui.MenuItemSalaryUpToDateModeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
@@ -18,6 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import model.Employee;
 import model.Salary;
+import gui.MenuItemSalaryUpToDateListener;
 
 /**
  *
@@ -35,7 +35,7 @@ public class SalarySubmit
         ComputeListener,
         SubjectDateChangeListener,
         PaymnetListener,
-        MenuItemSalaryUpToDateModeListener,
+        MenuItemSalaryUpToDateListener,
         SalaryUpToDateSpinnerCheckedListener {
 
     private Operation operation;
@@ -218,7 +218,7 @@ public class SalarySubmit
     }
 
     @Override
-    public void modeAbility(boolean enable) {
+    public void optionAbility(boolean enable) {
         btnSubmit.setEnabled(false);
     }
 

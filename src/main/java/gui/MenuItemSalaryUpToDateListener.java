@@ -4,7 +4,7 @@ package gui;
  *
  * @author Saleh
  */
-public interface MenuItemSalaryUpToDateModeListener {
+public interface MenuItemSalaryUpToDateListener {
 
-    public void modeAbility(boolean enable);
+    public void optionAbility(boolean enable);
 }

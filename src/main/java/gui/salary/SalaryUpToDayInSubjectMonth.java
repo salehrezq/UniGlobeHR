@@ -1,7 +1,6 @@
 package gui.salary;
 
 import gui.EmployeeSelectedListener;
-import gui.MenuItemSalaryUpToDateModeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
@@ -16,6 +15,7 @@ import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import model.Employee;
+import gui.MenuItemSalaryUpToDateListener;
 
 /**
  *
@@ -24,7 +24,7 @@ import model.Employee;
 public class SalaryUpToDayInSubjectMonth
         implements
         SubjectDateChangeListener,
-        MenuItemSalaryUpToDateModeListener,
+        MenuItemSalaryUpToDateListener,
         EmployeeSelectedListener {
 
     private JPanel container;
@@ -104,7 +104,7 @@ public class SalaryUpToDayInSubjectMonth
     }
 
     @Override
-    public void modeAbility(boolean enable) {
+    public void optionAbility(boolean enable) {
         enableControls(enable);
         if (!enable) {
             mode = Mode.END_OF_MONTH;
