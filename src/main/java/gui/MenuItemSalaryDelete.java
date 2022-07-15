@@ -74,13 +74,13 @@ public class MenuItemSalaryDelete
         return checkBoxMenuItemSwitchSalaryDelete;
     }
 
-    public void addMenuItemSalaryDeleteModeListener(MenuItemSalaryDeleteListener misdml) {
-        this.menuItemSalaryDeleteListeners.add(misdml);
+    public void addMenuItemSalaryDeleteListener(MenuItemSalaryDeleteListener misdl) {
+        this.menuItemSalaryDeleteListeners.add(misdl);
     }
 
     private void notifyOptionAbility(boolean enabled) {
-        this.menuItemSalaryDeleteListeners.forEach((misdml) -> {
-            misdml.optionAbility(enabled);
+        this.menuItemSalaryDeleteListeners.forEach((misdl) -> {
+            misdl.optionAbility(enabled);
         });
     }
 
