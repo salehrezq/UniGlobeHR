@@ -81,6 +81,10 @@ public class Menu implements TabsChangeListener {
         return menuItemsSalaryUpToDate;
     }
 
+    public MenuItemsSalaryDelete getMenuItemsSalaryDelete() {
+        return menuItemsSalaryDelete;
+    }
+
     @Override
     public void tabSelected(int tab) {
         // Salary tab
