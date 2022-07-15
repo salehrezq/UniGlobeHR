@@ -46,10 +46,11 @@ public class MenuItemsSalaryDelete
             boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary) != null;
 
             if (boolSalaryPaid) {
+                enableCheckBox(true);
+            } else {
                 setOptionSelected(false);
                 enableCheckBox(false);
-            } else {
-                enableCheckBox(true);
+
             }
         }
     }
@@ -61,10 +62,10 @@ public class MenuItemsSalaryDelete
             boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary) != null;
 
             if (boolSalaryPaid) {
+                enableCheckBox(true);
+            } else {
                 setOptionSelected(false);
                 enableCheckBox(false);
-            } else {
-                enableCheckBox(true);
             }
         }
     }
@@ -102,9 +103,9 @@ public class MenuItemsSalaryDelete
         boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), salaryInput.getYearMonthSubjectOfSalary()) != null;
 
         if (boolSalaryPaid) {
-            enableCheckBox(false);
-        } else {
             enableCheckBox(true);
+        } else {
+            enableCheckBox(false);
         }
     }
 
