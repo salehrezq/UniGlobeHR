@@ -7,8 +7,8 @@ package mainpackage;
 
 import gui.LookAndFeelLisener;
 import gui.Menu;
-import gui.MenuItemsSalaryDelete;
-import gui.MenuItemsSalaryUpToDate;
+import gui.MenuItemSalaryDelete;
+import gui.MenuItemSalaryUpToDate;
 import gui.Stage;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -48,14 +48,14 @@ public class MainRun implements LookAndFeelLisener {
         menu.createMenuBar();
         menu.setLookAndFeelListener(this);
         stage.addTabsChangeListener(menu);
-        MenuItemsSalaryUpToDate menuItemSalaryUpToDate = menu.getMenuItemsSalaryUpToDate();
+        MenuItemSalaryUpToDate menuItemSalaryUpToDate = menu.getMenuItemSalaryUpToDate();
         menuItemSalaryUpToDate.setSalaryInput(stage.getSalaryTab().getSalaryInput());
         menuItemSalaryUpToDate.addMenuItemSalaryUpToDateListener(stage.getSalaryTab().getSalaryUpToDayInSubjectMonth());
         menuItemSalaryUpToDate.addMenuItemSalaryUpToDateListener(stage.getSalaryTab().getCompute());
         menuItemSalaryUpToDate.addMenuItemSalaryUpToDateListener(stage.getSalaryTab().getSalarySubmit());
         stage.addEmployeeSelectedListener(menuItemSalaryUpToDate);
         stage.getSalaryTab().getSalaryInput().addSubjectDateChangeListener(menuItemSalaryUpToDate);
-        MenuItemsSalaryDelete menuItemsSalaryDelete = menu.getMenuItemsSalaryDelete();
+        MenuItemSalaryDelete menuItemsSalaryDelete = menu.getMenuItemSalaryDelete();
         menuItemsSalaryDelete.setSalaryInput(stage.getSalaryTab().getSalaryInput());
         stage.addEmployeeSelectedListener(menuItemsSalaryDelete);
         stage.getSalaryTab().getSalaryInput().addSubjectDateChangeListener(menuItemsSalaryDelete);

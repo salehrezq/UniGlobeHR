@@ -15,27 +15,27 @@ import model.Employee;
  *
  * @author Saleh
  */
-public class MenuItemsSalaryUpToDate
+public class MenuItemSalaryUpToDate
         implements
         EmployeeSelectedListener,
         SubjectDateChangeListener {
 
     private JCheckBoxMenuItem checkBoxMenuItemSwitchSalaryUpToDate;
     private ArrayList<MenuItemSalaryUpToDateListener> menuItemSalaryUpToDateListeners;
-    private MenuItemsSalaryUpToDateState optionState;
+    private MenuItemSalaryUpToDateState optionState;
     private SalaryInput salaryInput;
     private Employee employee;
     private boolean boolSalaryPaid;
 
-    public MenuItemsSalaryUpToDate() {
+    public MenuItemSalaryUpToDate() {
         checkBoxMenuItemSwitchSalaryUpToDate = new JCheckBoxMenuItem("Enable salary up to date option");
         checkBoxMenuItemSwitchSalaryUpToDate.addItemListener(new MenuItemActionHandler());
         menuItemSalaryUpToDateListeners = new ArrayList<>();
-        optionState = MenuItemsSalaryUpToDateState.DISABLED;
+        optionState = MenuItemSalaryUpToDateState.DISABLED;
         enableCheckBox(false);
     }
 
-    private enum MenuItemsSalaryUpToDateState {
+    private enum MenuItemSalaryUpToDateState {
         ENABLED, DISABLED
     };
 
@@ -95,7 +95,7 @@ public class MenuItemsSalaryUpToDate
     @Override
     public void employeeSelected(Employee employee) {
         this.employee = employee;
-        if (optionState == MenuItemsSalaryUpToDateState.ENABLED) {
+        if (optionState == MenuItemSalaryUpToDateState.ENABLED) {
             setOptionSelected(false);
         }
 
@@ -125,10 +125,10 @@ public class MenuItemsSalaryUpToDate
         public void itemStateChanged(ItemEvent e) {
             boolean isSelected = checkBoxMenuItemSwitchSalaryUpToDate.isSelected();
             if (isSelected) {
-                optionState = MenuItemsSalaryUpToDateState.ENABLED;
+                optionState = MenuItemSalaryUpToDateState.ENABLED;
                 notifyOptionAbility(true);
             } else if (!isSelected) {
-                optionState = MenuItemsSalaryUpToDateState.DISABLED;
+                optionState = MenuItemSalaryUpToDateState.DISABLED;
                 notifyOptionAbility(false);
             }
         }

@@ -30,8 +30,8 @@ public class Menu implements TabsChangeListener {
     private JMenuItem itemInsertEmployee,
             itemMetalLookAndFeel,
             itemSystemLookAndFeel;
-    private MenuItemsSalaryUpToDate menuItemsSalaryUpToDate;
-    private MenuItemsSalaryDelete menuItemsSalaryDelete;
+    private MenuItemSalaryUpToDate menuItemSalaryUpToDate;
+    private MenuItemSalaryDelete menuItemSalaryDelete;
     private NewEmployeeDialog newEmployeeDialog;
     private Preferences prefs;
     private LookAndFeelLisener lookAndFeelLisener;
@@ -39,8 +39,8 @@ public class Menu implements TabsChangeListener {
 
     public Menu() {
         super();
-        menuItemsSalaryUpToDate = new MenuItemsSalaryUpToDate();
-        menuItemsSalaryDelete = new MenuItemsSalaryDelete();
+        menuItemSalaryUpToDate = new MenuItemSalaryUpToDate();
+        menuItemSalaryDelete = new MenuItemSalaryDelete();
     }
 
     public void createMenuBar() {
@@ -59,8 +59,8 @@ public class Menu implements TabsChangeListener {
         menuFile.add(itemInsertEmployee);
         menuView.add(itemMetalLookAndFeel);
         menuView.add(itemSystemLookAndFeel);
-        menuSalaryActions.add(menuItemsSalaryUpToDate.getCheckBoxMenuItemEnableDisableSalaryUpToSelectedDate());
-        menuSalaryActions.add(menuItemsSalaryDelete.getCheckBoxMenuItemSwitchSalaryDelete());
+        menuSalaryActions.add(menuItemSalaryUpToDate.getCheckBoxMenuItemEnableDisableSalaryUpToSelectedDate());
+        menuSalaryActions.add(menuItemSalaryDelete.getCheckBoxMenuItemSwitchSalaryDelete());
         itemInsertEmployee.addActionListener(menuItemActions);
         itemMetalLookAndFeel.addActionListener(menuItemActions);
         itemSystemLookAndFeel.addActionListener(menuItemActions);
@@ -77,12 +77,12 @@ public class Menu implements TabsChangeListener {
         this.lookAndFeelLisener = lookAndFeelLisener;
     }
 
-    public MenuItemsSalaryUpToDate getMenuItemsSalaryUpToDate() {
-        return menuItemsSalaryUpToDate;
+    public MenuItemSalaryUpToDate getMenuItemSalaryUpToDate() {
+        return menuItemSalaryUpToDate;
     }
 
-    public MenuItemsSalaryDelete getMenuItemsSalaryDelete() {
-        return menuItemsSalaryDelete;
+    public MenuItemSalaryDelete getMenuItemSalaryDelete() {
+        return menuItemSalaryDelete;
     }
 
     @Override
@@ -94,7 +94,7 @@ public class Menu implements TabsChangeListener {
         } else {
             // menu actions item related to salary
             menuSalaryActions.setEnabled(false);
-            menuItemsSalaryUpToDate.setOptionSelected(false);
+            menuItemSalaryUpToDate.setOptionSelected(false);
         }
     }
 

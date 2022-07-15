@@ -15,27 +15,27 @@ import model.Employee;
  *
  * @author Saleh
  */
-public class MenuItemsSalaryDelete
+public class MenuItemSalaryDelete
         implements
         EmployeeSelectedListener,
         SubjectDateChangeListener {
 
     private JCheckBoxMenuItem checkBoxMenuItemSwitchSalaryDelete;
     private ArrayList<MenuItemSalaryDeleteListener> menuItemSalaryDeleteListeners;
-    private MenuItemsSalaryDeleteState OptionState;
+    private MenuItemSalaryDeleteState OptionState;
     private SalaryInput salaryInput;
     private Employee employee;
     private boolean boolSalaryPaid;
 
-    public MenuItemsSalaryDelete() {
+    public MenuItemSalaryDelete() {
         checkBoxMenuItemSwitchSalaryDelete = new JCheckBoxMenuItem("Enable salary Delete");
         checkBoxMenuItemSwitchSalaryDelete.addItemListener(new MenuItemActionHandler());
         menuItemSalaryDeleteListeners = new ArrayList<>();
-        OptionState = MenuItemsSalaryDeleteState.DISABLED;
+        OptionState = MenuItemSalaryDeleteState.DISABLED;
         enableCheckBox(false);
     }
 
-    private enum MenuItemsSalaryDeleteState {
+    private enum MenuItemSalaryDeleteState {
         ENABLED, DISABLED
     };
 
@@ -96,7 +96,7 @@ public class MenuItemsSalaryDelete
     @Override
     public void employeeSelected(Employee employee) {
         this.employee = employee;
-        if (OptionState == MenuItemsSalaryDeleteState.ENABLED) {
+        if (OptionState == MenuItemSalaryDeleteState.ENABLED) {
             setOptionSelected(false);
         }
 
@@ -126,10 +126,10 @@ public class MenuItemsSalaryDelete
         public void itemStateChanged(ItemEvent e) {
             boolean isSelected = checkBoxMenuItemSwitchSalaryDelete.isSelected();
             if (isSelected) {
-                OptionState = MenuItemsSalaryDeleteState.ENABLED;
+                OptionState = MenuItemSalaryDeleteState.ENABLED;
                 notifyOptionAbility(true);
             } else if (!isSelected) {
-                OptionState = MenuItemsSalaryDeleteState.DISABLED;
+                OptionState = MenuItemSalaryDeleteState.DISABLED;
                 notifyOptionAbility(false);
             }
         }
