@@ -79,7 +79,7 @@ public class MenuItemSalaryUpToDate
 
     private void notifyOptionAbility(boolean enabled) {
         this.menuItemSalaryUpToDateListeners.forEach((misutdml) -> {
-            misutdml.optionAbility(enabled);
+            misutdml.salaryUpToDateAbility(enabled);
         });
     }
 

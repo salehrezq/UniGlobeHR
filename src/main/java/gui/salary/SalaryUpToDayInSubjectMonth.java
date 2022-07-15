@@ -104,7 +104,7 @@ public class SalaryUpToDayInSubjectMonth
     }
 
     @Override
-    public void optionAbility(boolean enable) {
+    public void salaryUpToDateAbility(boolean enable) {
         enableControls(enable);
         if (!enable) {
             mode = Mode.END_OF_MONTH;

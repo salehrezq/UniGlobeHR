@@ -80,7 +80,7 @@ public class MenuItemSalaryDelete
 
     private void notifyOptionAbility(boolean enabled) {
         this.menuItemSalaryDeleteListeners.forEach((misdl) -> {
-            misdl.optionAbility(enabled);
+            misdl.deleteAbility(enabled);
         });
     }
 

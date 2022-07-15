@@ -5,6 +5,7 @@ import crud.UpdateICRPListener;
 import crud.UpdateListener;
 import datalink.CRUDSalary;
 import gui.EmployeeSelectedListener;
+import gui.MenuItemSalaryDeleteListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.math.BigDecimal;
@@ -36,6 +37,7 @@ public class SalarySubmit
         SubjectDateChangeListener,
         PaymnetListener,
         MenuItemSalaryUpToDateListener,
+        MenuItemSalaryDeleteListener,
         SalaryUpToDateSpinnerCheckedListener {
 
     private Operation operation;
@@ -218,13 +220,18 @@ public class SalarySubmit
     }
 
     @Override
-    public void optionAbility(boolean enable) {
+    public void deleteAbility(boolean enable) {
         btnSubmit.setEnabled(false);
     }
 
     @Override
     public void spinnerChecked(boolean checked) {
         btnSubmit.setEnabled(false);
+    }
+
+    @Override
+    public void salaryUpToDateAbility(boolean enable) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     private class ValidateWithMessages {

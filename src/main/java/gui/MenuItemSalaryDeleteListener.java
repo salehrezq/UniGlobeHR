@@ -6,5 +6,5 @@ package gui;
  */
 public interface MenuItemSalaryDeleteListener {
 
-    public void optionAbility(boolean enable);
+    public void deleteAbility(boolean enable);
 }

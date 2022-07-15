@@ -114,7 +114,7 @@ public class Compute
     }
 
     @Override
-    public void optionAbility(boolean enable) {
+    public void salaryUpToDateAbility(boolean enable) {
         boolMenuItemOfSalaryUpToDateMode = enable;
         if (employee != null) {
             if (enable) {

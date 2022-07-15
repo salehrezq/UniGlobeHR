@@ -6,5 +6,5 @@ package gui;
  */
 public interface MenuItemSalaryUpToDateListener {
 
-    public void optionAbility(boolean enable);
+    public void salaryUpToDateAbility(boolean enable);
 }
