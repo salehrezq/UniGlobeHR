@@ -146,27 +146,36 @@ public class CRUDAttendance {
     }
 
     /**
-     * To update the {@code locked } attribute of the relation to {@code true}
-     * when salary is paid. This method uses the passed connection to execute
-     * update on it to benefit from atomic commit for data consistency sake.
+     * Update the {@code locked } attribute of the relation to {@code true }
+     * if salary is paid or to {@code false } if salary is deleted. This method
+     * uses the passed connection to execute update on it to benefit from atomic
+     * commit for data consistency sake.
      *
      * @param conn
      * @param employeeId
      * @param yearMonthSubject
      * @throws SQLException
      */
-    protected static void lockRelatedAttendance(Connection conn, int employeeId, LocalDate yearMonthSubject) throws SQLException {
-        String sqlLockAttendance = "UPDATE `attendance` SET `locked` = true "
+    private static void switchRelatedAttendanceLock(Connection conn, int employeeId, LocalDate yearMonthSubject, boolean locked) throws SQLException {
+        String sqlLockSwitchAttendance = "UPDATE `attendance` SET `locked` = " + locked + " "
                 + "WHERE `employee_id` = ? AND `date` >= ? AND `date` < ?";
 
         LocalDate firstOfThisMonth = H.getYearMonth(yearMonthSubject).atDay(1);
         LocalDate firstOfNextMonth = H.getYearMonth(yearMonthSubject).plusMonths(1).atDay(1);
 
-        PreparedStatement lockAttendance = conn.prepareStatement(sqlLockAttendance);
-        lockAttendance.setInt(1, employeeId);
-        lockAttendance.setObject(2, firstOfThisMonth);
-        lockAttendance.setObject(3, firstOfNextMonth);
-        lockAttendance.executeUpdate();
+        PreparedStatement locSwitchkAttendance = conn.prepareStatement(sqlLockSwitchAttendance);
+        locSwitchkAttendance.setInt(1, employeeId);
+        locSwitchkAttendance.setObject(2, firstOfThisMonth);
+        locSwitchkAttendance.setObject(3, firstOfNextMonth);
+        locSwitchkAttendance.executeUpdate();
+    }
+
+    protected static void lockRelatedAttendance(Connection conn, int employeeId, LocalDate yearMonthSubject) throws SQLException {
+        switchRelatedAttendanceLock(conn, employeeId, yearMonthSubject, true);
+    }
+
+    protected static void unlockRelatedAttendance(Connection conn, int employeeId, LocalDate yearMonthSubject) throws SQLException {
+        switchRelatedAttendanceLock(conn, employeeId, yearMonthSubject, false);
     }
 
     /**

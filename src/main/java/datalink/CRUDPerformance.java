@@ -198,17 +198,18 @@ public class CRUDPerformance {
     }
 
     /**
-     * To update the {@code locked } attribute of the relation to {@code true}
-     * when salary is paid. This method uses the passed connection to execute
-     * update on it to benefit from atomic commit for data consistency sake.
+     * Update the {@code locked } attribute of the relation to {@code true }
+     * if salary is paid or to {@code false } if salary is deleted. This method
+     * uses the passed connection to execute update on it to benefit from atomic
+     * commit for data consistency sake.
      *
      * @param conn
      * @param employeeId
      * @param yearMonthSubject
      * @throws SQLException
      */
-    protected static void lockRelatedPerformance(Connection conn, int employeeId, LocalDate yearMonthSubject) throws SQLException {
-        String sqlLockPerformance = "UPDATE `performance` SET `locked` = true "
+    private static void switchRelatedPerformanceLock(Connection conn, int employeeId, LocalDate yearMonthSubject, boolean locked) throws SQLException {
+        String sqlLockSwitchPerformance = "UPDATE `performance` SET `locked` = " + locked + " "
                 + "WHERE `employee_id` = ? AND `date_time` >= ? AND `date_time` < ?";
 
         LocalDate fotm = H.getYearMonth(yearMonthSubject).atDay(1);
@@ -217,11 +218,19 @@ public class CRUDPerformance {
         LocalDateTime firstOfThisMonth = LocalDateTime.of(fotm, LocalTime.of(0, 0, 0));
         LocalDateTime firstOfNextMonth = LocalDateTime.of(fonm, LocalTime.of(0, 0, 0));
 
-        PreparedStatement lockPerformance = conn.prepareStatement(sqlLockPerformance);
-        lockPerformance.setInt(1, employeeId);
-        lockPerformance.setObject(2, firstOfThisMonth);
-        lockPerformance.setObject(3, firstOfNextMonth);
-        lockPerformance.executeUpdate();
+        PreparedStatement lockSwitchPerformance = conn.prepareStatement(sqlLockSwitchPerformance);
+        lockSwitchPerformance.setInt(1, employeeId);
+        lockSwitchPerformance.setObject(2, firstOfThisMonth);
+        lockSwitchPerformance.setObject(3, firstOfNextMonth);
+        lockSwitchPerformance.executeUpdate();
+    }
+
+    protected static void lockRelatedPerformance(Connection conn, int employeeId, LocalDate yearMonthSubject) throws SQLException {
+        switchRelatedPerformanceLock(conn, employeeId, yearMonthSubject, true);
+    }
+
+    protected static void unlockRelatedPerformance(Connection conn, int employeeId, LocalDate yearMonthSubject) throws SQLException {
+        switchRelatedPerformanceLock(conn, employeeId, yearMonthSubject, false);
     }
 
     public static boolean delete(Integer id) {

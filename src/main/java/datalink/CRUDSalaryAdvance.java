@@ -176,27 +176,36 @@ public class CRUDSalaryAdvance {
     }
 
     /**
-     * To update the {@code locked } attribute of the relation to {@code true}
-     * when salary is paid. This method uses the passed connection to execute
-     * update on it to benefit from atomic commit for data consistency sake.
+     * Update the {@code locked } attribute of the relation to {@code true }
+     * if salary is paid or to {@code false } if salary is deleted. This method
+     * uses the passed connection to execute update on it to benefit from atomic
+     * commit for data consistency sake.
      *
      * @param conn
      * @param employeeId
      * @param yearMonthSubject
      * @throws SQLException
      */
-    protected static void lockRelatedSalaryAdvance(Connection conn, int employeeId, LocalDate yearMonthSubject) throws SQLException {
-        String sqlLockSalaryAdvance = "UPDATE `salary_advances` SET `locked` = true "
+    private static void switchRelatedSalaryAdvanceLock(Connection conn, int employeeId, LocalDate yearMonthSubject, boolean locked) throws SQLException {
+        String sqlLockSwitchSalaryAdvance = "UPDATE `salary_advances` SET `locked` = " + locked + " "
                 + "WHERE `employee_id` = ? AND `subject_year_month` >= ? AND `subject_year_month` < ?";
 
         LocalDate firstOfThisMonth = H.getYearMonth(yearMonthSubject).atDay(1);
         LocalDate firstOfNextMonth = H.getYearMonth(yearMonthSubject).plusMonths(1).atDay(1);
 
-        PreparedStatement lockSalaryAdvance = conn.prepareStatement(sqlLockSalaryAdvance);
-        lockSalaryAdvance.setInt(1, employeeId);
-        lockSalaryAdvance.setObject(2, firstOfThisMonth);
-        lockSalaryAdvance.setObject(3, firstOfNextMonth);
-        lockSalaryAdvance.executeUpdate();
+        PreparedStatement lockSwitchSalaryAdvance = conn.prepareStatement(sqlLockSwitchSalaryAdvance);
+        lockSwitchSalaryAdvance.setInt(1, employeeId);
+        lockSwitchSalaryAdvance.setObject(2, firstOfThisMonth);
+        lockSwitchSalaryAdvance.setObject(3, firstOfNextMonth);
+        lockSwitchSalaryAdvance.executeUpdate();
+    }
+
+    protected static void lockRelatedSalaryAdvance(Connection conn, int employeeId, LocalDate yearMonthSubject) throws SQLException {
+        switchRelatedSalaryAdvanceLock(conn, employeeId, yearMonthSubject, true);
+    }
+
+    protected static void unlockRelatedSalaryAdvance(Connection conn, int employeeId, LocalDate yearMonthSubject) throws SQLException {
+        switchRelatedSalaryAdvanceLock(conn, employeeId, yearMonthSubject, false);
     }
 
     public static boolean delete(Integer id) {
