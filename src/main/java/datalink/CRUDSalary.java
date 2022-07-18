@@ -96,8 +96,32 @@ public class CRUDSalary {
         throw new UnsupportedOperationException("CRUDSalary update placeholder");
     }
 
-    public static boolean delete(Integer id) {
-        throw new UnsupportedOperationException("CRUDSalary delete placeholder");
+    public static boolean delete(Salary salary) {
+
+        int delete = 0;
+
+        try {
+            String sql = "DELETE FROM `salary` WHERE `id` = ? LIMIT 1";
+            conn = Connect.getConnection();
+            PreparedStatement p = conn.prepareStatement(sql);
+
+            p.setInt(1, salary.getId());
+
+            delete = p.executeUpdate();
+
+            CRUDAttendance.unlockRelatedAttendance(conn, salary.getEmployeeId(), salary.getYearMonthSubject());
+            CRUDPerformance.unlockRelatedPerformance(conn, salary.getEmployeeId(), salary.getYearMonthSubject());
+            CRUDSalaryAdvance.unlockRelatedSalaryAdvance(conn, salary.getEmployeeId(), salary.getYearMonthSubject());
+
+            conn.commit();
+
+        } catch (SQLException ex) {
+            Logger.getLogger(CRUDPerformance.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            Connect.rollBack();
+            Connect.cleanUp();
+        }
+        return delete > 0;
     }
 
 }
