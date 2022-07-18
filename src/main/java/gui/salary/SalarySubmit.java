@@ -64,8 +64,7 @@ public class SalarySubmit
         btnSubmit.addActionListener(new SubmitSalary());
         stringBuilder = new StringBuilder(145);
 
-        operation = new CreateOperation();
-        operation.switchOperationFor(this);
+        switchBtnToCreateOperation();
     }
 
     public void setSalaryInput(SalaryInput salaryInput) {
@@ -180,6 +179,16 @@ public class SalarySubmit
         return this.operation;
     }
 
+    private void switchBtnToCreateOperation() {
+        operation = new CreateOperation();
+        operation.switchOperationFor(this);
+    }
+
+    private void switchBtnToDeleteOperation() {
+        operation = new DeleteOperation();
+        operation.switchOperationFor(this);
+    }
+
     @Override
     public void rowSelectedWithRecordId(int id) {
         salaryId = id;
@@ -221,7 +230,11 @@ public class SalarySubmit
 
     @Override
     public void deleteAbility(boolean enable) {
-        btnSubmit.setEnabled(false);
+        // btnSubmit.setEnabled(false);
+        if (enable) {
+            btnSubmit.setEnabled(true);
+            switchBtnToDeleteOperation();
+        }
     }
 
     @Override
@@ -231,7 +244,7 @@ public class SalarySubmit
 
     @Override
     public void salaryUpToDateAbility(boolean enable) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("salaryUpToDateAbility Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     private class ValidateWithMessages {
