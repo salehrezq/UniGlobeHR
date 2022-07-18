@@ -372,7 +372,7 @@ public class SalaryRecords
                     "Confirm", JOptionPane.YES_OPTION);
 
             if (confirm == JOptionPane.YES_OPTION) {
-                if (CRUDSalary.delete(salaryId)) {
+                if (CRUDSalary.delete(null)) {
                     model.removeRow(selectedModelRow);
 
                     notifyDeleted();
