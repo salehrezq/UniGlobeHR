@@ -49,10 +49,12 @@ public class MainRun implements LookAndFeelLisener {
         menu.setLookAndFeelListener(this);
         stage.addTabsChangeListener(menu);
         MenuItemSalaryUpToDate menuItemSalaryUpToDate = menu.getMenuItemSalaryUpToDate();
+        MenuItemSalaryDelete menuItemSalaryDelete = menu.getMenuItemSalaryDelete();
         menuItemSalaryUpToDate.setSalaryInput(stage.getSalaryTab().getSalaryInput());
         menuItemSalaryUpToDate.addMenuItemSalaryUpToDateListener(stage.getSalaryTab().getSalaryUpToDayInSubjectMonth());
         menuItemSalaryUpToDate.addMenuItemSalaryUpToDateListener(stage.getSalaryTab().getCompute());
         menuItemSalaryUpToDate.addMenuItemSalaryUpToDateListener(stage.getSalaryTab().getSalarySubmit());
+        menuItemSalaryDelete.addMenuItemSalaryDeleteListener(stage.getSalaryTab().getSalarySubmit());
         stage.addEmployeeSelectedListener(menuItemSalaryUpToDate);
         stage.getSalaryTab().getSalaryInput().addSubjectDateChangeListener(menuItemSalaryUpToDate);
         MenuItemSalaryDelete menuItemsSalaryDelete = menu.getMenuItemSalaryDelete();
