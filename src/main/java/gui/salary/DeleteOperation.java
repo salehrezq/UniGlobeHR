@@ -1,5 +1,7 @@
 package gui.salary;
 
+import datalink.CRUDSalary;
+import javax.swing.JButton;
 import model.Salary;
 
 /**
@@ -8,14 +10,19 @@ import model.Salary;
  */
 public class DeleteOperation implements Operation {
 
+    private Subject subject;
+    private JButton btnDelete;
+
     @Override
     public void switchOperationFor(Subject subject) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.subject = subject;
+        btnDelete = this.subject.getOperationButton();
+        btnDelete.setText("Delete");
     }
 
     @Override
     public boolean post(Salary salary) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return CRUDSalary.delete(salary);
     }
 
 }
