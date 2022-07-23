@@ -155,7 +155,6 @@ public class SalaryTab {
         salaryEdit.addSalaryEditableListener(salaryInput);
         salaryEdit.addSalaryEditableListener(salaryCancel);
         salaryEdit.addSalaryEditableListener(salaryDisplay);
-        salaryEdit.addSalaryEditableListener(salarySubmit);
         salarySubmit.addSalaryUpdatedListener(salaryEdit);
         salarySubmit.addSalaryUpdatedICRPListener(salaryEdit);
         salaryCancel.addCancelListener(salaryEdit);
