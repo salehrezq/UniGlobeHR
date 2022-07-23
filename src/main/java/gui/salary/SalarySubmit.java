@@ -29,7 +29,6 @@ public class SalarySubmit
         Subject,
         EmployeeSelectedListener,
         DisplayableListener,
-        EditableListener,
         CancelListener,
         RowSelectedListener,
         RowDeselectedListener,
@@ -49,7 +48,7 @@ public class SalarySubmit
     private List<CreateListener> createListeners;
     private List<UpdateListener> updateListeners;
     private List<UpdateICRPListener> updateICRPListeners;
-    private boolean boolSalaryDisplayMode, boolEditMode, boolPaymentCleared;
+    private boolean boolSalaryDisplayMode, boolPaymentCleared;
     private Integer salaryId;
     private Salary salaryBeforeUpdate;
 
@@ -146,20 +145,8 @@ public class SalarySubmit
     }
 
     @Override
-    public void editable() {
-        // Save copy of current record before update
-        // for comparsion with the new updated record
-        salaryBeforeUpdate = CRUDSalary.getById(salaryId);
-        boolEditMode = true;
-        operation = new UpdateOperation();
-        operation.switchOperationFor(this);
-        btnSubmit.setEnabled(true);
-    }
-
-    @Override
     public void cancelled() {
         if (boolSalaryDisplayMode) {
-            boolEditMode = false;
             btnSubmit.setEnabled(false);
         }
     }
@@ -234,6 +221,9 @@ public class SalarySubmit
         if (enable) {
             btnSubmit.setEnabled(true);
             switchBtnToDeleteOperation();
+        } else {
+            btnSubmit.setEnabled(false);
+            switchBtnToCreateOperation();
         }
     }
 
@@ -298,20 +288,6 @@ public class SalarySubmit
         @Override
         public void actionPerformed(ActionEvent e) {
 
-            Salary isEmployeeWithYearMonthSubjectAlreadyInserted = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), getYearMonthSubjectOfSalary());
-
-            if (isEmployeeWithYearMonthSubjectAlreadyInserted != null) {
-
-                String month = Month.of(salaryInput.getSubjectMonth()).toString();
-                month = month.substring(0, 1).toUpperCase() + month.substring(1).toLowerCase();
-                int year = salaryInput.getSubjectYear();
-
-                JOptionPane.showMessageDialog(null,
-                        "Salary for the month of " + month + " " + year + " was already inserted.",
-                        "Info", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-
             ValidateWithMessages validateWithMessages = validateSalaryInputs();
 
             // Check if List of boolean values are all true or one value at least is false
@@ -327,45 +303,61 @@ public class SalarySubmit
                 return;
             }
 
-            Salary salary = new Salary();
-            salary.setEmployeeId(employee.getId());
-            salary.setAgreedSalary(employee.getSalary());
-            salary.setYearMonthSubject(getYearMonthSubjectOfSalary());
-            salary.setDateGiven(salaryInput.getDateSalaryGiven());
-            salary.setPayable(payable.getPayable());
+            Salary salaryRetrieved = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), getYearMonthSubjectOfSalary());
+            boolean createOperation = getOperation() instanceof CreateOperation;
+            boolean deleteOperation = getOperation() instanceof DeleteOperation;
+            boolean employeeWithYearMonthSubjectExist = salaryRetrieved != null;
 
-            if (boolEditMode) {
-                salary.setId(salaryId);
+            String month = Month.of(salaryInput.getSubjectMonth()).toString();
+            month = month.substring(0, 1).toUpperCase() + month.substring(1).toLowerCase();
+            int year = salaryInput.getSubjectYear();
+
+            if (createOperation && employeeWithYearMonthSubjectExist) {
+                JOptionPane.showConfirmDialog(null,
+                        "Salary for the month of " + month + " " + year + " was already inserted.",
+                        "Info", JOptionPane.ERROR_MESSAGE);
+                return;
+            } else if (deleteOperation && !employeeWithYearMonthSubjectExist) {
+                JOptionPane.showConfirmDialog(null,
+                        "No salary was paid as of " + month + " " + year + " to delete.",
+                        "Info", JOptionPane.ERROR_MESSAGE);
+                return;
             }
-            // Create|Update
+
+            Salary salary = null;
+
+            if (createOperation) {
+                salary = new Salary();
+
+                salary.setEmployeeId(employee.getId());
+                salary.setAgreedSalary(employee.getSalary());
+                salary.setYearMonthSubject(getYearMonthSubjectOfSalary());
+                salary.setDateGiven(salaryInput.getDateSalaryGiven());
+                salary.setPayable(payable.getPayable());
+            } else if (deleteOperation) {
+                salary = salaryRetrieved;
+            }
+
+            // Create|Delete
             boolean submitted = operation.post(salary);
 
             String informMessage = "No operation!";
             if (getOperation() instanceof CreateOperation) {
                 if (submitted) {
                     notifyCreated();
+                    btnSubmit.setEnabled(false);
+                    switchBtnToDeleteOperation();
                     informMessage = "Salary created successfully.";
                 } else {
                     informMessage = "Issue regarding Salary create.";
                 }
-            } else if (getOperation() instanceof UpdateOperation) {
+            } else if (getOperation() instanceof DeleteOperation) {
                 if (submitted) {
-                    boolEditMode = false;
                     btnSubmit.setEnabled(false);
-                    informMessage = "Salary updated successfully.";
-
-                    // Compare the salary subject date between old and updated record
-                    if (salary.getYearMonthSubject()
-                            .isEqual(salaryBeforeUpdate.getYearMonthSubject())) {
-                        notifyUpdated();
-                    } else {
-                        // If subject_year_month has been changed (different value) then the
-                        // record should not appear against the same requested subject_year_month
-                        // attributes, because they are no longer relevant after the change
-                        notifyUpdatedICRP();
-                    }
+                    switchBtnToCreateOperation();
+                    informMessage = "Salary deleted successfully.";
                 } else {
-                    informMessage = "Issue regarding Salary update.";
+                    informMessage = "Issue regarding Salary delete.";
                 }
             }
             showMessage(informMessage, submitted);
