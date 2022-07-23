@@ -101,7 +101,7 @@ public class CRUDSalary {
         int delete = 0;
 
         try {
-            String sql = "DELETE FROM `salary` WHERE `id` = ? LIMIT 1";
+            String sql = "DELETE FROM `salaries` WHERE `id` = ? LIMIT 1";
             conn = Connect.getConnection();
             PreparedStatement p = conn.prepareStatement(sql);
 
@@ -116,7 +116,7 @@ public class CRUDSalary {
             conn.commit();
 
         } catch (SQLException ex) {
-            Logger.getLogger(CRUDPerformance.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(CRUDSalary.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             Connect.rollBack();
             Connect.cleanUp();
