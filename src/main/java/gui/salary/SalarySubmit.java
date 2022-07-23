@@ -304,20 +304,20 @@ public class SalarySubmit
             }
 
             Salary salaryRetrieved = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), getYearMonthSubjectOfSalary());
-            boolean createOperation = getOperation() instanceof CreateOperation;
-            boolean deleteOperation = getOperation() instanceof DeleteOperation;
-            boolean employeeWithYearMonthSubjectExist = salaryRetrieved != null;
+            boolean boolCreateOperation = getOperation() instanceof CreateOperation;
+            boolean boolDeleteOperation = getOperation() instanceof DeleteOperation;
+            boolean boolEmployeeWithYearMonthSubjectExist = salaryRetrieved != null;
 
             String month = Month.of(salaryInput.getSubjectMonth()).toString();
             month = month.substring(0, 1).toUpperCase() + month.substring(1).toLowerCase();
             int year = salaryInput.getSubjectYear();
 
-            if (createOperation && employeeWithYearMonthSubjectExist) {
+            if (boolCreateOperation && boolEmployeeWithYearMonthSubjectExist) {
                 JOptionPane.showConfirmDialog(null,
                         "Salary for the month of " + month + " " + year + " was already inserted.",
                         "Info", JOptionPane.ERROR_MESSAGE);
                 return;
-            } else if (deleteOperation && !employeeWithYearMonthSubjectExist) {
+            } else if (boolDeleteOperation && !boolEmployeeWithYearMonthSubjectExist) {
                 JOptionPane.showConfirmDialog(null,
                         "No salary was paid as of " + month + " " + year + " to delete.",
                         "Info", JOptionPane.ERROR_MESSAGE);
@@ -326,7 +326,7 @@ public class SalarySubmit
 
             Salary salary = null;
 
-            if (createOperation) {
+            if (boolCreateOperation) {
                 salary = new Salary();
 
                 salary.setEmployeeId(employee.getId());
@@ -334,7 +334,7 @@ public class SalarySubmit
                 salary.setYearMonthSubject(getYearMonthSubjectOfSalary());
                 salary.setDateGiven(salaryInput.getDateSalaryGiven());
                 salary.setPayable(payable.getPayable());
-            } else if (deleteOperation) {
+            } else if (boolDeleteOperation) {
                 salary = salaryRetrieved;
             }
 
