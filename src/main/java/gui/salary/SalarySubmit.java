@@ -342,7 +342,7 @@ public class SalarySubmit
             boolean submitted = operation.post(salary);
 
             String informMessage = "No operation!";
-            if (getOperation() instanceof CreateOperation) {
+            if (boolCreateOperation) {
                 if (submitted) {
                     notifyCreated();
                     btnSubmit.setEnabled(false);
@@ -351,7 +351,7 @@ public class SalarySubmit
                 } else {
                     informMessage = "Issue regarding Salary create.";
                 }
-            } else if (getOperation() instanceof DeleteOperation) {
+            } else if (boolDeleteOperation) {
                 if (submitted) {
                     btnSubmit.setEnabled(false);
                     switchBtnToCreateOperation();
