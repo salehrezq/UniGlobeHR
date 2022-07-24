@@ -1,5 +1,6 @@
 package gui;
 
+import crud.CreateListener;
 import datalink.CRUDSalary;
 import gui.salary.SalaryInput;
 import gui.salary.SubjectDateChangeListener;
@@ -18,7 +19,8 @@ import model.Employee;
 public class MenuItemSalaryUpToDate
         implements
         EmployeeSelectedListener,
-        SubjectDateChangeListener {
+        SubjectDateChangeListener,
+        CreateListener {
 
     private JCheckBoxMenuItem checkBoxMenuItemSwitchSalaryUpToDate;
     private ArrayList<MenuItemSalaryUpToDateListener> menuItemSalaryUpToDateListeners;
@@ -33,6 +35,11 @@ public class MenuItemSalaryUpToDate
         menuItemSalaryUpToDateListeners = new ArrayList<>();
         optionState = MenuItemSalaryUpToDateState.DISABLED;
         enableCheckBox(false);
+    }
+
+    @Override
+    public void created() {
+        System.out.println("MenuItemSalaryUpToDate CreateListener#created placeholder");
     }
 
     private enum MenuItemSalaryUpToDateState {

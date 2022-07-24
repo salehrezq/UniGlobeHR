@@ -61,6 +61,8 @@ public class MainRun implements LookAndFeelLisener {
         menuItemsSalaryDelete.setSalaryInput(stage.getSalaryTab().getSalaryInput());
         stage.addEmployeeSelectedListener(menuItemsSalaryDelete);
         stage.getSalaryTab().getSalaryInput().addSubjectDateChangeListener(menuItemsSalaryDelete);
+        stage.getSalaryTab().getSalarySubmit().addSalaryCreatedListener(menuItemSalaryUpToDate);
+        stage.getSalaryTab().getSalarySubmit().addSalaryCreatedListener(menuItemSalaryDelete);
 
 //        menu.
         //Create and set up the window.
