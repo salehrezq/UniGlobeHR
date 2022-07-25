@@ -234,7 +234,7 @@ public class SalarySubmit
 
     @Override
     public void salaryUpToDateAbility(boolean enable) {
-        System.out.println("salaryUpToDateAbility Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        btnSubmit.setEnabled(false);
     }
 
     private class ValidateWithMessages {
