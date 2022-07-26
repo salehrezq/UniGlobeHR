@@ -39,7 +39,8 @@ public class MenuItemSalaryDelete
 
     @Override
     public void created() {
-        System.out.println("MenuItemSalaryDelete CreateListener#created placeholder");
+        enableCheckBox(true);
+        checkBoxMenuItemSwitchSalaryDelete.setSelected(false);
     }
 
     private enum MenuItemSalaryDeleteState {

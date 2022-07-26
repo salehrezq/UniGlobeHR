@@ -39,7 +39,8 @@ public class MenuItemSalaryUpToDate
 
     @Override
     public void created() {
-        System.out.println("MenuItemSalaryUpToDate CreateListener#created placeholder");
+        enableCheckBox(false);
+        checkBoxMenuItemSwitchSalaryUpToDate.setSelected(false);
     }
 
     private enum MenuItemSalaryUpToDateState {
