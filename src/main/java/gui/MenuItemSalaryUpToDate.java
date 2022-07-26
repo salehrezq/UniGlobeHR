@@ -33,7 +33,7 @@ public class MenuItemSalaryUpToDate
         checkBoxMenuItemSwitchSalaryUpToDate = new JCheckBoxMenuItem("Enable salary up to date option");
         checkBoxMenuItemSwitchSalaryUpToDate.addItemListener(new MenuItemActionHandler());
         menuItemSalaryUpToDateListeners = new ArrayList<>();
-        optionState = MenuItemSalaryUpToDateState.DISABLED;
+        optionState = MenuItemSalaryUpToDateState.DESELECTED;
         enableCheckBox(false);
     }
 
@@ -43,7 +43,7 @@ public class MenuItemSalaryUpToDate
     }
 
     private enum MenuItemSalaryUpToDateState {
-        ENABLED, DISABLED
+        SELECTED, DESELECTED
     };
 
     @Override
@@ -102,7 +102,7 @@ public class MenuItemSalaryUpToDate
     @Override
     public void employeeSelected(Employee employee) {
         this.employee = employee;
-        if (optionState == MenuItemSalaryUpToDateState.ENABLED) {
+        if (optionState == MenuItemSalaryUpToDateState.SELECTED) {
             setOptionSelected(false);
         }
 
@@ -132,10 +132,10 @@ public class MenuItemSalaryUpToDate
         public void itemStateChanged(ItemEvent e) {
             boolean isSelected = checkBoxMenuItemSwitchSalaryUpToDate.isSelected();
             if (isSelected) {
-                optionState = MenuItemSalaryUpToDateState.ENABLED;
+                optionState = MenuItemSalaryUpToDateState.SELECTED;
                 notifyOptionAbility(true);
             } else if (!isSelected) {
-                optionState = MenuItemSalaryUpToDateState.DISABLED;
+                optionState = MenuItemSalaryUpToDateState.DESELECTED;
                 notifyOptionAbility(false);
             }
         }

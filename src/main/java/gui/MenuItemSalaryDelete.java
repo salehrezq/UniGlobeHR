@@ -33,7 +33,7 @@ public class MenuItemSalaryDelete
         checkBoxMenuItemSwitchSalaryDelete = new JCheckBoxMenuItem("Enable salary Delete");
         checkBoxMenuItemSwitchSalaryDelete.addItemListener(new MenuItemActionHandler());
         menuItemSalaryDeleteListeners = new ArrayList<>();
-        OptionState = MenuItemSalaryDeleteState.DISABLED;
+        OptionState = MenuItemSalaryDeleteState.DESELECTED;
         enableCheckBox(false);
     }
 
@@ -43,7 +43,7 @@ public class MenuItemSalaryDelete
     }
 
     private enum MenuItemSalaryDeleteState {
-        ENABLED, DISABLED
+        SELECTED, DESELECTED
     };
 
     @Override
@@ -103,7 +103,7 @@ public class MenuItemSalaryDelete
     @Override
     public void employeeSelected(Employee employee) {
         this.employee = employee;
-        if (OptionState == MenuItemSalaryDeleteState.ENABLED) {
+        if (OptionState == MenuItemSalaryDeleteState.SELECTED) {
             setOptionSelected(false);
         }
 
@@ -133,10 +133,10 @@ public class MenuItemSalaryDelete
         public void itemStateChanged(ItemEvent e) {
             boolean isSelected = checkBoxMenuItemSwitchSalaryDelete.isSelected();
             if (isSelected) {
-                OptionState = MenuItemSalaryDeleteState.ENABLED;
+                OptionState = MenuItemSalaryDeleteState.SELECTED;
                 notifyOptionAbility(true);
             } else if (!isSelected) {
-                OptionState = MenuItemSalaryDeleteState.DISABLED;
+                OptionState = MenuItemSalaryDeleteState.DESELECTED;
                 notifyOptionAbility(false);
             }
         }
