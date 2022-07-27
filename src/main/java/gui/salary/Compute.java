@@ -1,5 +1,6 @@
 package gui.salary;
 
+import crud.CreateListener;
 import datalink.CRUDAttendance;
 import datalink.CRUDPerformance;
 import datalink.CRUDSalary;
@@ -31,7 +32,8 @@ public class Compute
         EmployeeSelectedListener,
         MenuItemSalaryUpToDateListener,
         SalaryUpToDateSpinnerCheckedListener,
-        SubjectDateChangeListener {
+        SubjectDateChangeListener,
+        CreateListener {
 
     private JButton btnCompute;
     private Employee employee;
@@ -165,6 +167,11 @@ public class Compute
                 }
             }
         }
+    }
+
+    @Override
+    public void created() {
+        btnCompute.setEnabled(false);
     }
 
     class ComputePayables implements ActionListener {
