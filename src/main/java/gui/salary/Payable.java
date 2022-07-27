@@ -225,7 +225,7 @@ public class Payable
     @Override
     public void created() {
         boolCreated = true;
-        tfPayable.setText(null);
+        setPaymentPanelCardState(PaymentState.PAIED.state());
     }
 
     @Override

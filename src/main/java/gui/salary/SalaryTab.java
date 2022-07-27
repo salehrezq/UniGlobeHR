@@ -94,6 +94,7 @@ public class SalaryTab {
         compute.setSalaryInput(salaryInput);
         salaryUpToDayInSubjectMonth.addSalaryUpToDateSpinnerCheckedListener(salarySubmit);
         salarySubmit.addSalaryCreatedListener(salaryInput);
+        salarySubmit.addSalaryCreatedListener(payable);
         salarySubmit.addSalaryUpdatedListener(salaryInput);
         salarySubmit.addSalaryUpdatedICRPListener(salaryInput);
 
