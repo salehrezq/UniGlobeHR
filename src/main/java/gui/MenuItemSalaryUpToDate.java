@@ -1,6 +1,7 @@
 package gui;
 
 import crud.CreateListener;
+import crud.DeleteListener;
 import datalink.CRUDSalary;
 import gui.salary.SalaryInput;
 import gui.salary.SubjectDateChangeListener;
@@ -20,7 +21,8 @@ public class MenuItemSalaryUpToDate
         implements
         EmployeeSelectedListener,
         SubjectDateChangeListener,
-        CreateListener {
+        CreateListener,
+        DeleteListener {
 
     private JCheckBoxMenuItem checkBoxMenuItemSwitchSalaryUpToDate;
     private ArrayList<MenuItemSalaryUpToDateListener> menuItemSalaryUpToDateListeners;
@@ -40,6 +42,12 @@ public class MenuItemSalaryUpToDate
     @Override
     public void created() {
         enableCheckBox(false);
+        checkBoxMenuItemSwitchSalaryUpToDate.setSelected(false);
+    }
+
+    @Override
+    public void deleted() {
+        enableCheckBox(true);
         checkBoxMenuItemSwitchSalaryUpToDate.setSelected(false);
     }
 

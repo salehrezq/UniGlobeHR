@@ -63,8 +63,9 @@ public class MainRun implements LookAndFeelLisener {
         stage.getSalaryTab().getSalaryInput().addSubjectDateChangeListener(menuItemsSalaryDelete);
         stage.getSalaryTab().getSalarySubmit().addSalaryCreatedListener(menuItemSalaryUpToDate);
         stage.getSalaryTab().getSalarySubmit().addSalaryCreatedListener(menuItemSalaryDelete);
+        stage.getSalaryTab().getSalarySubmit().addSalaryDeletedListener(menuItemSalaryUpToDate);
+        stage.getSalaryTab().getSalarySubmit().addSalaryDeletedListener(menuItemSalaryDelete);
 
-//        menu.
         //Create and set up the window.
         frame = new JFrame("UniGlobe HR");
 

@@ -1,6 +1,7 @@
 package gui.salary;
 
 import crud.CreateListener;
+import crud.DeleteListener;
 import crud.UpdateICRPListener;
 import crud.UpdateListener;
 import datalink.CRUDSalary;
@@ -46,6 +47,7 @@ public class SalarySubmit
     private StringBuilder stringBuilder;
     private Employee employee;
     private List<CreateListener> createListeners;
+    private List<DeleteListener> deleteListeners;
     private List<UpdateListener> updateListeners;
     private List<UpdateICRPListener> updateICRPListeners;
     private boolean boolSalaryDisplayMode, boolPaymentCleared, boolSalaryPaid;
@@ -55,6 +57,7 @@ public class SalarySubmit
     public SalarySubmit() {
 
         createListeners = new ArrayList<>();
+        deleteListeners = new ArrayList<>();
         updateListeners = new ArrayList<>();
         updateICRPListeners = new ArrayList<>();
 
@@ -81,6 +84,16 @@ public class SalarySubmit
     private void notifyCreated() {
         this.createListeners.forEach((createListener) -> {
             createListener.created();
+        });
+    }
+
+    public void addSalaryDeletedListener(DeleteListener deletedListener) {
+        this.deleteListeners.add(deletedListener);
+    }
+
+    private void notifyDeleted() {
+        this.deleteListeners.forEach((deletedListener) -> {
+            deletedListener.deleted();
         });
     }
 
@@ -359,6 +372,7 @@ public class SalarySubmit
                 }
             } else if (boolDeleteOperation) {
                 if (submitted) {
+                    notifyDeleted();
                     btnSubmit.setEnabled(false);
                     switchBtnToCreateOperation();
                     informMessage = "Salary deleted successfully.";
