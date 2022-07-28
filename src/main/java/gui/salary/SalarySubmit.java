@@ -48,7 +48,7 @@ public class SalarySubmit
     private List<CreateListener> createListeners;
     private List<UpdateListener> updateListeners;
     private List<UpdateICRPListener> updateICRPListeners;
-    private boolean boolSalaryDisplayMode, boolPaymentCleared;
+    private boolean boolSalaryDisplayMode, boolPaymentCleared, boolSalaryPaid;
     private Integer salaryId;
     private Salary salaryBeforeUpdate;
 
@@ -269,6 +269,12 @@ public class SalarySubmit
 //            btnSubmit.setEnabled(true);
         }
         this.employee = employee;
+        boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), salaryInput.getYearMonthSubjectOfSalary()) != null;
+        if (boolSalaryPaid) {
+            switchBtnToDeleteOperation();
+        } else {
+            switchBtnToCreateOperation();
+        }
     }
 
     @Override
