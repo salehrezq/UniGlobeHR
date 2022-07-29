@@ -44,7 +44,7 @@ public class Payable
 
     private JPanel container, panelCards;
     private YearMonth yearAndMonth;
-    private JLabel lbPayable, lbJustPaid, lbAlreadyPaid, lbPaymentPending, lbPaymentNonDetermined;
+    private JLabel lbPayable, lbJustPaid, lbAlreadyPaid, lbPaymentPending, lbNotPaid;
     private JTextField tfPayable;
     private Color colorFieldRight;
     private Color colorFieldWrong;
@@ -79,7 +79,7 @@ public class Payable
         tfPayable.setPreferredSize(new Dimension(75, 27));
         container.add(tfPayable);
 
-        lbPaymentNonDetermined = new JLabel("Non Determined Yet");
+        lbNotPaid = new JLabel("Not Paid Yet");
 
         lbPaymentPending = new JLabel("... Pending              ");
 
@@ -88,24 +88,24 @@ public class Payable
         lbJustPaid = new JLabel("Successfully Paid  ", imageIconTickMark, 0);
         lbAlreadyPaid = new JLabel("Already Paid     ", imageIconTickMark, 0);
 
-        JPanel panelLabelNonDeterminedYet = new JPanel();
-        panelLabelNonDeterminedYet.add(lbPaymentNonDetermined);
+        JPanel panelLabelNotPaid = new JPanel();
+        panelLabelNotPaid.add(lbNotPaid);
         JPanel panelLabelPaymentPending = new JPanel();
         panelLabelPaymentPending.add(lbPaymentPending);
         JPanel panelLabelJustPaid = new JPanel();
         panelLabelJustPaid.add(lbJustPaid);
-        JPanel panelLabelPaied = new JPanel();
-        panelLabelPaied.add(lbAlreadyPaid);
+        JPanel panelLabelAlreadyPaid = new JPanel();
+        panelLabelAlreadyPaid.add(lbAlreadyPaid);
 
         panelCards = new JPanel(new CardLayout());
         container.add(panelCards);
         // Add all panels; paid, pending and non determined
-        panelCards.add(panelLabelNonDeterminedYet, PaymentState.NON_DETERMINED.state());
+        panelCards.add(panelLabelNotPaid, PaymentState.NOT_PAID.state());
         panelCards.add(panelLabelPaymentPending, PaymentState.PENDING.state());
-        panelCards.add(panelLabelJustPaid, PaymentState.JUSTPAID.state());
-        panelCards.add(panelLabelPaied, PaymentState.PAIED.state());
+        panelCards.add(panelLabelJustPaid, PaymentState.JUST_PAID.state());
+        panelCards.add(panelLabelAlreadyPaid, PaymentState.ALREADY_PAID.state());
         // Show the empty panel
-        setPaymentPanelCardState(PaymentState.NON_DETERMINED.state());
+        setPaymentPanelCardState(PaymentState.NOT_PAID.state());
 
         setFieldsEditable(false);
     }
@@ -118,10 +118,10 @@ public class Payable
             boolSalaryPaid = salaryTemp != null;
             if (boolSalaryPaid) {
                 tfPayable.setText(salaryTemp.getPayable().toPlainString());
-                setPaymentPanelCardState(PaymentState.PAIED.state());
+                setPaymentPanelCardState(PaymentState.ALREADY_PAID.state());
             } else {
                 tfPayable.setText(null);
-                setPaymentPanelCardState(PaymentState.NON_DETERMINED.state());
+                setPaymentPanelCardState(PaymentState.NOT_PAID.state());
             }
         }
     }
@@ -134,10 +134,10 @@ public class Payable
             boolSalaryPaid = salaryTemp != null;
             if (boolSalaryPaid) {
                 tfPayable.setText(salaryTemp.getPayable().toPlainString());
-                setPaymentPanelCardState(PaymentState.PAIED.state());
+                setPaymentPanelCardState(PaymentState.ALREADY_PAID.state());
             } else {
                 tfPayable.setText(null);
-                setPaymentPanelCardState(PaymentState.NON_DETERMINED.state());
+                setPaymentPanelCardState(PaymentState.NOT_PAID.state());
             }
         }
     }
@@ -149,10 +149,10 @@ public class Payable
 
     private enum PaymentState {
 
-        NON_DETERMINED("non determined"),
+        NOT_PAID("was not paid yet"),
         PENDING("pending"),
-        JUSTPAID("just paid"),
-        PAIED("paied");
+        JUST_PAID("just paid"),
+        ALREADY_PAID("paid");
 
         private final String state;
 
@@ -185,7 +185,7 @@ public class Payable
         boolSalaryPaid = salaryTemp != null;
         if (boolSalaryPaid) {
             tfPayable.setText(salaryTemp.getPayable().toPlainString());
-            setPaymentPanelCardState(PaymentState.PAIED.state());
+            setPaymentPanelCardState(PaymentState.ALREADY_PAID.state());
         } else {
             tfPayable.setText(null);
             if (!boolSalaryDisplayMode) {
@@ -194,7 +194,7 @@ public class Payable
             if (boolSalaryDisplayMode && employee != null) {
                 clearInputFields();
             }
-            setPaymentPanelCardState(PaymentState.NON_DETERMINED.state());
+            setPaymentPanelCardState(PaymentState.NOT_PAID.state());
         }
     }
 
@@ -203,7 +203,7 @@ public class Payable
         employee = null;
         setFieldsEditable(false);
         tfPayable.setText(null);
-        setPaymentPanelCardState(PaymentState.NON_DETERMINED.state());
+        setPaymentPanelCardState(PaymentState.NOT_PAID.state());
     }
 
     public void setTfPayable(String payable) {
@@ -230,7 +230,7 @@ public class Payable
     @Override
     public void created() {
         boolCreated = true;
-        setPaymentPanelCardState(PaymentState.JUSTPAID.state());
+        setPaymentPanelCardState(PaymentState.JUST_PAID.state());
     }
 
     @Override
@@ -322,12 +322,12 @@ public class Payable
     @Override
     public void deleted() {
         clearInputFields();
-        setPaymentPanelCardState(PaymentState.NON_DETERMINED.state());
+        setPaymentPanelCardState(PaymentState.NOT_PAID.state());
     }
 
     @Override
     public void cleared() {
-        setPaymentPanelCardState(PaymentState.PAIED.state());
+        setPaymentPanelCardState(PaymentState.ALREADY_PAID.state());
     }
 
     @Override
