@@ -317,6 +317,7 @@ public class Payable
     @Override
     public void deleted() {
         clearInputFields();
+        setPaymentPanelCardState(PaymentState.NON_DETERMINED.state());
     }
 
     @Override
