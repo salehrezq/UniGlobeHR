@@ -44,7 +44,12 @@ public class Payable
 
     private JPanel container, panelCards;
     private YearMonth yearAndMonth;
-    private JLabel lbPayable, lbJustPaid, lbAlreadyPaid, lbPaymentPending, lbNotPaid;
+    private JLabel lbPayable,
+            lbJustPaid,
+            lbAlreadyPaid,
+            lbPaymentPending,
+            lbNotPaidYet,
+            lbNoEmployeeSelected;
     private JTextField tfPayable;
     private Color colorFieldRight;
     private Color colorFieldWrong;
@@ -79,17 +84,19 @@ public class Payable
         tfPayable.setPreferredSize(new Dimension(75, 27));
         container.add(tfPayable);
 
-        lbNotPaid = new JLabel("Not Paid Yet");
-
-        lbPaymentPending = new JLabel("... Pending              ");
+        lbNoEmployeeSelected = new JLabel("No Employee selected       ");
+        lbNotPaidYet = new JLabel("Not Paid Yet                     ");
+        lbPaymentPending = new JLabel("... Pending                         ");
 
         urlTickMark = getClass().getResource("/images/tick.png");
         imageIconTickMark = new ImageIcon(urlTickMark);
-        lbJustPaid = new JLabel("Successfully Paid  ", imageIconTickMark, 0);
-        lbAlreadyPaid = new JLabel("Already Paid     ", imageIconTickMark, 0);
+        lbJustPaid = new JLabel("Successfully Paid        ", imageIconTickMark, 0);
+        lbAlreadyPaid = new JLabel("Already Paid               ", imageIconTickMark, 0);
 
-        JPanel panelLabelNotPaid = new JPanel();
-        panelLabelNotPaid.add(lbNotPaid);
+        JPanel panelLabelNoEmployeeSelected = new JPanel();
+        panelLabelNoEmployeeSelected.add(lbNoEmployeeSelected);
+        JPanel panelLabelNotPaidYet = new JPanel();
+        panelLabelNotPaidYet.add(lbNotPaidYet);
         JPanel panelLabelPaymentPending = new JPanel();
         panelLabelPaymentPending.add(lbPaymentPending);
         JPanel panelLabelJustPaid = new JPanel();
@@ -99,13 +106,14 @@ public class Payable
 
         panelCards = new JPanel(new CardLayout());
         container.add(panelCards);
-        // Add all panels; paid, pending and non determined
-        panelCards.add(panelLabelNotPaid, PaymentState.NOT_PAID.state());
+        // Add all panels:
+        panelCards.add(panelLabelNoEmployeeSelected, PaymentState.NO_EMPLOYEE_SELECTED.state());
+        panelCards.add(panelLabelNotPaidYet, PaymentState.NOT_PAID.state());
         panelCards.add(panelLabelPaymentPending, PaymentState.PENDING.state());
         panelCards.add(panelLabelJustPaid, PaymentState.JUST_PAID.state());
         panelCards.add(panelLabelAlreadyPaid, PaymentState.ALREADY_PAID.state());
-        // Show the empty panel
-        setPaymentPanelCardState(PaymentState.NOT_PAID.state());
+        // Show the no employee selected
+        setPaymentPanelCardState(PaymentState.NO_EMPLOYEE_SELECTED.state());
 
         setFieldsEditable(false);
     }
@@ -149,6 +157,7 @@ public class Payable
 
     private enum PaymentState {
 
+        NO_EMPLOYEE_SELECTED("no employee selected"),
         NOT_PAID("was not paid yet"),
         PENDING("pending"),
         JUST_PAID("just paid"),
@@ -203,7 +212,7 @@ public class Payable
         employee = null;
         setFieldsEditable(false);
         tfPayable.setText(null);
-        setPaymentPanelCardState(PaymentState.NOT_PAID.state());
+        setPaymentPanelCardState(PaymentState.NO_EMPLOYEE_SELECTED.state());
     }
 
     public void setTfPayable(String payable) {
