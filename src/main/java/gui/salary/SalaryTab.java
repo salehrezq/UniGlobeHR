@@ -99,6 +99,7 @@ public class SalaryTab {
         salarySubmit.addSalaryUpdatedListener(salaryInput);
         salarySubmit.addSalaryUpdatedICRPListener(salaryInput);
         salarySubmit.addSalaryDeletedListener(payable);
+        salarySubmit.addSalaryDeletedListener(compute);
 
         salaryCancel = new SalaryCancel();
         salaryCancel.addCancelListener(salaryInput);
