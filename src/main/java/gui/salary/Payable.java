@@ -44,7 +44,7 @@ public class Payable
 
     private JPanel container, panelCards;
     private YearMonth yearAndMonth;
-    private JLabel lbPayable, lbAlreadyPaid, lbPaymentPending, lbPaymentNonDetermined;
+    private JLabel lbPayable, lbJustPaid, lbAlreadyPaid, lbPaymentPending, lbPaymentNonDetermined;
     private JTextField tfPayable;
     private Color colorFieldRight;
     private Color colorFieldWrong;
@@ -79,18 +79,21 @@ public class Payable
         tfPayable.setPreferredSize(new Dimension(75, 27));
         container.add(tfPayable);
 
-        lbPaymentNonDetermined = new JLabel("Non determined yet");
+        lbPaymentNonDetermined = new JLabel("Non Determined Yet");
 
         lbPaymentPending = new JLabel("... Pending              ");
 
         urlTickMark = getClass().getResource("/images/tick.png");
         imageIconTickMark = new ImageIcon(urlTickMark);
+        lbJustPaid = new JLabel("Successfully Paid  ", imageIconTickMark, 0);
         lbAlreadyPaid = new JLabel("Already Paid     ", imageIconTickMark, 0);
 
         JPanel panelLabelNonDeterminedYet = new JPanel();
         panelLabelNonDeterminedYet.add(lbPaymentNonDetermined);
         JPanel panelLabelPaymentPending = new JPanel();
         panelLabelPaymentPending.add(lbPaymentPending);
+        JPanel panelLabelJustPaid = new JPanel();
+        panelLabelJustPaid.add(lbJustPaid);
         JPanel panelLabelPaied = new JPanel();
         panelLabelPaied.add(lbAlreadyPaid);
 
@@ -99,6 +102,7 @@ public class Payable
         // Add all panels; paid, pending and non determined
         panelCards.add(panelLabelNonDeterminedYet, PaymentState.NON_DETERMINED.state());
         panelCards.add(panelLabelPaymentPending, PaymentState.PENDING.state());
+        panelCards.add(panelLabelJustPaid, PaymentState.JUSTPAID.state());
         panelCards.add(panelLabelPaied, PaymentState.PAIED.state());
         // Show the empty panel
         setPaymentPanelCardState(PaymentState.NON_DETERMINED.state());
@@ -147,6 +151,7 @@ public class Payable
 
         NON_DETERMINED("non determined"),
         PENDING("pending"),
+        JUSTPAID("just paid"),
         PAIED("paied");
 
         private final String state;
@@ -225,7 +230,7 @@ public class Payable
     @Override
     public void created() {
         boolCreated = true;
-        setPaymentPanelCardState(PaymentState.PAIED.state());
+        setPaymentPanelCardState(PaymentState.JUSTPAID.state());
     }
 
     @Override
