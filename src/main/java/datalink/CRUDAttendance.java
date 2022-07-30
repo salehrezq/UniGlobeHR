@@ -28,14 +28,6 @@ import model.Late;
 public class CRUDAttendance {
 
     private static Connection conn;
-    private static final int ATTENDANCE_ALREADY_TAKEN = -1;
-    private static final int ATTENDANCE_NOT_TAKEN = 2;
-    private static final int ATTENDANCE_STATE_PRESENT = 3;
-    private static final int ATTENDANCE_STATE_ABSENT = 4;
-    private static final int ATTENDANCE_STATE_NOT_SET = ATTENDANCE_NOT_TAKEN;
-    private static final int ATTENDANCE_CREATED = 5;
-    private static final int ATTENDANCE_UPDATED = 6;
-    private static final int FAIL_ON_CREATE_OR_UPDATE = 7;
     private static boolean commitAndDontWaitAnotherExecuteStmt;
 
     /**
@@ -67,7 +59,7 @@ public class CRUDAttendance {
             p.setBoolean(3, attendance.getStateOfAttendance());
             create = p.executeUpdate();
 
-            eas.setCreatedOrFailed(create);
+            eas.setCreatedOrFailed(create == 1);
             if (eas.getCreateState() == false) {
                 // Failed to insert attendance record.
                 JOptionPane.showConfirmDialog(null,
@@ -130,7 +122,7 @@ public class CRUDAttendance {
             p.setInt(2, attendance.getEmployeeId());
             p.setObject(3, attendance.getDate());
             update = p.executeUpdate();
-            eas.setUpdatedOrFailed(update);
+            eas.setUpdatedOrFailed(update == 1);
 
             if (commitAndDontWaitAnotherExecuteStmt && eas.getUpdateState()) {
                 conn.commit();
@@ -252,11 +244,11 @@ public class CRUDAttendance {
                 // Move cursor to next record, which is the first in this case.
                 result.next();
                 eas.setAttendanceId(result.getInt("id"));
-                eas.retrieveWhetherAttendanceWasTaken(ATTENDANCE_ALREADY_TAKEN);
-                eas.retrieveEmployeeStoredAttendanceState(eas.retrieveAttendanceStoredStateFromResultSet(result.getBoolean("state")));
+                eas.retrieveWhetherAttendanceWasTaken(true);
+                eas.retrieveEmployeeStoredAttendanceState(result.getBoolean("state"));
             } else {
-                eas.retrieveWhetherAttendanceWasTaken(ATTENDANCE_NOT_TAKEN);
-                eas.retrieveEmployeeStoredAttendanceState(ATTENDANCE_STATE_NOT_SET);
+                eas.retrieveWhetherAttendanceWasTaken(false);
+                eas.retrieveEmployeeStoredAttendanceState(null);
             }
         } catch (SQLException ex) {
             Logger.getLogger(CRUDAttendance.class.getName()).log(Level.SEVERE, null, ex);
@@ -396,8 +388,8 @@ public class CRUDAttendance {
         private int attendanceId;
         private boolean isAttendanceTaken;
         private Boolean employeeStoredAttendanceState;
-        private int created;
-        private int updated;
+        private boolean created;
+        private boolean updated;
         private boolean isUpdateNeeded;
 
         public void setAttendanceId(int attendanceId) {
@@ -408,40 +400,16 @@ public class CRUDAttendance {
             return this.attendanceId;
         }
 
-        private void retrieveWhetherAttendanceWasTaken(int isTaken) {
-            if (isTaken == ATTENDANCE_ALREADY_TAKEN) {
-                this.isAttendanceTaken = true;
-            } else if (isTaken == ATTENDANCE_NOT_TAKEN) {
-                this.isAttendanceTaken = false;
-            }
+        private void retrieveWhetherAttendanceWasTaken(boolean isTaken) {
+            this.isAttendanceTaken = isTaken;
         }
 
         public boolean getWasAttendanceTaken() {
             return this.isAttendanceTaken;
         }
 
-        private void retrieveEmployeeStoredAttendanceState(int attendanceState) {
-            if (attendanceState == ATTENDANCE_STATE_PRESENT) {
-                this.employeeStoredAttendanceState = Boolean.TRUE;
-            } else if (attendanceState == ATTENDANCE_STATE_ABSENT) {
-                this.employeeStoredAttendanceState = Boolean.FALSE;
-            } else if (attendanceState == ATTENDANCE_STATE_NOT_SET) {
-                employeeStoredAttendanceState = null;
-            }
-        }
-
-        /**
-         * Helper method for retrieveEmployeeStoredAttendanceState()
-         *
-         * @param state
-         * @return <code>int</code>
-         */
-        private int retrieveAttendanceStoredStateFromResultSet(boolean state) {
-            if (state) {
-                return ATTENDANCE_STATE_PRESENT;
-            } else {
-                return ATTENDANCE_STATE_ABSENT;
-            }
+        private void retrieveEmployeeStoredAttendanceState(Boolean attendanceState) {
+            this.employeeStoredAttendanceState = attendanceState;
         }
 
         /**
@@ -465,34 +433,20 @@ public class CRUDAttendance {
             return employeeStoredAttendanceState;
         }
 
-        private void setCreatedOrFailed(int createdOrFailed) {
-            if (createdOrFailed == 1) {
-                this.created = ATTENDANCE_CREATED;
-            } else {
-                this.created = FAIL_ON_CREATE_OR_UPDATE;
-            }
+        private void setCreatedOrFailed(boolean createdOrFailed) {
+            this.created = createdOrFailed;
         }
 
         public boolean getCreateState() {
-            if (this.created == ATTENDANCE_CREATED) {
-                return true;
-            }
-            return false;
+            return this.created;
         }
 
-        private void setUpdatedOrFailed(int updatedOrFailed) {
-            if (updatedOrFailed == 1) {
-                this.updated = ATTENDANCE_UPDATED;
-            } else {
-                this.updated = FAIL_ON_CREATE_OR_UPDATE;
-            }
+        private void setUpdatedOrFailed(boolean updatedOrFailed) {
+            this.updated = updatedOrFailed;
         }
 
         public boolean getUpdateState() {
-            if (this.updated == ATTENDANCE_UPDATED) {
-                return true;
-            }
-            return false;
+            return this.updated;
         }
 
         public boolean getWhetherUpdateNeeded() {
