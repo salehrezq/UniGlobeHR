@@ -246,9 +246,11 @@ public class CRUDAttendance {
                 eas.setAttendanceId(result.getInt("id"));
                 eas.retrieveWhetherAttendanceWasTaken(true);
                 eas.retrieveEmployeeStoredAttendanceState(result.getBoolean("state"));
+                eas.retrieveAttendanceStoredLockState(result.getBoolean("locked"));
             } else {
                 eas.retrieveWhetherAttendanceWasTaken(false);
                 eas.retrieveEmployeeStoredAttendanceState(null);
+                eas.retrieveAttendanceStoredLockState(null);
             }
         } catch (SQLException ex) {
             Logger.getLogger(CRUDAttendance.class.getName()).log(Level.SEVERE, null, ex);
@@ -391,6 +393,7 @@ public class CRUDAttendance {
         private boolean created;
         private boolean updated;
         private boolean isUpdateNeeded;
+        private Boolean locked;
 
         public void setAttendanceId(int attendanceId) {
             this.attendanceId = attendanceId;
@@ -455,6 +458,14 @@ public class CRUDAttendance {
 
         private void setWhetherUpdateNeeded(boolean isUpdateNeeded) {
             this.isUpdateNeeded = isUpdateNeeded;
+        }
+
+        private void retrieveAttendanceStoredLockState(Boolean lock) {
+            this.locked = lock;
+        }
+
+        private Boolean getAttendanceLockState() {
+            return this.locked;
         }
     }
 
