@@ -464,7 +464,7 @@ public class CRUDAttendance {
             this.locked = lock;
         }
 
-        private Boolean getAttendanceLockState() {
+        public Boolean isAttendanceRecordLocked() {
             return this.locked;
         }
     }
