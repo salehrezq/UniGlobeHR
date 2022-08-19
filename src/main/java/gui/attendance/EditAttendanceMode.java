@@ -54,7 +54,9 @@ public class EditAttendanceMode extends JPanel implements
     @Override
     public void employeeAttendanceDataOnSelection(CRUDAttendance.EmployeeAttendanceStatus eas) {
         if (eas.getWasAttendanceTaken()) {
-            btnEditModeAttendance.setEnabled(true);
+            // If attendance record was locked, the input will be to setEnabled(false),
+            // If attendance record was not locked, the input will be to setEnabled(true),
+            btnEditModeAttendance.setEnabled(!eas.isAttendanceRecordLocked());
             this.eas = eas;
         } else {
             this.eas = null;
@@ -70,7 +72,9 @@ public class EditAttendanceMode extends JPanel implements
     @Override
     public void dateChanged(CRUDAttendance.EmployeeAttendanceStatus eas) {
         if (eas.getWasAttendanceTaken()) {
-            btnEditModeAttendance.setEnabled(true);
+            // If attendance record was locked, the input will be to setEnabled(false),
+            // If attendance record was not locked, the input will be to setEnabled(true),
+            btnEditModeAttendance.setEnabled(!eas.isAttendanceRecordLocked());
             this.eas = eas;
         } else {
             this.eas = null;
