@@ -13,7 +13,6 @@ import java.awt.Font;
 import java.awt.GridBagConstraints;
 import java.math.BigDecimal;
 import java.net.URL;
-import java.time.LocalDate;
 import java.time.YearMonth;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
@@ -121,8 +120,7 @@ public class Payable
     @Override
     public void yearOrMonthChanged(YearMonth yearMonth) {
         if (employee != null) {
-            LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
-            salaryTemp = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary);
+            salaryTemp = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonth);
             boolSalaryPaid = salaryTemp != null;
             if (boolSalaryPaid) {
                 tfPayable.setText(salaryTemp.getPayable().toPlainString());
@@ -137,8 +135,7 @@ public class Payable
     @Override
     public void yearAndMonthNotChanged(YearMonth yearMonth) {
         if (employee != null) {
-            LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
-            salaryTemp = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary);
+            salaryTemp = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonth);
             boolSalaryPaid = salaryTemp != null;
             if (boolSalaryPaid) {
                 tfPayable.setText(salaryTemp.getPayable().toPlainString());

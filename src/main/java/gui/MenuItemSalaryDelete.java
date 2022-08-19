@@ -7,7 +7,6 @@ import gui.salary.SalaryInput;
 import gui.salary.SubjectDateChangeListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
-import java.time.LocalDate;
 import java.time.YearMonth;
 import java.util.ArrayList;
 import javax.swing.JCheckBoxMenuItem;
@@ -58,8 +57,7 @@ public class MenuItemSalaryDelete
     @Override
     public void yearOrMonthChanged(YearMonth yearMonth) {
         if (employee != null) {
-            LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
-            boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary) != null;
+            boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonth) != null;
 
             if (boolSalaryPaid) {
                 enableCheckBox(true);
@@ -74,8 +72,7 @@ public class MenuItemSalaryDelete
     @Override
     public void yearAndMonthNotChanged(YearMonth yearMonth) {
         if (employee != null) {
-            LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
-            boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary) != null;
+            boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonth) != null;
 
             if (boolSalaryPaid) {
                 enableCheckBox(true);

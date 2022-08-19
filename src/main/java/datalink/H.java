@@ -21,4 +21,19 @@ public class H {
         }
         return ym;
     }
+
+    public static LocalDate getYearMonth1st(Temporal temporal) {
+        if (temporal == null) {
+            return null;
+        }
+        LocalDate ldt = null;
+        if (temporal instanceof LocalDate) {
+            LocalDate ldtTemp = (LocalDate) temporal;
+            ldt = LocalDate.of(ldtTemp.getYear(), ldtTemp.getMonth(), 1);
+        } else if (temporal instanceof YearMonth) {
+            YearMonth ymTemp = (YearMonth) temporal;
+            ldt = LocalDate.of(ymTemp.getYear(), ymTemp.getMonth(), 1);
+        }
+        return ldt;
+    }
 }

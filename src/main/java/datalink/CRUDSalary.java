@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.temporal.Temporal;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import model.Salary;
@@ -52,8 +53,10 @@ public class CRUDSalary {
         return insert > 0;
     }
 
-    public static Salary isEmployeeWithYearMonthSubjectExist(int employeeId, LocalDate yearMonthSubject) {
+    public static Salary isEmployeeWithYearMonthSubjectExist(int employeeId, Temporal yearMonthSubject) {
 
+        // Always set date to 1st of subject month.
+        LocalDate yearMonthSubjectOfSalary = H.getYearMonth1st(yearMonthSubject);
         Salary salary = null;
 
         try {
@@ -65,7 +68,7 @@ public class CRUDSalary {
             conn = Connect.getConnection();
             PreparedStatement p = conn.prepareStatement(sql);
             p.setInt(1, employeeId);
-            p.setObject(2, yearMonthSubject);
+            p.setObject(2, yearMonthSubjectOfSalary);
 
             ResultSet result = p.executeQuery();
 

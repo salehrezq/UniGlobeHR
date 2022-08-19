@@ -138,8 +138,7 @@ public class Compute
     @Override
     public void yearOrMonthChanged(YearMonth yearMonth) {
         if (employee != null) {
-            LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
-            boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary) != null;
+            boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonth) != null;
 
             if (boolSalaryPaid) {
                 btnCompute.setEnabled(false);
@@ -156,8 +155,7 @@ public class Compute
     @Override
     public void yearAndMonthNotChanged(YearMonth yearMonth) {
         if (employee != null) {
-            LocalDate yearMonthSubjectOfSalary = LocalDate.of(yearMonth.getYear(), yearMonth.getMonth(), 1);
-            boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonthSubjectOfSalary) != null;
+            boolSalaryPaid = CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), yearMonth) != null;
 
             if (boolSalaryPaid) {
                 btnCompute.setEnabled(false);
