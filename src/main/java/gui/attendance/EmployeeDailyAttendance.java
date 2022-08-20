@@ -100,6 +100,8 @@ public class EmployeeDailyAttendance extends JPanel
             eas = CRUDAttendance.getEmployeeAttendanceStatusOnSpecificDate(employeeContext.getId(), date);
             notifyDateChanged(eas);
 
+            boolean boolSalaryClearedForMonth = employeeContext.isSalaryPaidForMonth(date);
+
             if (eas.getWasAttendanceTaken()) {
                 btnSetPresent.setEnabled(false);
                 btnSetAbsent.setEnabled(false);
@@ -115,8 +117,8 @@ public class EmployeeDailyAttendance extends JPanel
             } else {
                 // Attendance was NOT taken yet, then clear the buttons
                 btnGroup.clearSelection();
-                btnSetPresent.setEnabled(true);
-                btnSetAbsent.setEnabled(true);
+                btnSetPresent.setEnabled(!boolSalaryClearedForMonth);
+                btnSetAbsent.setEnabled(!boolSalaryClearedForMonth);
             }
         } else {
             // No employee node is selected, so disable attendance buttons
@@ -151,6 +153,8 @@ public class EmployeeDailyAttendance extends JPanel
         eas = CRUDAttendance.getEmployeeAttendanceStatusOnSpecificDate(employeeContext.getId(), datePicker.getDate());
         notifyEmployeeAttendanceDataOnSelection(eas);
 
+        boolean boolSalaryClearedForMonth = employeeContext.isSalaryPaidForMonth(datePicker.getDate());
+
         if (eas.getWasAttendanceTaken()) {
             btnSetPresent.setEnabled(false);
             btnSetAbsent.setEnabled(false);
@@ -166,8 +170,8 @@ public class EmployeeDailyAttendance extends JPanel
         } else {
             // Attendance was NOT taken yet, then clear the buttons
             btnGroup.clearSelection();
-            btnSetPresent.setEnabled(true);
-            btnSetAbsent.setEnabled(true);
+            btnSetPresent.setEnabled(!boolSalaryClearedForMonth);
+            btnSetAbsent.setEnabled(!boolSalaryClearedForMonth);
         }
     }
 

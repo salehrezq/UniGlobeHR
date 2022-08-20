@@ -5,6 +5,7 @@
  */
 package model;
 
+import datalink.CRUDSalary;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -72,5 +73,9 @@ public class Employee {
 
     public BigDecimal salaryOfSubMonth(int days) {
         return this.salaryOfSingleDay().multiply(new BigDecimal(days));
+    }
+
+    public boolean isSalaryPaidForMonth(LocalDate ym) {
+        return CRUDSalary.isEmployeeWithYearMonthSubjectExist(this.getId(), ym) != null;
     }
 }
