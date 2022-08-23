@@ -89,12 +89,12 @@ public class AttendanceTab extends JPanel {
         editAttendanceMode.addAttendanceEditModeListener(employeeDailyAttendance);
         editAttendanceMode.addAttendanceEditModeListener(employeeAttendLate);
         editAttendanceMode.addAttendanceEditModeListener(submitAttendancePanel);
+        gatherSubmitEditPanel.add(editAttendanceMode);
+
         c = new GridBagConstraints();
         c.gridy = 3;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.anchor = GridBagConstraints.PAGE_START;
-        gatherSubmitEditPanel.add(editAttendanceMode);
-
         this.add(gatherSubmitEditPanel, c);
 
         monthAttendanceDeductions = new MonthAttendanceDeductions();
