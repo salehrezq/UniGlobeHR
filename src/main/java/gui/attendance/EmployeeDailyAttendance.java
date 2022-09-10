@@ -10,6 +10,7 @@ import gui.DateDeselectedListener;
 import gui.DateListener;
 import gui.DatePicker;
 import gui.EmployeeSelectedListener;
+import gui.MonthClearanceState;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
@@ -46,6 +47,7 @@ public class EmployeeDailyAttendance extends JPanel
     private ArrayList<EmployeeAttendanceListener> employeeAttendanceListeners;
     private ArrayList<EmployeeAttendanceDataListener> employeeAttendanceData;
     private ArrayList<DateChangedAttendanceDataListener> dateChangedAttendanceDatas;
+    private MonthClearanceState monthClearanceState;
 
     public EmployeeDailyAttendance() {
         super();
@@ -83,6 +85,10 @@ public class EmployeeDailyAttendance extends JPanel
         this.add(datePicker.getDatePicker());
     }
 
+    public void setMonthClearanceState(MonthClearanceState monthClearanceState) {
+        this.monthClearanceState = monthClearanceState;
+    }
+
     public DatePicker getDatePicker() {
         return this.datePicker;
     }
@@ -101,6 +107,7 @@ public class EmployeeDailyAttendance extends JPanel
             notifyDateChanged(eas);
 
             boolean boolSalaryClearedForMonth = employeeContext.isSalaryPaidForMonth(date);
+            monthClearanceState.monthClearedReact(boolSalaryClearedForMonth);
 
             if (eas.getWasAttendanceTaken()) {
                 btnSetPresent.setEnabled(false);
@@ -154,6 +161,7 @@ public class EmployeeDailyAttendance extends JPanel
         notifyEmployeeAttendanceDataOnSelection(eas);
 
         boolean boolSalaryClearedForMonth = employeeContext.isSalaryPaidForMonth(datePicker.getDate());
+        monthClearanceState.monthClearedReact(boolSalaryClearedForMonth);
 
         if (eas.getWasAttendanceTaken()) {
             btnSetPresent.setEnabled(false);

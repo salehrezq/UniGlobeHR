@@ -7,6 +7,7 @@ package gui.attendance;
 
 import gui.DatePicker;
 import gui.EmployeeCard;
+import gui.MonthClearanceState;
 import java.awt.Color;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -26,6 +27,7 @@ public class AttendanceTab extends JPanel {
     private EmployeeAttendLate employeeAttendLate;
     private SubmitAttendance submitAttendancePanel;
     private EditAttendanceMode editAttendanceMode;
+    private MonthClearanceState monthClearanceState;
     private MonthAttendanceDeductions monthAttendanceDeductions;
 
     public AttendanceTab() {
@@ -90,6 +92,10 @@ public class AttendanceTab extends JPanel {
         editAttendanceMode.addAttendanceEditModeListener(employeeAttendLate);
         editAttendanceMode.addAttendanceEditModeListener(submitAttendancePanel);
         gatherSubmitEditPanel.add(editAttendanceMode);
+
+        monthClearanceState = new MonthClearanceState();
+        employeeDailyAttendance.setMonthClearanceState(monthClearanceState);
+        gatherSubmitEditPanel.add(monthClearanceState.getContainer());
 
         c = new GridBagConstraints();
         c.gridy = 3;
