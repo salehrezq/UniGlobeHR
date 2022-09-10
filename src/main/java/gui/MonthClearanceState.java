@@ -30,7 +30,7 @@ public class MonthClearanceState {
         panelCards.add(panelLabelMonthCleared, MonthClearanceStatePole.MONTH_CLEARED.state());
         container.add(panelCards);
 
-        setMonthClearanceState(MonthClearanceStatePole.MONTH_CLEARED.state());
+        setMonthClearanceState(MonthClearanceStatePole.MONTH_NOT_CLEARED.state());
     }
 
     private enum MonthClearanceStatePole {
