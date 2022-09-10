@@ -66,4 +66,12 @@ public class MonthClearanceState {
         setMonthClearanceState(MonthClearanceStatePole.MONTH_CLEARED.state());
     }
 
+    public void monthClearedReact(boolean boolCleared) {
+        if (boolCleared) {
+            labelMonthCleared();
+        } else {
+            labelMonthNotCleared();
+        }
+    }
+
 }
