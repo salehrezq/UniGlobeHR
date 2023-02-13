@@ -5,6 +5,7 @@ import crud.DeleteListener;
 import crud.UpdateListener;
 import datalink.CRUDPerformance;
 import datalink.CRUDPerformanceType;
+import datalink.CRUDSalary;
 import gui.DateDeselectedListener;
 import gui.DateListener;
 import gui.DatePicker;
@@ -77,6 +78,7 @@ public class PerformanceInput
     private Performance performance;
     private int performanceId;
     private int performanceOldId;
+    private Employee employee;
 
     public PerformanceInput() {
 
@@ -180,6 +182,7 @@ public class PerformanceInput
 
     @Override
     public void employeeSelected(Employee employee) {
+        this.employee = employee;
         if (!boolPerformanceDisplayMode) {
             setFieldsEditable(true);
         }
@@ -414,6 +417,9 @@ public class PerformanceInput
         @Override
         public void dateChanged(LocalDate date) {
             boolDateFilled = true;
+            if (employee != null) {
+                CRUDSalary.isEmployeeWithYearMonthSubjectExist(employee.getId(), date);
+            }
         }
 
         @Override
