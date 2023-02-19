@@ -29,6 +29,7 @@ import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.NumberFormatter;
 import model.Employee;
+import utilities.imagefilechooser.IMGFileChooser;
 
 /**
  *
@@ -43,7 +44,7 @@ public class NewEmployeeDialog extends JDialog
     private int width;
     private int height;
     private GridBagConstraints gbc;
-    private JLabel lbName;
+    private JLabel lbEmpPhoto, lbName;
     private JTextField fName;
     private JLabel lbDate;
     private LocalDate enrollmetDate;
@@ -51,7 +52,8 @@ public class NewEmployeeDialog extends JDialog
     private JLabel lbSalary;
     private JFormattedTextField tfSalary;
     private JCheckBox fActive;
-    private JButton btnInsertEmployee;
+    private JButton btnSetEmpPhoto, btnInsertEmployee;
+    private IMGFileChooser IMGFileChooser;
 
     public NewEmployeeDialog(JFrame parentFrame, String title, boolean modal) {
         super(parentFrame, title, modal);
@@ -66,7 +68,12 @@ public class NewEmployeeDialog extends JDialog
         fieldDate();
         fieldSalary();
         fieldActive();
+        fieldBtnSetEmpPhoto();
         btnInsertEmployee();
+
+        IMGFileChooser = new IMGFileChooser();
+        IMGFileChooser.setParentComponent(this);
+        btnSetEmpPhoto.addActionListener(IMGFileChooser);
 
         this.setSize(new Dimension(width, height));
         this.getContentPane().add(panel);
@@ -139,10 +146,22 @@ public class NewEmployeeDialog extends JDialog
         panel.add(fActive, gbc);
     }
 
+    private void fieldBtnSetEmpPhoto() {
+        lbEmpPhoto = new JLabel("Set Employee Photo:");
+        grid(0, 4);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        panel.add(lbEmpPhoto, gbc);
+        btnSetEmpPhoto = new JButton("Browse...");
+        btnSetEmpPhoto.setHorizontalTextPosition(SwingConstants.LEFT);
+        grid(1, 4);
+        gbc.anchor = GridBagConstraints.LINE_START;
+        panel.add(btnSetEmpPhoto, gbc);
+    }
+
     private void btnInsertEmployee() {
         btnInsertEmployee = new JButton("Insert");
         btnInsertEmployee.addActionListener(new InsertEmployeeHandler());
-        grid(1, 4);
+        grid(1, 5);
         gbc.anchor = GridBagConstraints.CENTER;
         panel.add(btnInsertEmployee, gbc);
     }
