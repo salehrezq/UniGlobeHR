@@ -28,14 +28,15 @@ public class CRUDEmployee {
 
         try {
 
-            String sql = "INSERT INTO employees (`name`, `enrolled_date`, `salary`, `active`) VALUES (?, ?, ?, ?)";
+            String sql = "INSERT INTO employees (`name`, `enrolled_date`, `salary`, `photo` ,`active`) VALUES (?, ?, ?, ?, ?)";
             conn = Connect.getConnection();
             PreparedStatement p = conn.prepareStatement(sql);
 
             p.setString(1, employee.getName());
             p.setObject(2, employee.getEnrolledDate());
             p.setBigDecimal(3, employee.getSalary());
-            p.setBoolean(4, employee.isActive());
+            p.setBytes(4, employee.getPhoto());
+            p.setBoolean(5, employee.isActive());
             insert = p.executeUpdate();
             conn.commit();
 
@@ -64,6 +65,7 @@ public class CRUDEmployee {
                 employee.setName(result.getString("name"));
                 employee.setEnrolledDate(result.getDate("enrolled_date").toLocalDate());
                 employee.setSalary(result.getBigDecimal("salary"));
+                employee.setPhoto(result.getBytes("photo"));
                 employee.setActive(result.getBoolean("active"));
                 employees.add(employee);
             }

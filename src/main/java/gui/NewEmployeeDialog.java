@@ -53,7 +53,7 @@ public class NewEmployeeDialog extends JDialog
     private JFormattedTextField tfSalary;
     private JCheckBox fActive;
     private JButton btnSetEmpPhoto, btnInsertEmployee;
-    private IMGFileChooser IMGFileChooser;
+    private IMGFileChooser iMGFileChooser;
 
     public NewEmployeeDialog(JFrame parentFrame, String title, boolean modal) {
         super(parentFrame, title, modal);
@@ -71,9 +71,9 @@ public class NewEmployeeDialog extends JDialog
         fieldBtnSetEmpPhoto();
         btnInsertEmployee();
 
-        IMGFileChooser = new IMGFileChooser();
-        IMGFileChooser.setParentComponent(this);
-        btnSetEmpPhoto.addActionListener(IMGFileChooser);
+        iMGFileChooser = new IMGFileChooser();
+        iMGFileChooser.setParentComponent(this);
+        btnSetEmpPhoto.addActionListener(iMGFileChooser);
 
         this.setSize(new Dimension(width, height));
         this.getContentPane().add(panel);
@@ -228,6 +228,12 @@ public class NewEmployeeDialog extends JDialog
             BigDecimal salary = new BigDecimal(salaryString);
 
             employee.setSalary(salary);
+
+            byte[] photo = iMGFileChooser.getPhotoInBytes();
+            if (photo != null) {
+                employee.setPhoto(photo);
+            }
+
             employee.setActive(getEmployeeIsActive());
 
             if (CRUDEmployee.create(employee)) {

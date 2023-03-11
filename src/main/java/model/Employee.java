@@ -20,6 +20,7 @@ public class Employee {
     private String name;
     private LocalDate enrolledDate;
     private BigDecimal salary;
+    private byte[] photo;
     private boolean active;
 
     public int getId() {
@@ -52,6 +53,14 @@ public class Employee {
 
     public void setSalary(BigDecimal salary) {
         this.salary = salary;
+    }
+
+    public byte[] getPhoto() {
+        return photo;
+    }
+
+    public void setPhoto(byte[] photo) {
+        this.photo = photo;
     }
 
     public boolean isActive() {

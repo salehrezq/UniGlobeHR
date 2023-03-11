@@ -8,7 +8,14 @@ package gui;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.time.format.DateTimeFormatter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import model.Employee;
@@ -21,6 +28,7 @@ public class EmployeeCard extends JPanel implements EmployeeSelectedListener {
 
     private final GridBagLayout gridbag;
 
+    private JLabel lbPhoto;
     private JLabel lbEmpName;
     private JLabel lbDateEnrollment;
     private final String UNSELECTED = "UN-SELECTED";
@@ -32,8 +40,16 @@ public class EmployeeCard extends JPanel implements EmployeeSelectedListener {
         this.setLayout(gridbag);
         GridBagConstraints c = new GridBagConstraints();
 
-        lbEmpName = new JLabel("Name: " + UNSELECTED);
+        lbPhoto = new JLabel();
         c.gridx = 0;
+        c.gridy = 0;
+        c.anchor = GridBagConstraints.LINE_START;
+        c.gridheight = 2;
+        this.add(lbPhoto, c);
+
+        lbEmpName = new JLabel("Name: " + UNSELECTED);
+        c = new GridBagConstraints();
+        c.gridx = 1;
         c.gridy = 0;
         c.insets = new Insets(5, 5, 0, 0);
         c.anchor = GridBagConstraints.FIRST_LINE_START;
@@ -42,9 +58,20 @@ public class EmployeeCard extends JPanel implements EmployeeSelectedListener {
         lbDateEnrollment = new JLabel("Enrollment Date: " + UNSELECTED);
         c = new GridBagConstraints();
         c.insets = new Insets(5, 5, 0, 0);
+        c.gridx = 1;
         c.gridy = 1;
         c.anchor = GridBagConstraints.FIRST_LINE_START;
         this.add(lbDateEnrollment, c);
+    }
+
+    public void setLabelPhoto(byte[] photo) {
+        ByteArrayInputStream bis = new ByteArrayInputStream(photo);
+        try {
+            BufferedImage image = ImageIO.read(bis);
+            lbPhoto.setIcon(new ImageIcon(image));
+        } catch (IOException ex) {
+            Logger.getLogger(EmployeeCard.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public void setLabelEmpName(String empName) {
@@ -57,6 +84,7 @@ public class EmployeeCard extends JPanel implements EmployeeSelectedListener {
 
     @Override
     public void employeeSelected(Employee employee) {
+        this.setLabelPhoto(employee.getPhoto());
         this.setLabelEmpName(employee.getName());
         this.setLbDateEnrollment(employee.getEnrolledDate().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")));
     }
