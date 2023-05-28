@@ -19,7 +19,7 @@ public class Connect {
 
     // JDBC driver name and database URL
     private static final String JDBC_DRIVER = "org.mariadb.jdbc.Driver";
-    private static final String DB_URL = "jdbc:mariadb://localhost:3306/uniglobehr";
+    private static final String DB_URL = "jdbc:mariadb://localhost:3306/hr_gear_db";
 
     //  Database credentials
     private static final String USER = "root";
