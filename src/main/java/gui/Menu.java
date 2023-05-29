@@ -5,6 +5,7 @@
  */
 package gui;
 
+import gui.empinsertdialoge.NewEmployeeDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
