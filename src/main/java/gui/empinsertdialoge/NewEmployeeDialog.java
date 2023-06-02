@@ -16,6 +16,9 @@ import java.awt.GridBagLayout;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.text.NumberFormat;
 import javax.swing.JDialog;
@@ -24,6 +27,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import java.time.LocalDate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JFormattedTextField;
@@ -34,6 +41,7 @@ import javax.swing.event.DocumentListener;
 import javax.swing.text.NumberFormatter;
 import model.Employee;
 import utilities.imagefilechooser.IMGFileChooser;
+import utilities.imagefilechooser.ImageSelectedListner;
 
 /**
  *
@@ -42,7 +50,8 @@ import utilities.imagefilechooser.IMGFileChooser;
 public class NewEmployeeDialog extends JDialog
         implements
         DateListener,
-        DateDeselectedListener {
+        DateDeselectedListener,
+        ImageSelectedListner {
 
     private JPanel panel;
     private int width;
@@ -58,6 +67,7 @@ public class NewEmployeeDialog extends JDialog
     private JCheckBox fActive;
     private JButton btnSetEmpPhoto, btnInsertEmployee;
     private IMGFileChooser iMGFileChooser;
+    private JLabel lbImagePreview;
 
     public NewEmployeeDialog(JFrame parentFrame, String title, boolean modal) {
         super(parentFrame, title, modal);
@@ -73,10 +83,12 @@ public class NewEmployeeDialog extends JDialog
         fieldSalary();
         fieldActive();
         fieldBtnSetEmpPhoto();
+        fieldImagePreview();
         btnInsertEmployee();
 
         iMGFileChooser = new IMGFileChooser();
         iMGFileChooser.setParentComponent(this);
+        iMGFileChooser.addImageSelectedListner(this);
         btnSetEmpPhoto.addActionListener(iMGFileChooser);
 
         this.setSize(new Dimension(width, height));
@@ -85,7 +97,12 @@ public class NewEmployeeDialog extends JDialog
 
     }
 
+    private void newgbc() {
+        gbc = new GridBagConstraints();
+    }
+
     private void fieldName() {
+        newgbc();
         lbName = new JLabel("Name:");
         fName = new JTextField(20);
         grid(0, 0);
@@ -94,10 +111,12 @@ public class NewEmployeeDialog extends JDialog
         panel.add(lbName, gbc);
         grid(1, 0);
         gbc.anchor = GridBagConstraints.LINE_END;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
         panel.add(fName, gbc);
     }
 
     private void fieldDate() {
+        newgbc();
         lbDate = new JLabel("Date of enrollment:");
         insets(0, 10, 10, 0);
         grid(0, 1);
@@ -112,10 +131,12 @@ public class NewEmployeeDialog extends JDialog
         datePicker.addDateDeselectedListener(this);
         // initial setting
         enrollmetDate = datePicker.getDate();
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
         panel.add(datePicker.getDatePicker(), gbc);
     }
 
     private void fieldSalary() {
+        newgbc();
         lbSalary = new JLabel("Salary:");
         insets(0, 10, 10, 0);
         grid(0, 2);
@@ -137,10 +158,12 @@ public class NewEmployeeDialog extends JDialog
         tfSalary = new JFormattedTextField(format);
         tfSalary.getDocument().addDocumentListener(new DocumentRegex());
         tfSalary.setPreferredSize(new Dimension(100, 20));
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
         panel.add(tfSalary, gbc);
     }
 
     private void fieldActive() {
+        newgbc();
         fActive = new JCheckBox("Is employee active?");
         fActive.setSelected(true);
         fActive.setHorizontalTextPosition(SwingConstants.LEFT);
@@ -151,7 +174,8 @@ public class NewEmployeeDialog extends JDialog
     }
 
     private void fieldBtnSetEmpPhoto() {
-        lbEmpPhoto = new JLabel("Set Employee Photo:");
+        newgbc();
+        lbEmpPhoto = new JLabel("Photo:");
         grid(0, 4);
         gbc.anchor = GridBagConstraints.LINE_START;
         panel.add(lbEmpPhoto, gbc);
@@ -162,11 +186,22 @@ public class NewEmployeeDialog extends JDialog
         panel.add(btnSetEmpPhoto, gbc);
     }
 
+    private void fieldImagePreview() {
+        newgbc();
+        lbImagePreview = new JLabel("[Preview]");
+        grid(2, 4);
+        gbc.gridheight = GridBagConstraints.REMAINDER;
+        panel.add(lbImagePreview, gbc);
+    }
+
     private void btnInsertEmployee() {
+        newgbc();
         btnInsertEmployee = new JButton("Insert");
         btnInsertEmployee.addActionListener(new InsertEmployeeHandler());
         grid(1, 5);
         gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridheight = 2;
+        insets(40, 0, 0, 0);
         panel.add(btnInsertEmployee, gbc);
     }
 
@@ -201,6 +236,18 @@ public class NewEmployeeDialog extends JDialog
     public void dateDeselected() {
         btnInsertEmployee.setEnabled(false);
         this.enrollmetDate = null;
+    }
+
+    @Override
+    public void imageSelected(byte[] photoInBytes) {
+        ByteArrayInputStream bis = new ByteArrayInputStream(photoInBytes);
+        try {
+            BufferedImage image = ImageIO.read(bis);
+            lbImagePreview.setText("");
+            lbImagePreview.setIcon(new ImageIcon(image));
+        } catch (IOException ex) {
+            Logger.getLogger(NewEmployeeDialog.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     private class InsertEmployeeHandler implements ActionListener {

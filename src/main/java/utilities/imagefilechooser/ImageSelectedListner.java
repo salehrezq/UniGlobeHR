@@ -6,4 +6,5 @@ package utilities.imagefilechooser;
  */
 public interface ImageSelectedListner {
 
+    public void imageSelected(byte[] photoInBytes);
 }
