@@ -57,7 +57,7 @@ public class NewEmployeeDialog extends JDialog
     private int width;
     private int height;
     private GridBagConstraints gbc;
-    private JLabel lbEmpPhoto, lbName;
+    private JLabel lbName;
     private JTextField fName;
     private JLabel lbDate;
     private LocalDate enrollmetDate;
@@ -73,7 +73,7 @@ public class NewEmployeeDialog extends JDialog
         super(parentFrame, title, modal);
 
         this.width = 400;
-        this.height = 350;
+        this.height = 400;
 
         panel = new JPanel(new GridBagLayout());
         gbc = new GridBagConstraints();
@@ -94,7 +94,6 @@ public class NewEmployeeDialog extends JDialog
         this.setSize(new Dimension(width, height));
         this.getContentPane().add(panel);
         this.setVisible(true);
-
     }
 
     private void newgbc() {
@@ -110,7 +109,7 @@ public class NewEmployeeDialog extends JDialog
         gbc.anchor = GridBagConstraints.LINE_START;
         panel.add(lbName, gbc);
         grid(1, 0);
-        gbc.anchor = GridBagConstraints.LINE_END;
+        gbc.anchor = GridBagConstraints.WEST;
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         panel.add(fName, gbc);
     }
@@ -175,22 +174,20 @@ public class NewEmployeeDialog extends JDialog
 
     private void fieldBtnSetEmpPhoto() {
         newgbc();
-        lbEmpPhoto = new JLabel("Photo:");
-        grid(0, 4);
-        gbc.anchor = GridBagConstraints.LINE_START;
-        panel.add(lbEmpPhoto, gbc);
-        btnSetEmpPhoto = new JButton("Browse...");
+        btnSetEmpPhoto = new JButton("Browse photo...");
         btnSetEmpPhoto.setHorizontalTextPosition(SwingConstants.LEFT);
-        grid(1, 4);
-        gbc.anchor = GridBagConstraints.LINE_START;
+        grid(0, 4);
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
         panel.add(btnSetEmpPhoto, gbc);
     }
 
     private void fieldImagePreview() {
         newgbc();
         lbImagePreview = new JLabel("[Preview]");
-        grid(2, 4);
-        gbc.gridheight = GridBagConstraints.REMAINDER;
+        grid(0, 5);
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
         panel.add(lbImagePreview, gbc);
     }
 
@@ -198,7 +195,7 @@ public class NewEmployeeDialog extends JDialog
         newgbc();
         btnInsertEmployee = new JButton("Insert");
         btnInsertEmployee.addActionListener(new InsertEmployeeHandler());
-        grid(1, 5);
+        grid(1, 6);
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridheight = 2;
         insets(40, 0, 0, 0);

@@ -73,7 +73,6 @@ public class IMGFileChooser implements ActionListener {
                 BufferedImage originalImage = ImageIO.read(f);
                 BufferedImage thumbnail = Thumbnails.of(originalImage)
                         .size(100, 100)
-                        .rotate(90)
                         .asBufferedImage();
 
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
