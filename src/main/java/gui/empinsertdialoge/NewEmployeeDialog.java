@@ -20,6 +20,7 @@ import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.net.URL;
 import java.text.NumberFormat;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
@@ -65,9 +66,9 @@ public class NewEmployeeDialog extends JDialog
     private JLabel lbSalary;
     private JFormattedTextField tfSalary;
     private JCheckBox fActive;
-    private JButton btnSetEmpPhoto, btnInsertEmployee;
+    private JButton btnSetEmpPhoto, btnInsertEmployee, btnRotate;
     private IMGFileChooser iMGFileChooser;
-    private JLabel lbImagePreview;
+    private RotatablePreview lbImagePreview;
 
     public NewEmployeeDialog(JFrame parentFrame, String title, boolean modal) {
         super(parentFrame, title, modal);
@@ -84,6 +85,7 @@ public class NewEmployeeDialog extends JDialog
         fieldActive();
         fieldBtnSetEmpPhoto();
         fieldImagePreview();
+        btnRotatePreview();
         btnInsertEmployee();
 
         iMGFileChooser = new IMGFileChooser();
@@ -184,21 +186,38 @@ public class NewEmployeeDialog extends JDialog
 
     private void fieldImagePreview() {
         newgbc();
-        lbImagePreview = new JLabel("[Preview]");
+        lbImagePreview = new RotatablePreview();
+        lbImagePreview.setPreferredSize(new Dimension(100, 100));
+        URL urlAvatar = getClass().getResource("/images/avatar.png");
+        lbImagePreview.setIcon(new ImageIcon(urlAvatar));
+        lbImagePreview.setHorizontalAlignment(SwingConstants.CENTER);
+        lbImagePreview.setVerticalAlignment(SwingConstants.CENTER);
         grid(0, 5);
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridwidth = GridBagConstraints.REMAINDER;
         panel.add(lbImagePreview, gbc);
     }
 
+    private void btnRotatePreview() {
+        newgbc();
+        URL urlRotate = getClass().getResource("/images/rotate.png");
+        btnRotate = new JButton("", new ImageIcon(urlRotate));
+        btnRotate.setPreferredSize(new Dimension(25, 25));
+        btnRotate.addActionListener(new RotatePreviewHandler());
+        grid(0, 6);
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        panel.add(btnRotate, gbc);
+    }
+
     private void btnInsertEmployee() {
         newgbc();
         btnInsertEmployee = new JButton("Insert");
         btnInsertEmployee.addActionListener(new InsertEmployeeHandler());
-        grid(1, 6);
+        grid(0, 7);
         gbc.anchor = GridBagConstraints.CENTER;
-        gbc.gridheight = 2;
-        insets(40, 0, 0, 0);
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        insets(30, 0, 0, 0);
         panel.add(btnInsertEmployee, gbc);
     }
 
@@ -240,8 +259,8 @@ public class NewEmployeeDialog extends JDialog
         ByteArrayInputStream bis = new ByteArrayInputStream(photoInBytes);
         try {
             BufferedImage image = ImageIO.read(bis);
-            lbImagePreview.setText("");
-            lbImagePreview.setIcon(new ImageIcon(image));
+            lbImagePreview.setIcon(null);
+            lbImagePreview.setImage(image);
         } catch (IOException ex) {
             Logger.getLogger(NewEmployeeDialog.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -251,7 +270,6 @@ public class NewEmployeeDialog extends JDialog
 
         @Override
         public void actionPerformed(ActionEvent arg0) {
-
             String name = getEmployeeName();
 
             if (name.isBlank()) {
@@ -294,6 +312,14 @@ public class NewEmployeeDialog extends JDialog
             }
         }
 
+    }
+
+    private class RotatePreviewHandler implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            lbImagePreview.rotate();
+        }
     }
 
     class DocumentRegex implements DocumentListener {

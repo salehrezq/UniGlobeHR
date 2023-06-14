@@ -1,6 +1,5 @@
 package gui.empinsertdialoge;
 
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
@@ -15,16 +14,24 @@ public class RotatablePreview extends JLabel {
 
     private BufferedImage master;
     private BufferedImage rotated;
+    private double angle;
 
-    public RotatablePreview(String s) {
-        super(s);
+    public RotatablePreview() {
+        super();
+        angle = 0.0;
     }
 
     public void setImage(BufferedImage recivedImage) {
         master = recivedImage;
+        rotated = master;
+        repaint();
     }
 
-    public void rotate(double angle) {
+    public void rotate() {
+        angle = angle + 90.0;
+        if (angle >= 360) {
+            angle = 0.0;
+        }
         rotated = rotateImageByDegrees(master, angle);
         repaint();
     }
@@ -41,15 +48,7 @@ public class RotatablePreview extends JLabel {
         }
     }
 
-    @Override
-    public Dimension getPreferredSize() {
-        return master == null
-                ? new Dimension(100, 100)
-                : new Dimension(master.getWidth(), master.getHeight());
-    }
-
     public BufferedImage rotateImageByDegrees(BufferedImage img, double angle) {
-
         double rads = Math.toRadians(angle);
         double sin = Math.abs(Math.sin(rads)), cos = Math.abs(Math.cos(rads));
         int w = img.getWidth();
