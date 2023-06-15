@@ -295,7 +295,7 @@ public class NewEmployeeDialog extends JDialog
 
             employee.setSalary(salary);
 
-            byte[] photo = iMGFileChooser.getPhotoInBytes();
+            byte[] photo = lbImagePreview.getImageBytes();
             if (photo != null) {
                 employee.setPhoto(photo);
             }

@@ -4,6 +4,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 
 /**
@@ -25,6 +30,17 @@ public class RotatablePreview extends JLabel {
         master = recivedImage;
         rotated = master;
         repaint();
+    }
+
+    public byte[] getImageBytes() {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        try {
+            ImageIO.write(rotated, "jpg", baos);
+        } catch (IOException ex) {
+            Logger.getLogger(RotatablePreview.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return baos.toByteArray();
     }
 
     public void rotate() {
@@ -56,7 +72,7 @@ public class RotatablePreview extends JLabel {
         int newWidth = (int) Math.floor(w * cos + h * sin);
         int newHeight = (int) Math.floor(h * cos + w * sin);
 
-        BufferedImage rotated = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_ARGB);
+        BufferedImage rotated = new BufferedImage(newWidth, newHeight, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2d = rotated.createGraphics();
         AffineTransform at = new AffineTransform();
         at.translate((newWidth - w) / 2, (newHeight - h) / 2);
