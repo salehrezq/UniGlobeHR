@@ -31,6 +31,7 @@ import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.imageio.ImageIO;
+import javax.swing.Box;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -54,7 +55,7 @@ public class NewEmployeeDialog extends JDialog
         DateDeselectedListener,
         ImageSelectedListner {
 
-    private JPanel panel;
+    private JPanel panel, panelImageControls;
     private int width;
     private int height;
     private GridBagConstraints gbc;
@@ -66,9 +67,10 @@ public class NewEmployeeDialog extends JDialog
     private JLabel lbSalary;
     private JFormattedTextField tfSalary;
     private JCheckBox fActive;
-    private JButton btnSetEmpPhoto, btnInsertEmployee, btnRotate;
+    private JButton btnSetEmpPhoto, btnInsertEmployee, btnRotate, btnCancelImage;
     private IMGFileChooser iMGFileChooser;
     private RotatablePreview lbImagePreview;
+    private final ImageIcon iconAvatar = new ImageIcon(getClass().getResource("/images/avatar.png"));
 
     public NewEmployeeDialog(JFrame parentFrame, String title, boolean modal) {
         super(parentFrame, title, modal);
@@ -85,7 +87,7 @@ public class NewEmployeeDialog extends JDialog
         fieldActive();
         fieldBtnSetEmpPhoto();
         fieldImagePreview();
-        btnRotatePreview();
+        fieldImagePreviewControls();
         btnInsertEmployee();
 
         iMGFileChooser = new IMGFileChooser();
@@ -188,8 +190,7 @@ public class NewEmployeeDialog extends JDialog
         newgbc();
         lbImagePreview = new RotatablePreview();
         lbImagePreview.setPreferredSize(new Dimension(100, 100));
-        URL urlAvatar = getClass().getResource("/images/avatar.png");
-        lbImagePreview.setIcon(new ImageIcon(urlAvatar));
+        lbImagePreview.setIcon(iconAvatar);
         lbImagePreview.setHorizontalAlignment(SwingConstants.CENTER);
         lbImagePreview.setVerticalAlignment(SwingConstants.CENTER);
         grid(0, 5);
@@ -198,16 +199,39 @@ public class NewEmployeeDialog extends JDialog
         panel.add(lbImagePreview, gbc);
     }
 
-    private void btnRotatePreview() {
+    private void fieldImagePreviewControls() {
         newgbc();
+        panelImageControls = new JPanel();
+        grid(0, 6);
+        gbc.anchor = GridBagConstraints.CENTER;
+        gbc.gridwidth = GridBagConstraints.REMAINDER;
+        btnRotatePreview();
+        panelImageControls.add(Box.createHorizontalStrut(5));
+        btnCancelImage();
+        panel.add(panelImageControls, gbc);
+    }
+
+    private void btnRotatePreview() {
         URL urlRotate = getClass().getResource("/images/rotate.png");
         btnRotate = new JButton("", new ImageIcon(urlRotate));
+        btnRotate.setBorder(null);
         btnRotate.setPreferredSize(new Dimension(25, 25));
         btnRotate.addActionListener(new RotatePreviewHandler());
         grid(0, 6);
         gbc.anchor = GridBagConstraints.CENTER;
         gbc.gridwidth = GridBagConstraints.REMAINDER;
-        panel.add(btnRotate, gbc);
+        panelImageControls.add(btnRotate, gbc);
+    }
+
+    private void btnCancelImage() {
+        URL urlCancel = getClass().getResource("/images/cancel.png");
+        btnCancelImage = new JButton(new ImageIcon(urlCancel));
+        btnCancelImage.addActionListener(new CancelSelectedImageHandler());
+        btnCancelImage.setBorder(null);
+        btnCancelImage.setPreferredSize(new Dimension(25, 25));
+        btnCancelImage.setHorizontalAlignment(SwingConstants.CENTER);
+        btnCancelImage.setVerticalAlignment(SwingConstants.CENTER);
+        panelImageControls.add(btnCancelImage);
     }
 
     private void btnInsertEmployee() {
@@ -319,6 +343,15 @@ public class NewEmployeeDialog extends JDialog
         @Override
         public void actionPerformed(ActionEvent e) {
             lbImagePreview.rotate();
+        }
+    }
+
+    public class CancelSelectedImageHandler implements ActionListener {
+
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            lbImagePreview.unsetImage();
+            lbImagePreview.setIcon(iconAvatar);
         }
     }
 

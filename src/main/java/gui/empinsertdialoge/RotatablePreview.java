@@ -20,6 +20,7 @@ public class RotatablePreview extends JLabel {
     private BufferedImage master;
     private BufferedImage rotated;
     private double angle;
+    private boolean isImageAvailable;
 
     public RotatablePreview() {
         super();
@@ -27,14 +28,24 @@ public class RotatablePreview extends JLabel {
     }
 
     public void setImage(BufferedImage recivedImage) {
+        angle = 0.0;
         master = recivedImage;
         rotated = master;
+        isImageAvailable = true;
+        repaint();
+    }
+
+    public void unsetImage() {
+        rotated = null;
+        master = null;
         repaint();
     }
 
     public byte[] getImageBytes() {
+        if (rotated == null) {
+            return null;
+        }
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-
         try {
             ImageIO.write(rotated, "jpg", baos);
         } catch (IOException ex) {
