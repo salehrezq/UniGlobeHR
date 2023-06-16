@@ -11,6 +11,7 @@ import java.awt.Insets;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.time.format.DateTimeFormatter;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,6 +33,7 @@ public class EmployeeCard extends JPanel implements EmployeeSelectedListener {
     private JLabel lbEmpName;
     private JLabel lbDateEnrollment;
     private final String UNSELECTED = "UN-SELECTED";
+    private final URL urlAvatar = getClass().getResource("/images/avatar.png");
 
     public EmployeeCard() {
         super();
@@ -65,13 +67,22 @@ public class EmployeeCard extends JPanel implements EmployeeSelectedListener {
     }
 
     public void setLabelPhoto(byte[] photo) {
-        ByteArrayInputStream bis = new ByteArrayInputStream(photo);
-        try {
-            BufferedImage image = ImageIO.read(bis);
-            lbPhoto.setIcon(new ImageIcon(image));
-        } catch (IOException ex) {
-            Logger.getLogger(EmployeeCard.class.getName()).log(Level.SEVERE, null, ex);
+        BufferedImage image = null;
+        if (photo != null) {
+            ByteArrayInputStream bis = new ByteArrayInputStream(photo);
+            try {
+                image = ImageIO.read(bis);
+            } catch (IOException ex) {
+                Logger.getLogger(EmployeeCard.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } else {
+            try {
+                image = ImageIO.read(urlAvatar);
+            } catch (IOException ex) {
+                Logger.getLogger(EmployeeCard.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        lbPhoto.setIcon(new ImageIcon(image));
     }
 
     public void setLabelEmpName(String empName) {
