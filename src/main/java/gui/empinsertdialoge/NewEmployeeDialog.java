@@ -189,7 +189,7 @@ public class NewEmployeeDialog extends JDialog
     private void fieldImagePreview() {
         newgbc();
         lbImagePreview = new RotatablePreview();
-        lbImagePreview.setPreferredSize(new Dimension(100, 100));
+        lbImagePreview.setPreferredSize(new Dimension(64, 80));
         lbImagePreview.setIcon(iconAvatar);
         lbImagePreview.setHorizontalAlignment(SwingConstants.CENTER);
         lbImagePreview.setVerticalAlignment(SwingConstants.CENTER);
